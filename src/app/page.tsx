@@ -101,7 +101,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">Ready to scale your autonomous workforce?</h2>
           <p className="text-xl text-gray-400 mb-10">
-            Let's discuss how our memU infrastructure and fractional squads can integrate directly into your operations.
+            Let&apos;s discuss how our memU infrastructure and fractional squads can integrate directly into your operations.
           </p>
           <a href="mailto:hello@rareagent.work" className="inline-block bg-white text-black px-10 py-4 rounded-lg text-lg font-bold hover:bg-gray-200 transition-colors">
             Contact Sales

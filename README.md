@@ -29,6 +29,35 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+## Stripe Webhooks
+
+A webhook endpoint is configured at:
+
+- `POST /api/stripe/webhook`
+
+Supported events (current):
+
+- `checkout.session.completed`
+- `invoice.paid`
+- `customer.subscription.deleted`
+
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and set:
+
+```bash
+STRIPE_SECRET_KEY=...
+STRIPE_WEBHOOK_SECRET=...
+```
+
+### Local webhook testing
+
+```bash
+stripe listen --forward-to localhost:3000/api/stripe/webhook
+```
+
+Then trigger test events with Stripe CLI.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

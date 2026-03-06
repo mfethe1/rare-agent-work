@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
 
@@ -46,6 +47,14 @@ Services: Fractional Autonomous Squads ($5k-10k/mo), Agentic System Hardening, L
 Be practical and specific. Help users move fast without breaking things.`,
 };
 
+/**
+ * Calculate cost in USD with 1.30x markup.
+ * Input: $3/1M tokens, Output: $15/1M tokens.
+ */
+export function calculateCost(inputTokens: number, outputTokens: number): number {
+  return ((inputTokens * 3) / 1_000_000 + (outputTokens * 15) / 1_000_000) * 1.3;
+}
+
 export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
@@ -53,6 +62,53 @@ export async function POST(req: NextRequest) {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });
+  }
+
+  // Auth check
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return new Response(
+      JSON.stringify({ error: 'Authentication required. Please sign in to use the AI guide.' }),
+      { status: 401, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  // Fetch user profile for tier + token budget
+  const { data: profile } = await supabase
+    .from('users')
+    .select('tier, tokens_used, tokens_budget')
+    .eq('id', user.id)
+    .single();
+
+  const tier = profile?.tier ?? 'free';
+
+  if (tier === 'free') {
+    return new Response(
+      JSON.stringify({
+        error: 'AI guide access requires a Starter or Pro plan.',
+        upgrade: true,
+        upgradeUrl: '/#catalog',
+      }),
+      { status: 403, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+
+  const tokensUsed = profile?.tokens_used ?? 0;
+  const tokensBudget = profile?.tokens_budget ?? 0;
+
+  if (tokensUsed >= tokensBudget) {
+    return new Response(
+      JSON.stringify({
+        error: `You have used all ${tokensBudget.toLocaleString()} tokens in your monthly budget. Upgrade to Pro for 200k tokens/mo.`,
+        upgrade: true,
+        upgradeUrl: '/#catalog',
+      }),
+      { status: 402, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 
   let body: { messages: Anthropic.MessageParam[]; reportSlug?: string };
@@ -67,6 +123,9 @@ export async function POST(req: NextRequest) {
 
   const client = new Anthropic({ apiKey });
 
+  let inputTokensFinal = 0;
+  let outputTokensFinal = 0;
+
   const readable = new ReadableStream({
     async start(controller) {
       try {
@@ -76,6 +135,7 @@ export async function POST(req: NextRequest) {
           system,
           messages,
         });
+
         for await (const chunk of stream) {
           if (
             chunk.type === 'content_block_delta' &&
@@ -83,6 +143,39 @@ export async function POST(req: NextRequest) {
           ) {
             controller.enqueue(new TextEncoder().encode(chunk.delta.text));
           }
+          // Capture final usage from message_delta event
+          if (chunk.type === 'message_delta' && chunk.usage) {
+            outputTokensFinal = chunk.usage.output_tokens ?? 0;
+          }
+          if (chunk.type === 'message_start' && chunk.message?.usage) {
+            inputTokensFinal = chunk.message.usage.input_tokens ?? 0;
+          }
+        }
+
+        // After stream completes, write token usage to Supabase
+        if (inputTokensFinal > 0 || outputTokensFinal > 0) {
+          const totalTokens = inputTokensFinal + outputTokensFinal;
+          const costUsd = calculateCost(inputTokensFinal, outputTokensFinal);
+          const slug = reportSlug ?? 'general';
+
+          // Fire-and-forget inserts (don't block the stream response)
+          supabase
+            .from('token_usage')
+            .insert({
+              user_id: user.id,
+              report_slug: slug,
+              input_tokens: inputTokensFinal,
+              output_tokens: outputTokensFinal,
+              cost_usd: costUsd,
+              created_at: new Date().toISOString(),
+            })
+            .then(() => {});
+
+          supabase
+            .from('users')
+            .update({ tokens_used: tokensUsed + totalTokens })
+            .eq('id', user.id)
+            .then(() => {});
         }
       } catch (err) {
         const msg = err instanceof Error ? err.message : 'Stream error';

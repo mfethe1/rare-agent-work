@@ -4,29 +4,50 @@ import Stripe from "stripe";
 export const runtime = "nodejs";
 
 const PLANS = {
+  // One-time report purchases
   report_60: {
     amount: 2900,
     name: "Agent Setup in 60 Minutes",
     slug: "agent-setup-60",
     mode: "payment" as const,
+    tier: null,
   },
   report_multi: {
     amount: 7900,
     name: "From Single Agent to Multi-Agent",
     slug: "single-to-multi-agent",
     mode: "payment" as const,
+    tier: null,
   },
   report_empirical: {
     amount: 29900,
     name: "Agent Architecture Empirical Research",
     slug: "empirical-agent-architecture",
     mode: "payment" as const,
+    tier: null,
   },
+  // Subscriptions
+  starter: {
+    amount: 2900,
+    name: "Starter Plan — All Reports + AI Guide (50k tokens/mo)",
+    slug: null,
+    mode: "subscription" as const,
+    tier: "starter",
+  },
+  pro: {
+    amount: 9900,
+    name: "Pro Plan — All Reports + AI Guide (200k tokens/mo) + PDF Downloads",
+    slug: null,
+    mode: "subscription" as const,
+    tier: "pro",
+  },
+  // Legacy subscription key
   subscription: {
     amount: 4900,
     name: "Rare Agent Work Monthly Subscription",
     slug: null,
     mode: "subscription" as const,
+    tier: "starter",
   },
 } as const;
 
@@ -72,14 +93,18 @@ export async function POST(req: NextRequest) {
           {
             price_data: {
               currency: "usd",
-              product_data: { name: plan.name },
+              product_data: {
+                name: plan.name,
+                metadata: { tier: plan.tier ?? "starter" },
+              },
               unit_amount: plan.amount,
               recurring: { interval: "month" },
             },
             quantity: 1,
           },
         ],
-        success_url: `${baseUrl}/?subscribed=true`,
+        metadata: { plan: planKey, tier: plan.tier ?? "starter" },
+        success_url: `${baseUrl}/account?subscribed=true`,
         cancel_url: `${baseUrl}/`,
       });
       return NextResponse.json({ url: session.url });

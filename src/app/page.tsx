@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { getAllReports } from '@/lib/reports';
 import ReportChat from '@/components/ReportChat';
 import BuyButton from '@/components/BuyButton';
-import SubscribeButton from '@/components/SubscribeButton';
 
 const colorMap: Record<string, { border: string; text: string; btn: string }> = {
   blue:   { border: 'border-blue-500/20',   text: 'text-blue-400',   btn: 'bg-blue-600 hover:bg-blue-700' },
@@ -24,6 +23,7 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <a href="#catalog" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Reports</a>
               <a href="#guide" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">AI Guide</a>
+              <Link href="/auth/login" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Sign in</Link>
               <a href="#catalog" className="bg-white text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-200 transition-colors">
                 Get Access
               </a>
@@ -48,28 +48,90 @@ export default function Home() {
             Not tutorials. Not overviews. Operator playbooks with real implementation detail.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <a href="#catalog" className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 w-full sm:w-auto">
+            <a href="#catalog" className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 w-full sm:w-auto text-center">
               View Report Catalog
             </a>
-            <a href="#guide" className="border border-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition-all w-full sm:w-auto">
+            <a href="#guide" className="border border-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition-all w-full sm:w-auto text-center">
               Ask the AI Guide
             </a>
           </div>
         </div>
       </main>
 
-      {/* Free Access Pass */}
-      <section id="free-access" className="bg-gray-900 border-y border-gray-800 py-12">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-3">Free Access Pass — No Signup Required</h2>
-          <p className="text-gray-400 mb-6">All three reports are available to preview. Each includes sample content, a full deliverables breakdown, and 5 free questions to the AI implementation guide.</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {reports.map((r) => (
-              <Link key={r.slug} href={`/reports/${r.slug}`}
-                className="px-5 py-2.5 rounded-lg border border-gray-700 hover:bg-gray-800 text-sm font-medium text-white transition-colors">
-                {r.title} →
-              </Link>
-            ))}
+      {/* Value Prop Section — replaces raw Free Access Pass */}
+      <section id="access" className="bg-gray-900 border-y border-gray-800 py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-white mb-3">
+              Start reading free. Upgrade when you need more.
+            </h2>
+            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+              Every report has a free preview. Paid plans unlock full access, AI-guided implementation, and rolling research updates.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {/* Free Card */}
+            <div className="bg-black border border-gray-800 rounded-2xl p-7 flex flex-col">
+              <div className="mb-5">
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Free</span>
+                <p className="text-3xl font-bold text-white mt-1">$0</p>
+                <p className="text-gray-500 text-sm mt-1">No signup required for previews</p>
+              </div>
+              <ul className="space-y-3 mb-7 flex-1">
+                {[
+                  '1 rotating report every 2 weeks',
+                  'Full report archive browsing',
+                  'No signup required for previews',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm text-gray-300">
+                    <span className="text-green-400 mt-0.5 shrink-0">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="space-y-2">
+                {reports.map((r) => (
+                  <Link
+                    key={r.slug}
+                    href={`/reports/${r.slug}`}
+                    className="block w-full text-center bg-gray-800 hover:bg-gray-700 text-white font-medium py-2.5 px-4 rounded-lg text-sm transition-colors"
+                  >
+                    Preview: {r.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Paid Card */}
+            <div className="bg-blue-950/20 border border-blue-500/40 rounded-2xl p-7 flex flex-col relative overflow-hidden">
+              <div className="absolute top-4 right-4">
+                <span className="bg-blue-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full">Best Value</span>
+              </div>
+              <div className="mb-5">
+                <span className="text-xs font-semibold text-blue-400 uppercase tracking-wider">Starter · Pro</span>
+                <p className="text-3xl font-bold text-white mt-1">From $29<span className="text-lg font-normal text-gray-400">/mo</span></p>
+                <p className="text-gray-400 text-sm mt-1">Cancel anytime</p>
+              </div>
+              <ul className="space-y-3 mb-7 flex-1">
+                {[
+                  'All reports — current and future',
+                  'AI Implementation Guide (Claude Sonnet)',
+                  'Token-based usage (50k–200k/mo)',
+                  'PDF downloads (Pro)',
+                  'Early access to new reports (Pro)',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm text-gray-200">
+                    <span className="text-blue-400 mt-0.5 shrink-0">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="space-y-2">
+                <BuyButton label="Start with Starter — $29/mo" plan="starter" />
+                <BuyButton label="Go Pro — $99/mo" plan="pro" />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -130,15 +192,15 @@ export default function Home() {
             <span>★★★★★</span>
             <span>Best Value</span>
           </div>
-          <h3 className="text-3xl font-bold text-white mb-3">All Access Subscription</h3>
-          <p className="text-gray-300 mb-2 text-lg">$49/mo — Cancel anytime</p>
+          <h3 className="text-3xl font-bold text-white mb-3">All Access — Starter Plan</h3>
+          <p className="text-gray-300 mb-2 text-lg">$29/mo — Cancel anytime</p>
           <ul className="text-gray-400 text-sm space-y-1 mb-6 max-w-md mx-auto">
             <li>✓ All current reports + every future report</li>
             <li>✓ Content updated every 3 days with fresh research</li>
-            <li>✓ Unlimited AI guide questions (Claude Sonnet 4.6)</li>
+            <li>✓ AI Implementation Guide (50k tokens/mo)</li>
             <li>✓ Full report history archive access</li>
           </ul>
-          <SubscribeButton />
+          <BuyButton label="Get Starter Access — $29/mo" plan="starter" />
         </div>
       </section>
 
@@ -148,6 +210,10 @@ export default function Home() {
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-white mb-3">Ask the Agent Setup Guide</h2>
             <p className="text-gray-400">Expert AI implementation help, powered by Claude Sonnet 4.6. Ask about platforms, architecture, failure modes, or which report fits your use case.</p>
+            <p className="text-sm text-gray-500 mt-2">
+              <Link href="/auth/login" className="text-blue-400 hover:text-blue-300 underline">Sign in</Link>
+              {' '}to unlock AI guide access (Starter and Pro plans).
+            </p>
           </div>
           <div className="border border-gray-700 rounded-2xl p-6 bg-black/40">
             <ReportChat placeholder="What's the right agent framework for my team? How do I avoid common pitfalls?" />
@@ -184,6 +250,8 @@ export default function Home() {
           <a href="mailto:hello@rareagent.work" className="hover:text-gray-300 transition-colors">hello@rareagent.work</a>
           {' · '}
           <Link href="/research/history" className="hover:text-gray-300 transition-colors">Report Archive</Link>
+          {' · '}
+          <Link href="/auth/login" className="hover:text-gray-300 transition-colors">Sign In</Link>
         </p>
       </footer>
     </div>

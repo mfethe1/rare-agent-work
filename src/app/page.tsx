@@ -117,7 +117,7 @@ export default function Home() {
                     className={`text-center text-sm ${c.text} hover:underline font-semibold`}>
                     Read preview →
                   </Link>
-                  <BuyButton label={`Buy — ${report.price}`} plan={`report_${report.slug}`} />
+                  <BuyButton label={`Buy — ${report.price}`} plan={report.planKey} />
                 </div>
               </div>
             );

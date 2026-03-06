@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getReport, getAllReports } from '@/lib/reports';
 import ReportChat from '@/components/ReportChat';
 import PrintButton from '@/components/PrintButton';
+import BuyButton from '@/components/BuyButton';
 import Link from 'next/link';
 
 export function generateStaticParams() {
@@ -68,9 +69,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           {/* Actions */}
           <div className="flex flex-wrap gap-3 mt-6 no-print">
             <PrintButton />
-            <a href="/#catalog" className={`${c.btn} text-white px-5 py-3 rounded-lg text-sm font-semibold transition-colors`}>
-              Get Full Access →
-            </a>
+            <BuyButton label={`Buy Full Report — ${report.price}`} plan={report.planKey} className={`${c.btn} text-white px-5 py-3 rounded-lg text-sm font-semibold transition-colors`} />
           </div>
         </div>
 

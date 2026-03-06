@@ -1,5 +1,6 @@
 export interface Report {
   slug: string;
+  planKey: string;
   title: string;
   subtitle: string;
   price: string;
@@ -15,6 +16,7 @@ export interface Report {
 export const reports: Record<string, Report> = {
   'agent-setup-60': {
     slug: 'agent-setup-60',
+    planKey: 'report_60',
     title: 'Agent Setup in 60 Minutes',
     subtitle: 'Low-code operator playbook for first-time builders',
     price: '$29',
@@ -63,6 +65,7 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
 
   'single-to-multi-agent': {
     slug: 'single-to-multi-agent',
+    planKey: 'report_multi',
     title: 'From Single Agent to Multi-Agent',
     subtitle: 'How to scale from one assistant to an orchestrated team',
     price: '$79',
@@ -105,6 +108,7 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
 
   'empirical-agent-architecture': {
     slug: 'empirical-agent-architecture',
+    planKey: 'report_empirical',
     title: 'Agent Architecture: Empirical Research Edition',
     subtitle: 'Production-grade evaluation, reproducibility, and governance',
     price: '$299',

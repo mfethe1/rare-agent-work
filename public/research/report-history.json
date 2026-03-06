@@ -1,0 +1,20 @@
+[
+  {
+    "id": "v1.0-2026-03-04",
+    "date": "2026-03-04",
+    "version": "1.0",
+    "title": "Initial Launch — Three Core Operator Reports",
+    "summary": "Launch of Rare Agent Work's first three research reports: Agent Setup in 60 Minutes, From Single Agent to Multi-Agent, and Agent Architecture Empirical Research. All three are interactive HTML reports with AI implementation guides.",
+    "reports": ["agent-setup-60", "single-to-multi-agent", "empirical-agent-architecture"],
+    "changes": "Initial release"
+  },
+  {
+    "id": "v1.1-2026-03-05",
+    "date": "2026-03-05",
+    "version": "1.1",
+    "title": "Content Rebuild — Polished Interactive Reports + AI Guide",
+    "summary": "Full rebuild of all report pages to polished interactive HTML with real substantive content, sample excerpts, and embedded Claude Sonnet 4.6 AI implementation guide on every page. Removed all raw markdown files. Added report archive system.",
+    "reports": ["agent-setup-60", "single-to-multi-agent", "empirical-agent-architecture"],
+    "changes": "Rebuilt from scratch: polished mobile-first HTML, real operator content (platform comparison matrices, implementation protocols, governance checklists), embedded AI chat guide (Claude Sonnet 4.6), print/PDF export, report history archive"
+  }
+]

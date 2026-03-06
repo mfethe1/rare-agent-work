@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   }
 
   const stripe = new Stripe(secretKey, {
-    apiVersion: '2026-02-25.clover',
+    apiVersion: "2026-02-25.clover" as Stripe.LatestApiVersion,
   });
 
   const body = await req.text();

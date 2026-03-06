@@ -1,117 +1,190 @@
-import React from 'react';
+import Link from 'next/link';
+import { getAllReports } from '@/lib/reports';
+import ReportChat from '@/components/ReportChat';
+import BuyButton from '@/components/BuyButton';
+import SubscribeButton from '@/components/SubscribeButton';
+
+const colorMap: Record<string, { border: string; text: string; btn: string }> = {
+  blue:   { border: 'border-blue-500/20',   text: 'text-blue-400',   btn: 'bg-blue-600 hover:bg-blue-700' },
+  green:  { border: 'border-green-500/20',  text: 'text-green-400',  btn: 'bg-green-600 hover:bg-green-700' },
+  purple: { border: 'border-purple-500/20', text: 'text-purple-400', btn: 'bg-purple-600 hover:bg-purple-700' },
+};
 
 export default function Home() {
+  const reports = getAllReports();
+
   return (
     <div className="min-h-screen bg-black text-gray-100 selection:bg-blue-500 selection:text-white font-sans">
-      {/* Navigation */}
-      <nav className="border-b border-gray-800">
+
+      {/* Nav */}
+      <nav className="border-b border-gray-800 sticky top-0 z-50 bg-black/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <span className="text-xl font-bold tracking-tighter text-white">Rare Agent Work</span>
-            </div>
-            <div>
-              <a href="#contact" className="bg-white text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-200 transition-colors">
-                Book a Consultation
+            <span className="text-xl font-bold tracking-tighter text-white">Rare Agent Work</span>
+            <div className="flex items-center gap-3">
+              <a href="#catalog" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Reports</a>
+              <a href="#guide" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">AI Guide</a>
+              <a href="#catalog" className="bg-white text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-200 transition-colors">
+                Get Access
               </a>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div className="text-center max-w-4xl mx-auto">
+      {/* Hero */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        <div className="text-center max-w-5xl mx-auto">
+          <div className="inline-flex items-center gap-2 bg-blue-950/60 border border-blue-500/30 rounded-full px-4 py-2 text-sm text-blue-300 mb-8">
+            <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+            Updated every 3 days — next refresh in 2 days
+          </div>
           <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8">
-            Fractional <span className="text-blue-500">Autonomous Squads</span>
+            Operator-Grade AI Research{' '}
+            <span className="text-blue-500">You Can Actually Use</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-400 mb-10 leading-relaxed">
-            We build and lease highly-specialized, context-aware AI teams. Stop buying wrapper apps and start leasing digital workforces that remember your business logic, tech debt, and safety rails.
+          <p className="text-xl md:text-2xl text-gray-400 mb-10 leading-relaxed max-w-3xl mx-auto">
+            Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards.
+            Not tutorials. Not overviews. Operator playbooks with real implementation detail.
           </p>
-          <div className="flex justify-center gap-4">
-            <a href="#contact" className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/30">
-              Deploy Your Squad
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="#catalog" className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 w-full sm:w-auto">
+              View Report Catalog
             </a>
-            <a href="/Agentic_Illusion_Strategic_Brief.pdf" target="_blank" rel="noopener noreferrer" className="border border-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition-all">
-              Read Q1 2026 Strategy Brief
+            <a href="#guide" className="border border-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-800 transition-all w-full sm:w-auto">
+              Ask the AI Guide
             </a>
           </div>
         </div>
       </main>
 
-      {/* Core Philosophy */}
-      <section className="bg-gray-900 border-y border-gray-800 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-6">Context, State, and Safety.</h2>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto">
-            A 200 IQ foundation model is useless if it hallucinates a database drop, forgets what happened yesterday, or gets stuck in a loop. We sell the plumbing (persistent memory, safety gating, orchestration), not just the water (raw AI models).
-          </p>
+      {/* Free Access Pass */}
+      <section id="free-access" className="bg-gray-900 border-y border-gray-800 py-12">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl font-bold text-white mb-3">Free Access Pass — No Signup Required</h2>
+          <p className="text-gray-400 mb-6">All three reports are available to preview. Each includes sample content, a full deliverables breakdown, and 5 free questions to the AI implementation guide.</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {reports.map((r) => (
+              <Link key={r.slug} href={`/reports/${r.slug}`}
+                className="px-5 py-2.5 rounded-lg border border-gray-700 hover:bg-gray-800 text-sm font-medium text-white transition-colors">
+                {r.title} →
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Offerings Section */}
-      <section id="offerings" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      {/* Report Catalog */}
+      <section id="catalog" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl font-bold text-white mb-4">Report Catalog</h2>
+          <p className="text-gray-400 text-lg max-w-2xl mx-auto">Three deeply researched, operator-grade reports. Buy individually or subscribe for all three plus rolling updates.</p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Offering 1 */}
-          <div className="bg-black border border-gray-800 p-8 rounded-xl hover:border-gray-600 transition-colors">
-            <div className="h-12 w-12 bg-blue-900/50 rounded-lg flex items-center justify-center mb-6 border border-blue-500/30">
-              <svg className="w-6 h-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4">The Autonomous Ops Team</h3>
-            <p className="text-gray-400 mb-6">
-              Lease a pre-configured, multi-agent squad that drops directly into your GitHub and Slack. Powered by our proprietary memU persistent memory layer, they learn your tech debt and institutional quirks over time.
-            </p>
-            <p className="text-sm font-semibold text-gray-300">Retainers from $5k - $10k/mo</p>
-          </div>
+          {reports.map((report) => {
+            const c = colorMap[report.color] ?? colorMap.blue;
+            const excerpt = report.excerpt[0];
+            return (
+              <div key={report.slug} className={`bg-black border ${c.border} hover:border-gray-600 rounded-2xl p-8 transition-all flex flex-col`}>
+                <div className="flex items-start justify-between mb-3">
+                  <span className={`text-2xl font-extrabold ${c.text}`}>{report.price}</span>
+                  <span className="text-xs text-gray-500 border border-gray-800 px-2 py-1 rounded">{report.priceLabel}</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{report.title}</h3>
+                <p className={`text-sm font-semibold ${c.text} mb-3`}>{report.subtitle}</p>
+                <p className="text-gray-400 text-sm mb-4 leading-relaxed">{report.audience}</p>
 
-          {/* Offering 2 */}
-          <div className="bg-black border border-gray-800 p-8 rounded-xl hover:border-gray-600 transition-colors">
-            <div className="h-12 w-12 bg-green-900/50 rounded-lg flex items-center justify-center mb-6 border border-green-500/30">
-              <svg className="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4">Agentic System Hardening</h3>
-            <p className="text-gray-400 mb-6">
-              Building your own agents? We install the safety rails. We implement Idempotency Gates and Temporal workflow wrappers to ensure your AI cannot destroy production databases or spam clients.
-            </p>
-            <p className="text-sm font-semibold text-gray-300">Custom High-Ticket Integrations</p>
-          </div>
+                {/* Mini preview of real content */}
+                <div className={`border-l-2 ${c.text.replace('text-', 'border-')} pl-4 mb-5`}>
+                  <p className={`text-xs font-semibold ${c.text} mb-1`}>{excerpt.heading}</p>
+                  <p className="text-gray-500 text-xs leading-relaxed line-clamp-3">
+                    {excerpt.body.split('\n\n')[0].replace(/\*\*(.*?)\*\*/g, '$1')}
+                  </p>
+                </div>
 
-          {/* Offering 3 */}
-          <div className="bg-black border border-gray-800 p-8 rounded-xl hover:border-gray-600 transition-colors">
-            <div className="h-12 w-12 bg-purple-900/50 rounded-lg flex items-center justify-center mb-6 border border-purple-500/30">
-              <svg className="w-6 h-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4">Hyper-Niche Legacy Integration</h3>
-            <p className="text-gray-400 mb-6">
-              Generic AI hates messy, 1990s ERPs, physical hardware, and strict compliance pipelines. We specialize our agents to bridge state-of-the-art intelligence into brittle legacy systems.
-            </p>
-            <p className="text-sm font-semibold text-gray-300">Custom Enterprise Solutions</p>
+                <div className="space-y-2 mb-5">
+                  {report.deliverables.slice(0, 3).map((d) => (
+                    <div key={d.title} className="flex items-start gap-2 text-sm">
+                      <span>{d.icon}</span>
+                      <span className="text-gray-400">{d.title}</span>
+                    </div>
+                  ))}
+                  <p className="text-gray-600 text-xs pl-6">+ {report.deliverables.length - 3} more sections</p>
+                </div>
+
+                <div className="mt-auto flex flex-col gap-2">
+                  <Link href={`/reports/${report.slug}`}
+                    className={`text-center text-sm ${c.text} hover:underline font-semibold`}>
+                    Read preview →
+                  </Link>
+                  <BuyButton label={`Buy — ${report.price}`} plan={`report_${report.slug}`} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Subscription box */}
+        <div className="max-w-4xl mx-auto border border-blue-500/30 bg-blue-950/20 rounded-2xl p-8 md:p-10 mt-12 text-center">
+          <div className="inline-flex items-center gap-2 text-blue-300 text-sm font-semibold mb-4">
+            <span>★★★★★</span>
+            <span>Best Value</span>
+          </div>
+          <h3 className="text-3xl font-bold text-white mb-3">All Access Subscription</h3>
+          <p className="text-gray-300 mb-2 text-lg">$49/mo — Cancel anytime</p>
+          <ul className="text-gray-400 text-sm space-y-1 mb-6 max-w-md mx-auto">
+            <li>✓ All current reports + every future report</li>
+            <li>✓ Content updated every 3 days with fresh research</li>
+            <li>✓ Unlimited AI guide questions (Claude Sonnet 4.6)</li>
+            <li>✓ Full report history archive access</li>
+          </ul>
+          <SubscribeButton />
+        </div>
+      </section>
+
+      {/* AI Guide */}
+      <section id="guide" className="bg-gray-900 border-y border-gray-800 py-16">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-white mb-3">Ask the Agent Setup Guide</h2>
+            <p className="text-gray-400">Expert AI implementation help, powered by Claude Sonnet 4.6. Ask about platforms, architecture, failure modes, or which report fits your use case.</p>
+          </div>
+          <div className="border border-gray-700 rounded-2xl p-6 bg-black/40">
+            <ReportChat placeholder="What's the right agent framework for my team? How do I avoid common pitfalls?" />
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section id="contact" className="py-20 bg-gray-900 border-t border-gray-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">Ready to scale your autonomous workforce?</h2>
-          <p className="text-xl text-gray-400 mb-10">
-            Let&apos;s discuss how our memU infrastructure and fractional squads can integrate directly into your operations.
-          </p>
-          <a href="mailto:hello@rareagent.work" className="inline-block bg-white text-black px-10 py-4 rounded-lg text-lg font-bold hover:bg-gray-200 transition-colors">
-            Contact Sales
-          </a>
+      {/* Report History */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-2">Report History</h2>
+            <p className="text-gray-400 text-sm">Every version archived. Subscribers get access to the full history.</p>
+          </div>
+          <Link href="/research/history" className="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+            Full archive →
+          </Link>
+        </div>
+        <div className="border border-gray-800 rounded-xl divide-y divide-gray-800">
+          <div className="p-5 flex items-start justify-between">
+            <div>
+              <span className="text-xs font-mono text-gray-500 mb-1 block">v1.0 · Mar 4, 2026</span>
+              <p className="text-white font-semibold text-sm">Initial Launch — Three core operator reports</p>
+              <p className="text-gray-500 text-xs mt-1">Agent Setup in 60 Minutes · Single to Multi-Agent · Empirical Architecture</p>
+            </div>
+            <span className="text-xs bg-green-900/50 text-green-300 border border-green-500/30 px-2 py-1 rounded">Current</span>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-800 py-8 text-center text-gray-500 text-sm">
-        <p>&copy; {new Date().getFullYear()} Rare Agent Work. All rights reserved.</p>
+      <footer className="border-t border-gray-800 py-10 text-center text-gray-500 text-sm">
+        <p className="mb-2">© {new Date().getFullYear()} Rare Agent Work. Operator-grade AI research.</p>
+        <p>
+          <a href="mailto:hello@rareagent.work" className="hover:text-gray-300 transition-colors">hello@rareagent.work</a>
+          {' · '}
+          <Link href="/research/history" className="hover:text-gray-300 transition-colors">Report Archive</Link>
+        </p>
       </footer>
     </div>
   );

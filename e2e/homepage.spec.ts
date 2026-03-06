@@ -53,7 +53,7 @@ test.describe('Homepage', () => {
 
   test('free tier card shows correct features', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('body')).toContainText('1 report every 2 weeks');
+    await expect(page.locator('body')).toContainText('1 rotating report every 2 weeks');
     await expect(page.locator('body')).toContainText('No signup required for previews');
   });
 

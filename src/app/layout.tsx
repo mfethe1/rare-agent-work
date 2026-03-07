@@ -13,24 +13,45 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || "G-7SLM9KDWZK";
+const GADS_ID = "AW-17716841198";
+
 export const metadata: Metadata = {
-  title: "Rare Agent Work",
+  title: {
+    default: "Rare Agent Work — Operator-Grade AI Research",
+    template: "%s | Rare Agent Work",
+  },
   description:
     "Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards. Operator playbooks with real implementation detail.",
   metadataBase: new URL("https://rareagent.work"),
   openGraph: {
-    title: "Rare Agent Work",
+    title: "Rare Agent Work — Operator-Grade AI Research",
     description:
-      "Operator-grade AI research you can actually use. Reports on agent setup, multi-agent orchestration, and production evaluation.",
+      "Practical reports on low-code automation, multi-agent systems, and empirical deployment standards. Not tutorials — operator playbooks.",
     url: "https://rareagent.work",
     siteName: "Rare Agent Work",
     type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rare Agent Work",
+    title: "Rare Agent Work — Operator-Grade AI Research",
     description:
-      "Operator-grade AI research you can actually use. Reports on agent setup, multi-agent orchestration, and production evaluation.",
+      "Operator playbooks for AI automation, multi-agent orchestration, and production deployment.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://rareagent.work",
   },
 };
 
@@ -45,25 +66,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        {/* Google Analytics 4 */}
-        {process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-gtag" strategy="afterInteractive">
-              {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}');`}
-            </Script>
-          </>
-        )}
-        {/* Google Ads conversion tracking */}
+        {/* GA4 — always active with hardcoded fallback */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17716841198"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
           strategy="afterInteractive"
         />
+        <Script id="ga4-gtag" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA4_ID}', { send_page_view: true });`}
+        </Script>
+        {/* Google Ads conversion tracking */}
         <Script id="google-ads-gtag" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-17716841198');`}
+          {`gtag('config', '${GADS_ID}');`}
         </Script>
       </body>
     </html>

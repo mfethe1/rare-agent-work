@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { createServerClient } from '@supabase/ssr';

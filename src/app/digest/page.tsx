@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-export const revalidate = 3600; // revalidate every hour
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Weekly AI Agent Digest | Rare Agent Work',
@@ -19,10 +19,21 @@ interface Article {
 }
 
 export default async function DigestPage() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    return (
+      <div className="min-h-screen bg-black text-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-white mb-2">Weekly Digest</h1>
+          <p className="text-gray-400">Digest is being configured. Check back soon.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
   const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 

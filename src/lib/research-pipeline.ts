@@ -56,6 +56,43 @@ OUTPUT: Implementation-focused content with code examples and decision framework
     outputFormat: 'implementation_draft',
   },
   {
+    name: 'competitive_scanner',
+    role: 'Competitive Landscape Analyst',
+    systemPrompt: `You are a market analyst who determines whether paid content is worth creating.
+You receive implementation-focused content. Your job: determine if this report offers enough unique value vs what's freely available.
+
+RULES:
+- Search for the top 20 results on Google/Brave for this report's core topic keywords
+- Read the top 5 free articles, guides, and docs covering the same ground
+- Score the overlap: what percentage of our report's insights are available for free?
+- If >70% overlap: RECOMMEND KILL or PIVOT — we cannot sell what people can Google
+- If 40-70% overlap: identify exactly what our unique value-add is and flag sections that are commodity
+- If <40% overlap: document why our angle is differentiated
+- For each competing free resource, note: URL, what it covers, what it misses
+- Be honest. If a free LangChain tutorial covers 80% of what we wrote, say so.
+
+OUTPUT: Competitive analysis with overlap score, unique value statement, and go/pivot/kill recommendation.`,
+    outputFormat: 'competitive_analysis',
+  },
+  {
+    name: 'devils_advocate',
+    role: 'Devil\'s Advocate & Thesis Challenger',
+    systemPrompt: `You are a senior technical skeptic whose only job is to find flaws.
+You receive a report draft. Your job: find at least 3 serious reasons this report is wrong, incomplete, or not worth buying.
+
+RULES:
+- Challenge the core thesis. Is the report's fundamental premise correct? Is it even the right question?
+- Find at least 3 serious flaws: factual errors, logical gaps, missing counterarguments, outdated assumptions
+- Ask: "Would a senior engineer with 10 years of experience learn ANYTHING from this they couldn't find in 30 min?"
+- Check for survivorship bias: are we only citing successful implementations and ignoring failures?
+- Check for vendor bias: are we favoring certain tools without disclosing limitations?
+- If you cannot find 3+ serious flaws, your critique is not hard enough. Try again with more skepticism.
+- For each flaw: provide the specific section, the problem, and a concrete fix
+
+OUTPUT: Adversarial critique with numbered flaws, severity ratings, and required fixes.`,
+    outputFormat: 'adversarial_critique',
+  },
+  {
     name: 'editor_in_chief',
     role: 'Agentic AI Editor in Chief',
     systemPrompt: `You are the editor in chief of a premium technical publication.
@@ -120,14 +157,16 @@ OUTPUT: Verification report with pass/fail per citation, corrections, and final 
 ];
 
 export const PIPELINE_DESCRIPTION = `
-Research Pipeline v1.0 — 5-Stage Agent Workflow
+Research Pipeline v2.0 — 7-Stage Agent Workflow
 
-1. RESEARCHER → Finds and date-verifies 10-20 sources from the last 14 days
+1. RESEARCHER → 2-pass research: broad scan (30+ sources) then deep dive (top 10)
 2. IMPLEMENTATION EXPERT → Transforms research into actionable guidance with code
-3. EDITOR IN CHIEF → Structures, cuts fluff, ensures readability
-4. VALUE CRITIC → Brutally assesses whether the report justifies its price point
-5. CITATION VERIFIER → Visits every URL, confirms every claim, rejects fabrications
+3. COMPETITIVE SCANNER → Checks if free content covers the same ground (kill if >70% overlap)
+4. DEVIL'S ADVOCATE → Finds 3+ serious flaws in thesis, logic, or completeness
+5. EDITOR IN CHIEF → Structures, cuts fluff, ensures readability
+6. VALUE CRITIC → Brutally assesses whether the report justifies its price point
+7. CITATION VERIFIER → Visits every URL, confirms every claim, rejects fabrications
 
 Each stage can send the report back to a previous stage with revision notes.
-Only reports that pass ALL 5 stages get submitted as drafts for Michael's review.
+Only reports that pass ALL 7 stages get submitted as drafts for Michael's review.
 `;

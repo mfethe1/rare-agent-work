@@ -1,0 +1,230 @@
+[
+  {
+    "id": "783f4686-139e-4706-8432-ca9119a51edb",
+    "title": "OpenAI Releases GPT-5.4 — Most Capable Unified Frontier Model",
+    "summary": "OpenAI launched GPT-5.4 on March 5, 2026, combining advanced reasoning, coding, and agentic workflows into a single model. Available across ChatGPT, API, and Codex. GPT-5.4 Pro offers maximum performance for complex tasks. GPT-5.2 Thinking will be retired June 5, 2026.",
+    "url": "https://cybersecuritynews.com/gpt-5-4-launched/",
+    "source": "CyberSecurity News",
+    "category": "model-release",
+    "tags": [
+      "openai",
+      "gpt-5.4",
+      "frontier-model",
+      "coding",
+      "agentic"
+    ],
+    "publishedAt": "2026-03-05T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.677Z"
+  },
+  {
+    "id": "5064158f-8c24-4fc0-af06-1d7a69eafddf",
+    "title": "OpenAI Introduces Codex Security — Context-Aware Vulnerability Detection",
+    "summary": "OpenAI released Codex Security in research preview, enabling context-aware vulnerability detection, validation, and automated patch generation across entire codebases. Represents a significant step toward AI-assisted security auditing.",
+    "url": "https://www.marktechpost.com/2026/03/06/openai-introduces-codex-security-in-research-preview-for-context-aware-vulnerability-detection-validation-and-patch-generation-across-codebases/",
+    "source": "MarkTechPost",
+    "category": "tool-release",
+    "tags": [
+      "openai",
+      "codex",
+      "security",
+      "vulnerability-detection",
+      "code-analysis"
+    ],
+    "publishedAt": "2026-03-06T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "4cb66966-e21c-4c15-8db6-a1e0eae765c9",
+    "title": "Alibaba Open-Sources OpenSandbox — Production-Grade AI Agent Execution Platform",
+    "summary": "Alibaba Cloud released OpenSandbox under Apache 2.0 on March 3, 2026. Provides AI agents with secure, isolated environments for code execution, web browsing, and model training. Offers a unified API for autonomous agent execution without risking host infrastructure.",
+    "url": "https://www.marktechpost.com/2026/03/03/alibaba-releases-opensandbox-to-provide-software-developers-with-a-unified-secure-and-scalable-api-for-autonomous-ai-agent-execution/",
+    "source": "MarkTechPost",
+    "category": "framework-release",
+    "tags": [
+      "alibaba",
+      "opensandbox",
+      "agent-execution",
+      "sandbox",
+      "open-source",
+      "apache-2.0"
+    ],
+    "publishedAt": "2026-03-03T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "b02e1c3b-57af-4b41-9b02-06e8f4822878",
+    "title": "NullClaw: 678 KB Zig AI Agent Framework Running on 1 MB RAM",
+    "summary": "NullClaw is an ultra-lightweight AI agent framework written in Zig that compiles to 678 KB, runs on 1 MB RAM, and boots in 2ms. Targets edge/IoT deployment on microcontrollers. Includes 18+ built-in tools, MCP integration, and 2,738 tests across 45K lines of Zig. Zero dependencies beyond libc.",
+    "url": "https://www.marktechpost.com/2026/03/02/meet-nullclaw-the-678-kb-zig-ai-agent-framework-running-on-1-mb-ram-and-booting-in-two-milliseconds/",
+    "source": "MarkTechPost",
+    "category": "framework-release",
+    "tags": [
+      "nullclaw",
+      "zig",
+      "edge-ai",
+      "lightweight",
+      "microcontroller",
+      "mcp"
+    ],
+    "publishedAt": "2026-03-02T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "057174ea-230e-4da0-a7cc-6aac47cdf5d0",
+    "title": "Google Launches TensorFlow 2.21 and LiteRT with NPU Acceleration",
+    "summary": "Google released TensorFlow 2.21 graduating LiteRT to production. Delivers up to 1.4x faster GPU performance, new NPU acceleration with unified workflow for GPU/NPU across edge platforms, and seamless PyTorch edge deployment upgrades.",
+    "url": "https://developers.googleblog.com/whats-new-in-tensorflow-221/",
+    "source": "Google Developers Blog",
+    "category": "framework-release",
+    "tags": [
+      "google",
+      "tensorflow",
+      "litert",
+      "npu",
+      "edge-ai",
+      "pytorch"
+    ],
+    "publishedAt": "2026-03-06T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "1c240358-ae67-4b88-9367-2305653f09eb",
+    "title": "OpenClaw Surpasses 250,000 GitHub Stars, Releases Major Platform Update",
+    "summary": "OpenClaw (formerly Moltbot) hit 250,829 GitHub stars as of March 3, surpassing React. Major platform update released. Hacker News discussion highlights cost concerns — one user spent $178 on AI agents in a single week.",
+    "url": "https://markets.financialcontent.com/stocks/article/accwirecq-2026-3-4-openclawd-releases-major-platform-update-as-openclaw-surpasses-react-with-250000-github-stars",
+    "source": "Financial Content",
+    "category": "industry-news",
+    "tags": [
+      "openclaw",
+      "open-source",
+      "github",
+      "agent-platform"
+    ],
+    "publishedAt": "2026-03-04T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "0708b9e5-af78-46fd-842a-83dda3b083d6",
+    "title": "Multi-Agent AI Security: 40 Papers Synthesized on A2A Attack Surfaces",
+    "summary": "Adversa AI published a comprehensive analysis synthesizing 40 papers on agent-to-agent threats including AiTM hijacking and protocol exploits. Multi-agent systems introduce critical new attack surfaces regarding how agents communicate.",
+    "url": "https://adversa.ai/blog/top-agentic-ai-security-resources-march-2026/",
+    "source": "Adversa AI",
+    "category": "research",
+    "tags": [
+      "security",
+      "multi-agent",
+      "a2a",
+      "attack-surface",
+      "research"
+    ],
+    "publishedAt": "2026-03-03T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "21713e14-958b-4f1d-87e4-c5828fa7b24b",
+    "title": "AgentVista Benchmark: Best Model Achieves Only 27.3% on Ultra-Hard Agent Tasks",
+    "summary": "New AgentVista benchmark reveals even the best model (Gemini-3-Pro with tools) achieves only 27.3% overall accuracy on realistic multimodal agent tasks. Hard instances require 25+ tool-calling turns. Highlights significant gap in agent capabilities.",
+    "url": "https://arxiv.org/html/2503.12687v1",
+    "source": "arXiv",
+    "category": "research",
+    "tags": [
+      "benchmark",
+      "multimodal",
+      "agent-evaluation",
+      "gemini",
+      "tool-use"
+    ],
+    "publishedAt": "2026-03-01T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "b7a248ba-f1e5-4cba-90cd-3538900891db",
+    "title": "Open WebUI Terminal + Qwen 3.5 35B: Agentic Workflows on a Single 3090",
+    "summary": "Open WebUI's new terminal feature combined with Qwen 3.5 35B's native tool calling enables viable agentic workflows running locally on a single RTX 3090. Community reports strong results for local-first agent development.",
+    "url": "https://www.reddit.com/r/LocalLLaMA/comments/1rmplvs/open_webuis_new_open_terminal_native_tool_calling/",
+    "source": "r/LocalLLaMA",
+    "category": "community",
+    "tags": [
+      "open-webui",
+      "qwen",
+      "local-llm",
+      "tool-calling",
+      "agentic"
+    ],
+    "publishedAt": "2026-03-06T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "e5195ac9-3f89-419e-b149-ef00a3ab0f16",
+    "title": "70% of Enterprises Run AI Agents, But IAM Governance Remains Weak",
+    "summary": "Survey finds 70% of enterprises now run AI agents, but weak IAM governance risks identity 'dark matter' and cross-cloud exposure. Agent identities are powerful, invisible, and largely unmanaged in most organizations.",
+    "url": "https://thehackernews.com/2026/03/ai-agents-next-wave-identity-dark.html",
+    "source": "The Hacker News",
+    "category": "industry-news",
+    "tags": [
+      "enterprise",
+      "security",
+      "iam",
+      "governance",
+      "identity"
+    ],
+    "publishedAt": "2026-03-03T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "79a71641-438b-4bd5-bfc7-043fac0e7b55",
+    "title": "HN Debate: 'You Need to Rewrite Your CLI for AI Agents'",
+    "summary": "Trending Hacker News discussion on redesigning CLIs for AI agent consumption. Sparked by Google Workspace CLI launch. Debate centers on whether structured output and agent-friendly interfaces should be the default design pattern.",
+    "url": "https://news.ycombinator.com/item?id=47252459",
+    "source": "Hacker News",
+    "category": "community",
+    "tags": [
+      "cli",
+      "developer-tools",
+      "agent-ux",
+      "hacker-news"
+    ],
+    "publishedAt": "2026-03-05T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "id": "e38f1ae5-c2c4-4e1d-b3cc-c3de52ce7bbc",
+    "title": "CyberStrikeAI: Open-Source AI Attack Framework Deployed Across 55 Countries",
+    "summary": "Open-source CyberStrikeAI tool combining AI agents with orchestration engines enables automated targeting of edge devices including firewalls and VPNs. 21 unique IPs observed between Jan-Feb 2026. Represents escalation in AI-powered offensive security tooling.",
+    "url": "https://www.bleepingcomputer.com/news/security/cyberstrikeai-tool-adopted-by-hackers-for-ai-powered-attacks/",
+    "source": "BleepingComputer",
+    "category": "security",
+    "tags": [
+      "cyberattack",
+      "ai-security",
+      "offensive-ai",
+      "threat-intelligence"
+    ],
+    "publishedAt": "2026-03-02T00:00:00Z",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-07T16:34:34.678Z"
+  }
+]

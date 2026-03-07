@@ -1,0 +1,25 @@
+[
+  {
+    "id": "news-2026-03-06-model-release",
+    "title": "New frontier model release improves coding evals",
+    "summary": "A major model provider released an update with stronger coding and tool-use performance.",
+    "source_url": "https://example.com/model-release",
+    "published_at": "2026-03-06T18:00:00Z",
+    "tags": [
+      "models",
+      "coding",
+      "release"
+    ]
+  },
+  {
+    "id": "news-2026-03-04-agent-benchmark",
+    "title": "Agent benchmark methodology update published",
+    "summary": "A new benchmark revision emphasizes retrieval quality and real-world task completion.",
+    "source_url": "https://example.com/agent-benchmark",
+    "published_at": "2026-03-04T15:00:00Z",
+    "tags": [
+      "agents",
+      "benchmark"
+    ]
+  }
+]

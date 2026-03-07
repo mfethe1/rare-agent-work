@@ -1,0 +1,26 @@
+[
+  {
+    "model_name": "GPT-5.3 Codex",
+    "provider": "OpenAI",
+    "capabilities": ["coding", "tool-use", "reasoning"],
+    "ranking_score": 92,
+    "last_verified_at": "2026-03-06T20:00:00Z",
+    "source_urls": ["https://example.com/openai-models", "https://example.com/leaderboard-a"]
+  },
+  {
+    "model_name": "Claude Sonnet 4.6",
+    "provider": "Anthropic",
+    "capabilities": ["reasoning", "writing", "analysis"],
+    "ranking_score": 89,
+    "last_verified_at": "2026-03-06T20:00:00Z",
+    "source_urls": ["https://example.com/anthropic-models", "https://example.com/leaderboard-b"]
+  },
+  {
+    "model_name": "Gemini 3.1 Pro",
+    "provider": "Google",
+    "capabilities": ["multimodal", "reasoning", "research"],
+    "ranking_score": 87,
+    "last_verified_at": "2026-03-06T20:00:00Z",
+    "source_urls": ["https://example.com/google-models", "https://example.com/leaderboard-c"]
+  }
+]

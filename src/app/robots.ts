@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/api/v1/"],
-        disallow: ["/api/news/", "/api/drafts/", "/api/models/", "/api/usage/", "/api/reports/", "/api/vote/", "/api/articles/", "/api/chat/", "/api/stripe/", "/auth/", "/account/"],
+        allow: ["/", "/api/news", "/api/models", "/api/reports", "/api/digest", "/api/openapi.json", "/api/v1/"],
+        disallow: ["/api/stripe/", "/api/chat/", "/api/usage/", "/api/drafts/", "/api/vote/", "/api/articles/", "/api/news/ingest", "/api/models/update", "/api/reports/generate", "/auth/", "/account/"],
       },
     ],
     sitemap: "https://rareagent.work/sitemap.xml",

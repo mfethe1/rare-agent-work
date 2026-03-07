@@ -24,6 +24,31 @@ export function WebsiteJsonLd() {
       "@context": "https://schema.org",
       ...ORGANIZATION,
     },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebAPI",
+      name: "Rare Agent Work API",
+      url: "https://rareagent.work/api/openapi.json",
+      documentation: "https://rareagent.work/llms.txt",
+      description:
+        "Public JSON API providing agentic model leaderboard data, curated AI agent news, report catalog, and weekly digests. Designed for consumption by AI agents and LLMs.",
+      provider: ORGANIZATION,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      name: "Agentic Model Leaderboard",
+      url: "https://rareagent.work/api/models",
+      description:
+        "LLMs ranked for agentic use: tool calling accuracy, context recall, coding ability, and cost efficiency. Updated regularly with benchmark data.",
+      creator: ORGANIZATION,
+      license: "https://rareagent.work",
+      distribution: {
+        "@type": "DataDownload",
+        contentUrl: "https://rareagent.work/api/models",
+        encodingFormat: "application/json",
+      },
+    },
   ];
 
   return (
@@ -83,10 +108,7 @@ export function ReportJsonLd({
     name: title,
     description,
     url: `https://rareagent.work/reports/${slug}`,
-    brand: {
-      "@type": "Organization",
-      name: "Rare Agent Work",
-    },
+    brand: ORGANIZATION,
     offers: {
       "@type": "Offer",
       price: priceNum,

@@ -48,6 +48,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.5,
     },
+    // Agent discovery endpoints
+    {
+      url: `${baseUrl}/llms.txt`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/llms-full.txt`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.5,
+    },
   ];
 
   // Dynamic report pages

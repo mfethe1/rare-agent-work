@@ -34,8 +34,6 @@ export const metadata: Metadata = {
   },
 };
 
-const GA4_ID = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || "G-7SLM9KDWZK";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -47,23 +45,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        {/* Google Analytics 4 */}
-        <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
-            strategy="afterInteractive"
-          />
-          <Script id="ga4-gtag" strategy="afterInteractive">
-            {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA4_ID}');`}
-          </Script>
-        </>
-        {/* Google Ads conversion tracking */}
+        {/* Google tag (gtag.js) — GA4 + Google Ads */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17716841198"
+          src="https://www.googletagmanager.com/gtag/js?id=G-7SLM9KDWZK"
           strategy="afterInteractive"
         />
-        <Script id="google-ads-gtag" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-17716841198');`}
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-7SLM9KDWZK');
+gtag('config', 'AW-17716841198');`}
         </Script>
       </body>
     </html>

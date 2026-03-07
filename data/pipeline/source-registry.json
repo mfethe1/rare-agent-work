@@ -1,0 +1,34 @@
+{
+  "social": {
+    "x": {
+      "enabled": true,
+      "queries": ["agentic AI", "LLM benchmark", "model release", "AI infra"],
+      "accounts": []
+    },
+    "reddit": {
+      "enabled": true,
+      "subreddits": ["LocalLLaMA", "MachineLearning", "singularity", "OpenAI", "ClaudeAI", "AI_Agents"],
+      "sort": "new"
+    },
+    "forums": {
+      "enabled": true,
+      "domains": ["huggingface.co", "community.openai.com", "discord.com"]
+    }
+  },
+  "research": {
+    "enabled": true,
+    "feeds": ["arxiv cs.AI", "arxiv cs.CL", "arxiv cs.LG"],
+    "labs": ["openai.com", "anthropic.com", "ai.google", "metai"],
+    "benchmarks": ["lmarena.ai", "paperswithcode.com"]
+  },
+  "video": {
+    "enabled": true,
+    "youtube_channels": [],
+    "max_videos_per_run": 30
+  },
+  "search": {
+    "firecrawl": true,
+    "brave": true,
+    "perplexity": true
+  }
+}

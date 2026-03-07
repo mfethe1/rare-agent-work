@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "news:refresh": "node scripts/news-refresh.mjs"
+    "news:refresh": "node scripts/news-refresh.mjs",
+    "report:pipeline": "node scripts/report-pipeline-stub.mjs"
   },
   "dependencies": {
     "next": "16.1.6",

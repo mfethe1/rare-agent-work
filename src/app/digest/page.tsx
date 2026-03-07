@@ -5,6 +5,16 @@ export const dynamic = 'force-dynamic';
 export const metadata = {
   title: 'Weekly AI Agent Digest | Rare Agent Work',
   description: 'A free, condensed summary of the week\'s most important AI agent developments. Updated weekly.',
+  openGraph: {
+    title: 'Weekly AI Agent Digest — Rare Agent Work',
+    description: 'A free, condensed summary of the week\'s most important AI agent developments.',
+    url: 'https://rareagent.work/digest',
+    siteName: 'Rare Agent Work',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://rareagent.work/digest',
+  },
 };
 
 interface Article {

@@ -14,8 +14,18 @@ export const metadata: Metadata = {
     'agentic model comparison',
     'tool use benchmark',
     'GPT-4 vs Claude comparison',
-    'LLM leaderboard 2025',
+    'LLM leaderboard 2026',
   ],
+  openGraph: {
+    title: 'Agentic Model Leaderboard — Rare Agent Work',
+    description: 'Compare the best LLMs for AI agent development. Ranked by tool use, context recall, coding ability, cost, and context window.',
+    url: 'https://rareagent.work/models',
+    siteName: 'Rare Agent Work',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://rareagent.work/models',
+  },
 };
 
 export const revalidate = 3600; // 1 hour

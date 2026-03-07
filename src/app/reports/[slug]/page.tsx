@@ -5,7 +5,7 @@ import PrintButton from '@/components/PrintButton';
 import BuyButton from '@/components/BuyButton';
 import Link from 'next/link';
 import ConversionTracker from '@/components/ConversionTracker';
-import { ReportJsonLd } from '@/components/JsonLd';
+import { ReportJsonLd, BreadcrumbJsonLd } from '@/components/JsonLd';
 
 export function generateStaticParams() {
   return getAllReports().map((r) => ({ slug: r.slug }));
@@ -17,7 +17,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!report) return {};
   return {
     title: `${report.title} | Rare Agent Work`,
-    description: report.subtitle,
+    description: `${report.subtitle}. ${report.valueprop}`,
+    openGraph: {
+      title: `${report.title} — Rare Agent Work`,
+      description: report.valueprop,
+      url: `https://rareagent.work/reports/${slug}`,
+      siteName: "Rare Agent Work",
+      type: "article",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: report.title,
+      description: report.subtitle,
+    },
+    alternates: {
+      canonical: `https://rareagent.work/reports/${slug}`,
+    },
   };
 }
 
@@ -42,6 +58,13 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
         description={report.subtitle}
         slug={report.slug}
         price={report.price}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "https://rareagent.work" },
+          { name: "Reports", url: "https://rareagent.work/#catalog" },
+          { name: report.title, url: `https://rareagent.work/reports/${report.slug}` },
+        ]}
       />
 
       {/* Nav */}

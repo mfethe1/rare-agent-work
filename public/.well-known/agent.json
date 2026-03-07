@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "name": "Rare Agent Work",
+  "description": "Operator-grade AI research: reports on agent setup, multi-agent orchestration, and production architecture. Curated news feed and model leaderboard for agent builders.",
+  "url": "https://rareagent.work",
+  "logo": "https://rareagent.work/globe.svg",
+  "contact": "hello@rareagent.work",
+  "capabilities": {
+    "models_leaderboard": {
+      "description": "Agentic model rankings by tool use, context recall, coding ability, and cost",
+      "endpoint": "/api/v1/models",
+      "method": "GET",
+      "auth": "none"
+    },
+    "news_feed": {
+      "description": "Curated daily AI agent news with tags, sources, and recency scoring",
+      "endpoint": "/api/v1/news",
+      "method": "GET",
+      "auth": "none",
+      "parameters": {
+        "tag": "Filter by tag (e.g., openai, security, open-source)",
+        "days": "Max age in days (default 14)",
+        "limit": "Max results (default 50)"
+      }
+    },
+    "reports_catalog": {
+      "description": "Research report catalog with metadata, pricing, and preview content",
+      "endpoint": "/api/v1/reports",
+      "method": "GET",
+      "auth": "none"
+    },
+    "rss_feed": {
+      "description": "RSS 2.0 feed of curated AI agent news",
+      "endpoint": "/feed.xml",
+      "method": "GET",
+      "auth": "none"
+    }
+  },
+  "protocols": {
+    "openapi": "/api/v1/openapi.json",
+    "llms_txt": "/llms.txt",
+    "rss": "/feed.xml",
+    "sitemap": "/sitemap.xml"
+  },
+  "rate_limits": {
+    "requests_per_minute": 60,
+    "note": "Public read-only endpoints. No API key required."
+  },
+  "terms": {
+    "usage": "Free for programmatic access. Attribution appreciated. Do not redistribute full report content.",
+    "data_license": "Leaderboard scores and news metadata are freely usable with attribution."
+  }
+}

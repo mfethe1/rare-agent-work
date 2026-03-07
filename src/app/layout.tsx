@@ -21,6 +21,18 @@ export const metadata: Metadata = {
   description:
     "Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards. Operator playbooks with real implementation detail.",
   metadataBase: new URL("https://rareagent.work"),
+  keywords: [
+    "agentic systems",
+    "AI agent architecture",
+    "multi-agent orchestration",
+    "production AI deployment",
+    "agent reliability engineering",
+    "LLM agent framework",
+    "operator playbook",
+    "AI automation",
+    "tool use benchmark",
+    "agent evaluation",
+  ],
   openGraph: {
     title: "Rare Agent Work — Operator-Grade AI Research",
     description:
@@ -49,6 +61,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://rareagent.work",
+    types: {
+      "application/rss+xml": "https://rareagent.work/feed.xml",
+    },
   },
 };
 

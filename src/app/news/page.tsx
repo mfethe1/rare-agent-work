@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'AI Agent News | Rare Agent Work',
     description: 'Best links for AI agent developers — curated daily.',
+    url: 'https://rareagent.work/news',
+    siteName: 'Rare Agent Work',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://rareagent.work/news',
   },
 };
 

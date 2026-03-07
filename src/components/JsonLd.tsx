@@ -1,16 +1,58 @@
+const ORGANIZATION = {
+  "@type": "Organization",
+  name: "Rare Agent Work",
+  url: "https://rareagent.work",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "hello@rareagent.work",
+    contactType: "customer service",
+  },
+};
+
 export function WebsiteJsonLd() {
-  const data = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Rare Agent Work",
-    url: "https://rareagent.work",
-    description:
-      "Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards.",
-    publisher: {
-      "@type": "Organization",
+  const data = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
       name: "Rare Agent Work",
       url: "https://rareagent.work",
+      description:
+        "Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards.",
+      publisher: ORGANIZATION,
     },
+    {
+      "@context": "https://schema.org",
+      ...ORGANIZATION,
+    },
+  ];
+
+  return (
+    <>
+      {data.map((d, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }}
+        />
+      ))}
+    </>
+  );
+}
+
+export function BreadcrumbJsonLd({
+  items,
+}: {
+  items: { name: string; url: string }[];
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: item.url,
+    })),
   };
 
   return (

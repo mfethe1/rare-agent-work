@@ -1,0 +1,50 @@
+# Rare Agent Work
+
+> Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards. Operator playbooks with real implementation detail.
+
+## What This Site Offers
+
+- **Operator-grade research reports** on AI agent setup, multi-agent orchestration, and production architecture
+- **AI Agent News Feed** — curated daily links for agent builders, verified, max 14 days old
+- **Agentic Model Leaderboard** — models ranked by tool use, context recall, coding ability, cost
+- **AI Implementation Guide** — Claude Sonnet 4.6 powered Q&A for subscribers
+
+## Available Reports
+
+### Agent Setup in 60 Minutes ($29 one-time)
+Low-code operator playbook for first-time builders. Platform selection (Zapier vs Make vs n8n vs Relevance AI), 60-minute implementation timeline, human-in-the-loop gate templates, failure mode playbook.
+URL: https://rareagent.work/reports/agent-setup-60
+
+### From Single Agent to Multi-Agent ($79 one-time)
+How to scale from one assistant to an orchestrated team. Framework comparison (CrewAI vs LangGraph vs AutoGen vs Swarm), three-tier memory architecture, planner-executor-reviewer loop.
+URL: https://rareagent.work/reports/single-to-multi-agent
+
+### Agent Architecture: Empirical Research Edition ($299 one-time)
+Production-grade evaluation, reproducibility, and governance. Evaluation protocol template, LLM-as-judge calibration, 12-item pre-production governance checklist.
+URL: https://rareagent.work/reports/empirical-agent-architecture
+
+## Subscription
+
+All Access Starter Plan: $29/mo — all reports + every future report, content updated every 3 days, AI implementation guide (50k tokens/mo), full archive access.
+
+## API Access (for agents)
+
+Structured JSON endpoints for programmatic access:
+
+- `GET /api/v1/models` — Agentic model leaderboard (filterable, sortable)
+- `GET /api/v1/news` — Curated news feed with tag filters
+- `GET /api/v1/reports` — Report catalog with metadata and preview content
+- `GET /api/v1/openapi.json` — Full OpenAPI 3.1 specification
+- `GET /feed.xml` — RSS 2.0 feed for news
+
+## Agent Discovery
+
+- Agent capabilities: `/.well-known/agent.json`
+- OpenAPI spec: `/api/v1/openapi.json`
+- Sitemap: `/sitemap.xml`
+- RSS: `/feed.xml`
+
+## Contact
+
+hello@rareagent.work
+https://rareagent.work

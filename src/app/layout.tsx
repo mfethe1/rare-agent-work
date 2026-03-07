@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "G-7SLM9KDWZK";
 const GADS_ID = "AW-17716841198";
 
 export const metadata: Metadata = {

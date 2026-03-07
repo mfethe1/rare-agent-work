@@ -34,6 +34,8 @@ export const metadata: Metadata = {
   },
 };
 
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID || "G-7SLM9KDWZK";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -46,17 +48,15 @@ export default function RootLayout({
       >
         {children}
         {/* Google Analytics 4 */}
-        {process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="ga4-gtag" strategy="afterInteractive">
-              {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}');`}
-            </Script>
-          </>
-        )}
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
+            strategy="afterInteractive"
+          />
+          <Script id="ga4-gtag" strategy="afterInteractive">
+            {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${GA4_ID}');`}
+          </Script>
+        </>
         {/* Google Ads conversion tracking */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-17716841198"

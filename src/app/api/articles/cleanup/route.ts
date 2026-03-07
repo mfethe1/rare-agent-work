@@ -17,10 +17,12 @@ export async function POST(request: Request) {
 
   const fourteenDaysAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString();
 
+  // Remove articles where BOTH published_at and created_at are older than 14 days
+  // Use published_at as primary (more accurate), fall back to created_at
   const { data: stale, error: fetchErr } = await supabase
     .from('articles')
-    .select('id, title, created_at')
-    .lt('created_at', fourteenDaysAgo);
+    .select('id, title, created_at, published_at')
+    .or(`published_at.lt.${fourteenDaysAgo},and(published_at.is.null,created_at.lt.${fourteenDaysAgo})`);
 
   if (fetchErr) {
     return NextResponse.json({ error: fetchErr.message }, { status: 500 });

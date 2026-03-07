@@ -22,23 +22,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'url and title are required' }, { status: 400 });
   }
 
-  // HARD REJECT: if published_at is provided and older than 14 days, reject
-  if (published_at) {
-    const pubDate = new Date(published_at);
-    const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 24 * 60 * 60 * 1000);
-    if (pubDate < cutoff) {
-      return NextResponse.json(
-        { error: `Article too old (published ${published_at}). Only content from the last ${MAX_AGE_DAYS} days is accepted.` },
-        { status: 422 }
-      );
-    }
+  // HARD GATE: published_at is REQUIRED — no date = no ingest
+  if (!published_at) {
+    return NextResponse.json(
+      { error: 'published_at is required. We do not accept undated articles.' },
+      { status: 400 }
+    );
   }
 
-  // Also reject if URL contains obvious old date patterns (2024, 2025-01, etc.)
-  const oldDatePattern = /\/(2024|2025-0[1-9]|2025-1[0-2])\//;
-  if (oldDatePattern.test(url)) {
+  const pubDate = new Date(published_at);
+  if (isNaN(pubDate.getTime())) {
     return NextResponse.json(
-      { error: 'Article URL contains a date pattern older than the cutoff. Only recent content accepted.' },
+      { error: 'published_at is not a valid date.' },
+      { status: 400 }
+    );
+  }
+
+  const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 24 * 60 * 60 * 1000);
+  if (pubDate < cutoff) {
+    return NextResponse.json(
+      { error: `Article too old (published ${published_at}). Only content from the last ${MAX_AGE_DAYS} days is accepted.` },
       { status: 422 }
     );
   }
@@ -57,6 +60,7 @@ export async function POST(request: NextRequest) {
         summary: summary || null,
         source: source || null,
         tags: tags || [],
+        published_at: pubDate.toISOString(),
         upvotes: 0,
         clicks: 0,
         score: 0,

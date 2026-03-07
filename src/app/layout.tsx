@@ -14,23 +14,41 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Rare Agent Work",
+  title: {
+    default: "Rare Agent Work — Operator-Grade AI Research",
+    template: "%s | Rare Agent Work",
+  },
   description:
     "Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards. Operator playbooks with real implementation detail.",
   metadataBase: new URL("https://rareagent.work"),
   openGraph: {
-    title: "Rare Agent Work",
+    title: "Rare Agent Work — Operator-Grade AI Research",
     description:
-      "Operator-grade AI research you can actually use. Reports on agent setup, multi-agent orchestration, and production evaluation.",
+      "Practical reports on low-code automation, multi-agent systems, and empirical deployment standards. Not tutorials — operator playbooks.",
     url: "https://rareagent.work",
     siteName: "Rare Agent Work",
     type: "website",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rare Agent Work",
+    title: "Rare Agent Work — Operator-Grade AI Research",
     description:
-      "Operator-grade AI research you can actually use. Reports on agent setup, multi-agent orchestration, and production evaluation.",
+      "Operator playbooks for AI automation, multi-agent orchestration, and production deployment.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://rareagent.work",
   },
 };
 

@@ -23,6 +23,7 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <Link href="/news" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">News</Link>
               <Link href="/models" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Models</Link>
+              <Link href="/digest" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Digest</Link>
               <a href="#catalog" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Reports</a>
               <a href="#guide" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">AI Guide</a>
               <Link href="/auth/login" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Sign in</Link>

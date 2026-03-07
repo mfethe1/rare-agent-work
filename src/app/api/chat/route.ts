@@ -1,16 +1,58 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
 
 export const runtime = 'nodejs';
+
+// Anthropic pricing (Sonnet 4.6): $3/1M input, $15/1M output
+const INPUT_COST_PER_TOKEN = 3 / 1_000_000;
+const OUTPUT_COST_PER_TOKEN = 15 / 1_000_000;
+const MARKUP = 1.30; // 30% markup
+
+function calculateCost(inputTokens: number, outputTokens: number) {
+  const providerCost = inputTokens * INPUT_COST_PER_TOKEN + outputTokens * OUTPUT_COST_PER_TOKEN;
+  const markupCost = providerCost * MARKUP;
+  return { providerCost, markupCost };
+}
+
+function getSupabaseAdmin() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  return createSupabaseAdmin(url, key);
+}
+
+// Simple cookie-based session lookup (matches our auth system)
+async function getUserFromCookie(req: NextRequest): Promise<{ id: string; email: string; tier: string; tokensUsed: number; tokensBudget: number } | null> {
+  const sessionToken = req.cookies.get('session')?.value;
+  if (!sessionToken) return null;
+
+  const db = getSupabaseAdmin();
+  if (!db) return null;
+
+  // Look up user by session token
+  const { data } = await db
+    .from('users')
+    .select('id, email, tier, tokens_used, tokens_budget')
+    .eq('session_token', sessionToken)
+    .single();
+
+  if (!data) return null;
+  return {
+    id: data.id,
+    email: data.email,
+    tier: data.tier ?? 'free',
+    tokensUsed: data.tokens_used ?? 0,
+    tokensBudget: data.tokens_budget ?? 50000,
+  };
+}
 
 const systemPrompts: Record<string, string> = {
   'agent-setup-60': `You are an expert implementation guide for Rare Agent Work. You specialize in helping operators set up their first production-safe AI workflow in under 60 minutes.
 
 You have deep expertise in: Zapier, Make (Integromat), n8n, Relevance AI, and low-code agent orchestration. You help users choose the right platform, design safe approval gates, and avoid the common failure modes that kill adoption.
 
-When users ask about going deeper: recommend the "From Single Agent to Multi-Agent" report ($79) or our subscription ($49/mo) for rolling updates.
-When users ask about implementation services: mention our Fractional Autonomous Squads (from $5k/mo) at rareagent.work.
+When users ask about going deeper: recommend the "From Single Agent to Multi-Agent" report ($79) or our subscription ($29/mo) for rolling updates.
 
 Be practical, opinionated, and concise. Give specific recommendations, not vague advice.`,
 
@@ -19,7 +61,6 @@ Be practical, opinionated, and concise. Give specific recommendations, not vague
 You have deep expertise in: CrewAI, LangGraph, AutoGen, OpenAI Swarm, memory architecture (episodic/semantic/procedural), and planner-executor-reviewer patterns.
 
 When users need evaluation guidance: recommend the "Agent Architecture Empirical Research" report ($299).
-When users ask about implementation: mention our Fractional Autonomous Squads service.
 
 Be technical but practical. Give architecture recommendations with tradeoffs.`,
 
@@ -27,8 +68,7 @@ Be technical but practical. Give architecture recommendations with tradeoffs.`,
 
 You have deep expertise in: LLM-as-judge calibration, benchmark design, confidence interval reporting, and pre-production governance checklists.
 
-When users want ongoing research: recommend our subscription ($49/mo).
-When users want implementation help: mention our Agentic System Hardening consulting service.
+When users want ongoing research: recommend our subscription ($29/mo).
 
 Be rigorous and evidence-based. Cite specific methodologies and give concrete checklists.`,
 
@@ -40,20 +80,14 @@ Reports you can recommend:
 - "Agent Setup in 60 Minutes" ($29) — for beginners launching first workflow
 - "From Single Agent to Multi-Agent" ($79) — for teams scaling execution
 - "Agent Architecture Empirical Research" ($299) — for technical leaders
-- Subscription ($49/mo) — all reports + rolling updates every 3 days
-
-Services: Fractional Autonomous Squads ($5k-10k/mo), Agentic System Hardening, Legacy Integration consulting.
+- Starter subscription ($29/mo) — all reports + AI guide + rolling updates
+- Pro subscription ($99/mo) — everything + 200k tokens/mo + PDF downloads
 
 Be practical and specific. Help users move fast without breaking things.`,
 };
 
-/**
- * Calculate cost in USD with 1.30x markup.
- * Input: $3/1M tokens, Output: $15/1M tokens.
- */
-export function calculateCost(inputTokens: number, outputTokens: number): number {
-  return ((inputTokens * 3) / 1_000_000 + (outputTokens * 15) / 1_000_000) * 1.3;
-}
+// Free tier: 5 questions (no auth needed), tracked by IP
+const FREE_DAILY_LIMIT = 5;
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -64,51 +98,65 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // Auth check
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+  const user = await getUserFromCookie(req);
+  const db = getSupabaseAdmin();
 
-  if (!user) {
-    return new Response(
-      JSON.stringify({ error: 'Authentication required. Please sign in to use the AI guide.' }),
-      { status: 401, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
+  // Determine access level
+  let userId = 'anon';
+  let userEmail = '';
+  let tier = 'free';
+  let tokensUsed = 0;
+  let tokensBudget = FREE_DAILY_LIMIT * 2000; // ~2k tokens per free question
 
-  // Fetch user profile for tier + token budget
-  const { data: profile } = await supabase
-    .from('users')
-    .select('tier, tokens_used, tokens_budget')
-    .eq('id', user.id)
-    .single();
+  if (user) {
+    userId = user.id;
+    userEmail = user.email;
+    tier = user.tier;
+    tokensUsed = user.tokensUsed;
+    tokensBudget = user.tokensBudget;
 
-  const tier = profile?.tier ?? 'free';
+    if (tier === 'free' && tokensUsed >= tokensBudget) {
+      return new Response(
+        JSON.stringify({
+          error: 'Free tier limit reached. Upgrade to Starter ($29/mo) for 50k tokens/mo.',
+          upgrade: true,
+          upgradeUrl: '/#catalog',
+        }),
+        { status: 402, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
-  if (tier === 'free') {
-    return new Response(
-      JSON.stringify({
-        error: 'AI guide access requires a Starter or Pro plan.',
-        upgrade: true,
-        upgradeUrl: '/#catalog',
-      }),
-      { status: 403, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
+    if (tier !== 'free' && tokensUsed >= tokensBudget) {
+      return new Response(
+        JSON.stringify({
+          error: `Monthly token limit reached (${tokensBudget.toLocaleString()} tokens). Upgrade your plan for more.`,
+          upgrade: true,
+          upgradeUrl: '/#catalog',
+        }),
+        { status: 402, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  } else if (db) {
+    // Anonymous: check IP-based daily usage
+    const today = new Date().toISOString().split('T')[0];
+    const { count } = await db
+      .from('token_usage')
+      .select('*', { count: 'exact', head: true })
+      .eq('ip_address', ip)
+      .eq('app', 'ai-guide')
+      .gte('created_at', `${today}T00:00:00Z`);
 
-  const tokensUsed = profile?.tokens_used ?? 0;
-  const tokensBudget = profile?.tokens_budget ?? 0;
-
-  if (tokensUsed >= tokensBudget) {
-    return new Response(
-      JSON.stringify({
-        error: `You have used all ${tokensBudget.toLocaleString()} tokens in your monthly budget. Upgrade to Pro for 200k tokens/mo.`,
-        upgrade: true,
-        upgradeUrl: '/#catalog',
-      }),
-      { status: 402, headers: { 'Content-Type': 'application/json' } }
-    );
+    if ((count ?? 0) >= FREE_DAILY_LIMIT) {
+      return new Response(
+        JSON.stringify({
+          error: `You've used your ${FREE_DAILY_LIMIT} free questions today. Sign up for unlimited access.`,
+          upgrade: true,
+          upgradeUrl: '/auth/login',
+        }),
+        { status: 402, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
   }
 
   let body: { messages: Anthropic.MessageParam[]; reportSlug?: string };
@@ -120,6 +168,7 @@ export async function POST(req: NextRequest) {
 
   const { messages, reportSlug } = body;
   const system = systemPrompts[reportSlug ?? 'default'] ?? systemPrompts.default;
+  const model = 'claude-sonnet-4-6';
 
   const client = new Anthropic({ apiKey });
 
@@ -130,7 +179,7 @@ export async function POST(req: NextRequest) {
     async start(controller) {
       try {
         const stream = client.messages.stream({
-          model: 'claude-sonnet-4-6',
+          model,
           max_tokens: 1024,
           system,
           messages,
@@ -143,7 +192,6 @@ export async function POST(req: NextRequest) {
           ) {
             controller.enqueue(new TextEncoder().encode(chunk.delta.text));
           }
-          // Capture final usage from message_delta event
           if (chunk.type === 'message_delta' && chunk.usage) {
             outputTokensFinal = chunk.usage.output_tokens ?? 0;
           }
@@ -152,30 +200,33 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        // After stream completes, write token usage to Supabase
-        if (inputTokensFinal > 0 || outputTokensFinal > 0) {
+        // Log usage to Supabase (fire-and-forget)
+        if (db && (inputTokensFinal > 0 || outputTokensFinal > 0)) {
+          const { providerCost, markupCost } = calculateCost(inputTokensFinal, outputTokensFinal);
           const totalTokens = inputTokensFinal + outputTokensFinal;
-          const costUsd = calculateCost(inputTokensFinal, outputTokensFinal);
-          const slug = reportSlug ?? 'general';
 
-          // Fire-and-forget inserts (don't block the stream response)
-          supabase
-            .from('token_usage')
+          db.from('token_usage')
             .insert({
-              user_id: user.id,
-              report_slug: slug,
+              user_id: userId,
+              user_email: userEmail || null,
+              app: 'ai-guide',
+              report_slug: reportSlug ?? 'general',
+              model,
               input_tokens: inputTokensFinal,
               output_tokens: outputTokensFinal,
-              cost_usd: costUsd,
-              created_at: new Date().toISOString(),
+              cost_usd: providerCost,
+              markup_cost_usd: markupCost,
+              ip_address: ip,
             })
             .then(() => {});
 
-          supabase
-            .from('users')
-            .update({ tokens_used: tokensUsed + totalTokens })
-            .eq('id', user.id)
-            .then(() => {});
+          // Update user token counter
+          if (user) {
+            db.from('users')
+              .update({ tokens_used: tokensUsed + totalTokens })
+              .eq('id', user.id)
+              .then(() => {});
+          }
         }
       } catch (err) {
         const msg = err instanceof Error ? err.message : 'Stream error';
@@ -186,6 +237,9 @@ export async function POST(req: NextRequest) {
   });
 
   return new Response(readable, {
-    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'X-Token-Model': model,
+    },
   });
 }

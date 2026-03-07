@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { trackBeginCheckout, trackCheckoutClick } from "@/lib/analytics";
 
 interface BuyButtonProps {
   plan: string;
@@ -15,6 +16,7 @@ export default function BuyButton({ plan, label = "Buy this report", className }
   async function handleClick() {
     setLoading(true);
     setError(null);
+    trackCheckoutClick(plan);
     try {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
@@ -23,6 +25,7 @@ export default function BuyButton({ plan, label = "Buy this report", className }
       });
       const data = await res.json();
       if (data.url) {
+        trackBeginCheckout(plan);
         window.location.href = data.url;
       } else {
         setError(data.error || "Something went wrong. Please try again.");

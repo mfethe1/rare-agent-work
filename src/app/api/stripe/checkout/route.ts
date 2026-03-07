@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
         mode: "subscription",
         line_items: [lineItem],
         metadata: { plan: planKey, tier: plan.tier ?? "starter" },
-        success_url: `${baseUrl}/account?subscribed=true`,
+        success_url: `${baseUrl}/account?subscribed=true&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${baseUrl}/`,
       });
       return NextResponse.json({ url: session.url });
@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: [lineItem],
-      success_url: `${baseUrl}/reports/${plan.slug}?purchased=true`,
+      success_url: `${baseUrl}/reports/${plan.slug}?purchased=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/`,
     });
 

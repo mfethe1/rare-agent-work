@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import ConversionTracker from '@/components/ConversionTracker';
 
 const TIER_LABELS: Record<string, { label: string; color: string }> = {
   free: { label: 'Free', color: 'text-gray-400' },
@@ -44,6 +45,7 @@ export default async function AccountPage() {
       </nav>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <ConversionTracker kind="subscription" plan={tier} value={tier === 'pro' ? 99 : 29} />
         <h1 className="text-3xl font-bold text-white mb-8">Your Account</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

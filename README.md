@@ -1,33 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rare Agent Work
 
-## Getting Started
+Next.js app for rareagent.work.
 
-First, run the development server:
+## Local setup
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tracking + conversion setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Set these env vars in `.env.local` and production:
 
-## Learn More
+- `NEXT_PUBLIC_GA4_MEASUREMENT_ID` (required)
+- `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL_SUBSCRIBE` (optional)
+- `NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL_REPORT` (optional)
 
-To learn more about Next.js, take a look at the following resources:
+Checkout conversion flow:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Click CTA → `click_checkout` + `begin_checkout`
+- Stripe success redirect includes `session_id`
+- Success pages fire `purchase` event (GA4)
+- If Ads conversion labels are set, success pages also fire `conversion`
 
 ## Stripe Webhooks
 

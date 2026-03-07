@@ -4,6 +4,7 @@ import ReportChat from '@/components/ReportChat';
 import PrintButton from '@/components/PrintButton';
 import BuyButton from '@/components/BuyButton';
 import Link from 'next/link';
+import ConversionTracker from '@/components/ConversionTracker';
 
 export function generateStaticParams() {
   return getAllReports().map((r) => ({ slug: r.slug }));
@@ -31,6 +32,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
   if (!report) notFound();
 
   const c = colorMap[report.color] ?? colorMap.blue;
+  const reportValue = Number(report.price.replace(/[^0-9.]/g, "")) || 0;
 
   return (
     <div className="min-h-screen bg-black text-gray-100 font-sans print:bg-white print:text-black">
@@ -49,6 +51,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
       </nav>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 lg:py-16">
+        <ConversionTracker kind="report" plan={report.planKey} value={reportValue} />
 
         {/* Hero */}
         <div className="mb-12">

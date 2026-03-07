@@ -16,7 +16,22 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Rare Agent Work",
   description:
-    "Fractional autonomous squads with persistent memory, safety gating, and legacy-system integration.",
+    "Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards. Operator playbooks with real implementation detail.",
+  metadataBase: new URL("https://rareagent.work"),
+  openGraph: {
+    title: "Rare Agent Work",
+    description:
+      "Operator-grade AI research you can actually use. Reports on agent setup, multi-agent orchestration, and production evaluation.",
+    url: "https://rareagent.work",
+    siteName: "Rare Agent Work",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rare Agent Work",
+    description:
+      "Operator-grade AI research you can actually use. Reports on agent setup, multi-agent orchestration, and production evaluation.",
+  },
 };
 
 export default function RootLayout({
@@ -30,6 +45,19 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        {/* Google Analytics 4 */}
+        {process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-gtag" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}');`}
+            </Script>
+          </>
+        )}
+        {/* Google Ads conversion tracking */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=AW-17716841198"
           strategy="afterInteractive"

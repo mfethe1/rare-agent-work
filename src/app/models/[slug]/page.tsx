@@ -179,6 +179,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       'agentic AI model',
       'LLM tool use benchmark',
     ],
+    openGraph: {
+      title: `${model.name} for AI Agents — Rare Agent Work`,
+      description: `${model.name} by ${model.provider}: tool use ${model.tool_use_score}/10, coding ${model.coding_score}/10. Best for ${model.best_for?.join(', ')}.`,
+      url: `https://rareagent.work/models/${slug}`,
+      siteName: 'Rare Agent Work',
+      type: 'article',
+    },
+    alternates: {
+      canonical: `https://rareagent.work/models/${slug}`,
+    },
   };
 }
 

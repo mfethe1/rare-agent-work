@@ -48,15 +48,15 @@ export default function RootLayout({
       >
         {children}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17716841198"
+          src="https://www.googletagmanager.com/gtag/js?id=G-7SLM9KDWZK"
           strategy="afterInteractive"
         />
-        <Script id="google-ads-gtag" strategy="afterInteractive">
+        <Script id="google-gtag" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'AW-17716841198');
-${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID ? `gtag('config', '${process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID}');` : ''}`}
+gtag('config', 'G-7SLM9KDWZK');
+gtag('config', 'AW-17716841198');`}
         </Script>
       </body>
     </html>

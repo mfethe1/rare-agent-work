@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest } from 'next/server';
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
+import { checkCostGate } from '@/lib/cost-gate';
 
 export const runtime = 'nodejs';
 
@@ -86,9 +87,6 @@ Reports you can recommend:
 Be practical and specific. Help users move fast without breaking things.`,
 };
 
-// Free tier: 5 questions (no auth needed), tracked by IP
-const FREE_DAILY_LIMIT = 5;
-
 export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
@@ -107,56 +105,39 @@ export async function POST(req: NextRequest) {
   let userEmail = '';
   let tier = 'free';
   let tokensUsed = 0;
-  let tokensBudget = FREE_DAILY_LIMIT * 2000; // ~2k tokens per free question
 
   if (user) {
     userId = user.id;
     userEmail = user.email;
     tier = user.tier;
     tokensUsed = user.tokensUsed;
-    tokensBudget = user.tokensBudget;
+  }
 
-    if (tier === 'free' && tokensUsed >= tokensBudget) {
-      return new Response(
-        JSON.stringify({
-          error: 'Free tier limit reached. Upgrade to Starter ($29/mo) for 50k tokens/mo.',
-          upgrade: true,
-          upgradeUrl: '/#catalog',
-        }),
-        { status: 402, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
+  // Universal cost gate — enforces spend + request limits per tier
+  const gate = await checkCostGate({
+    userId,
+    userEmail,
+    ip,
+    app: 'ai-guide',
+    tier,
+  });
 
-    if (tier !== 'free' && tokensUsed >= tokensBudget) {
-      return new Response(
-        JSON.stringify({
-          error: `Monthly token limit reached (${tokensBudget.toLocaleString()} tokens). Upgrade your plan for more.`,
-          upgrade: true,
-          upgradeUrl: '/#catalog',
-        }),
-        { status: 402, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-  } else if (db) {
-    // Anonymous: check IP-based daily usage
-    const today = new Date().toISOString().split('T')[0];
-    const { count } = await db
-      .from('token_usage')
-      .select('*', { count: 'exact', head: true })
-      .eq('ip_address', ip)
-      .eq('app', 'ai-guide')
-      .gte('created_at', `${today}T00:00:00Z`);
-
-    if ((count ?? 0) >= FREE_DAILY_LIMIT) {
-      return new Response(
-        JSON.stringify({
-          error: `You've used your ${FREE_DAILY_LIMIT} free questions today. Sign up for unlimited access.`,
-          upgrade: true,
-          upgradeUrl: '/auth/login',
-        }),
-        { status: 402, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
+  if (gate.blocked) {
+    return new Response(
+      JSON.stringify({
+        error: gate.error,
+        reason: gate.reason,
+        upgrade: true,
+        upgradeUrl: tier === 'free' ? '/auth/login' : '/#catalog',
+        usage: {
+          weeklySpend: `$${gate.weeklySpend.toFixed(4)}`,
+          weeklyLimit: `$${gate.limits.weeklyLimit.toFixed(2)}`,
+          dailyRequests: gate.dailyRequests,
+          weeklyRequests: gate.weeklyRequests,
+        },
+      }),
+      { status: 402, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 
   let body: { messages: Anthropic.MessageParam[]; reportSlug?: string };

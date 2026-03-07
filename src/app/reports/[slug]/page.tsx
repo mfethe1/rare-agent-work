@@ -15,9 +15,32 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const report = getReport(slug);
   if (!report) return {};
+  const url = `https://rareagent.work/reports/${slug}`;
   return {
-    title: `${report.title} | Rare Agent Work`,
-    description: report.subtitle,
+    title: report.title,
+    description: `${report.subtitle}. ${report.valueprop}`,
+    keywords: [
+      report.title,
+      "AI agent report",
+      "operator playbook",
+      ...report.deliverables.map((d) => d.title),
+    ],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title: `${report.title} — ${report.price}`,
+      description: `${report.subtitle}. ${report.valueprop}`,
+      url,
+      type: "article",
+      images: [{ url: "/og-image.png", width: 1200, height: 630, alt: report.title }],
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: report.title,
+      description: report.subtitle,
+      images: ["/og-image.png"],
+    },
   };
 }
 

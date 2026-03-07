@@ -2,9 +2,26 @@ import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = {
-  title: 'Weekly AI Agent Digest | Rare Agent Work',
-  description: 'A free, condensed summary of the week\'s most important AI agent developments. Updated weekly.',
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Weekly AI Agent Digest',
+  description: 'A free, condensed summary of the week\'s most important AI agent developments. Curated and ranked — updated every week.',
+  keywords: [
+    'AI agent weekly digest',
+    'AI automation roundup',
+    'agent framework news weekly',
+    'LLM agent developments',
+  ],
+  alternates: {
+    canonical: 'https://rareagent.work/digest',
+  },
+  openGraph: {
+    title: 'Weekly AI Agent Digest | Rare Agent Work',
+    description: 'The week\'s most important AI agent developments — free, condensed, updated weekly.',
+    url: 'https://rareagent.work/digest',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Weekly AI Agent Digest' }],
+  },
 };
 
 interface Article {

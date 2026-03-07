@@ -5,12 +5,24 @@ import { getAllNews, getNewsByTag, getAllTags, type NewsItem } from '@/lib/news-
 import NewsClient from '@/components/NewsClient';
 
 export const metadata: Metadata = {
-  title: 'AI Agent News Feed | Rare Agent Work',
+  title: 'AI Agent News Feed',
   description:
-    'Daily-updated news feed for AI agent builders. Top articles on frameworks, tool-use, research, and open-source agent tooling.',
+    'Daily-updated news feed for AI agent builders. Top articles on frameworks, tool-use, research, and open-source agent tooling — curated and ranked.',
+  keywords: [
+    'AI agent news',
+    'LLM framework updates',
+    'agent tooling news',
+    'AI automation news',
+    'multi-agent systems news',
+  ],
+  alternates: {
+    canonical: 'https://rareagent.work/news',
+  },
   openGraph: {
-    title: 'AI Agent News | Rare Agent Work',
-    description: 'Best links for AI agent developers — curated daily.',
+    title: 'AI Agent News Feed | Rare Agent Work',
+    description: 'Daily-curated news for AI agent builders — frameworks, tool-use, research, and open-source tooling.',
+    url: 'https://rareagent.work/news',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'AI Agent News Feed' }],
   },
 };
 

@@ -15,26 +15,47 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Rare Agent Work — Operator-Grade AI Research",
+    default: "Rare Agent Work — Operator-Grade AI Agent Research & Playbooks",
     template: "%s | Rare Agent Work",
   },
   description:
-    "Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards. Operator playbooks with real implementation detail.",
+    "Practical, deeply researched reports on AI agent setup, multi-agent orchestration, and production deployment standards. Operator playbooks with real implementation detail — not tutorials.",
+  keywords: [
+    "AI agent setup",
+    "multi-agent orchestration",
+    "AI automation playbook",
+    "agent architecture",
+    "LLM agent deployment",
+    "AI agent framework comparison",
+    "operator-grade AI research",
+    "production AI agents",
+    "low-code AI automation",
+    "AI agent evaluation",
+  ],
   metadataBase: new URL("https://rareagent.work"),
   openGraph: {
-    title: "Rare Agent Work — Operator-Grade AI Research",
+    title: "Rare Agent Work — Operator-Grade AI Agent Research",
     description:
-      "Practical reports on low-code automation, multi-agent systems, and empirical deployment standards. Not tutorials — operator playbooks.",
+      "Production-tested playbooks for AI agent setup, multi-agent orchestration, and deployment evaluation. Not tutorials — operator playbooks built from real implementations.",
     url: "https://rareagent.work",
     siteName: "Rare Agent Work",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Rare Agent Work — Operator-Grade AI Research",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rare Agent Work — Operator-Grade AI Research",
+    title: "Rare Agent Work — Operator-Grade AI Agent Research",
     description:
-      "Operator playbooks for AI automation, multi-agent orchestration, and production deployment.",
+      "Production-tested playbooks for AI agent setup, multi-agent orchestration, and deployment evaluation.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -49,6 +70,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://rareagent.work",
+  },
+  verification: {
+    google: "google-site-verification-placeholder",
   },
 };
 

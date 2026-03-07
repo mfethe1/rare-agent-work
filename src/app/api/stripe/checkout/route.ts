@@ -3,6 +3,19 @@ import Stripe from "stripe";
 
 export const runtime = "nodejs";
 
+// Map plan keys to env-var price IDs (created in Stripe dashboard/API)
+function getPriceId(planKey: string): string | null {
+  const map: Record<string, string | undefined> = {
+    report_60: process.env.STRIPE_PRICE_ID_REPORT_60,
+    report_multi: process.env.STRIPE_PRICE_ID_REPORT_MULTI,
+    report_empirical: process.env.STRIPE_PRICE_ID_REPORT_EMPIRICAL,
+    starter: process.env.STRIPE_PRICE_ID_STARTER,
+    pro: process.env.STRIPE_PRICE_ID_PRO,
+    subscription: process.env.STRIPE_PRICE_ID_STARTER, // legacy alias
+  };
+  return map[planKey] || null;
+}
+
 const PLANS = {
   // One-time report purchases
   report_60: {
@@ -86,23 +99,27 @@ export async function POST(req: NextRequest) {
     (req.headers.get("origin") ?? "https://rareagent.work");
 
   try {
+    const priceId = getPriceId(planKey);
+
     if (plan.mode === "subscription") {
-      const session = await stripe.checkout.sessions.create({
-        mode: "subscription",
-        line_items: [
-          {
+      const lineItem = priceId
+        ? { price: priceId, quantity: 1 }
+        : {
             price_data: {
-              currency: "usd",
+              currency: "usd" as const,
               product_data: {
                 name: plan.name,
                 metadata: { tier: plan.tier ?? "starter" },
               },
               unit_amount: plan.amount,
-              recurring: { interval: "month" },
+              recurring: { interval: "month" as const },
             },
             quantity: 1,
-          },
-        ],
+          };
+
+      const session = await stripe.checkout.sessions.create({
+        mode: "subscription",
+        line_items: [lineItem],
         metadata: { plan: planKey, tier: plan.tier ?? "starter" },
         success_url: `${baseUrl}/account?subscribed=true`,
         cancel_url: `${baseUrl}/`,
@@ -111,18 +128,20 @@ export async function POST(req: NextRequest) {
     }
 
     // One-time purchase
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
-      line_items: [
-        {
+    const lineItem = priceId
+      ? { price: priceId, quantity: 1 }
+      : {
           price_data: {
-            currency: "usd",
+            currency: "usd" as const,
             product_data: { name: plan.name },
             unit_amount: plan.amount,
           },
           quantity: 1,
-        },
-      ],
+        };
+
+    const session = await stripe.checkout.sessions.create({
+      mode: "payment",
+      line_items: [lineItem],
       success_url: `${baseUrl}/reports/${plan.slug}?purchased=true`,
       cancel_url: `${baseUrl}/`,
     });

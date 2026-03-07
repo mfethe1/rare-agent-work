@@ -45,7 +45,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        {/* Google tag (gtag.js) — GA4 + Google Ads */}
+        {/* Google Analytics 4 + Google Ads — single gtag.js load */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-7SLM9KDWZK"
           strategy="afterInteractive"

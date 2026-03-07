@@ -4,6 +4,7 @@ import ReportChat from '@/components/ReportChat';
 import PrintButton from '@/components/PrintButton';
 import BuyButton from '@/components/BuyButton';
 import Link from 'next/link';
+import { ReportJsonLd } from '@/components/JsonLd';
 
 export function generateStaticParams() {
   return getAllReports().map((r) => ({ slug: r.slug }));
@@ -34,6 +35,12 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
 
   return (
     <div className="min-h-screen bg-black text-gray-100 font-sans print:bg-white print:text-black">
+      <ReportJsonLd
+        title={report.title}
+        description={report.subtitle}
+        slug={report.slug}
+        price={report.price}
+      />
 
       {/* Nav */}
       <nav className="border-b border-gray-800 no-print print:hidden">

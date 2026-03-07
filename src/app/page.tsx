@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getAllReports } from '@/lib/reports';
 import ReportChat from '@/components/ReportChat';
 import BuyButton from '@/components/BuyButton';
+import { WebsiteJsonLd } from '@/components/JsonLd';
 
 const colorMap: Record<string, { border: string; text: string; btn: string }> = {
   blue:   { border: 'border-blue-500/20',   text: 'text-blue-400',   btn: 'bg-blue-600 hover:bg-blue-700' },
@@ -14,6 +15,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black text-gray-100 selection:bg-blue-500 selection:text-white font-sans">
+      <WebsiteJsonLd />
 
       {/* Nav */}
       <nav className="border-b border-gray-800 sticky top-0 z-50 bg-black/90 backdrop-blur-sm">

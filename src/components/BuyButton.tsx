@@ -15,6 +15,20 @@ export default function BuyButton({ plan, label = "Buy this report", className }
   async function handleClick() {
     setLoading(true);
     setError(null);
+
+    // Fire GA4 + Google Ads conversion event
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const w = window as any;
+      if (typeof w.gtag === "function") {
+        w.gtag("event", "begin_checkout", {
+          event_category: "ecommerce",
+          event_label: plan,
+          value: plan,
+        });
+      }
+    } catch { /* analytics should never break checkout */ }
+
     try {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",

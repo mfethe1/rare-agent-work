@@ -20,14 +20,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <span className="text-xl font-bold tracking-tighter text-white">Rare Agent Work</span>
-            <div className="flex items-center gap-3">
-              <Link href="/news" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">News</Link>
-              <Link href="/models" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Models</Link>
-              <Link href="/digest" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Digest</Link>
-              <a href="#catalog" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Reports</a>
-              <a href="#guide" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">AI Guide</a>
-              <Link href="/auth/login" className="text-gray-400 hover:text-white text-sm transition-colors hidden sm:block">Sign in</Link>
-              <a href="#catalog" className="bg-white text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-200 transition-colors">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Link href="/news" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">News</Link>
+              <Link href="/models" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">Models</Link>
+              <Link href="/digest" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">Digest</Link>
+              <a href="#catalog" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors hidden sm:block">Reports</a>
+              <Link href="/auth/login" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors hidden sm:block">Sign in</Link>
+              <a href="#catalog" className="bg-white text-black px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-semibold hover:bg-gray-200 transition-colors ml-1">
                 Get Access
               </a>
             </div>
@@ -248,14 +247,27 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-gray-800 py-10 text-center text-gray-500 text-sm">
-        <p className="mb-2">© {new Date().getFullYear()} Rare Agent Work. Operator-grade AI research.</p>
-        <p>
-          <a href="mailto:hello@rareagent.work" className="hover:text-gray-300 transition-colors">hello@rareagent.work</a>
-          {' · '}
+        <p className="mb-3">© {new Date().getFullYear()} Rare Agent Work. Operator-grade AI research.</p>
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-3">
+          <Link href="/news" className="hover:text-gray-300 transition-colors">News Feed</Link>
+          <span className="text-gray-700">·</span>
+          <Link href="/models" className="hover:text-gray-300 transition-colors">Model Leaderboard</Link>
+          <span className="text-gray-700">·</span>
+          <Link href="/digest" className="hover:text-gray-300 transition-colors">Weekly Digest</Link>
+          <span className="text-gray-700">·</span>
+          <Link href="/reports/agent-setup-60" className="hover:text-gray-300 transition-colors">Setup Guide</Link>
+          <span className="text-gray-700">·</span>
+          <Link href="/reports/single-to-multi-agent" className="hover:text-gray-300 transition-colors">Multi-Agent</Link>
+          <span className="text-gray-700">·</span>
+          <Link href="/reports/empirical-agent-architecture" className="hover:text-gray-300 transition-colors">Architecture Research</Link>
+        </div>
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
           <Link href="/research/history" className="hover:text-gray-300 transition-colors">Report Archive</Link>
-          {' · '}
+          <span className="text-gray-700">·</span>
           <Link href="/auth/login" className="hover:text-gray-300 transition-colors">Sign In</Link>
-        </p>
+          <span className="text-gray-700">·</span>
+          <a href="mailto:hello@rareagent.work" className="hover:text-gray-300 transition-colors">hello@rareagent.work</a>
+        </div>
       </footer>
     </div>
   );

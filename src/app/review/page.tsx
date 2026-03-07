@@ -1,6 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { createClient } from '@/lib/supabase/client';
+
+const OWNER_EMAIL = 'michael.fethe@protelynx.ai';
 
 interface Draft {
   id: string;
@@ -22,6 +25,21 @@ export default function ReviewPage() {
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(true);
   const [acting, setActing] = useState(false);
+  const [authorized, setAuthorized] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  // Check if the current user is Michael (owner)
+  useEffect(() => {
+    async function checkAuth() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user?.email === OWNER_EMAIL) {
+        setAuthorized(true);
+      }
+      setAuthChecked(true);
+    }
+    checkAuth();
+  }, []);
 
   const loadDrafts = useCallback(async () => {
     const res = await fetch('/api/drafts');
@@ -69,7 +87,22 @@ export default function ReviewPage() {
       </nav>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {loading ? (
+        {!authChecked ? (
+          <p className="text-gray-500">Checking authorization...</p>
+        ) : !authorized ? (
+          <div className="bg-gray-900 border border-red-500/30 rounded-2xl p-8 text-center max-w-md mx-auto mt-16">
+            <h2 className="text-xl font-bold text-white mb-3">Owner Access Only</h2>
+            <p className="text-gray-400 mb-4">
+              This dashboard is restricted to the site owner. Please sign in with the owner account.
+            </p>
+            <a
+              href="/auth/login?redirect=/review"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+            >
+              Sign In
+            </a>
+          </div>
+        ) : loading ? (
           <p className="text-gray-500">Loading drafts...</p>
         ) : selected ? (
           /* Draft detail view */

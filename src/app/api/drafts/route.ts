@@ -55,8 +55,35 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(data);
 }
 
-// PATCH: approve or reject a draft
+// PATCH: approve or reject a draft (owner only)
 export async function PATCH(request: NextRequest) {
+  // Verify the caller is the site owner via Supabase auth
+  const { createServerClient } = await import('@supabase/ssr');
+  const cookieHeader = request.headers.get('cookie') || '';
+  const cookies: Record<string, string> = {};
+  cookieHeader.split(';').forEach((c) => {
+    const [k, ...v] = c.trim().split('=');
+    if (k) cookies[k] = v.join('=');
+  });
+
+  const supabaseAuth = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return Object.entries(cookies).map(([name, value]) => ({ name, value }));
+        },
+        setAll() { /* noop for reads */ },
+      },
+    }
+  );
+
+  const { data: { user } } = await supabaseAuth.auth.getUser();
+  if (!user || user.email !== 'michael.fethe@protelynx.ai') {
+    return NextResponse.json({ error: 'Owner access only' }, { status: 403 });
+  }
+
   const body = await request.json();
   const { id, status, reviewer_notes } = body;
 

@@ -1,20 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createServiceClient } from '@supabase/supabase-js';
 
-export async function POST(request: NextRequest) {
-  // Auth check: require service role key in header
+const MAX_AGE_DAYS = 14;
+
+function isServiceAuth(request: NextRequest): boolean {
   const authHeader = request.headers.get('authorization') || request.headers.get('x-service-key');
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!authHeader || !serviceKey) return false;
+  return authHeader === `Bearer ${serviceKey}` || authHeader === serviceKey;
+}
 
-  if (!authHeader || authHeader !== `Bearer ${serviceKey}`) {
+export async function POST(request: NextRequest) {
+  if (!isServiceAuth(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   const body = await request.json();
-  const { url, title, summary, source, tags } = body;
+  const { url, title, summary, source, tags, published_at } = body;
 
   if (!url || !title) {
     return NextResponse.json({ error: 'url and title are required' }, { status: 400 });
+  }
+
+  // HARD REJECT: if published_at is provided and older than 14 days, reject
+  if (published_at) {
+    const pubDate = new Date(published_at);
+    const cutoff = new Date(Date.now() - MAX_AGE_DAYS * 24 * 60 * 60 * 1000);
+    if (pubDate < cutoff) {
+      return NextResponse.json(
+        { error: `Article too old (published ${published_at}). Only content from the last ${MAX_AGE_DAYS} days is accepted.` },
+        { status: 422 }
+      );
+    }
+  }
+
+  // Also reject if URL contains obvious old date patterns (2024, 2025-01, etc.)
+  const oldDatePattern = /\/(2024|2025-0[1-9]|2025-1[0-2])\//;
+  if (oldDatePattern.test(url)) {
+    return NextResponse.json(
+      { error: 'Article URL contains a date pattern older than the cutoff. Only recent content accepted.' },
+      { status: 422 }
+    );
   }
 
   const supabase = createServiceClient(
@@ -48,5 +74,5 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
-  return NextResponse.json({ status: 'articles seed API active' });
+  return NextResponse.json({ status: 'articles API active', maxAgeDays: MAX_AGE_DAYS });
 }

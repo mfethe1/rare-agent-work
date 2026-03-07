@@ -1,133 +1,176 @@
 /**
- * Research Pipeline — 5-stage agent workflow for report generation
- * 
- * Stage 1: RESEARCHER — Deep source collection with date verification
- * Stage 2: IMPLEMENTATION EXPERT — Filters for practical applicability, adds real examples
- * Stage 3: USE CASE EXPERT — Maps to business scenarios, ROI analysis
- * Stage 4: EDITOR IN CHIEF — Structures, removes fluff, ensures narrative
- * Stage 5: VALUE CRITIC — Brutally assesses value vs price point
- * Stage 6: CITATION VERIFIER — Visits every URL, confirms every claim
- * 
- * Output: Draft submitted to /api/drafts for Michael's review
+ * Multi-source research pipeline for synthesizing genuinely valuable AI intelligence.
+ *
+ * Architecture:
+ * 1. Source Collection: Pull from multiple sources (arXiv, HN, Reddit, Twitter, YouTube, blogs)
+ * 2. Deduplication: Suppress echo-chamber content (same story from 10 blogs = 1 insight)
+ * 3. Signal Extraction: Pull out the "So What?" — operator impact, not just news
+ * 4. Synthesis: Cross-reference signals across sources into actionable intelligence
+ * 5. Forecasting: H1 (2-week) and H2 (2-month) predictions with confidence scores
+ *
+ * The key principle: synthesize knowledge people can't get from a Google search.
+ * We combine signals from multiple sources into insights that require judgment.
  */
 
-export interface PipelineStage {
+export interface ResearchSource {
+  id: string;
   name: string;
-  role: string;
-  systemPrompt: string;
-  outputFormat: string;
+  type: 'academic' | 'community' | 'social' | 'video' | 'blog' | 'official';
+  credibilityScore: number; // 0-1
+  fetchFn: string;          // function name to call
 }
 
-export const PIPELINE_STAGES: PipelineStage[] = [
-  {
-    name: 'researcher',
-    role: 'Agentic AI Implementation Researcher',
-    systemPrompt: `You are a senior AI research analyst specializing in agentic AI systems.
-Your job: Find the most important, VERIFIED developments from the last 14 days.
+export interface RawSignal {
+  sourceId: string;
+  title: string;
+  url: string;
+  content: string;
+  publishedAt: string;
+  author?: string;
+  metadata?: Record<string, unknown>;
+}
 
-RULES:
-- Every source MUST have a real URL that you have verified loads via web_fetch
-- Every source MUST have a confirmed publication date within the last 14 days
-- Prefer primary sources (arxiv papers, official blog posts, GitHub releases) over news aggregators
-- Reject marketing fluff, press releases without substance, and listicles
-- For each source, note: URL, title, publication date, key finding, relevance to practitioners
-- Minimum 10 sources, maximum 20
-- Include a mix: research papers, framework releases, production case studies, benchmark results
+export interface SynthesizedInsight {
+  id: string;
+  title: string;
+  summary: string;                    // 2-3 sentence executive summary
+  soWhat: string;                     // Operator impact statement
+  sources: string[];                  // URLs backing this insight
+  sourceCount: number;                // How many independent sources corroborate
+  credibilityScore: number;           // Weighted average of source credibility
+  operatorUrgency: 'critical' | 'high' | 'medium' | 'low';
+  budgetImplication: string;          // Cost/savings estimate if applicable
+  implementationReadiness: 'ready' | 'beta' | 'experimental' | 'research';
+  tags: string[];
+  forecast?: {
+    h1: { prediction: string; confidence: number; horizon: '2-week' };
+    h2: { prediction: string; confidence: number; horizon: '2-month' };
+  };
+}
 
-OUTPUT: A structured research brief with verified sources only.`,
-    outputFormat: 'research_brief',
-  },
-  {
-    name: 'implementation_expert',
-    role: 'Expert Implementation & Use Case Specialist',
-    systemPrompt: `You are a senior engineering leader who has deployed AI agents in production at scale.
-You receive a research brief from the Researcher. Your job: transform raw research into actionable implementation guidance.
+export interface ReportSection {
+  sectionNumber: number;
+  title: string;
+  contentType: 'executive-brief' | 'signal-map' | 'deep-dive' | 'case-study' |
+               'comparison' | 'forecast' | 'implementation' | 'risk' | 'appendix';
+  wordCountTarget: number;
+  insights: SynthesizedInsight[];
+  prose: string;
+}
 
-RULES:
-- For every finding, answer: "How would a team of 3-5 engineers actually implement this?"
-- Include real code patterns, architecture decisions, and failure modes
-- Add comparison matrices: when to use Framework A vs B vs C
-- Include cost analysis: what does this actually cost to run in production?
-- Add "gotchas" — things that work in demos but break in production
-- Remove anything that's purely theoretical with no practical application
-- If a finding lacks implementation detail, note it as "needs deeper research" rather than padding
+export interface DeepReport {
+  id: string;
+  title: string;
+  subtitle: string;
+  generatedAt: string;
+  version: string;
+  pageCount: number;
+  sections: ReportSection[];
+  methodology: string;
+  sourceManifest: {
+    totalSources: number;
+    uniqueDomains: number;
+    academicSources: number;
+    communitySources: number;
+    dateRange: { from: string; to: string };
+  };
+  forecasts: {
+    h1: Array<{ prediction: string; confidence: number; category: string }>;
+    h2: Array<{ prediction: string; confidence: number; category: string }>;
+  };
+}
 
-OUTPUT: Implementation-focused content with code examples and decision frameworks.`,
-    outputFormat: 'implementation_draft',
-  },
-  {
-    name: 'editor_in_chief',
-    role: 'Agentic AI Editor in Chief',
-    systemPrompt: `You are the editor in chief of a premium technical publication.
-You receive implementation-focused content. Your job: make it publishable.
+// ──────────────────────────────────────────────
+// Source registry
+// ──────────────────────────────────────────────
 
-RULES:
-- Structure with clear hierarchy: Executive Summary → Key Findings → Deep Dives → Action Items
-- Remove ALL filler words, hedging, and corporate speak
-- Every paragraph must deliver value. If it doesn't, cut it.
-- Ensure consistent terminology throughout
-- Add a "TL;DR for executives" section (3 bullets, <50 words each)
-- Add a "What to do Monday morning" section with concrete next steps
-- Ensure the report flows logically — a reader should be able to skim headers and get 80% of the value
-- Format tables, code blocks, and comparisons for maximum readability
-
-OUTPUT: A polished, structured report draft.`,
-    outputFormat: 'edited_draft',
-  },
-  {
-    name: 'value_critic',
-    role: 'Value vs Cost Critic (Brutal)',
-    systemPrompt: `You are a skeptical CTO who has been burned by overpriced technical reports.
-You receive a polished report draft. Your job: determine if this is worth the asking price.
-
-For a $29 report: "Would I spend 30 minutes reading this instead of Googling?"
-For a $79 report: "Does this save me more than 2 hours of research?"
-For a $299 report: "Does this contain insights I literally cannot find elsewhere?"
-
-RULES:
-- Score each section 1-10 on: Originality, Actionability, Depth, Accuracy
-- Identify "filler sections" — content that adds length but not value. Flag them.
-- Identify "missing sections" — topics a practitioner would expect but aren't covered
-- Compare to freely available resources: "Can I get this from the LangChain docs? From an arxiv paper?"
-- If any section scores below 6, it must be rewritten or cut
-- Overall verdict: PUBLISH / REVISE (with specific feedback) / REJECT (not worth the price)
-- Be BRUTAL. A $299 report that's mediocre destroys our credibility permanently.
-
-OUTPUT: Detailed critique with scores, specific revision requests, and final verdict.`,
-    outputFormat: 'value_critique',
-  },
-  {
-    name: 'citation_verifier',
-    role: 'Citation & Fact Verification Specialist',
-    systemPrompt: `You are a fact-checker with zero tolerance for unverified claims.
-You receive a report draft. Your job: verify every single citation and factual claim.
-
-RULES:
-- For EVERY URL cited: use web_fetch to visit it. Confirm it loads. Confirm the cited content exists on the page.
-- For EVERY statistic: find the primary source. "40% faster" — according to whom? What benchmark? What date?
-- For EVERY claim about a framework/tool: verify the current version, current pricing, current capabilities
-- Flag claims that are:
-  - UNVERIFIABLE: No source provided or source doesn't contain the claim
-  - OUTDATED: Correct when written but the tool/framework has changed since
-  - MISLEADING: Cherry-picked benchmark, unfair comparison, or missing context
-  - FABRICATED: The source URL doesn't exist or the cited content isn't on the page
-- For each flagged item: provide the correction or mark for removal
-- NO claim survives without verification. Zero exceptions.
-
-OUTPUT: Verification report with pass/fail per citation, corrections, and final clean/dirty verdict.`,
-    outputFormat: 'verification_report',
-  },
+export const RESEARCH_SOURCES: ResearchSource[] = [
+  { id: 'arxiv',      name: 'arXiv',              type: 'academic',   credibilityScore: 0.95, fetchFn: 'fetchArxiv' },
+  { id: 'hn',         name: 'Hacker News',         type: 'community',  credibilityScore: 0.75, fetchFn: 'fetchHackerNews' },
+  { id: 'reddit-ml',  name: 'r/MachineLearning',   type: 'community',  credibilityScore: 0.70, fetchFn: 'fetchRedditML' },
+  { id: 'reddit-llm', name: 'r/LocalLLaMA',        type: 'community',  credibilityScore: 0.65, fetchFn: 'fetchRedditLLM' },
+  { id: 'twitter-ai', name: 'AI Twitter/X',         type: 'social',     credibilityScore: 0.60, fetchFn: 'fetchTwitterAI' },
+  { id: 'youtube-ai', name: 'AI YouTube',           type: 'video',      credibilityScore: 0.55, fetchFn: 'fetchYouTubeAI' },
+  { id: 'openai-blog', name: 'OpenAI Blog',         type: 'official',   credibilityScore: 0.90, fetchFn: 'fetchOfficialBlog' },
+  { id: 'anthropic-blog', name: 'Anthropic Blog',   type: 'official',   credibilityScore: 0.90, fetchFn: 'fetchOfficialBlog' },
+  { id: 'google-ai',  name: 'Google AI Blog',       type: 'official',   credibilityScore: 0.90, fetchFn: 'fetchOfficialBlog' },
+  { id: 'tech-blogs', name: 'Tech Blogs (aggregate)', type: 'blog',    credibilityScore: 0.50, fetchFn: 'fetchTechBlogs' },
 ];
 
-export const PIPELINE_DESCRIPTION = `
-Research Pipeline v1.0 — 5-Stage Agent Workflow
+// ──────────────────────────────────────────────
+// Report template: 10-section format
+// ──────────────────────────────────────────────
 
-1. RESEARCHER → Finds and date-verifies 10-20 sources from the last 14 days
-2. IMPLEMENTATION EXPERT → Transforms research into actionable guidance with code
-3. EDITOR IN CHIEF → Structures, cuts fluff, ensures readability
-4. VALUE CRITIC → Brutally assesses whether the report justifies its price point
-5. CITATION VERIFIER → Visits every URL, confirms every claim, rejects fabrications
+export const REPORT_TEMPLATE: Omit<ReportSection, 'insights' | 'prose'>[] = [
+  { sectionNumber: 1,  title: 'Executive Brief',                    contentType: 'executive-brief', wordCountTarget: 1500 },
+  { sectionNumber: 2,  title: 'Signal Map: What Changed This Period', contentType: 'signal-map',    wordCountTarget: 3000 },
+  { sectionNumber: 3,  title: 'Research Frontiers',                  contentType: 'deep-dive',      wordCountTarget: 5000 },
+  { sectionNumber: 4,  title: 'Operator Impact Analysis',           contentType: 'deep-dive',      wordCountTarget: 5000 },
+  { sectionNumber: 5,  title: 'Model & Tool Comparison',            contentType: 'comparison',      wordCountTarget: 4000 },
+  { sectionNumber: 6,  title: 'Case Studies: What Worked / Failed', contentType: 'case-study',      wordCountTarget: 4000 },
+  { sectionNumber: 7,  title: 'Implementation Playbook',            contentType: 'implementation',  wordCountTarget: 4000 },
+  { sectionNumber: 8,  title: 'Risk & Governance Watch',            contentType: 'risk',            wordCountTarget: 3000 },
+  { sectionNumber: 9,  title: 'Forecasts: 2-Week & 2-Month Horizons', contentType: 'forecast',     wordCountTarget: 3000 },
+  { sectionNumber: 10, title: 'Appendix: Sources, Methodology, Data', contentType: 'appendix',     wordCountTarget: 2500 },
+];
 
-Each stage can send the report back to a previous stage with revision notes.
-Only reports that pass ALL 5 stages get submitted as drafts for Michael's review.
-`;
+// Total target: ~35,000 words ≈ 70 pages at 500 words/page
+
+// ──────────────────────────────────────────────
+// Value filters — what makes knowledge worth paying for
+// ──────────────────────────────────────────────
+
+export interface ValueCriteria {
+  /** Is this insight actionable (can an operator do something with it)? */
+  actionable: boolean;
+  /** Does it require synthesis across multiple sources (not just one blog post)? */
+  multiSourceCorroboration: boolean;
+  /** Would a competent operator NOT find this in 10 minutes of Googling? */
+  beyondGoogleable: boolean;
+  /** Does it have a clear time dimension (urgency, window of opportunity)? */
+  timeSensitive: boolean;
+  /** Does it include quantitative data or benchmarks? */
+  hasQuantitativeEvidence: boolean;
+  /** Score 0-1: estimated value to a paying subscriber */
+  valueScore: number;
+}
+
+/**
+ * Score whether an insight meets our value bar.
+ * We reject insights that are freely available commodity knowledge.
+ */
+export function scoreInsightValue(insight: SynthesizedInsight): ValueCriteria {
+  const actionable = insight.operatorUrgency !== 'low' && insight.implementationReadiness !== 'research';
+  const multiSource = insight.sourceCount >= 2;
+  const beyondGoogle = insight.soWhat.length > 50 && insight.sourceCount >= 3;
+  const timeSensitive = insight.operatorUrgency === 'critical' || insight.operatorUrgency === 'high';
+  const hasQuant = /\d+%|\$\d|\d+x|benchmark|performance|latency|throughput/i.test(insight.summary + ' ' + insight.soWhat);
+
+  let score = 0;
+  if (actionable) score += 0.25;
+  if (multiSource) score += 0.20;
+  if (beyondGoogle) score += 0.25;
+  if (timeSensitive) score += 0.15;
+  if (hasQuant) score += 0.15;
+
+  return {
+    actionable,
+    multiSourceCorroboration: multiSource,
+    beyondGoogleable: beyondGoogle,
+    timeSensitive,
+    hasQuantitativeEvidence: hasQuant,
+    valueScore: Math.round(score * 100) / 100,
+  };
+}
+
+/**
+ * Filter insights to only those worth including in a paid report.
+ * Minimum value score: 0.45 (must be at least actionable + one other criterion)
+ */
+export function filterForPaidValue(insights: SynthesizedInsight[]): SynthesizedInsight[] {
+  return insights
+    .map(i => ({ insight: i, value: scoreInsightValue(i) }))
+    .filter(({ value }) => value.valueScore >= 0.45)
+    .sort((a, b) => b.value.valueScore - a.value.valueScore)
+    .map(({ insight }) => insight);
+}

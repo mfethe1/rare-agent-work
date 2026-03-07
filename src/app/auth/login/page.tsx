@@ -9,7 +9,7 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/account';
 
-  const [mode, setMode] = useState<'signin' | 'signup' | 'magic'>('signin');
+  const [mode, setMode] = useState<'signin' | 'signup' | 'magic' | 'reset'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,13 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      if (mode === 'magic') {
+      if (mode === 'reset') {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/auth/login`,
+        });
+        if (error) throw error;
+        setSuccess('Password reset email sent! Check your inbox.');
+      } else if (mode === 'magic') {
         const { error } = await supabase.auth.signInWithOtp({
           email,
           options: { emailRedirectTo: `${window.location.origin}${redirect}` },
@@ -50,7 +56,12 @@ export default function LoginPage() {
         router.refresh();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Authentication failed');
+      const msg = err instanceof Error ? err.message : 'Authentication failed';
+      if (msg.includes('Invalid login credentials')) {
+        setError('Invalid email or password. Try the "Forgot password?" link or use Magic Link to sign in without a password.');
+      } else {
+        setError(msg);
+      }
     } finally {
       setLoading(false);
     }
@@ -69,6 +80,8 @@ export default function LoginPage() {
               ? 'Create your account'
               : mode === 'magic'
               ? 'Sign in with magic link'
+              : mode === 'reset'
+              ? 'Reset your password'
               : 'Sign in to your account'}
           </p>
         </div>
@@ -123,11 +136,22 @@ export default function LoginPage() {
               />
             </div>
 
-            {mode !== 'magic' && (
+            {mode !== 'magic' && mode !== 'reset' && (
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-1.5">
-                  Password
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="block text-sm font-medium text-gray-300">
+                    Password
+                  </label>
+                  {mode === 'signin' && (
+                    <button
+                      type="button"
+                      onClick={() => { setMode('reset'); setError(''); setSuccess(''); }}
+                      className="text-xs text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
                 <input
                   type="password"
                   value={password}
@@ -163,8 +187,20 @@ export default function LoginPage() {
                 ? 'Create Account'
                 : mode === 'magic'
                 ? 'Send Magic Link'
+                : mode === 'reset'
+                ? 'Send Reset Link'
                 : 'Sign In'}
             </button>
+
+            {mode === 'reset' && (
+              <button
+                type="button"
+                onClick={() => { setMode('signin'); setError(''); setSuccess(''); }}
+                className="w-full text-center text-sm text-gray-400 hover:text-white transition-colors mt-2"
+              >
+                ← Back to sign in
+              </button>
+            )}
           </form>
 
           <p className="text-center text-gray-500 text-sm mt-6">

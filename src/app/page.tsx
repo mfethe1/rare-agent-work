@@ -58,13 +58,16 @@ export default function Home() {
             </Link>
 
             <div className="flex items-center gap-2 sm:gap-3">
-              <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News</Link>
-              <Link href="/digest" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Digest</Link>
-              <a href="#catalog" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</a>
-              <a href="#consulting" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Consulting</a>
-              <a href="#pricing" className="ml-1 rounded-full border border-cyan-300/40 bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20 sm:px-4 sm:text-sm">
-                View Pricing
-              </a>
+              <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News Feed</Link>
+              <Link href="/digest" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Weekly Digest</Link>
+              <Link href="/reports" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
+              <Link href="/assessment" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
+              <Link
+                href="/pricing"
+                className="ml-1 rounded-full border border-cyan-300/40 bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20 sm:px-4 sm:text-sm"
+              >
+                View Plans
+              </Link>
             </div>
           </div>
         </div>
@@ -94,9 +97,9 @@ export default function Home() {
               <Link href="/news" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 shadow-[0_16px_50px_rgba(34,211,238,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-cyan-300">
                 Explore live news
               </Link>
-              <a href="#catalog" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10">
+              <Link href="/reports" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10">
                 Browse reports
-              </a>
+              </Link>
             </div>
 
             <div className="mt-10 grid gap-4 sm:grid-cols-3">
@@ -243,7 +246,7 @@ export default function Home() {
                 <li>✓ More AI implementation help</li>
                 <li>✓ Priority access to new research drops</li>
               </ul>
-              <BuyButton plan="pro" label="Get operator access — $49/mo" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300" />
+              <BuyButton plan="pro" label="Get Operator Access — $49/mo" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300" />
             </div>
           </div>
         </div>
@@ -313,10 +316,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="consulting" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
+      <section id="assessment" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Consulting</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Assessment</p>
             <h2 className="mt-3 text-4xl font-bold text-white">Need hands-on help? Bring Michael in directly.</h2>
             <p className="mt-4 text-lg leading-8 text-slate-300">
               Strategy, architecture review, deployment design, implementation rescue, and executive briefings for teams building serious agent systems.
@@ -363,7 +366,7 @@ export default function Home() {
           <span className="text-white/20">·</span>
           <Link href="/digest" className="transition-colors hover:text-white">Weekly Digest</Link>
           <span className="text-white/20">·</span>
-          <a href="#consulting" className="transition-colors hover:text-white">Consulting</a>
+          <Link href="/assessment" className="transition-colors hover:text-white">Assessment</Link>
         </div>
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
           <Link href="/research/history" className="transition-colors hover:text-white">Report Archive</Link>

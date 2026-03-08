@@ -8,7 +8,7 @@ interface SubscribeButtonProps {
 }
 
 export default function SubscribeButton({
-  label = "Start Subscription — $49/mo",
+  label = "Start Operator Access — $49/mo",
   className,
 }: SubscribeButtonProps) {
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ export default function SubscribeButton({
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan: "subscription" }),
+        body: JSON.stringify({ plan: "pro" }),
       });
       const data = await res.json();
       if (data.url) {

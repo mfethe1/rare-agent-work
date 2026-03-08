@@ -30,7 +30,7 @@ export async function GET() {
       name: 'All Access — Starter Plan',
       price: '$29/mo',
       includes: 'All current reports + every future report, content updated every 3 days, AI implementation guide (50k tokens/mo)',
-      url: 'https://rareagent.work/#catalog',
+      url: 'https://rareagent.work/pricing',
     },
     updated_at: new Date().toISOString(),
     source: 'https://rareagent.work',

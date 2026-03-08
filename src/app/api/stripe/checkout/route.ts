@@ -12,7 +12,6 @@ function getPriceId(planKey: string): string | null {
     newsletter: process.env.STRIPE_PRICE_ID_NEWSLETTER,
     starter: process.env.STRIPE_PRICE_ID_STARTER,
     pro: process.env.STRIPE_PRICE_ID_PRO,
-    subscription: process.env.STRIPE_PRICE_ID_STARTER, // legacy alias
   };
   return map[planKey] || null;
 }
@@ -62,14 +61,7 @@ const PLANS = {
     mode: "subscription" as const,
     tier: "pro",
   },
-  // Legacy subscription key
-  subscription: {
-    amount: 4900,
-    name: "Rare Agent Work Monthly Subscription",
-    slug: null,
-    mode: "subscription" as const,
-    tier: "starter",
-  },
+
 } as const;
 
 type PlanKey = keyof typeof PLANS;

@@ -112,10 +112,10 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
           <p className="text-white font-semibold mb-1">Free questions used ({FREE_LIMIT}/{FREE_LIMIT})</p>
           <p className="text-gray-400 mb-3">Subscribe for unlimited access to the AI guide + all reports updated every 3 days.</p>
           <a
-            href="/#catalog"
+            href="/pricing"
             className="inline-block bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
           >
-            Upgrade — $49/mo
+            Upgrade to Operator Access — $49/mo
           </a>
         </div>
       )}

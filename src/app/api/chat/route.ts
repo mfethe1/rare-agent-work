@@ -93,7 +93,7 @@ const systemPrompts: Record<string, string> = {
 
 You have deep expertise in: Zapier, Make (Integromat), n8n, Relevance AI, and low-code agent orchestration. You help users choose the right platform, design safe approval gates, and avoid the common failure modes that kill adoption.
 
-When users ask about going deeper: recommend the "From Single Agent to Multi-Agent" report ($79) or our subscription ($29/mo) for rolling updates.
+When users ask about going deeper: recommend the "From Single Agent to Multi-Agent" report ($79) or our Starter plan ($29/mo) for rolling report updates.
 
 Be practical, opinionated, and concise. Give specific recommendations, not vague advice.`,
 
@@ -358,7 +358,7 @@ export async function POST(req: NextRequest) {
         error: gate.error,
         reason: gate.reason,
         upgrade: true,
-        upgradeUrl: tier === 'free' ? '/auth/login' : '/#catalog',
+        upgradeUrl: tier === 'free' ? '/auth/login' : '/pricing',
         usage: {
           weeklySpend: `$${gate.weeklySpend.toFixed(4)}`,
           weeklyLimit: `$${gate.limits.weeklyLimit.toFixed(2)}`,
@@ -390,7 +390,7 @@ export async function POST(req: NextRequest) {
       JSON.stringify({
         error: `${modelConfig.label} requires a ${modelConfig.tiers[modelConfig.tiers.length - 1]} plan or higher.`,
         upgrade: true,
-        upgradeUrl: '/#catalog',
+        upgradeUrl: '/pricing',
       }),
       { status: 403, headers: { 'Content-Type': 'application/json' } },
     );

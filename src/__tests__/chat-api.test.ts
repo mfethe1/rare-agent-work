@@ -109,7 +109,7 @@ describe('/api/chat auth gating', () => {
     expect(res.status).toBe(403);
     const json = await res.json();
     expect(json.upgrade).toBe(true);
-    expect(json.upgradeUrl).toBe('/#catalog');
+    expect(json.upgradeUrl).toBe('/pricing');
   });
 
   it('returns 402 when token budget is exceeded', async () => {

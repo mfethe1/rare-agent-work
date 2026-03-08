@@ -215,7 +215,7 @@ export default function ArticleFeed({ articles, votedIds, activeTag }: ArticleFe
               ))}
             </div>
             <a
-              href="/reports/agent-setup-60-minutes"
+              href="/reports/agent-setup-60"
               className="block text-center bg-orange-600 hover:bg-orange-700 text-white text-sm font-semibold py-2 px-4 rounded-lg transition-colors"
             >
               Read preview →

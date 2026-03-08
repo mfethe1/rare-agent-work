@@ -70,7 +70,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: "https://rareagent.work" },
-          { name: "Reports", url: "https://rareagent.work/#catalog" },
+          { name: "Reports", url: "https://rareagent.work/reports" },
           { name: report.title, url: `https://rareagent.work/reports/${report.slug}` },
         ]}
       />
@@ -81,7 +81,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           <Link href="/" className="text-white font-bold tracking-tighter">← Rare Agent Work</Link>
           <div className="flex items-center gap-3">
             <PrintButton />
-            <a href="/#catalog" className="bg-white text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-200 transition-colors">
+            <a href="/reports" className="bg-white text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-200 transition-colors">
               All Reports
             </a>
           </div>
@@ -156,7 +156,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           </div>
           <div className={`mt-8 border ${c.border} rounded-xl p-6 bg-gray-900/30 text-center`}>
             <p className="text-gray-300 mb-3">This is ~15% of the full report content.</p>
-            <a href="/#catalog" className={`inline-block ${c.btn} text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors`}>
+            <a href="/reports" className={`inline-block ${c.btn} text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors`}>
               Get the Full Report — {report.price}
             </a>
           </div>
@@ -192,11 +192,11 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                 </Link>
               );
             })}
-            <a href="/#catalog"
+            <a href="/reports"
               className="border border-gray-800 hover:border-blue-500/50 rounded-xl p-5 transition-colors group flex flex-col justify-center items-center text-center">
               <p className="text-2xl mb-2">∞</p>
-              <p className="font-semibold text-white text-sm mb-1">All Reports</p>
-              <p className="text-gray-500 text-xs">$49/mo — subscribe for everything + updates</p>
+              <p className="font-semibold text-white text-sm mb-1">Operator Access</p>
+              <p className="text-gray-500 text-xs">$49/mo — full report catalog + rolling updates</p>
             </a>
           </div>
         </section>

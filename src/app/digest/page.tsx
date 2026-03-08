@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -82,10 +83,12 @@ export default async function DigestPage() {
     <div className="min-h-screen bg-black text-gray-100">
       <nav className="border-b border-gray-800 bg-black/90 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-          <a href="/" className="text-xl font-bold tracking-tighter text-white">Rare Agent Work</a>
+          <Link href="/" className="text-xl font-bold tracking-tighter text-white">Rare Agent Work</Link>
           <div className="flex items-center gap-6 text-sm">
-            <a href="/news" className="text-gray-400 hover:text-white transition-colors">News</a>
-            <a href="/digest" className="text-white font-semibold">Digest</a>
+            <Link href="/news" className="text-gray-300 hover:text-white transition-colors">News Feed</Link>
+            <Link href="/digest" className="text-white font-semibold">Weekly Digest</Link>
+            <Link href="/reports" className="text-gray-300 hover:text-white transition-colors">Reports</Link>
+            <Link href="/assessment" className="text-gray-300 hover:text-white transition-colors">Assessment</Link>
           </div>
         </div>
       </nav>
@@ -209,7 +212,7 @@ export default async function DigestPage() {
                 Our paid reports go beyond the headlines — implementation playbooks, architecture decisions, and operator-grade detail.
               </p>
               <a
-                href="/#catalog"
+                href="/reports"
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
               >
                 View Reports →

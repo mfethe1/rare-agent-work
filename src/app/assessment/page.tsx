@@ -51,11 +51,11 @@ export default function AssessmentPage() {
             <Link href="/" className="text-lg font-bold tracking-tight text-orange-500">Rare Agent Work</Link>
             <div className="hidden items-center gap-4 sm:flex">
               <Link href="/start-here" className="text-sm text-gray-400 hover:text-white">Start Here</Link>
-              <Link href="/news" className="text-sm text-gray-400 hover:text-white">News</Link>
+              <Link href="/news" className="text-sm text-gray-400 hover:text-white">News Feed</Link>
               <Link href="/assessment" className="text-sm font-medium text-white">Assessment</Link>
             </div>
           </div>
-          <Link href="/#catalog" className="rounded-md border border-gray-700 px-3 py-2 text-xs font-semibold text-white hover:border-gray-500">
+          <Link href="/reports" className="rounded-md border border-gray-700 px-3 py-2 text-xs font-semibold text-white hover:border-gray-500">
             Browse reports
           </Link>
         </div>

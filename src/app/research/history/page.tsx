@@ -29,7 +29,7 @@ export default function ReportHistoryPage() {
       <nav className="border-b border-gray-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
           <Link href="/" className="text-white font-bold tracking-tighter">← Rare Agent Work</Link>
-          <a href="/#catalog" className="bg-white text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-200 transition-colors">
+          <a href="/reports" className="bg-white text-black px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-200 transition-colors">
             Get Access
           </a>
         </div>
@@ -77,8 +77,8 @@ export default function ReportHistoryPage() {
         <div className="mt-12 border border-blue-500/30 bg-blue-950/20 rounded-xl p-6 text-center">
           <h3 className="text-white font-bold mb-2">Get Notified on Every Update</h3>
           <p className="text-gray-400 text-sm mb-4">Subscribe for rolling updates every 3 days. New research, revised content, and release notes — plus unlimited AI guide access.</p>
-          <a href="/#catalog" className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors">
-            Subscribe — $49/mo →
+          <a href="/reports" className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors">
+            Upgrade to Operator Access — $49/mo →
           </a>
         </div>
       </main>

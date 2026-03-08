@@ -31,7 +31,7 @@ export default function ModelsPage() {
               </div>
             </div>
             <Link
-              href="/#catalog"
+              href="/reports"
               className="rounded bg-orange-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-orange-700"
             >
               Get Reports
@@ -84,7 +84,7 @@ export default function ModelsPage() {
               Read Start Here
             </Link>
             <Link
-              href="/reports/empirical-architecture"
+              href="/reports/empirical-agent-architecture"
               className="inline-flex items-center rounded-lg border border-gray-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-gray-500"
             >
               Read the empirical report

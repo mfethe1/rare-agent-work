@@ -358,7 +358,7 @@ export default async function ModelDetailPage({ params }: PageProps) {
             production cost benchmarks for real deployments.
           </p>
           <Link
-            href="/reports/empirical-architecture"
+            href="/reports/empirical-agent-architecture"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
           >
             Read the Research →

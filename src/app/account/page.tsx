@@ -45,7 +45,7 @@ export default async function AccountPage() {
       </nav>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <ConversionTracker kind="subscription" plan={tier} value={tier === 'pro' ? 99 : 29} />
+        <ConversionTracker kind="subscription" plan={tier} value={tier === 'pro' ? 49 : 29} />
         <h1 className="text-3xl font-bold text-white mb-8">Your Account</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -95,10 +95,10 @@ export default async function AccountPage() {
             <div className="bg-blue-950/20 border border-blue-500/30 rounded-2xl p-6">
               <h2 className="text-lg font-semibold text-white mb-2">Upgrade Your Plan</h2>
               <p className="text-gray-400 text-sm mb-4">
-                Get AI guide access, all reports, and token-based usage starting at $29/mo.
+                Get Starter access at $29/mo (all reports + AI guide), or upgrade to Operator Access for $49/mo.
               </p>
               <a
-                href="/#catalog"
+                href="/pricing"
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
               >
                 View plans →

@@ -246,7 +246,7 @@ export default function Home() {
                 <li>✓ More AI implementation help</li>
                 <li>✓ Priority access to new research drops</li>
               </ul>
-              <BuyButton plan="pro" label="Get operator access — $49/mo" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300" />
+              <BuyButton plan="pro" label="Get Operator Access — $49/mo" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300" />
             </div>
           </div>
         </div>
@@ -316,10 +316,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="consulting" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
+      <section id="assessment" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Consulting</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Assessment</p>
             <h2 className="mt-3 text-4xl font-bold text-white">Need hands-on help? Bring Michael in directly.</h2>
             <p className="mt-4 text-lg leading-8 text-slate-300">
               Strategy, architecture review, deployment design, implementation rescue, and executive briefings for teams building serious agent systems.
@@ -366,7 +366,7 @@ export default function Home() {
           <span className="text-white/20">·</span>
           <Link href="/digest" className="transition-colors hover:text-white">Weekly Digest</Link>
           <span className="text-white/20">·</span>
-          <a href="#consulting" className="transition-colors hover:text-white">Consulting</a>
+          <Link href="/assessment" className="transition-colors hover:text-white">Assessment</Link>
         </div>
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
           <Link href="/research/history" className="transition-colors hover:text-white">Report Archive</Link>

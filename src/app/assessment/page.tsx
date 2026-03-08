@@ -55,7 +55,7 @@ export default function AssessmentPage() {
               <Link href="/assessment" className="text-sm font-medium text-white">Assessment</Link>
             </div>
           </div>
-          <Link href="/#catalog" className="rounded-md border border-gray-700 px-3 py-2 text-xs font-semibold text-white hover:border-gray-500">
+          <Link href="/reports" className="rounded-md border border-gray-700 px-3 py-2 text-xs font-semibold text-white hover:border-gray-500">
             Browse reports
           </Link>
         </div>

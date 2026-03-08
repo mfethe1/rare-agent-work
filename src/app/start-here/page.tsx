@@ -166,7 +166,7 @@ export default function StartHerePage() {
               <li>4. Use an assessment before scaling or buying tools.</li>
             </ol>
             <div className="mt-6 space-y-3">
-              <Link href="/reports/empirical-architecture" className="block rounded-xl border border-gray-700 px-4 py-3 text-sm font-medium text-white hover:border-gray-500">
+              <Link href="/reports/empirical-agent-architecture" className="block rounded-xl border border-gray-700 px-4 py-3 text-sm font-medium text-white hover:border-gray-500">
                 Read the empirical report
               </Link>
               <Link href="/news" className="block rounded-xl border border-gray-700 px-4 py-3 text-sm font-medium text-white hover:border-gray-500">

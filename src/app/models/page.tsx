@@ -6,26 +6,12 @@ import Link from 'next/link';
 import ModelsTable from '@/components/ModelsTable';
 
 export const metadata: Metadata = {
-  title: 'Agentic Model Leaderboard',
+  title: 'Model index under review',
   description:
-    'Compare the best LLMs for AI agent development. Ranked by tool use, context recall, coding ability, cost efficiency, and context window. Updated regularly with real benchmark data.',
-  keywords: [
-    'best LLM for AI agents',
-    'agentic model comparison',
-    'tool use benchmark',
-    'GPT-5 vs Claude Opus comparison',
-    'LLM leaderboard 2026',
-    'AI agent model ranking',
-    'coding LLM benchmark',
-    'context window comparison',
-  ],
-  openGraph: {
-    title: 'Agentic Model Leaderboard | Rare Agent Work',
-    description: 'Compare LLMs for AI agent development — ranked by tool use, context recall, coding, and cost.',
-    url: 'https://rareagent.work/models',
-    siteName: 'Rare Agent Work',
-    type: 'website',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Agentic Model Leaderboard' }],
+    'The Rare Agent Work model leaderboard is temporarily offline while we rebuild the evaluation with fresher data, transparent methodology, and a live update cadence.',
+  robots: {
+    index: false,
+    follow: true,
   },
   alternates: {
     canonical: 'https://rareagent.work/models',
@@ -143,28 +129,8 @@ const SEED_MODELS = [
 ];
 
 export default async function ModelsPage() {
-  const cookieStore = await cookies();
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() { return cookieStore.getAll(); },
-        setAll() {},
-      },
-    }
-  );
-
-  const { data: dbModels } = await supabase
-    .from('models')
-    .select('*')
-    .order('tool_use_score', { ascending: false });
-
-  const models = (dbModels && dbModels.length > 0) ? dbModels : SEED_MODELS;
-
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-gray-100">
-      {/* Nav */}
       <nav className="border-b border-gray-800 sticky top-0 z-50 bg-[#0d0d0d]/90 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-12">
@@ -174,8 +140,8 @@ export default async function ModelsPage() {
               </Link>
               <div className="hidden sm:flex items-center gap-4">
                 <Link href="/news" className="text-gray-400 hover:text-white text-sm transition-colors">News</Link>
-                <Link href="/models" className="text-white text-sm font-medium">Models</Link>
                 <Link href="/#catalog" className="text-gray-400 hover:text-white text-sm transition-colors">Reports</Link>
+                <Link href="/assessment" className="text-gray-400 hover:text-white text-sm transition-colors">Assessment</Link>
               </div>
             </div>
             <Link
@@ -188,30 +154,56 @@ export default async function ModelsPage() {
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Agentic Model Leaderboard</h1>
-          <p className="text-gray-400 max-w-2xl">
-            Models ranked for agentic use: tool calling, context recall, and coding ability.
-            Click any column header to sort. Click a model name for full breakdown.
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="rounded-3xl border border-amber-500/30 bg-amber-950/10 p-8 shadow-[0_0_40px_rgba(245,158,11,0.08)]">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-300">Temporarily offline</p>
+          <h1 className="mt-4 text-4xl font-bold tracking-tight text-white">The model leaderboard is under review.</h1>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-gray-300">
+            We pulled this page out of public circulation because stale rankings create more confusion than clarity.
+            It will only return once the evaluation has fresh data, transparent methodology, and a live maintenance cadence.
           </p>
-        </div>
 
-        <ModelsTable models={models} />
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            <div className="rounded-2xl border border-gray-800 bg-black/30 p-5">
+              <h2 className="text-sm font-semibold text-white">What changes before relaunch</h2>
+              <ul className="mt-3 space-y-2 text-sm text-gray-400">
+                <li>• Visible last-updated timestamp</li>
+                <li>• Clear scoring methodology</li>
+                <li>• Automated refresh cadence and alerts</li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-gray-800 bg-black/30 p-5">
+              <h2 className="text-sm font-semibold text-white">Why we pulled it</h2>
+              <ul className="mt-3 space-y-2 text-sm text-gray-400">
+                <li>• Trust matters more than filler content</li>
+                <li>• Precise scores need real evidence</li>
+                <li>• Outdated rankings weaken the rest of the site</li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-gray-800 bg-black/30 p-5">
+              <h2 className="text-sm font-semibold text-white">What to read instead</h2>
+              <ul className="mt-3 space-y-2 text-sm text-gray-400">
+                <li>• Start Here for implementation order</li>
+                <li>• News for platform drift</li>
+                <li>• Reports for operator-grade evaluations</li>
+              </ul>
+            </div>
+          </div>
 
-        {/* CTA */}
-        <div className="mt-10 border border-blue-500/30 bg-blue-950/10 rounded-xl p-6 text-center">
-          <p className="text-gray-300 mb-1 font-semibold">Running agents at scale?</p>
-          <p className="text-gray-400 text-sm mb-4 max-w-xl mx-auto">
-            Our <span className="text-blue-400 font-medium">Empirical Architecture Report</span> covers
-            model evaluation methodology, multi-agent routing, and production benchmarks for real deployments.
-          </p>
-          <Link
-            href="/reports/empirical-architecture"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors"
-          >
-            Read the Empirical Research Report →
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/start-here"
+              className="inline-flex items-center rounded-lg bg-orange-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-orange-700"
+            >
+              Read Start Here
+            </Link>
+            <Link
+              href="/reports/empirical-architecture"
+              className="inline-flex items-center rounded-lg border border-gray-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-gray-500"
+            >
+              Read the empirical report
+            </Link>
+          </div>
         </div>
       </main>
 

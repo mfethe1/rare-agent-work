@@ -63,6 +63,22 @@ export async function GET() {
           'Give me this week\'s digest',
         ],
       },
+      {
+        id: 'ask-natural-language',
+        name: 'Ask in Natural Language (NLWeb)',
+        description:
+          'Ask any question about AI models, agent news, reports, or weekly developments in natural language. Returns structured JSON with answers and source citations. NLWeb-compatible endpoint.',
+        inputModes: ['text/plain'],
+        outputModes: ['application/json'],
+        examples: [
+          'Which model is best for tool use?',
+          'Compare Claude vs GPT for agentic workloads',
+          'Latest security news about AI agents',
+          'What reports do you offer on multi-agent systems?',
+          'Cheapest model with good coding scores',
+        ],
+        endpoint: 'https://rareagent.work/ask?q={query}',
+      },
     ],
     authentication: {
       schemes: ['none'],

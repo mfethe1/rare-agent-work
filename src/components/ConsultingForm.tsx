@@ -50,7 +50,7 @@ export default function ConsultingForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} data-testid="consulting-form" className="space-y-4">
       <div className="grid gap-4 md:grid-cols-2">
         <label className="block">
           <span className="mb-1 block text-sm text-gray-300">Name</span>
@@ -126,10 +126,19 @@ export default function ConsultingForm() {
       <button
         type="submit"
         disabled={loading}
+        data-testid="consulting-submit"
         className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:opacity-60"
       >
         {loading ? 'Sending…' : 'Request consulting access'}
       </button>
+
+      <p className="text-xs text-gray-500">
+        Prefer email? Use{' '}
+        <a href="mailto:hello@rareagent.work?subject=Rare%20Agent%20Work%20assessment" className="text-blue-400 hover:text-blue-300">
+          hello@rareagent.work
+        </a>
+        .
+      </p>
 
       {message && <p className="text-sm text-green-400">{message}</p>}
       {error && <p className="text-sm text-red-400">{error}</p>}

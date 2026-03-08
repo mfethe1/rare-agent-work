@@ -93,6 +93,7 @@ export default function StartHerePage() {
             <div className="hidden items-center gap-4 sm:flex">
               <Link href="/start-here" className="text-sm font-medium text-white">Start Here</Link>
               <Link href="/news" className="text-sm text-gray-400 hover:text-white">News Feed</Link>
+              <Link href="/docs" className="text-sm text-gray-400 hover:text-white">Docs</Link>
               <Link href="/assessment" className="text-sm text-gray-400 hover:text-white">Assessment</Link>
             </div>
           </div>

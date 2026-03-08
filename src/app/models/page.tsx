@@ -6,22 +6,26 @@ import Link from 'next/link';
 import ModelsTable from '@/components/ModelsTable';
 
 export const metadata: Metadata = {
-  title: 'Agentic Model Leaderboard | Rare Agent Work',
+  title: 'Agentic Model Leaderboard',
   description:
-    'Compare the best LLMs for AI agent development. Ranked by tool use, context recall, coding ability, cost, and context window. Updated regularly.',
+    'Compare the best LLMs for AI agent development. Ranked by tool use, context recall, coding ability, cost efficiency, and context window. Updated regularly with real benchmark data.',
   keywords: [
     'best LLM for AI agents',
     'agentic model comparison',
     'tool use benchmark',
-    'GPT-4 vs Claude comparison',
+    'GPT-5 vs Claude Opus comparison',
     'LLM leaderboard 2026',
+    'AI agent model ranking',
+    'coding LLM benchmark',
+    'context window comparison',
   ],
   openGraph: {
-    title: 'Agentic Model Leaderboard — Rare Agent Work',
-    description: 'Compare the best LLMs for AI agent development. Ranked by tool use, context recall, coding ability, cost, and context window.',
+    title: 'Agentic Model Leaderboard | Rare Agent Work',
+    description: 'Compare LLMs for AI agent development — ranked by tool use, context recall, coding, and cost.',
     url: 'https://rareagent.work/models',
     siteName: 'Rare Agent Work',
     type: 'website',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Agentic Model Leaderboard' }],
   },
   alternates: {
     canonical: 'https://rareagent.work/models',

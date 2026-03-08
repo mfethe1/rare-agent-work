@@ -85,5 +85,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...reportPages, ...modelPages];
+  // Ads landing pages
+  const landingPages: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/lp/agent-setup`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/lp/multi-agent`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+  ];
+
+  return [...staticPages, ...reportPages, ...modelPages, ...landingPages];
 }

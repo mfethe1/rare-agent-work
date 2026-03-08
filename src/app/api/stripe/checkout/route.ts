@@ -9,6 +9,7 @@ function getPriceId(planKey: string): string | null {
     report_60: process.env.STRIPE_PRICE_ID_REPORT_60,
     report_multi: process.env.STRIPE_PRICE_ID_REPORT_MULTI,
     report_empirical: process.env.STRIPE_PRICE_ID_REPORT_EMPIRICAL,
+    newsletter: process.env.STRIPE_PRICE_ID_NEWSLETTER,
     starter: process.env.STRIPE_PRICE_ID_STARTER,
     pro: process.env.STRIPE_PRICE_ID_PRO,
     subscription: process.env.STRIPE_PRICE_ID_STARTER, // legacy alias
@@ -40,6 +41,13 @@ const PLANS = {
     tier: null,
   },
   // Subscriptions
+  newsletter: {
+    amount: 1000,
+    name: "Newsletter Plan — premium newsletter + hot-news alerts",
+    slug: null,
+    mode: "subscription" as const,
+    tier: "starter",
+  },
   starter: {
     amount: 2900,
     name: "Starter Plan — All Reports + AI Guide (50k tokens/mo)",
@@ -48,8 +56,8 @@ const PLANS = {
     tier: "starter",
   },
   pro: {
-    amount: 9900,
-    name: "Pro Plan — All Reports + AI Guide (200k tokens/mo) + PDF Downloads",
+    amount: 4900,
+    name: "Operator Access — reports + AI guide + priority research updates",
     slug: null,
     mode: "subscription" as const,
     tier: "pro",

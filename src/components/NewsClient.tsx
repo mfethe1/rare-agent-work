@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { formatNewsAge, isBreakingNews } from '@/lib/news-helpers';
 
 interface NewsItem {
   id: string;
@@ -44,15 +45,6 @@ export default function NewsClient({ items }: { items: NewsItem[] }) {
     } catch {
       // Best effort
     }
-  }
-
-  function timeAgo(dateStr: string): string {
-    const diff = Date.now() - new Date(dateStr).getTime();
-    const hours = Math.floor(diff / 3600000);
-    if (hours < 1) return 'just now';
-    if (hours < 24) return `${hours}h ago`;
-    const days = Math.floor(hours / 24);
-    return `${days}d ago`;
   }
 
   const categoryColors: Record<string, string> = {
@@ -116,8 +108,11 @@ export default function NewsClient({ items }: { items: NewsItem[] }) {
                 }`}>
                   {item.category.replace(/-/g, ' ')}
                 </span>
+                {isBreakingNews(item.publishedAt) && (
+                  <span className="rounded-full bg-red-500/15 px-2 py-0.5 font-medium text-red-300">breaking</span>
+                )}
                 <span>{item.source}</span>
-                <span>{timeAgo(item.publishedAt)}</span>
+                <span>{formatNewsAge(item.publishedAt)}</span>
                 {item.clicks > 0 && <span>{item.clicks} clicks</span>}
                 {item.tags.slice(0, 3).map((tag) => (
                   <a

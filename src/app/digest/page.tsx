@@ -85,7 +85,6 @@ export default async function DigestPage() {
           <a href="/" className="text-xl font-bold tracking-tighter text-white">Rare Agent Work</a>
           <div className="flex items-center gap-6 text-sm">
             <a href="/news" className="text-gray-400 hover:text-white transition-colors">News</a>
-            <a href="/models" className="text-gray-400 hover:text-white transition-colors">Models</a>
             <a href="/digest" className="text-white font-semibold">Digest</a>
           </div>
         </div>

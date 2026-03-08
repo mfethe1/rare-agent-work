@@ -186,6 +186,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       siteName: 'Rare Agent Work',
       type: 'article',
     },
+    robots: {
+      index: false,
+      follow: true,
+    },
     alternates: {
       canonical: `https://rareagent.work/models/${slug}`,
     },
@@ -248,8 +252,8 @@ export default async function ModelDetailPage({ params }: PageProps) {
               </Link>
               <div className="hidden sm:flex items-center gap-4">
                 <Link href="/news" className="text-gray-400 hover:text-white text-sm transition-colors">News</Link>
-                <Link href="/models" className="text-white text-sm font-medium">Models</Link>
                 <Link href="/#catalog" className="text-gray-400 hover:text-white text-sm transition-colors">Reports</Link>
+                <Link href="/assessment" className="text-gray-400 hover:text-white text-sm transition-colors">Assessment</Link>
               </div>
             </div>
           </div>
@@ -259,7 +263,7 @@ export default async function ModelDetailPage({ params }: PageProps) {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Breadcrumb */}
         <div className="text-sm text-gray-500 mb-6">
-          <Link href="/models" className="hover:text-gray-300 transition-colors">← Models</Link>
+          <Link href="/start-here" className="hover:text-gray-300 transition-colors">← Start Here</Link>
         </div>
 
         {/* Header */}

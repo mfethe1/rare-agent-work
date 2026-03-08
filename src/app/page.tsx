@@ -59,7 +59,6 @@ export default function Home() {
 
             <div className="flex items-center gap-2 sm:gap-3">
               <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News</Link>
-              <Link href="/models" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Models</Link>
               <Link href="/digest" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Digest</Link>
               <a href="#catalog" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</a>
               <a href="#consulting" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Consulting</a>
@@ -361,8 +360,6 @@ export default function Home() {
         <p className="mb-3">© {new Date().getFullYear()} Rare Agent Work. Bespoke operator-grade AI research and news.</p>
         <div className="mb-3 flex flex-wrap justify-center gap-3 sm:gap-4">
           <Link href="/news" className="transition-colors hover:text-white">News Feed</Link>
-          <span className="text-white/20">·</span>
-          <Link href="/models" className="transition-colors hover:text-white">Model Leaderboard</Link>
           <span className="text-white/20">·</span>
           <Link href="/digest" className="transition-colors hover:text-white">Weekly Digest</Link>
           <span className="text-white/20">·</span>

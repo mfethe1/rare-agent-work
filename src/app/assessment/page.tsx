@@ -52,7 +52,6 @@ export default function AssessmentPage() {
             <div className="hidden items-center gap-4 sm:flex">
               <Link href="/start-here" className="text-sm text-gray-400 hover:text-white">Start Here</Link>
               <Link href="/news" className="text-sm text-gray-400 hover:text-white">News</Link>
-              <Link href="/models" className="text-sm text-gray-400 hover:text-white">Models</Link>
               <Link href="/assessment" className="text-sm font-medium text-white">Assessment</Link>
             </div>
           </div>

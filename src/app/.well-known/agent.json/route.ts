@@ -11,7 +11,32 @@ export async function GET() {
       streaming: false,
       pushNotifications: false,
     },
+    protocols: {
+      nlweb: {
+        endpoint: 'https://rareagent.work/ask',
+        version: '1.0',
+        methods: ['GET', 'POST'],
+        documentation: 'https://github.com/nlweb-ai/NLWeb/blob/main/docs/nlweb-rest-api.md',
+      },
+      openapi: 'https://rareagent.work/api/openapi.json',
+      rss: 'https://rareagent.work/feed.xml',
+      llms_txt: 'https://rareagent.work/llms.txt',
+    },
     skills: [
+      {
+        id: 'ask-nlweb',
+        name: 'Ask (NLWeb Protocol)',
+        description:
+          'Ask any natural-language question about AI agent news, model rankings, or research reports. Returns Schema.org-typed JSON results. Compatible with Microsoft NLWeb protocol.',
+        inputModes: ['text/plain'],
+        outputModes: ['application/json'],
+        endpoint: 'https://rareagent.work/ask',
+        examples: [
+          'Which model is best for tool use?',
+          'What happened in agent news about security this week?',
+          'What reports cover multi-agent orchestration?',
+        ],
+      },
       {
         id: 'search-agent-news',
         name: 'Search AI Agent News',

@@ -74,6 +74,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Rare Agent Work — AI Agent News"
+          href="https://rareagent.work/feed.xml"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

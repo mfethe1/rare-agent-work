@@ -176,6 +176,102 @@ export async function GET() {
           },
         },
       },
+      '/ask': {
+        get: {
+          operationId: 'askNLWeb',
+          summary: 'NLWeb natural-language query endpoint',
+          description:
+            'Ask a natural-language question about AI agent news, model rankings, or research reports. Returns Schema.org-typed JSON results. Compatible with the NLWeb protocol (https://github.com/nlweb-ai/NLWeb).',
+          parameters: [
+            {
+              name: 'q',
+              in: 'query',
+              required: true,
+              schema: { type: 'string' },
+              description: 'Natural-language query (e.g., "which model is best for tool use?")',
+            },
+            {
+              name: 'mode',
+              in: 'query',
+              required: false,
+              schema: { type: 'string', enum: ['list', 'summarize'] },
+              description: 'Response mode: list (default) returns ranked results, summarize adds a natural-language summary',
+            },
+            {
+              name: 'site',
+              in: 'query',
+              required: false,
+              schema: { type: 'string', enum: ['news', 'models', 'reports'] },
+              description: 'Restrict search to a specific content type',
+            },
+            {
+              name: 'limit',
+              in: 'query',
+              required: false,
+              schema: { type: 'integer', minimum: 1, maximum: 50 },
+              description: 'Max results to return (default: 10)',
+            },
+          ],
+          responses: {
+            '200': {
+              description: 'NLWeb-compatible response with Schema.org-typed results',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      query_id: { type: 'string' },
+                      query: { type: 'string' },
+                      mode: { type: 'string' },
+                      result_count: { type: 'integer' },
+                      summary: { type: 'string', description: 'Present when mode=summarize' },
+                      results: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            url: { type: 'string', format: 'uri' },
+                            name: { type: 'string' },
+                            site: { type: 'string' },
+                            score: { type: 'number' },
+                            description: { type: 'string' },
+                            schema_object: { type: 'object', description: 'Schema.org-typed JSON object' },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        post: {
+          operationId: 'askNLWebPost',
+          summary: 'NLWeb natural-language query (POST)',
+          description: 'Same as GET /ask but accepts JSON body. Compatible with NLWeb protocol.',
+          requestBody: {
+            required: true,
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  required: ['query'],
+                  properties: {
+                    query: { type: 'string' },
+                    mode: { type: 'string', enum: ['list', 'summarize'] },
+                    site: { type: 'string', enum: ['news', 'models', 'reports'] },
+                    limit: { type: 'integer', minimum: 1, maximum: 50 },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            '200': { description: 'NLWeb-compatible response (same schema as GET)' },
+          },
+        },
+      },
       '/api/digest': {
         get: {
           operationId: 'getWeeklyDigest',

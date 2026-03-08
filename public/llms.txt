@@ -27,10 +27,22 @@ URL: https://rareagent.work/reports/empirical-agent-architecture
 
 All Access Starter Plan: $29/mo — all reports + every future report, content updated every 3 days, AI implementation guide (50k tokens/mo), full archive access.
 
+## NLWeb /ask Endpoint (Natural Language Query)
+
+Ask any question in natural language and get Schema.org-typed JSON results:
+
+- `GET /ask?q=which model is best for tool use` — returns ranked results
+- `GET /ask?q=latest security news&site=news` — restrict to news
+- `GET /ask?q=multi-agent report&mode=summarize` — includes a summary
+- `POST /ask` with `{"query": "cheapest model for coding"}` — JSON body
+
+Protocol: https://github.com/nlweb-ai/NLWeb
+
 ## API Access (for agents)
 
 Structured JSON endpoints for programmatic access:
 
+- `GET /ask` — NLWeb natural-language query (Schema.org JSON results)
 - `GET /api/v1/models` — Agentic model leaderboard (filterable, sortable)
 - `GET /api/v1/news` — Curated news feed with tag filters
 - `GET /api/v1/reports` — Report catalog with metadata and preview content
@@ -39,6 +51,7 @@ Structured JSON endpoints for programmatic access:
 
 ## Agent Discovery
 
+- NLWeb endpoint: `/ask`
 - Agent capabilities: `/.well-known/agent.json`
 - OpenAPI spec: `/api/v1/openapi.json`
 - Sitemap: `/sitemap.xml`

@@ -51,10 +51,12 @@ export default function ConversionTracker({
     const sentKey = `rarw_conversion_${kind}_${sessionId ?? "no_session"}`;
     if (sessionStorage.getItem(sentKey)) return;
 
-    const adsLabel =
-      kind === "subscription"
-        ? process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL_SUBSCRIBE
-        : process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL_REPORT;
+    // Conversion labels from Google Ads event snippets (not secrets — client-side tags)
+    const ADS_LABELS = {
+      report: process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL_REPORT || "OvqyCLL_vYQcEO6VhoBC",
+      subscription: process.env.NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL_SUBSCRIBE || "yHNhCNb3xoQcEO6VhoBC",
+    };
+    const adsLabel = kind === "subscription" ? ADS_LABELS.subscription : ADS_LABELS.report;
 
     trackPurchase({
       transactionId: sessionId,

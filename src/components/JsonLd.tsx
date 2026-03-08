@@ -12,7 +12,7 @@ export function WebsiteJsonLd() {
       url: "https://rareagent.work",
       logo: {
         "@type": "ImageObject",
-        url: "https://rareagent.work/og-image.png",
+        url: "https://rareagent.work/logo-badge-color.jpg",
       },
     },
     potentialAction: {
@@ -27,7 +27,7 @@ export function WebsiteJsonLd() {
     "@type": "Organization",
     name: "Rare Agent Work",
     url: "https://rareagent.work",
-    logo: "https://rareagent.work/og-image.png",
+    logo: "https://rareagent.work/logo-badge-color.jpg",
     contactPoint: {
       "@type": "ContactPoint",
       email: "hello@rareagent.work",

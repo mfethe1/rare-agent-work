@@ -72,8 +72,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://rareagent.work",
   },
-  verification: {
-    google: "google-site-verification-placeholder",
+  icons: {
+    icon: "/logo-seal-bw.jpg",
+    apple: "/logo-badge-color.jpg",
   },
 };
 

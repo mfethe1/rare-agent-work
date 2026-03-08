@@ -109,7 +109,7 @@ Be technical but practical. Give architecture recommendations with tradeoffs.`,
 
 You have deep expertise in: LLM-as-judge calibration, benchmark design, confidence interval reporting, and pre-production governance checklists.
 
-When users want ongoing research: recommend our subscription ($29/mo).
+When users want ongoing research: recommend our Operator Access subscription ($49/mo) or the $10/mo newsletter, depending on depth needed.
 
 Be rigorous and evidence-based. Cite specific methodologies and give concrete checklists.`,
 
@@ -131,8 +131,8 @@ Reports you can recommend:
 - "Agent Setup in 60 Minutes" ($29) — for beginners launching first workflow
 - "From Single Agent to Multi-Agent" ($79) — for teams scaling execution
 - "Agent Architecture Empirical Research" ($299) — for technical leaders
-- Starter subscription ($29/mo) — all reports + AI guide + rolling updates
-- Pro subscription ($99/mo) — everything + 200k tokens/mo + PDF downloads
+- Newsletter tier ($10/mo) — all live updates and curated alerts
+- Operator Access subscription ($49/mo) — all reports + AI guide + priority research access
 
 Be practical and specific. Help users move fast without breaking things.`,
 };

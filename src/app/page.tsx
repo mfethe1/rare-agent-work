@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { getAllReports } from '@/lib/reports';
 import ReportChat from '@/components/ReportChat';
@@ -6,30 +7,63 @@ import ConsultingForm from '@/components/ConsultingForm';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 
 const colorMap: Record<string, { border: string; text: string; btn: string }> = {
-  blue: { border: 'border-blue-500/20', text: 'text-blue-400', btn: 'bg-blue-600 hover:bg-blue-700' },
-  green: { border: 'border-green-500/20', text: 'text-green-400', btn: 'bg-green-600 hover:bg-green-700' },
-  purple: { border: 'border-purple-500/20', text: 'text-purple-400', btn: 'bg-purple-600 hover:bg-purple-700' },
+  blue: { border: 'border-cyan-400/20', text: 'text-cyan-300', btn: 'bg-cyan-500 hover:bg-cyan-400' },
+  green: { border: 'border-emerald-400/20', text: 'text-emerald-300', btn: 'bg-emerald-500 hover:bg-emerald-400' },
+  purple: { border: 'border-fuchsia-400/20', text: 'text-fuchsia-300', btn: 'bg-fuchsia-500 hover:bg-fuchsia-400' },
 };
+
+const featuredLogos = [
+  {
+    src: '/logos/Gemini_Generated_Image_8fgn98fgn98fgn98.jpg',
+    alt: 'Rare Agent Work logo concept with luminous geometric framing',
+    caption: 'Signal-rich visual identity',
+  },
+  {
+    src: '/logos/Gemini_Generated_Image_b1ebffb1ebffb1eb.jpg',
+    alt: 'Rare Agent Work crest concept in a futuristic editorial style',
+    caption: 'Editorial, premium, unmistakably ours',
+  },
+  {
+    src: '/logos/Gemini_Generated_Image_mtgvo9mtgvo9mtgv.jpg',
+    alt: 'Rare Agent Work medallion concept with metallic finish',
+    caption: 'Built for a premium operator brand',
+  },
+];
 
 export default function Home() {
   const reports = getAllReports();
 
   return (
-    <div className="min-h-screen bg-black font-sans text-gray-100 selection:bg-blue-500 selection:text-white">
+    <div className="min-h-screen bg-[#050816] font-sans text-slate-100 selection:bg-cyan-400 selection:text-slate-950">
       <WebsiteJsonLd />
 
-      <nav className="sticky top-0 z-50 border-b border-gray-800 bg-black/90 backdrop-blur-sm">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute left-1/2 top-[-18rem] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-cyan-500/18 blur-3xl" />
+        <div className="absolute right-[-8rem] top-[24rem] h-[22rem] w-[22rem] rounded-full bg-fuchsia-500/15 blur-3xl" />
+        <div className="absolute bottom-[-10rem] left-[-5rem] h-[26rem] w-[26rem] rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_34%),linear-gradient(180deg,rgba(5,8,22,0.96),rgba(3,6,18,1))]" />
+      </div>
+
+      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/80 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <span className="text-xl font-bold tracking-tighter text-white">Rare Agent Work</span>
+          <div className="flex h-16 items-center justify-between gap-4">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-[0_0_30px_rgba(34,211,238,0.18)]">
+                <Image src="/logo-medallion.jpg" alt="Rare Agent Work logo" fill className="object-cover" sizes="40px" priority />
+              </div>
+              <div>
+                <span className="block text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/90">Rare Agent</span>
+                <span className="block text-base font-bold tracking-tight text-white">Work</span>
+              </div>
+            </Link>
+
             <div className="flex items-center gap-2 sm:gap-3">
-              <Link href="/start-here" className="text-xs text-gray-400 transition-colors hover:text-white sm:text-sm">Start Here</Link>
-              <Link href="/news" className="text-xs text-gray-400 transition-colors hover:text-white sm:text-sm">News</Link>
-              <Link href="/models" className="text-xs text-gray-400 transition-colors hover:text-white sm:text-sm">Models</Link>
-              <Link href="/digest" className="hidden text-xs text-gray-400 transition-colors hover:text-white sm:block sm:text-sm">Digest</Link>
-              <a href="#catalog" className="hidden text-xs text-gray-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</a>
-              <Link href="/assessment" className="hidden text-xs text-gray-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
-              <a href="#pricing" className="ml-1 rounded-md bg-white px-3 py-2 text-xs font-semibold text-black transition-colors hover:bg-gray-200 sm:px-4 sm:text-sm">
+              <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News</Link>
+              <Link href="/models" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Models</Link>
+              <Link href="/digest" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Digest</Link>
+              <a href="#catalog" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</a>
+              <a href="#consulting" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Consulting</a>
+              <a href="#pricing" className="ml-1 rounded-full border border-cyan-300/40 bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20 sm:px-4 sm:text-sm">
                 View Pricing
               </a>
             </div>
@@ -37,87 +71,180 @@ export default function Home() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <div className="mx-auto max-w-5xl text-center">
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-950/60 px-4 py-2 text-sm text-blue-300">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-blue-400" />
-            Guides for humans. Structured surfaces for agents. Practical systems for teams.
+      <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <section className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+          <div>
+            <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-300/20 bg-white/5 px-4 py-2 text-sm text-cyan-200 shadow-[0_0_30px_rgba(34,211,238,0.08)]">
+              <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(103,232,249,0.9)]" />
+              RareAgent.work for people actually shipping agents
+            </div>
+
+            <h1 className="max-w-4xl text-5xl font-black tracking-tight text-white md:text-7xl">
+              Bespoke intelligence for the
+              <span className="block bg-gradient-to-r from-cyan-300 via-sky-300 to-fuchsia-300 bg-clip-text text-transparent">
+                rare agents doing real work
+              </span>
+            </h1>
+
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
+              Rare Agent Work blends a premium operator news desk, applied research, and direct implementation support.
+              Less generic AI content. More signal, sharper taste, and a brand that looks like it belongs in the room.
+            </p>
+
+            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+              <Link href="/news" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 shadow-[0_16px_50px_rgba(34,211,238,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-cyan-300">
+                Explore live news
+              </Link>
+              <a href="#catalog" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10">
+                Browse reports
+              </a>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Positioning</p>
+                <p className="mt-2 text-sm font-medium text-white">Premium operator identity, not generic AI SaaS chrome</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Brand assets</p>
+                <p className="mt-2 text-sm font-medium text-white">New logos and figures woven into the front page narrative</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Tone</p>
+                <p className="mt-2 text-sm font-medium text-white">Confident, editorial, technical, and a little more bespoke</p>
+              </div>
+            </div>
           </div>
-          <h1 className="mb-8 text-5xl font-extrabold tracking-tight text-white md:text-7xl">
-            Become better at <span className="text-blue-500">building, auditing, and scaling agentic systems</span>
-          </h1>
-          <p className="mx-auto mb-10 max-w-4xl text-xl leading-relaxed text-gray-400 md:text-2xl">
-            Rare Agent Work is building toward the best source for agentic setup: live market intelligence, model comparisons,
-            operator-grade research, and direct implementation help for teams that want systems that hold up outside the demo.
-          </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/start-here" className="w-full rounded-lg bg-blue-600 px-8 py-4 text-center text-lg font-semibold text-white shadow-lg shadow-blue-500/20 transition-all hover:bg-blue-700 sm:w-auto">
-              Start Here
-            </Link>
-            <Link href="/assessment" className="w-full rounded-lg border border-gray-700 px-8 py-4 text-center text-lg font-semibold text-white transition-all hover:bg-gray-800 sm:w-auto">
-              Get an Assessment
-            </Link>
+
+          <div className="relative">
+            <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-cyan-400/20 via-transparent to-fuchsia-400/20 blur-2xl" />
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 p-4 shadow-2xl backdrop-blur-xl">
+              <div className="mb-4 flex items-center justify-between rounded-2xl border border-white/10 bg-[#07111f] px-4 py-3">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Brand system</p>
+                  <p className="mt-1 text-lg font-semibold text-white">Rare Agent Work</p>
+                </div>
+                <div className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">
+                  Live refresh
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-[1.1fr_0.9fr]">
+                <div className="relative min-h-[24rem] overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#091426]">
+                  <Image
+                    src="/logos/Gemini_Generated_Image_osb757osb757osb7.jpg"
+                    alt="Rare Agent Work signature emblem"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                    <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Signature mark</p>
+                    <p className="mt-2 text-xl font-semibold text-white">A more ownable visual system for RareAgent.work</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-4">
+                  {featuredLogos.map((logo) => (
+                    <div key={logo.src} className="group relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#091426]">
+                      <div className="relative h-32 w-full">
+                        <Image src={logo.src} alt={logo.alt} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 24vw" />
+                      </div>
+                      <div className="border-t border-white/10 p-3">
+                        <p className="text-sm font-medium text-white">{logo.caption}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
       </main>
 
-      <section id="pricing" className="border-y border-gray-800 bg-gray-900 py-16">
+      <section className="border-y border-white/10 bg-white/[0.03] py-14 backdrop-blur-sm">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300">Brand direction</p>
+              <h2 className="mt-3 text-3xl font-bold text-white">From generic landing page to something with a point of view</h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
+                The new visual treatment uses the uploaded Rare Agent figures as editorial anchors: premium marks, metallic medallions,
+                and a darker palette that feels closer to an operator publication than a default startup template.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {featuredLogos.map((logo) => (
+                <div key={`${logo.src}-tile`} className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#081120] p-2">
+                  <div className="relative h-48 overflow-hidden rounded-[1.1rem]">
+                    <Image src={logo.src} alt={logo.alt} fill className="object-cover" sizes="(max-width: 1024px) 33vw, 20vw" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" className="py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center">
             <h2 className="mb-3 text-3xl font-bold text-white">Clear pricing, clearer outcomes</h2>
-            <p className="mx-auto max-w-3xl text-lg text-gray-400">
-              Competitors mostly sell links or hype. We should sell speed, interpretation, and access to expertise.
+            <p className="mx-auto max-w-3xl text-lg text-slate-300">
+              Competitors mostly sell links or hype. Rare Agent Work should sell speed, interpretation, and access to expertise.
             </p>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            <div className="rounded-2xl border border-gray-800 bg-black p-7">
+            <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
               <div className="mb-5">
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">Free</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Free</span>
                 <p className="mt-1 text-3xl font-bold text-white">$0</p>
-                <p className="mt-1 text-sm text-gray-500">Try the product before committing</p>
+                <p className="mt-1 text-sm text-slate-400">Try the product before committing</p>
               </div>
-              <ul className="mb-7 space-y-3 text-sm text-gray-300">
+              <ul className="mb-7 space-y-3 text-sm text-slate-300">
                 <li>✓ Browse the live news feed</li>
                 <li>✓ Read report previews</li>
                 <li>✓ Ask limited AI questions</li>
               </ul>
-              <Link href="/news" className="inline-flex rounded-lg bg-gray-800 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-gray-700">
+              <Link href="/news" className="inline-flex rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/15">
                 Start free
               </Link>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl border border-orange-500/40 bg-orange-950/20 p-7">
+            <div className="relative overflow-hidden rounded-[1.75rem] border border-fuchsia-400/30 bg-fuchsia-500/10 p-7 backdrop-blur-sm">
               <div className="absolute right-4 top-4">
-                <span className="rounded-full bg-orange-600 px-2.5 py-1 text-xs font-semibold text-white">Best entry point</span>
+                <span className="rounded-full bg-fuchsia-400 px-2.5 py-1 text-xs font-semibold text-slate-950">Best entry point</span>
               </div>
               <div className="mb-5">
-                <span className="text-xs font-semibold uppercase tracking-wider text-orange-300">Newsletter</span>
-                <p className="mt-1 text-3xl font-bold text-white">$10<span className="text-lg font-normal text-gray-400">/mo</span></p>
-                <p className="mt-1 text-sm text-gray-400">For people who want the signal without the noise</p>
+                <span className="text-xs font-semibold uppercase tracking-wider text-fuchsia-200">Newsletter</span>
+                <p className="mt-1 text-3xl font-bold text-white">$10<span className="text-lg font-normal text-slate-300">/mo</span></p>
+                <p className="mt-1 text-sm text-slate-300">For people who want the signal without the noise</p>
               </div>
-              <ul className="mb-7 space-y-3 text-sm text-gray-200">
+              <ul className="mb-7 space-y-3 text-sm text-slate-100">
                 <li>✓ Weekly premium newsletter</li>
                 <li>✓ Hot-news alerts as important stories land</li>
                 <li>✓ Side-panel AI context on the news desk</li>
                 <li>✓ Operator summaries focused on what changed and what to do next</li>
               </ul>
-              <BuyButton plan="newsletter" label="Get the newsletter — $10/mo" className="inline-flex rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-700" />
+              <BuyButton plan="newsletter" label="Get the newsletter — $10/mo" className="inline-flex rounded-full bg-fuchsia-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-fuchsia-300" />
             </div>
 
-            <div className="rounded-2xl border border-blue-500/40 bg-blue-950/20 p-7">
+            <div className="rounded-[1.75rem] border border-cyan-400/30 bg-cyan-500/10 p-7 backdrop-blur-sm">
               <div className="mb-5">
-                <span className="text-xs font-semibold uppercase tracking-wider text-blue-300">Operator Access</span>
-                <p className="mt-1 text-3xl font-bold text-white">$49<span className="text-lg font-normal text-gray-400">/mo</span></p>
-                <p className="mt-1 text-sm text-gray-400">For teams actively building with agents</p>
+                <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200">Operator Access</span>
+                <p className="mt-1 text-3xl font-bold text-white">$49<span className="text-lg font-normal text-slate-300">/mo</span></p>
+                <p className="mt-1 text-sm text-slate-300">For teams actively building with agents</p>
               </div>
-              <ul className="mb-7 space-y-3 text-sm text-gray-200">
+              <ul className="mb-7 space-y-3 text-sm text-slate-100">
                 <li>✓ Everything in Newsletter</li>
                 <li>✓ Full report library and rolling updates</li>
                 <li>✓ More AI implementation help</li>
                 <li>✓ Priority access to new research drops</li>
               </ul>
-              <BuyButton plan="pro" label="Get operator access — $49/mo" className="inline-flex rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700" />
+              <BuyButton plan="pro" label="Get operator access — $49/mo" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300" />
             </div>
           </div>
         </div>
@@ -126,25 +253,25 @@ export default function Home() {
       <section id="catalog" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <h2 className="mb-4 text-4xl font-bold text-white">Report Catalog</h2>
-          <p className="mx-auto max-w-2xl text-lg text-gray-400">Deep operator-grade reports for buyers who want durable reference material, not just a feed.</p>
+          <p className="mx-auto max-w-2xl text-lg text-slate-300">Deep operator-grade reports for buyers who want durable reference material, not just a feed.</p>
         </div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {reports.map((report) => {
             const c = colorMap[report.color] ?? colorMap.blue;
             const excerpt = report.excerpt[0];
             return (
-              <div key={report.slug} className={`flex flex-col rounded-2xl border ${c.border} bg-black p-8 transition-all hover:border-gray-600`}>
+              <div key={report.slug} className={`flex flex-col rounded-[1.75rem] border ${c.border} bg-white/[0.04] p-8 transition-all hover:-translate-y-1 hover:border-white/20`}>
                 <div className="mb-3 flex items-start justify-between">
                   <span className={`text-2xl font-extrabold ${c.text}`}>{report.price}</span>
-                  <span className="rounded border border-gray-800 px-2 py-1 text-xs text-gray-500">{report.priceLabel}</span>
+                  <span className="rounded-full border border-white/10 px-2 py-1 text-xs text-slate-400">{report.priceLabel}</span>
                 </div>
                 <h3 className="mb-2 text-xl font-bold text-white">{report.title}</h3>
                 <p className={`mb-3 text-sm font-semibold ${c.text}`}>{report.subtitle}</p>
-                <p className="mb-4 text-sm leading-relaxed text-gray-400">{report.audience}</p>
+                <p className="mb-4 text-sm leading-relaxed text-slate-300">{report.audience}</p>
 
                 <div className={`mb-5 border-l-2 ${c.text.replace('text-', 'border-')} pl-4`}>
                   <p className={`mb-1 text-xs font-semibold ${c.text}`}>{excerpt.heading}</p>
-                  <p className="line-clamp-3 text-xs leading-relaxed text-gray-500">
+                  <p className="line-clamp-3 text-xs leading-relaxed text-slate-400">
                     {excerpt.body.split('\n\n')[0].replace(/\*\*(.*?)\*\*/g, '$1')}
                   </p>
                 </div>
@@ -153,10 +280,10 @@ export default function Home() {
                   {report.deliverables.slice(0, 3).map((d) => (
                     <div key={d.title} className="flex items-start gap-2 text-sm">
                       <span>{d.icon}</span>
-                      <span className="text-gray-400">{d.title}</span>
+                      <span className="text-slate-300">{d.title}</span>
                     </div>
                   ))}
-                  <p className="pl-6 text-xs text-gray-600">+ {report.deliverables.length - 3} more sections</p>
+                  <p className="pl-6 text-xs text-slate-500">+ {report.deliverables.length - 3} more sections</p>
                 </div>
 
                 <div className="mt-auto flex flex-col gap-2">
@@ -171,17 +298,17 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="guide" className="border-y border-gray-800 bg-gray-900 py-16">
+      <section id="guide" className="border-y border-white/10 bg-white/[0.03] py-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 text-center">
             <h2 className="mb-3 text-3xl font-bold text-white">Ask the AI guide</h2>
-            <p className="text-gray-400">Use the same expert framing that powers the reports and the news desk.</p>
-            <p className="mt-2 text-sm text-gray-500">
-              <Link href="/auth/login" className="text-blue-400 underline hover:text-blue-300">Sign in</Link>
+            <p className="text-slate-300">Use the same expert framing that powers the reports and the news desk.</p>
+            <p className="mt-2 text-sm text-slate-400">
+              <Link href="/auth/login" className="text-cyan-300 underline hover:text-cyan-200">Sign in</Link>
               {' '}for higher usage limits and full member access.
             </p>
           </div>
-          <div className="rounded-2xl border border-gray-700 bg-black/40 p-6">
+          <div className="rounded-[1.75rem] border border-white/10 bg-[#07111f]/90 p-6 shadow-[0_20px_60px_rgba(5,8,22,0.55)]">
             <ReportChat placeholder="What should I build first? Which frameworks are real? How do I avoid the common traps?" />
           </div>
         </div>
@@ -190,63 +317,63 @@ export default function Home() {
       <section id="consulting" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">Consulting</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">Consulting</p>
             <h2 className="mt-3 text-4xl font-bold text-white">Need hands-on help? Bring Michael in directly.</h2>
-            <p className="mt-4 text-lg leading-8 text-gray-400">
-              Offer strategy, architecture review, deployment design, implementation rescue, and executive briefings for teams building serious agent systems.
+            <p className="mt-4 text-lg leading-8 text-slate-300">
+              Strategy, architecture review, deployment design, implementation rescue, and executive briefings for teams building serious agent systems.
             </p>
-            <div className="mt-6 space-y-3 text-sm text-gray-300">
+            <div className="mt-6 space-y-3 text-sm text-slate-300">
               <p>• AI agent product strategy and market positioning</p>
               <p>• Workflow and multi-agent architecture reviews</p>
               <p>• High-trust implementation plans for internal teams and clients</p>
               <p>• Rapid audits of reliability, observability, and deployment risk</p>
             </div>
           </div>
-          <div className="rounded-2xl border border-gray-800 bg-gray-900/70 p-6">
+          <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
             <ConsultingForm />
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-5xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between gap-4">
           <div>
             <h2 className="mb-2 text-2xl font-bold text-white">Report History</h2>
-            <p className="text-sm text-gray-400">Every version archived. Subscribers get access to the full history.</p>
+            <p className="text-sm text-slate-400">Every version archived. Subscribers get access to the full history.</p>
           </div>
-          <Link href="/research/history" className="text-sm font-semibold text-blue-400 hover:text-blue-300">
+          <Link href="/research/history" className="text-sm font-semibold text-cyan-300 hover:text-cyan-200">
             Full archive →
           </Link>
         </div>
-        <div className="divide-y divide-gray-800 rounded-xl border border-gray-800">
-          <div className="flex items-start justify-between p-5">
+        <div className="divide-y divide-white/10 overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03]">
+          <div className="flex items-start justify-between gap-4 p-5">
             <div>
-              <span className="mb-1 block text-xs font-mono text-gray-500">v1.0 · Mar 4, 2026</span>
+              <span className="mb-1 block text-xs font-mono text-slate-400">v1.0 · Mar 4, 2026</span>
               <p className="text-sm font-semibold text-white">Initial Launch — Three core operator reports</p>
-              <p className="mt-1 text-xs text-gray-500">Agent Setup in 60 Minutes · Single to Multi-Agent · Empirical Architecture</p>
+              <p className="mt-1 text-xs text-slate-400">Agent Setup in 60 Minutes · Single to Multi-Agent · Empirical Architecture</p>
             </div>
-            <span className="rounded border border-green-500/30 bg-green-900/50 px-2 py-1 text-xs text-green-300">Current</span>
+            <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2 py-1 text-xs text-emerald-200">Current</span>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-gray-800 py-10 text-center text-sm text-gray-500">
-        <p className="mb-3">© {new Date().getFullYear()} Rare Agent Work. Operator-grade AI research and news.</p>
+      <footer className="border-t border-white/10 py-10 text-center text-sm text-slate-400">
+        <p className="mb-3">© {new Date().getFullYear()} Rare Agent Work. Bespoke operator-grade AI research and news.</p>
         <div className="mb-3 flex flex-wrap justify-center gap-3 sm:gap-4">
-          <Link href="/news" className="transition-colors hover:text-gray-300">News Feed</Link>
-          <span className="text-gray-700">·</span>
-          <Link href="/models" className="transition-colors hover:text-gray-300">Model Leaderboard</Link>
-          <span className="text-gray-700">·</span>
-          <Link href="/digest" className="transition-colors hover:text-gray-300">Weekly Digest</Link>
-          <span className="text-gray-700">·</span>
-          <a href="#consulting" className="transition-colors hover:text-gray-300">Consulting</a>
+          <Link href="/news" className="transition-colors hover:text-white">News Feed</Link>
+          <span className="text-white/20">·</span>
+          <Link href="/models" className="transition-colors hover:text-white">Model Leaderboard</Link>
+          <span className="text-white/20">·</span>
+          <Link href="/digest" className="transition-colors hover:text-white">Weekly Digest</Link>
+          <span className="text-white/20">·</span>
+          <a href="#consulting" className="transition-colors hover:text-white">Consulting</a>
         </div>
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
-          <Link href="/research/history" className="transition-colors hover:text-gray-300">Report Archive</Link>
-          <span className="text-gray-700">·</span>
-          <Link href="/auth/login" className="transition-colors hover:text-gray-300">Sign In</Link>
-          <span className="text-gray-700">·</span>
-          <a href="mailto:hello@rareagent.work" className="transition-colors hover:text-gray-300">hello@rareagent.work</a>
+          <Link href="/research/history" className="transition-colors hover:text-white">Report Archive</Link>
+          <span className="text-white/20">·</span>
+          <Link href="/auth/login" className="transition-colors hover:text-white">Sign In</Link>
+          <span className="text-white/20">·</span>
+          <a href="mailto:hello@rareagent.work" className="transition-colors hover:text-white">hello@rareagent.work</a>
         </div>
       </footer>
     </div>

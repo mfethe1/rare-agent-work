@@ -81,7 +81,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
       </nav>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 lg:py-16">
-        <ConversionTracker kind="report" plan={report.planKey} value={reportValue} />
+        <ConversionTracker kind="report" plan={report.planKey} value={reportValue} slug={report.slug} />
 
         {/* Hero */}
         <div className="mb-12">

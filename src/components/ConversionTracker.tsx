@@ -1,24 +1,48 @@
 "use client";
 
 import { useEffect } from "react";
-import { trackPurchase } from "@/lib/analytics";
+import {
+  trackPurchase,
+  trackViewItem,
+  trackReportPreviewRead,
+} from "@/lib/analytics";
 
 interface ConversionTrackerProps {
   kind: "subscription" | "report";
   plan?: string;
   value?: number;
+  slug?: string;
 }
 
 export default function ConversionTracker({
   kind,
   plan,
   value = 0,
+  slug,
 }: ConversionTrackerProps) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const purchased = params.get("purchased") === "true";
     const subscribed = params.get("subscribed") === "true";
     const sessionId = params.get("session_id") || undefined;
+
+    // Always fire view_item for report pages (helps Google Ads build audiences)
+    if (kind === "report" && plan) {
+      trackViewItem(plan, value);
+    }
+
+    // Fire report_preview_read after 30s on page (engaged reader signal)
+    if (kind === "report" && slug) {
+      const readKey = `rarw_read_${slug}`;
+      if (!sessionStorage.getItem(readKey)) {
+        const timer = setTimeout(() => {
+          trackReportPreviewRead(slug);
+          sessionStorage.setItem(readKey, "1");
+        }, 30_000);
+        // eslint-disable-next-line consistent-return
+        return () => clearTimeout(timer);
+      }
+    }
 
     if ((kind === "report" && !purchased) || (kind === "subscription" && !subscribed)) {
       return;
@@ -41,7 +65,7 @@ export default function ConversionTracker({
     });
 
     sessionStorage.setItem(sentKey, "1");
-  }, [kind, plan, value]);
+  }, [kind, plan, value, slug]);
 
   return null;
 }

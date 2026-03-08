@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import AdsRemarketing from "@/components/AdsRemarketing";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -87,6 +88,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <AdsRemarketing />
         {/* Google Analytics 4 + Google Ads — single gtag.js load */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-7SLM9KDWZK"

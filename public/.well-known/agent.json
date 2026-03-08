@@ -6,6 +6,22 @@
   "logo": "https://rareagent.work/globe.svg",
   "contact": "hello@rareagent.work",
   "capabilities": {
+    "nlweb_ask": {
+      "description": "NLWeb-compatible natural language query endpoint. Ask questions about AI models, agent news, and research reports in plain English.",
+      "endpoint": "/api/v1/ask",
+      "methods": ["GET", "POST"],
+      "auth": "none",
+      "protocol": "nlweb",
+      "parameters": {
+        "q": "(GET) Natural language query string",
+        "query": "(POST) Natural language query string",
+        "prev": "(POST) Comma-separated previous queries for multi-turn context"
+      },
+      "examples": [
+        "GET /api/v1/ask?q=which model is best for tool use",
+        "POST /api/v1/ask {\"query\": \"cheapest model for coding\", \"prev\": \"which model is best for tool use\"}"
+      ]
+    },
     "models_leaderboard": {
       "description": "Agentic model rankings by tool use, context recall, coding ability, and cost",
       "endpoint": "/api/v1/models",

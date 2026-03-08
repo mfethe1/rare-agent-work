@@ -31,11 +31,18 @@ All Access Starter Plan: $29/mo — all reports + every future report, content u
 
 Structured JSON endpoints for programmatic access:
 
+- `GET/POST /api/v1/ask` — NLWeb natural language query endpoint. Ask any question about models, news, or reports in plain English. Supports multi-turn conversations.
 - `GET /api/v1/models` — Agentic model leaderboard (filterable, sortable)
 - `GET /api/v1/news` — Curated news feed with tag filters
 - `GET /api/v1/reports` — Report catalog with metadata and preview content
 - `GET /api/v1/openapi.json` — Full OpenAPI 3.1 specification
 - `GET /feed.xml` — RSS 2.0 feed for news
+
+### NLWeb /ask Examples
+- `GET /api/v1/ask?q=which model is best for tool use`
+- `POST /api/v1/ask` with `{"query": "cheapest model for coding", "prev": "which model is best"}`
+- `GET /api/v1/ask?q=latest news about openai`
+- `GET /api/v1/ask?q=what reports do you have on multi-agent systems`
 
 ## Agent Discovery
 

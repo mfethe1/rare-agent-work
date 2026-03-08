@@ -11,6 +11,51 @@ const spec = {
   },
   servers: [{ url: 'https://rareagent.work', description: 'Production' }],
   paths: {
+    '/api/v1/ask': {
+      get: {
+        operationId: 'askGet',
+        summary: 'NLWeb natural language query (GET)',
+        description: 'Ask questions about AI models, agent news, and research reports in natural language. Returns Schema.org JSON responses. NLWeb protocol compatible.',
+        parameters: [
+          { name: 'q', in: 'query', required: true, schema: { type: 'string', maxLength: 500 }, description: 'Natural language query' },
+        ],
+        responses: {
+          '200': {
+            description: 'NLWeb response with answer and Schema.org results',
+            content: { 'application/json': { schema: { type: 'object', properties: {
+              '@context': { type: 'string' },
+              query_id: { type: 'string' },
+              query: { type: 'string' },
+              answer: { type: 'string' },
+              results: { type: 'array', items: { type: 'object', properties: {
+                '@type': { type: 'string' },
+                url: { type: 'string', format: 'uri' },
+                name: { type: 'string' },
+                description: { type: 'string' },
+                score: { type: 'integer', minimum: 0, maximum: 100 },
+                schema_object: { type: 'object' },
+              }}},
+              protocol: { type: 'string', enum: ['nlweb'] },
+            }}}},
+          },
+        },
+      },
+      post: {
+        operationId: 'askPost',
+        summary: 'NLWeb natural language query (POST)',
+        description: 'Ask questions with optional multi-turn conversation context. NLWeb protocol compatible.',
+        requestBody: {
+          required: true,
+          content: { 'application/json': { schema: { type: 'object', required: ['query'], properties: {
+            query: { type: 'string', maxLength: 500, description: 'Natural language query' },
+            prev: { type: 'string', description: 'Comma-separated previous queries for multi-turn context' },
+          }}}},
+        },
+        responses: {
+          '200': { description: 'NLWeb response with answer and Schema.org results' },
+        },
+      },
+    },
     '/api/v1/models': {
       get: {
         operationId: 'getModels',

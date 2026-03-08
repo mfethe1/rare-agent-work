@@ -1,70 +1,79 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Homepage', () => {
-  test('loads without errors', async ({ page }) => {
+const reportRoutes = [
+  '/reports/agent-setup-60',
+  '/reports/single-to-multi-agent',
+  '/reports/empirical-agent-architecture',
+];
+
+test.describe('Production smoke', () => {
+  test('homepage loads without errors', async ({ page }) => {
     const response = await page.goto('/');
     expect(response?.status()).toBeLessThan(400);
   });
 
-  test('shows correct headline text', async ({ page }) => {
+  test('homepage shows current hero and current offer structure', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('h1')).toContainText('Operator-Grade AI Research');
+    await expect(page.locator('h1')).toContainText('rare agents doing real work');
+    await expect(page.locator('body')).toContainText('Newsletter');
+    await expect(page.locator('body')).toContainText('Operator Access');
+    await expect(page.locator('body')).toContainText('$10/mo');
+    await expect(page.locator('body')).toContainText('$49/mo');
   });
 
-  test('no "(HTML)" text visible to users', async ({ page }) => {
+  test('top navigation points to stable routes', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('a[href="/news"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/digest"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/reports"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/pricing"]').first()).toBeVisible();
+  });
+
+  test('homepage body does not expose raw markdown/UI placeholders', async ({ page }) => {
     await page.goto('/');
     const bodyText = await page.locator('body').textContent();
     expect(bodyText).not.toContain('(HTML)');
-  });
-
-  test('no ".md" file extensions visible to users', async ({ page }) => {
-    await page.goto('/');
-    const bodyText = await page.locator('body').textContent();
-    // Should not show raw markdown file extensions to users
     expect(bodyText).not.toMatch(/\.(md|markdown)\b/i);
-  });
-
-  test('report preview links work (no 404)', async ({ page }) => {
-    await page.goto('/');
-    // Collect all report preview links
-    const links = await page.locator('a[href^="/reports/"]').all();
-    expect(links.length).toBeGreaterThan(0);
-
-    for (const link of links.slice(0, 3)) {
-      const href = await link.getAttribute('href');
-      if (href) {
-        const res = await page.goto(href);
-        expect(res?.status()).toBeLessThan(400);
-        await page.goBack();
-      }
-    }
-  });
-
-  test('value prop section has no raw button labels', async ({ page }) => {
-    await page.goto('/');
-    const bodyText = await page.locator('body').textContent();
     expect(bodyText).not.toMatch(/Open Report \d+/i);
   });
 
-  test('sign in link is present', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.locator('a[href="/auth/login"]').first()).toBeVisible();
+  test('pricing page loads and shows canonical plans', async ({ page }) => {
+    const response = await page.goto('/pricing');
+    expect(response?.status()).toBeLessThan(400);
+    await expect(page.locator('body')).toContainText('Starter');
+    await expect(page.locator('body')).toContainText('Operator Access');
   });
 
-  test('free tier card shows correct features', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.locator('body')).toContainText('1 rotating report every 2 weeks');
-    await expect(page.locator('body')).toContainText('No signup required for previews');
+  test('news and digest pages load', async ({ page }) => {
+    for (const route of ['/news', '/digest']) {
+      const response = await page.goto(route);
+      expect(response?.status(), route).toBeLessThan(400);
+    }
   });
 
-  test('paid tier card shows AI guide', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.locator('body')).toContainText('AI Implementation Guide');
+  test('report index page loads', async ({ page }) => {
+    const response = await page.goto('/reports');
+    expect(response?.status()).toBeLessThan(400);
+    await expect(page.locator('body')).toContainText('Report');
   });
 
-  test('login page loads', async ({ page }) => {
-    const res = await page.goto('/auth/login');
-    expect(res?.status()).toBeLessThan(400);
+  test('report preview routes load without 404s', async ({ page }) => {
+    for (const route of reportRoutes) {
+      const response = await page.goto(route);
+      expect(response?.status(), route).toBeLessThan(400);
+    }
+  });
+
+  test('auth login page loads', async ({ page }) => {
+    const response = await page.goto('/auth/login');
+    expect(response?.status()).toBeLessThan(400);
     await expect(page.locator('body')).toContainText('Rare Agent Work');
+  });
+
+  test('core public APIs respond successfully', async ({ request }) => {
+    for (const route of ['/api/v1/models', '/api/v1/reports', '/api/v1/news']) {
+      const response = await request.get(route);
+      expect(response.status(), route).toBeLessThan(400);
+    }
   });
 });

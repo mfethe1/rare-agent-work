@@ -251,8 +251,8 @@ export default async function ModelDetailPage({ params }: PageProps) {
                 Rare Agent Work
               </Link>
               <div className="hidden sm:flex items-center gap-4">
-                <Link href="/news" className="text-gray-400 hover:text-white text-sm transition-colors">News</Link>
-                <Link href="/#catalog" className="text-gray-400 hover:text-white text-sm transition-colors">Reports</Link>
+                <Link href="/news" className="text-gray-400 hover:text-white text-sm transition-colors">News Feed</Link>
+                <Link href="/reports" className="text-gray-400 hover:text-white text-sm transition-colors">Reports</Link>
                 <Link href="/assessment" className="text-gray-400 hover:text-white text-sm transition-colors">Assessment</Link>
               </div>
             </div>

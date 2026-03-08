@@ -55,10 +55,10 @@ export default async function NewsPage({ searchParams }: PageProps) {
                 Rare Agent Work
               </Link>
               <div className="hidden items-center gap-4 sm:flex">
-                <Link href="/news" className="text-sm font-medium text-white">News</Link>
-                <Link href="/digest" className="text-sm text-gray-400 transition-colors hover:text-white">Digest</Link>
-                <Link href="/#catalog" className="text-sm text-gray-400 transition-colors hover:text-white">Reports</Link>
-                <Link href="/#consulting" className="text-sm text-gray-400 transition-colors hover:text-white">Consulting</Link>
+                <Link href="/news" className="text-sm font-medium text-white">News Feed</Link>
+                <Link href="/digest" className="text-sm text-gray-400 transition-colors hover:text-white">Weekly Digest</Link>
+                <Link href="/reports" className="text-sm text-gray-400 transition-colors hover:text-white">Reports</Link>
+                <Link href="/assessment" className="text-sm text-gray-400 transition-colors hover:text-white">Assessment</Link>
               </div>
             </div>
             <div className="flex items-center gap-2">

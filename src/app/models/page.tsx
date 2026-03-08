@@ -25,8 +25,8 @@ export default function ModelsPage() {
                 Rare Agent Work
               </Link>
               <div className="hidden items-center gap-4 sm:flex">
-                <Link href="/news" className="text-sm text-gray-400 transition-colors hover:text-white">News</Link>
-                <Link href="/#catalog" className="text-sm text-gray-400 transition-colors hover:text-white">Reports</Link>
+                <Link href="/news" className="text-sm text-gray-400 transition-colors hover:text-white">News Feed</Link>
+                <Link href="/reports" className="text-sm text-gray-400 transition-colors hover:text-white">Reports</Link>
                 <Link href="/assessment" className="text-sm text-gray-400 transition-colors hover:text-white">Assessment</Link>
               </div>
             </div>

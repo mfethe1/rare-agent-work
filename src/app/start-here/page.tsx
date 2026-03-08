@@ -93,7 +93,6 @@ export default function StartHerePage() {
             <div className="hidden items-center gap-4 sm:flex">
               <Link href="/start-here" className="text-sm font-medium text-white">Start Here</Link>
               <Link href="/news" className="text-sm text-gray-400 hover:text-white">News</Link>
-              <Link href="/models" className="text-sm text-gray-400 hover:text-white">Models</Link>
               <Link href="/assessment" className="text-sm text-gray-400 hover:text-white">Assessment</Link>
             </div>
           </div>
@@ -162,13 +161,13 @@ export default function StartHerePage() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">Recommended path</p>
             <ol className="mt-4 space-y-4 text-sm text-gray-300">
               <li>1. Start with the setup guide.</li>
-              <li>2. Compare models for your workload.</li>
-              <li>3. Follow the live news feed for platform drift.</li>
+              <li>2. Follow the live news feed for platform drift.</li>
+              <li>3. Read the operator reports for deeper evaluations.</li>
               <li>4. Use an assessment before scaling or buying tools.</li>
             </ol>
             <div className="mt-6 space-y-3">
-              <Link href="/models" className="block rounded-xl border border-gray-700 px-4 py-3 text-sm font-medium text-white hover:border-gray-500">
-                Compare models
+              <Link href="/reports/empirical-architecture" className="block rounded-xl border border-gray-700 px-4 py-3 text-sm font-medium text-white hover:border-gray-500">
+                Read the empirical report
               </Link>
               <Link href="/news" className="block rounded-xl border border-gray-700 px-4 py-3 text-sm font-medium text-white hover:border-gray-500">
                 Track platform changes

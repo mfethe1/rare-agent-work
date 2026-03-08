@@ -56,7 +56,6 @@ export default async function NewsPage({ searchParams }: PageProps) {
               </Link>
               <div className="hidden items-center gap-4 sm:flex">
                 <Link href="/news" className="text-sm font-medium text-white">News</Link>
-                <Link href="/models" className="text-sm text-gray-400 transition-colors hover:text-white">Models</Link>
                 <Link href="/digest" className="text-sm text-gray-400 transition-colors hover:text-white">Digest</Link>
                 <Link href="/#catalog" className="text-sm text-gray-400 transition-colors hover:text-white">Reports</Link>
                 <Link href="/#consulting" className="text-sm text-gray-400 transition-colors hover:text-white">Consulting</Link>

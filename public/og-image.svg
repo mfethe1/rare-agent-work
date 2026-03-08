@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#000000"/>
+  <rect x="0" y="0" width="1200" height="4" fill="#3b82f6"/>
+  <text x="100" y="200" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="800" fill="#ffffff">Rare Agent Work</text>
+  <text x="100" y="290" font-family="system-ui, -apple-system, sans-serif" font-size="36" fill="#3b82f6" font-weight="600">Operator-Grade AI Research</text>
+  <text x="100" y="370" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#9ca3af">Practical playbooks for AI agent setup,</text>
+  <text x="100" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#9ca3af">multi-agent orchestration, and production deployment.</text>
+  <rect x="100" y="470" width="200" height="50" rx="8" fill="#3b82f6"/>
+  <text x="130" y="502" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#ffffff" font-weight="600">Read Reports →</text>
+  <text x="100" y="580" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#6b7280">rareagent.work</text>
+</svg>

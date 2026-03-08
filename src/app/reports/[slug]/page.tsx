@@ -15,13 +15,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const report = getReport(slug);
   if (!report) return {};
+  const url = `https://rareagent.work/reports/${slug}`;
   return {
-    title: `${report.title} | Rare Agent Work`,
+    title: report.title,
     description: `${report.subtitle}. ${report.valueprop}`,
+    keywords: [
+      report.title,
+      "AI agent report",
+      "operator playbook",
+      ...report.deliverables.map((d) => d.title),
+    ],
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
-      title: `${report.title} — Rare Agent Work`,
-      description: report.valueprop,
-      url: `https://rareagent.work/reports/${slug}`,
+      title: `${report.title} — ${report.price}`,
+      description: `${report.subtitle}. ${report.valueprop}`,
+      url,
       siteName: "Rare Agent Work",
       type: "article",
       locale: "en_US",
@@ -30,9 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: "summary_large_image" as const,
       title: report.title,
       description: report.subtitle,
-    },
-    alternates: {
-      canonical: `https://rareagent.work/reports/${slug}`,
+      images: ["/og-image.png"],
     },
   };
 }
@@ -81,7 +89,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
       </nav>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 lg:py-16">
-        <ConversionTracker kind="report" plan={report.planKey} value={reportValue} />
+        <ConversionTracker kind="report" plan={report.planKey} value={reportValue} slug={report.slug} />
 
         {/* Hero */}
         <div className="mb-12">

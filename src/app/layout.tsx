@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import AdsRemarketing from "@/components/AdsRemarketing";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -34,19 +35,28 @@ export const metadata: Metadata = {
     "agent evaluation",
   ],
   openGraph: {
-    title: "Rare Agent Work — Operator-Grade AI Research",
+    title: "Rare Agent Work — Operator-Grade AI Agent Research",
     description:
-      "Practical reports on low-code automation, multi-agent systems, and empirical deployment standards. Not tutorials — operator playbooks.",
+      "Production-tested playbooks for AI agent setup, multi-agent orchestration, and deployment evaluation. Not tutorials — operator playbooks built from real implementations.",
     url: "https://rareagent.work",
     siteName: "Rare Agent Work",
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Rare Agent Work — Operator-Grade AI Research",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rare Agent Work — Operator-Grade AI Research",
+    title: "Rare Agent Work — Operator-Grade AI Agent Research",
     description:
-      "Operator playbooks for AI automation, multi-agent orchestration, and production deployment.",
+      "Production-tested playbooks for AI agent setup, multi-agent orchestration, and deployment evaluation.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -65,6 +75,10 @@ export const metadata: Metadata = {
       "application/rss+xml": "https://rareagent.work/feed.xml",
     },
   },
+  icons: {
+    icon: "/logo-seal-bw.jpg",
+    apple: "/logo-badge-color.jpg",
+  },
 };
 
 export default function RootLayout({
@@ -78,6 +92,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <AdsRemarketing />
         {/* Google Analytics 4 + Google Ads — single gtag.js load */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-7SLM9KDWZK"

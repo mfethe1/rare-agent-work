@@ -23,6 +23,15 @@ const nextConfig: NextConfig = {
           { key: "Access-Control-Allow-Headers", value: "Content-Type" },
         ],
       },
+      {
+        // CORS for NLWeb /ask endpoint
+        source: "/ask",
+        headers: [
+          { key: "Access-Control-Allow-Origin", value: "*" },
+          { key: "Access-Control-Allow-Methods", value: "GET, OPTIONS" },
+          { key: "Access-Control-Allow-Headers", value: "Content-Type" },
+        ],
+      },
     ];
   },
 };

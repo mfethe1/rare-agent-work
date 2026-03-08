@@ -24,16 +24,17 @@ ${reports.map(r => `- [${r.title}](https://rareagent.work/reports/${r.slug}): ${
 - [Weekly Digest](https://rareagent.work/digest): Executive summary of the week's most important AI agent developments.
 - [Report History](https://rareagent.work/research/history): Every version archived.
 
+## Natural Language Query (NLWeb)
+- [GET /ask?q=your question](https://rareagent.work/ask): Ask anything about models, news, reports, or the digest in natural language. Returns structured JSON with answer + citations.
+- Examples: /ask?q=which model is best for tool use, /ask?q=latest security news, /ask?q=what reports do you offer
+
 ## API Endpoints (JSON)
 - [GET /api/news](https://rareagent.work/api/news): Curated AI agent news feed. Supports ?tag= filter.
 - [GET /api/models](https://rareagent.work/api/models): Model leaderboard data. Supports ?sort= (tool_use, context_recall, coding, cost).
 - [GET /api/reports](https://rareagent.work/api/reports): Report catalog metadata and preview content.
 - [GET /api/digest](https://rareagent.work/api/digest): Latest weekly digest in structured format.
-
-## MCP Integration
-This site exposes an MCP-compatible tool server for AI agents:
-- Endpoint: https://rareagent.work/api/mcp
-- Capabilities: search_news, get_model_rankings, get_report_preview, get_digest
+- [GET /api/openapi.json](https://rareagent.work/api/openapi.json): Full OpenAPI 3.1 specification.
+- [GET /feed.xml](https://rareagent.work/feed.xml): RSS feed of curated AI agent news.
 
 ## Topics Covered
 - AI agent frameworks (CrewAI, LangGraph, AutoGen, OpenAI Swarm)

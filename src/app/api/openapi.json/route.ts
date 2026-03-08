@@ -215,6 +215,52 @@ export async function GET() {
           },
         },
       },
+      '/ask': {
+        get: {
+          operationId: 'askNaturalLanguage',
+          summary: 'Natural language query (NLWeb protocol)',
+          description:
+            'Ask any question about AI models, agent news, reports, or the weekly digest in natural language. Returns a structured JSON response with an answer and source citations. NLWeb-compatible.',
+          parameters: [
+            {
+              name: 'q',
+              in: 'query',
+              required: true,
+              schema: { type: 'string' },
+              description: 'Natural language question (e.g., "which model is best for tool use?")',
+            },
+          ],
+          responses: {
+            '200': {
+              description: 'Structured answer with citations',
+              content: {
+                'application/json': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      '@context': { type: 'string' },
+                      '@type': { type: 'string' },
+                      query: { type: 'string' },
+                      answer: { type: 'string' },
+                      results: { type: 'array', items: { type: 'object' } },
+                      sources: { type: 'array', items: { type: 'string', format: 'uri' } },
+                      site: {
+                        type: 'object',
+                        properties: {
+                          name: { type: 'string' },
+                          url: { type: 'string', format: 'uri' },
+                          description: { type: 'string' },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            '429': { description: 'Rate limit exceeded' },
+          },
+        },
+      },
     },
   };
 

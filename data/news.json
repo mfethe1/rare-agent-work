@@ -226,5 +226,60 @@
     "upvotes": 0,
     "clicks": 0,
     "createdAt": "2026-03-07T16:34:34.678Z"
+  },
+  {
+    "title": "Meta to Acquire Manus, Chinese-Founded General AI Agent Startup Valued at $2-3 Billion",
+    "summary": "Meta is set to buy Singapore-based Manus, a general-purpose AI agent startup that autonomously executes tasks and claims to outperform OpenAI's DeepResearch, to scale AI agents across Facebook, Instagram, Meta AI, and WhatsApp SMB tools. Manus recently hit $100 million ARR just eight months post-launch.",
+    "url": "https://www.marketingprofs.com/opinions/2026/54159/ai-update-january-9-2026-ai-news-and-views-from-the-past-three-weeks",
+    "source": "MarketingProfs",
+    "category": "Business Acquisition",
+    "tags": [
+      "Meta",
+      "AI Agents",
+      "Acquisition",
+      "Autonomous AI"
+    ],
+    "publishedAt": "2026-03-09T14:20:00Z",
+    "id": "a9ee8778-6f99-4908-9dd5-c853b98cd544",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-09T14:23:28.844Z"
+  },
+  {
+    "title": "Palo Alto Networks Warns AI Agents as 2026's Biggest Insider Threat to Enterprises",
+    "summary": "Palo Alto Networks' Chief Security Intel Officer states AI agents will become the top insider threat in 2026, with 40% of enterprise apps integrating them by year-end. While aiding defense like threat analysis, they amplify attacker capabilities, urging strict access controls.",
+    "url": "https://www.theregister.com/2026/01/04/ai_agents_insider_threats_panw/",
+    "source": "The Register",
+    "category": "Cybersecurity",
+    "tags": [
+      "AI Agents",
+      "Security Risks",
+      "Insider Threat",
+      "Enterprise"
+    ],
+    "publishedAt": "2026-03-09T12:00:00Z",
+    "id": "50c596ad-6c34-46b1-a3ea-3b85e1360025",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-09T14:23:28.845Z"
+  },
+  {
+    "title": "Gmail Integrates Gemini 3 AI as Proactive Personal Assistant with Advanced Drafting and Search",
+    "summary": "Google is enhancing Gmail with Gemini 3-powered tools, including Help Me Write for style-aware drafting and real-time refinements, plus conversational search for Pro/Ultra subscribers to gain inbox insights, transforming email into a proactive assistant.",
+    "url": "https://www.marketingprofs.com/opinions/2026/54159/ai-update-january-9-2026-ai-news-and-views-from-the-past-three-weeks-2",
+    "source": "MarketingProfs",
+    "category": "Product Update",
+    "tags": [
+      "Google",
+      "Gemini 3",
+      "LLM",
+      "Gmail",
+      "AI Assistant"
+    ],
+    "publishedAt": "2026-03-09T10:00:00Z",
+    "id": "2eddbe48-bcb9-4164-9f23-d7c66533a6c2",
+    "upvotes": 0,
+    "clicks": 0,
+    "createdAt": "2026-03-09T14:23:28.845Z"
   }
 ]

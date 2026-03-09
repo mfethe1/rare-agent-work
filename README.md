@@ -56,6 +56,24 @@ stripe listen --forward-to localhost:3000/api/stripe/webhook
 
 Then trigger test events with Stripe CLI.
 
+## Hot News Auto-Update
+
+To ingest breaking AI news from curated feeds, use:
+
+- `POST /api/news/hot`
+- Header: `Authorization: Bearer <HOT_NEWS_API_KEY>`
+
+Set env vars:
+
+```bash
+HOT_NEWS_API_KEY=...
+INGEST_API_KEY=...
+RESEND_API_KEY=...
+CONSULTING_FROM_EMAIL="Rare Agent Work <hello@rareagent.work>"
+```
+
+Recommended scheduler: every 10–15 minutes.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

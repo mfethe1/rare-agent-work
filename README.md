@@ -12,6 +12,20 @@ npm run dev
 
 Open http://localhost:3000.
 
+## Production verification
+
+Fast production smoke against the live site:
+
+```bash
+npm run test:prod
+```
+
+Include repo unit/integration tests too:
+
+```bash
+RUN_UNIT=1 npm run test:prod
+```
+
 ## Tracking + conversion setup
 
 Set these env vars in `.env.local` and production:

@@ -120,45 +120,23 @@ export default function Home() {
 
           <div className="relative">
             <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-cyan-400/20 via-transparent to-fuchsia-400/20 blur-2xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 p-4 shadow-2xl backdrop-blur-xl">
-              <div className="mb-4 flex items-center justify-between rounded-2xl border border-white/10 bg-[#07111f] px-4 py-3">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">Brand system</p>
-                  <p className="mt-1 text-lg font-semibold text-white">Rare Agent Work</p>
-                </div>
-                <div className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200">
-                  Live refresh
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-[1.1fr_0.9fr]">
-                <div className="relative min-h-[24rem] overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#091426]">
-                  <Image
-                    src="/logos/Gemini_Generated_Image_osb757osb757osb7.jpg"
-                    alt="Rare Agent Work signature emblem"
-                    fill
-                    className="object-contain"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Autonomous Operations</p>
-                    <p className="mt-2 text-xl font-semibold text-white">Daily AI intelligence driven by agentic research</p>
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 shadow-2xl backdrop-blur-xl">
+              <div className="relative min-h-[400px] w-full lg:min-h-[600px]">
+                <Image
+                  src="/logos/Gemini_Generated_Image_osb757osb757osb7.jpg"
+                  alt="Rare Agent Work signature emblem"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200 backdrop-blur-md mb-4">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Live refresh
                   </div>
-                </div>
-
-                <div className="grid gap-4">
-                  {featuredLogos.map((logo) => (
-                    <div key={logo.src} className="group relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#091426]">
-                      <div className="relative h-32 w-full">
-                        <Image src={logo.src} alt={logo.alt} fill className="object-contain transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 24vw" />
-                      </div>
-                      <div className="border-t border-white/10 p-3">
-                        <p className="text-sm font-medium text-white">{logo.caption}</p>
-                      </div>
-                    </div>
-                  ))}
+                  <h2 className="text-3xl font-bold text-white lg:text-5xl">Autonomous Operations</h2>
+                  <p className="mt-3 max-w-xl text-lg text-slate-300 lg:text-xl">Daily AI intelligence driven by agentic research.</p>
                 </div>
               </div>
             </div>
@@ -168,19 +146,19 @@ export default function Home() {
 
       <section className="border-y border-white/10 bg-white/[0.03] py-14 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div className="grid gap-5 lg:grid-cols-2 lg:items-center">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300">Operator-first design</p>
               <h2 className="mt-3 text-3xl font-bold text-white">Built for technical leaders, not just AI enthusiasts</h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
+              <p className="mt-4 max-w-xl text-base leading-7 text-slate-300">
                 Our platform delivers actionable intelligence through a bespoke editorial experience. We synthesize signal from noise across academic research, community discussions, and official channels, giving operators the clarity they need to deploy agents in production.
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2">
               {featuredLogos.map((logo) => (
-                <div key={`${logo.src}-tile`} className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#081120] p-2">
-                  <div className="relative h-48 overflow-hidden rounded-[1.1rem]">
-                    <Image src={logo.src} alt={logo.alt} fill className="object-contain" sizes="(max-width: 1024px) 33vw, 20vw" />
+                <div key={`${logo.src}-tile`} className="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#081120] transition-all hover:border-cyan-400/30 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)]">
+                  <div className="relative aspect-square w-full">
+                    <Image src={logo.src} alt={logo.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 1024px) 50vw, 25vw" />
                   </div>
                 </div>
               ))}

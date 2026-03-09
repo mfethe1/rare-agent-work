@@ -137,14 +137,14 @@ export default function Home() {
                     src="/logos/Gemini_Generated_Image_osb757osb757osb7.jpg"
                     alt="Rare Agent Work signature emblem"
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-transparent to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Signature mark</p>
-                    <p className="mt-2 text-xl font-semibold text-white">A more ownable visual system for RareAgent.work</p>
+                    <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/80">Autonomous Operations</p>
+                    <p className="mt-2 text-xl font-semibold text-white">Daily AI intelligence driven by agentic research</p>
                   </div>
                 </div>
 
@@ -152,7 +152,7 @@ export default function Home() {
                   {featuredLogos.map((logo) => (
                     <div key={logo.src} className="group relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[#091426]">
                       <div className="relative h-32 w-full">
-                        <Image src={logo.src} alt={logo.alt} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 24vw" />
+                        <Image src={logo.src} alt={logo.alt} fill className="object-contain transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 24vw" />
                       </div>
                       <div className="border-t border-white/10 p-3">
                         <p className="text-sm font-medium text-white">{logo.caption}</p>
@@ -170,18 +170,17 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300">Brand direction</p>
-              <h2 className="mt-3 text-3xl font-bold text-white">From generic landing page to something with a point of view</h2>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300">Operator-first design</p>
+              <h2 className="mt-3 text-3xl font-bold text-white">Built for technical leaders, not just AI enthusiasts</h2>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
-                The new visual treatment uses the uploaded Rare Agent figures as editorial anchors: premium marks, metallic medallions,
-                and a darker palette that feels closer to an operator publication than a default startup template.
+                Our platform delivers actionable intelligence through a bespoke editorial experience. We synthesize signal from noise across academic research, community discussions, and official channels, giving operators the clarity they need to deploy agents in production.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {featuredLogos.map((logo) => (
                 <div key={`${logo.src}-tile`} className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#081120] p-2">
                   <div className="relative h-48 overflow-hidden rounded-[1.1rem]">
-                    <Image src={logo.src} alt={logo.alt} fill className="object-cover" sizes="(max-width: 1024px) 33vw, 20vw" />
+                    <Image src={logo.src} alt={logo.alt} fill className="object-contain" sizes="(max-width: 1024px) 33vw, 20vw" />
                   </div>
                 </div>
               ))}

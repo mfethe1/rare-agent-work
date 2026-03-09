@@ -12,23 +12,7 @@ const colorMap: Record<string, { border: string; text: string; btn: string }> = 
   purple: { border: 'border-fuchsia-400/20', text: 'text-fuchsia-300', btn: 'bg-fuchsia-500 hover:bg-fuchsia-400' },
 };
 
-const featuredLogos = [
-  {
-    src: '/logos/Gemini_Generated_Image_8fgn98fgn98fgn98.jpg',
-    alt: 'Rare Agent Work logo concept with luminous geometric framing',
-    caption: 'Signal-rich visual identity',
-  },
-  {
-    src: '/logos/Gemini_Generated_Image_b1ebffb1ebffb1eb.jpg',
-    alt: 'Rare Agent Work crest concept in a futuristic editorial style',
-    caption: 'Editorial, premium, unmistakably ours',
-  },
-  {
-    src: '/logos/Gemini_Generated_Image_mtgvo9mtgvo9mtgv.jpg',
-    alt: 'Rare Agent Work medallion concept with metallic finish',
-    caption: 'Built for a premium operator brand',
-  },
-];
+
 
 export default function Home() {
   const reports = getAllReports();
@@ -144,25 +128,163 @@ export default function Home() {
         </section>
       </main>
 
-      <section className="border-y border-white/10 bg-white/[0.03] py-14 backdrop-blur-sm">
+      <section className="border-y border-white/10 bg-white/[0.03] py-20 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-5 lg:grid-cols-2 lg:items-center">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300">Operator-first design</p>
-              <h2 className="mt-3 text-3xl font-bold text-white">Built for technical leaders, not just AI enthusiasts</h2>
-              <p className="mt-4 max-w-xl text-base leading-7 text-slate-300">
-                Our platform delivers actionable intelligence through a bespoke editorial experience. We synthesize signal from noise across academic research, community discussions, and official channels, giving operators the clarity they need to deploy agents in production.
-              </p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {featuredLogos.map((logo) => (
-                <div key={`${logo.src}-tile`} className="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#081120] transition-all hover:border-cyan-400/30 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)]">
-                  <div className="relative aspect-square w-full">
-                    <Image src={logo.src} alt={logo.alt} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 1024px) 50vw, 25vw" />
+          <header className="mb-16 text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300">Platform Capabilities</p>
+            <h2 className="mt-3 text-4xl font-bold text-white md:text-5xl">Three ways to accelerate your agent practice</h2>
+            <p className="mx-auto mt-4 max-w-3xl text-lg leading-8 text-slate-300">
+              From real-time intelligence to implementation expertise, Rare Agent Work delivers the clarity and support technical leaders need to ship production-grade agentic systems.
+            </p>
+          </header>
+
+          <div className="grid gap-8 lg:grid-cols-3">
+            {/* Daily Intelligence Feed */}
+            <article className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-cyan-500/5 to-transparent backdrop-blur-sm transition-all hover:border-cyan-400/30 hover:shadow-[0_0_40px_rgba(34,211,238,0.15)]">
+              <div className="relative h-64 w-full overflow-hidden">
+                <Image
+                  src="/logos/Gemini_Generated_Image_e39wpje39wpje39w.jpg"
+                  alt="Real-time intelligence monitoring for AI agent systems"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/60 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-xs font-semibold text-cyan-200 backdrop-blur-md">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400" />
+                    Live updates
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-white">Daily Intelligence Feed</h3>
+                <p className="mt-3 text-base leading-7 text-slate-300">
+                  Stay ahead of the curve with curated, operator-grade news synthesized from academic research, framework releases, and community breakthroughs. Every story is filtered for signal, not hype.
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-slate-300">
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-cyan-400">✓</span>
+                    <span>Real-time updates on model releases, framework changes, and deployment patterns</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-cyan-400">✓</span>
+                    <span>AI-powered context panel for instant technical deep-dives</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-cyan-400">✓</span>
+                    <span>Weekly digest delivered to subscribers with actionable takeaways</span>
+                  </li>
+                </ul>
+                <div className="mt-8">
+                  <Link
+                    href="/news"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-300 transition-colors hover:text-cyan-200"
+                  >
+                    Explore the news feed
+                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
+
+            {/* Deep-Dive Reports */}
+            <article className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-fuchsia-500/5 to-transparent backdrop-blur-sm transition-all hover:border-fuchsia-400/30 hover:shadow-[0_0_40px_rgba(217,70,239,0.15)]">
+              <div className="relative h-64 w-full overflow-hidden">
+                <Image
+                  src="/logos/Gemini_Generated_Image_b1ebffb1ebffb1eb.jpg"
+                  alt="Comprehensive research reports for agentic architecture"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/60 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-fuchsia-400/30 bg-fuchsia-400/10 px-3 py-1 text-xs font-semibold text-fuchsia-200 backdrop-blur-md">
+                    <span className="text-fuchsia-400">📚</span>
+                    Reference library
+                  </div>
+                </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-white">Deep-Dive Reports</h3>
+                <p className="mt-3 text-base leading-7 text-slate-300">
+                  Operator-grade implementation playbooks that cut through the noise. From single-agent setup to multi-agent orchestration, get the architectural guidance you need to build with confidence.
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-slate-300">
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-fuchsia-400">✓</span>
+                    <span>Battle-tested patterns for production deployment and reliability</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-fuchsia-400">✓</span>
+                    <span>Framework comparisons with real-world performance benchmarks</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-fuchsia-400">✓</span>
+                    <span>Decision trees for tool selection, observability, and cost optimization</span>
+                  </li>
+                </ul>
+                <div className="mt-8">
+                  <Link
+                    href="/reports"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-fuchsia-300 transition-colors hover:text-fuchsia-200"
+                  >
+                    Browse the report catalog
+                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
+
+            {/* Enterprise Implementation */}
+            <article className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-emerald-500/5 to-transparent backdrop-blur-sm transition-all hover:border-emerald-400/30 hover:shadow-[0_0_40px_rgba(16,185,129,0.15)]">
+              <div className="relative h-64 w-full overflow-hidden">
+                <Image
+                  src="/logos/Gemini_Generated_Image_mtgvo9mtgvo9mtgv.jpg"
+                  alt="Enterprise consulting for AI agent implementation"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-[#050816]/60 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200 backdrop-blur-md">
+                    <span className="text-emerald-400">🤝</span>
+                    Direct access
+                  </div>
+                </div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-white">Enterprise Implementation</h3>
+                <p className="mt-3 text-base leading-7 text-slate-300">
+                  Bring Michael in for hands-on strategy, architecture review, and deployment design. Perfect for teams that need expert guidance to de-risk their agent roadmap and accelerate time-to-production.
+                </p>
+                <ul className="mt-6 space-y-3 text-sm text-slate-300">
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-emerald-400">✓</span>
+                    <span>Product strategy and market positioning for agent-powered offerings</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-emerald-400">✓</span>
+                    <span>Multi-agent workflow design and reliability audits</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-0.5 text-emerald-400">✓</span>
+                    <span>Executive briefings and technical decision support</span>
+                  </li>
+                </ul>
+                <div className="mt-8">
+                  <Link
+                    href="/assessment"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-300 transition-colors hover:text-emerald-200"
+                  >
+                    Request consulting
+                    <span className="transition-transform group-hover:translate-x-1">→</span>
+                  </Link>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>

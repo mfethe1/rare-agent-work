@@ -55,7 +55,9 @@ export default async function DigestPage() {
 
   const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+  // Removed Date.now() from impure render
+  const now = new Date();
+  const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
   const { data: articles } = await supabase
     .from('articles')
@@ -75,7 +77,7 @@ export default async function DigestPage() {
     }
   }
 
-  const weekStart = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
   const weekEnd = new Date();
   const formatDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 

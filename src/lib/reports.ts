@@ -1,3 +1,9 @@
+export interface ReportCitation {
+  label: string;
+  url: string;
+  accessedAt: string;
+}
+
 export interface Report {
   slug: string;
   planKey: string;
@@ -7,6 +13,16 @@ export interface Report {
   priceLabel: string;
   audience: string;
   valueprop: string;
+  edition: string;
+  revision: string;
+  updatedAt: string;
+  freshnessTimestamp: string;
+  readingTime: string;
+  emailAccent?: string;
+  executiveSummary: string;
+  actionSteps: string[];
+  risks: string[];
+  citations: ReportCitation[];
   deliverables: { icon: string; title: string; desc: string }[];
   excerpt: { heading: string; body: string }[];
   chatPlaceholder: string;
@@ -23,6 +39,30 @@ export const reports: Record<string, Report> = {
     priceLabel: 'one-time',
     audience: 'Founders, operators, and non-technical teams launching their first workflow',
     valueprop: 'Build a production-safe AI workflow with human approval gates in under 60 minutes — without writing code.',
+    edition: 'Operator Playbook Edition',
+    revision: 'Rev 2.1',
+    updatedAt: '2026-03-09',
+    freshnessTimestamp: '2026-03-09T15:00:00-04:00',
+    readingTime: '18 minute brief + implementation worksheet',
+    emailAccent: '#2563eb',
+    executiveSummary:
+      'Most first-time automation teams fail because they automate a vague process, pick the wrong platform, and skip human approval checkpoints. This brief fixes that by forcing scope lock, tool-fit discipline, and explicit rollback design before any workflow goes live.',
+    actionSteps: [
+      'Use the platform decision matrix before building anything; tool choice is a cost and reliability decision, not a branding decision.',
+      'Define trigger, output, and approval checkpoints in plain English before opening Zapier, Make, n8n, or Relevance AI.',
+      'Run at least three real production-like test cases and document rollback paths for every irreversible action.',
+    ],
+    risks: [
+      'Teams often test with sample payloads and miss real-world edge cases that break week-one launches.',
+      'Approval gates added too late create unsafe automations that can send email, create records, or charge cards without oversight.',
+      'Low-code stacks can sprawl quickly if naming conventions, ownership, and failure handling are not defined up front.',
+    ],
+    citations: [
+      { label: 'Zapier product overview', url: 'https://zapier.com/', accessedAt: '2026-03-09' },
+      { label: 'Make product overview', url: 'https://www.make.com/en', accessedAt: '2026-03-09' },
+      { label: 'n8n product overview', url: 'https://n8n.io/', accessedAt: '2026-03-09' },
+      { label: 'Relevance AI platform overview', url: 'https://relevanceai.com/', accessedAt: '2026-03-09' },
+    ],
     deliverables: [
       { icon: '⚡', title: 'Platform Selection Guide', desc: 'Zapier vs Make vs n8n vs Relevance AI — exact criteria for your use case, budget, and team size.' },
       { icon: '🗺️', title: '60-Minute Implementation Timeline', desc: 'Phase-by-phase breakdown: scoping (10min), trigger setup (15min), action chain (20min), approval gates + test (15min).' },
@@ -72,6 +112,30 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
     priceLabel: 'one-time',
     audience: 'Engineering teams and technical leads scaling execution across multiple workflows',
     valueprop: 'Architect a coordinated multi-agent system with proper memory layers, role separation, and production-safe failure handling.',
+    edition: 'Systems Architecture Edition',
+    revision: 'Rev 2.1',
+    updatedAt: '2026-03-09',
+    freshnessTimestamp: '2026-03-09T15:00:00-04:00',
+    readingTime: '24 minute architecture brief + deployment blueprint',
+    emailAccent: '#16a34a',
+    executiveSummary:
+      'Teams should not jump to multi-agent architecture because it sounds advanced. They should do it when workload diversity, context volume, and review requirements justify explicit planner, executor, and reviewer roles backed by memory and observability.',
+    actionSteps: [
+      'Map current tasks by ambiguity, latency sensitivity, and required domain expertise before splitting a single agent into multiple roles.',
+      'Implement L1 conversation memory, L2 summarized sessions, and L3 persistent retrieval before scaling coordination.',
+      'Measure trajectory efficiency, not just final outputs, so expensive or looping agent behavior is caught early.',
+    ],
+    risks: [
+      'Multi-agent systems often add coordination overhead without improving user outcomes if task routing is shallow.',
+      'Weak memory architecture causes agents to repeat work, lose context, and produce inconsistent advice across sessions.',
+      'Output-only evaluation hides wasteful tool trajectories that increase latency, error surface, and operating cost.',
+    ],
+    citations: [
+      { label: 'CrewAI documentation', url: 'https://docs.crewai.com/', accessedAt: '2026-03-09' },
+      { label: 'LangGraph documentation', url: 'https://langchain-ai.github.io/langgraph/', accessedAt: '2026-03-09' },
+      { label: 'Microsoft AutoGen documentation', url: 'https://microsoft.github.io/autogen/', accessedAt: '2026-03-09' },
+      { label: 'OpenAI Swarm repository', url: 'https://github.com/openai/swarm', accessedAt: '2026-03-09' },
+    ],
     deliverables: [
       { icon: '🔬', title: 'Framework Comparison Matrix', desc: 'CrewAI vs LangGraph vs AutoGen vs OpenAI Swarm — production-readiness, memory support, learning curve, cost model.' },
       { icon: '🧠', title: 'Three-Tier Memory Architecture', desc: 'L1 conversation buffer, L2 session summarization, L3 persistent vector store. Blueprint for agents that actually remember.' },
@@ -115,6 +179,30 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
     priceLabel: 'one-time',
     audience: 'Technical leaders, architects, and B2B operators deploying AI at scale',
     valueprop: 'Build a defensible, reproducible evaluation protocol and governance framework for production AI systems.',
+    edition: 'McKinsey-Style Strategic Brief',
+    revision: 'Rev 2.1',
+    updatedAt: '2026-03-09',
+    freshnessTimestamp: '2026-03-09T15:00:00-04:00',
+    readingTime: '32 minute strategy brief + governance scorecard',
+    emailAccent: '#7c3aed',
+    executiveSummary:
+      'Most agent evaluation programs fail because they benchmark demos instead of operating reality. The winning approach is a reproducible measurement system that evaluates trajectories, calibrates judge models, and enforces governance before production incidents make those gaps expensive.',
+    actionSteps: [
+      'Build evaluation sets from real production distributions, including ambiguous prompts, edge cases, and failure-prone tasks.',
+      'Calibrate LLM-as-judge outputs against human review on a representative sample before trusting automated scores.',
+      'Add governance gates for idempotency, prompt-injection resilience, rate limiting, PII handling, rollback, and audit logs before launch.',
+    ],
+    risks: [
+      'Curated benchmark sets create false confidence and hide the actual production error envelope.',
+      'Judge-model bias can reward verbose, confident answers even when they are inefficient or wrong.',
+      'Teams that track final outputs only miss trajectory waste that drives cost, latency, and incident exposure.',
+    ],
+    citations: [
+      { label: 'Anthropic research and product documentation', url: 'https://www.anthropic.com/research', accessedAt: '2026-03-09' },
+      { label: 'OpenAI cookbook and eval guidance', url: 'https://cookbook.openai.com/', accessedAt: '2026-03-09' },
+      { label: 'LangSmith evaluation documentation', url: 'https://docs.smith.langchain.com/evaluation', accessedAt: '2026-03-09' },
+      { label: 'NIST AI Risk Management Framework', url: 'https://www.nist.gov/itl/ai-risk-management-framework', accessedAt: '2026-03-09' },
+    ],
     deliverables: [
       { icon: '📐', title: 'Evaluation Protocol Template', desc: 'Task decomposition accuracy, tool use precision, hallucination rate, latency P95 — complete measurement framework.' },
       { icon: '⚖️', title: 'LLM-as-Judge Calibration Guide', desc: 'Inter-rater reliability scoring, bias correction checklist, and calibration procedure for consistent evaluation.' },

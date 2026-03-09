@@ -23,6 +23,14 @@ describe('getReport()', () => {
       price: expect.any(String),
       priceLabel: expect.any(String),
       audience: expect.any(String),
+      edition: expect.any(String),
+      revision: expect.any(String),
+      updatedAt: expect.any(String),
+      freshnessTimestamp: expect.any(String),
+      executiveSummary: expect.any(String),
+      actionSteps: expect.any(Array),
+      risks: expect.any(Array),
+      citations: expect.any(Array),
       deliverables: expect.any(Array),
       excerpt: expect.any(Array),
       color: expect.any(String),
@@ -82,6 +90,15 @@ describe('planKey mapping', () => {
         expect(d.icon).toBeTruthy();
         expect(d.title).toBeTruthy();
       }
+    }
+  });
+
+  it('each report has citations, action steps, and risks for premium review delivery', () => {
+    for (const report of getAllReports()) {
+      expect(report.citations.length).toBeGreaterThan(0);
+      expect(report.actionSteps.length).toBeGreaterThan(0);
+      expect(report.risks.length).toBeGreaterThan(0);
+      expect(report.revision).toMatch(/^Rev\s/);
     }
   });
 });

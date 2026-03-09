@@ -58,8 +58,8 @@ export default function Home() {
       </nav>
 
       <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <section className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-          <div>
+        <section className="flex flex-col items-center text-center">
+          <div className="flex flex-col items-center">
             <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-300/20 bg-white/5 px-4 py-2 text-sm text-cyan-200 shadow-[0_0_30px_rgba(34,211,238,0.08)]">
               <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(103,232,249,0.9)]" />
               RareAgent.work for people actually shipping agents
@@ -77,52 +77,13 @@ export default function Home() {
               Less generic AI content. More signal, sharper taste, and a brand that looks like it belongs in the room.
             </p>
 
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-9 flex flex-col gap-4 sm:flex-row justify-center">
               <Link href="/news" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 shadow-[0_16px_50px_rgba(34,211,238,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-cyan-300">
                 Explore live news
               </Link>
               <Link href="/reports" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10">
                 Browse reports
               </Link>
-            </div>
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Positioning</p>
-                <p className="mt-2 text-sm font-medium text-white">Premium operator identity, not generic AI SaaS chrome</p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Daily Intelligence</p>
-                <p className="mt-2 text-sm font-medium text-white">Continuously updated operator-grade research and news</p>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Tone</p>
-                <p className="mt-2 text-sm font-medium text-white">Confident, editorial, technical, and a little more bespoke</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-cyan-400/20 via-transparent to-fuchsia-400/20 blur-2xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/6 shadow-2xl backdrop-blur-xl">
-              <div className="relative min-h-[400px] w-full lg:min-h-[600px]">
-                <Image
-                  src="/logos/Gemini_Generated_Image_osb757osb757osb7.jpg"
-                  alt="Rare Agent Work signature emblem"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050816] via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-12">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200 backdrop-blur-md mb-4">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Live refresh
-                  </div>
-                  <h2 className="text-3xl font-bold text-white lg:text-5xl">Autonomous Operations</h2>
-                  <p className="mt-3 max-w-xl text-lg text-slate-300 lg:text-xl">Daily AI intelligence driven by agentic research.</p>
-                </div>
-              </div>
             </div>
           </div>
         </section>

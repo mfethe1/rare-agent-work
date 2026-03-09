@@ -48,7 +48,7 @@ const AVAILABLE_MODELS: Record<string, ModelConfig> = {
   },
 };
 
-const DEFAULT_MODEL = 'claude-sonnet';
+const DEFAULT_MODEL = 'gemini-3.1-pro';
 
 // ──────────────────────────────────────────────
 // Provider clients

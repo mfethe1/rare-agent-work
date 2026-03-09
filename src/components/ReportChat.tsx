@@ -22,7 +22,9 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
   const FREE_LIMIT = 5;
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messages.length > 0) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   async function send() {
@@ -142,7 +144,7 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
         </div>
       )}
       <p className="text-xs text-gray-600 mt-2 text-center">
-        {FREE_LIMIT - msgCount} free questions remaining · Powered by Claude Sonnet 4.6
+        {FREE_LIMIT - msgCount} free questions remaining · Powered by Gemini 3.1 Pro
       </p>
     </div>
   );

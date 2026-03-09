@@ -254,9 +254,101 @@ export default function Home() {
 
       <section id="catalog" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
-          <h2 className="mb-4 text-4xl font-bold text-white">Report Catalog</h2>
-          <p className="mx-auto max-w-2xl text-lg text-slate-300">Deep operator-grade reports for buyers who want durable reference material, not just a feed.</p>
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">What you can actually buy here</p>
+          <h2 className="mb-4 text-4xl font-bold text-white">Rare Agent Work catalog</h2>
+          <p className="mx-auto max-w-3xl text-lg text-slate-300">
+            This is not just a report store anymore. The product now has three layers: a live operator news desk, a $10/month
+            newsletter, and direct consulting access for teams that need implementation help.
+          </p>
         </div>
+
+        <div className="mb-10 grid gap-6 lg:grid-cols-3">
+          <div className="rounded-[1.75rem] border border-fuchsia-400/30 bg-fuchsia-500/10 p-7 backdrop-blur-sm">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <span className="rounded-full bg-fuchsia-400 px-2.5 py-1 text-xs font-semibold text-slate-950">New core offer</span>
+              <span className="text-sm font-semibold text-fuchsia-200">$10/mo</span>
+            </div>
+            <h3 className="text-2xl font-bold text-white">Newsletter membership</h3>
+            <p className="mt-3 text-sm leading-7 text-slate-200">
+              Weekly premium newsletter, hot-news alerts, and side-panel AI context built for subscribed operators.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-slate-100">
+              <li>✓ Premium newsletter</li>
+              <li>✓ Hot-news alerts</li>
+              <li>✓ Contextual AI chat on the news feed</li>
+            </ul>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <BuyButton plan="newsletter" label="Get newsletter — $10/mo" className="inline-flex rounded-full bg-fuchsia-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-fuchsia-300" />
+              <Link href="/pricing" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+                View pricing
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-cyan-400/30 bg-cyan-500/10 p-7 backdrop-blur-sm">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-2.5 py-1 text-xs font-semibold text-cyan-200">Live desk</span>
+              <span className="text-sm font-semibold text-cyan-200">Updated continuously</span>
+            </div>
+            <h3 className="text-2xl font-bold text-white">Hot-news feed + subscriber copilot</h3>
+            <p className="mt-3 text-sm leading-7 text-slate-200">
+              Breaking agent news with context beside the feed — what changed, why it matters, and what a team should do next.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-slate-100">
+              <li>✓ Freshness signals on the feed</li>
+              <li>✓ Side-panel context chat</li>
+              <li>✓ Built for operators, not casual readers</li>
+            </ul>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link href="/news" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300">
+                Open live news
+              </Link>
+              <Link href="/digest" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+                Read digest
+              </Link>
+            </div>
+          </div>
+
+          <div className="rounded-[1.75rem] border border-emerald-400/30 bg-emerald-500/10 p-7 backdrop-blur-sm">
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <span className="rounded-full border border-emerald-300/30 bg-emerald-300/10 px-2.5 py-1 text-xs font-semibold text-emerald-200">Direct access</span>
+              <span className="text-sm font-semibold text-emerald-200">Consulting</span>
+            </div>
+            <h3 className="text-2xl font-bold text-white">Bring Michael in</h3>
+            <p className="mt-3 text-sm leading-7 text-slate-200">
+              For teams that need strategy, architecture review, implementation help, or an operator-grade audit of what they are building.
+            </p>
+            <ul className="mt-5 space-y-2 text-sm text-slate-100">
+              <li>✓ Intake form on-site</li>
+              <li>✓ Email routed directly to Michael</li>
+              <li>✓ Best for serious agent teams</li>
+            </ul>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link href="#assessment" className="inline-flex items-center justify-center rounded-full bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-emerald-300">
+                Request consulting
+              </Link>
+              <Link href="/assessment" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+                Open assessment
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="mb-10 rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Reference library</p>
+              <h3 className="mt-2 text-2xl font-bold text-white">Operator-grade reports still anchor the catalog</h3>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+                The reports remain the durable reference layer: implementation playbooks, architecture guidance, and technical decision support.
+              </p>
+            </div>
+            <Link href="/reports" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+              Browse all reports
+            </Link>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {reports.map((report) => {
             const c = colorMap[report.color] ?? colorMap.blue;

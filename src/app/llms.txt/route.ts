@@ -8,7 +8,7 @@ export async function GET() {
   const now = new Date().toISOString().split('T')[0];
 
   const content = `# Rare Agent Work
-> Operator-grade AI agent research. Practical reports, model leaderboard, curated news feed.
+> Operator-grade AI agent research. Practical reports, curated news feed, and implementation guidance.
 > Updated: ${now}
 > Source: https://rareagent.work
 
@@ -19,18 +19,17 @@ Rare Agent Work publishes deeply researched, production-oriented reports on AI a
 ${reports.map(r => `- [${r.title}](https://rareagent.work/reports/${r.slug}): ${r.subtitle}. ${r.audience}. ${r.price} ${r.priceLabel}.`).join('\n')}
 
 ## Data & Tools
-- [Model Leaderboard](https://rareagent.work/models): LLMs ranked for agentic use — tool calling, context recall, coding ability, cost efficiency. Updated regularly.
+- [Model index status](https://rareagent.work/models): Temporarily offline while evaluation methodology and refresh cadence are rebuilt.
 - [AI Agent News Feed](https://rareagent.work/news): Curated daily, verified, max 14 days old. Top links for agent builders.
 - [Weekly Digest](https://rareagent.work/digest): Executive summary of the week's most important AI agent developments.
 - [Report History](https://rareagent.work/research/history): Every version archived.
 
 ## Natural Language Query (NLWeb)
-- [GET /ask?q=your question](https://rareagent.work/ask): Ask anything about models, news, reports, or the digest in natural language. Returns structured JSON with answer + citations.
+- [GET /ask?q=your question](https://rareagent.work/ask): Ask anything about news, reports, implementation, or the digest in natural language. Returns structured JSON with answer + citations.
 - Examples: /ask?q=which model is best for tool use, /ask?q=latest security news, /ask?q=what reports do you offer
 
 ## API Endpoints (JSON)
 - [GET /api/news](https://rareagent.work/api/news): Curated AI agent news feed. Supports ?tag= filter.
-- [GET /api/models](https://rareagent.work/api/models): Model leaderboard data. Supports ?sort= (tool_use, context_recall, coding, cost).
 - [GET /api/reports](https://rareagent.work/api/reports): Report catalog metadata and preview content.
 - [GET /api/digest](https://rareagent.work/api/digest): Latest weekly digest in structured format.
 - [GET /api/openapi.json](https://rareagent.work/api/openapi.json): Full OpenAPI 3.1 specification.

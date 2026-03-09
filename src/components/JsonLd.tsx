@@ -61,14 +61,6 @@ export function WebsiteJsonLd() {
             text: "Multi-agent orchestration is the practice of coordinating multiple AI agents to work together on complex tasks. Our 'From Single Agent to Multi-Agent' report covers framework selection, memory architecture, and the planner-executor-reviewer pattern used in production systems.",
           },
         },
-        {
-          "@type": "Question",
-          name: "How are AI agent models ranked?",
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: "Our Model Leaderboard ranks LLMs across five dimensions critical for agent work: tool use accuracy, context recall, coding ability, cost efficiency, and context window size. Scores are updated regularly from real benchmark data.",
-          },
-        },
       ],
     },
     {
@@ -78,23 +70,8 @@ export function WebsiteJsonLd() {
       url: "https://rareagent.work/api/openapi.json",
       documentation: "https://rareagent.work/llms.txt",
       description:
-        "Public JSON API providing agentic model leaderboard data, curated AI agent news, report catalog, and weekly digests. Designed for consumption by AI agents and LLMs.",
+        "Public JSON API providing curated AI agent news, report catalog, and weekly digests. Designed for consumption by AI agents and LLMs.",
       provider: ORGANIZATION,
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "Dataset",
-      name: "Agentic Model Leaderboard",
-      url: "https://rareagent.work/api/models",
-      description:
-        "LLMs ranked for agentic use: tool calling accuracy, context recall, coding ability, and cost efficiency. Updated regularly with benchmark data.",
-      creator: ORGANIZATION,
-      license: "https://rareagent.work",
-      distribution: {
-        "@type": "DataDownload",
-        contentUrl: "https://rareagent.work/api/models",
-        encodingFormat: "application/json",
-      },
     },
   ];
 

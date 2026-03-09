@@ -4,7 +4,7 @@ export async function GET() {
   const agentCard = {
     name: 'Rare Agent Work',
     description:
-      'AI agent research service providing model leaderboard data, curated news, operator-grade reports, and implementation guidance for agent builders.',
+      'AI agent research service providing curated news, operator-grade reports, and implementation guidance for agent builders.',
     url: 'https://rareagent.work',
     version: '1.0.0',
     capabilities: {
@@ -23,19 +23,6 @@ export async function GET() {
           'What are the latest AI agent framework releases?',
           'Any security news about AI agents this week?',
           'What did OpenAI release recently?',
-        ],
-      },
-      {
-        id: 'get-model-rankings',
-        name: 'Get Agentic Model Rankings',
-        description:
-          'Get LLMs ranked for agentic use — tool calling accuracy, context recall, coding ability, cost efficiency. Compare models for agent deployment decisions.',
-        inputModes: ['text/plain'],
-        outputModes: ['application/json'],
-        examples: [
-          'Which model is best for tool use in agents?',
-          'Compare Claude vs GPT for agentic workloads',
-          'What is the cheapest model with good coding scores?',
         ],
       },
       {
@@ -67,15 +54,15 @@ export async function GET() {
         id: 'ask-natural-language',
         name: 'Ask in Natural Language (NLWeb)',
         description:
-          'Ask any question about AI models, agent news, reports, or weekly developments in natural language. Returns structured JSON with answers and source citations. NLWeb-compatible endpoint.',
+          'Ask any question about agent news, reports, implementation, or weekly developments in natural language. Returns structured JSON with answers and source citations. NLWeb-compatible endpoint.',
         inputModes: ['text/plain'],
         outputModes: ['application/json'],
         examples: [
-          'Which model is best for tool use?',
-          'Compare Claude vs GPT for agentic workloads',
           'Latest security news about AI agents',
           'What reports do you offer on multi-agent systems?',
-          'Cheapest model with good coding scores',
+          'What should I read first if I am starting from scratch?',
+          'Summarize this week\'s biggest agent platform changes',
+          'How should I evaluate production readiness before launch?',
         ],
         endpoint: 'https://rareagent.work/ask?q={query}',
       },

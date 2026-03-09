@@ -6,9 +6,9 @@ export async function GET() {
     name_for_human: 'Rare Agent Work',
     name_for_model: 'rare_agent_work',
     description_for_human:
-      'Operator-grade AI agent research — reports, model leaderboard, and curated news for agent builders.',
+      'Operator-grade AI agent research — reports and curated news for agent builders.',
     description_for_model:
-      'Access AI agent research data from Rare Agent Work. Query the model leaderboard (LLMs ranked by tool use, context recall, coding, cost), search curated AI agent news, get report previews on multi-agent systems, low-code automation, and agent evaluation methodology. All data is production-focused and updated regularly.',
+      'Access AI agent research data from Rare Agent Work. Search curated AI agent news and get report previews on multi-agent systems, low-code automation, and agent evaluation methodology. Model index data is currently under review for freshness and methodology. All published data is production-focused.',
     auth: { type: 'none' },
     api: {
       type: 'openapi',

@@ -112,6 +112,35 @@ npm run digest:daily -- --window-hours 3
 
 Docs and scheduler setup live in `docs/daily-ai-news-pipeline.md`.
 
+## Premium review-send (owner only)
+
+`POST /api/reports/review-send` now sends:
+- Branded report review packets (all reports)
+- Branded weekly newsletter preview
+
+Hard-gated by premium QA checks (anti-generic copy, citations, freshness, no markdown artifacts). See `docs/report-newsletter-quality-guard.md`.
+
+## Autoresearch loop queue
+
+Autoresearch planning artifacts live in `autoresearch/`.
+
+Validate + inspect queue:
+
+```bash
+python3 scripts/autoresearch_queue.py validate
+python3 scripts/autoresearch_queue.py list
+```
+
+Update run status:
+
+```bash
+python3 scripts/autoresearch_queue.py set-status <run-id> running
+python3 scripts/autoresearch_queue.py complete <run-id> --iteration 1 --duration 240 --notes "first pass"
+python3 scripts/autoresearch_queue.py promote <run-id> --notes "ready for implementation"
+```
+
+See `docs/autoresearch-loop-plan-2026-03-09.md` for wiring and policy.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

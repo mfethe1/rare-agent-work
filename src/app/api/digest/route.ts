@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readFile } from 'fs/promises';
 import path from 'path';
+import { getAllNews } from '@/lib/news-store';
+import { buildPremiumNewsletterIssue } from '@/lib/newsletter-delivery';
 
 export const runtime = 'nodejs';
 export const revalidate = 3600;
@@ -21,12 +23,51 @@ export async function GET() {
       },
     });
   } catch {
+    const items = await getAllNews();
+    const issue = buildPremiumNewsletterIssue(items);
+
+    const stories = issue.stories.map((item) => ({
+      title: item.title,
+      url: item.url,
+      source: item.source,
+      summary: item.summary,
+      category: item.category,
+      publishedAt: item.publishedAt,
+      upvotes: item.upvotes,
+    }));
+
+    const categories = stories.reduce<Record<string, typeof stories>>((acc, story) => {
+      const key = story.category || 'uncategorized';
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(story);
+      return acc;
+    }, {});
+
     return NextResponse.json(
       {
-        error: 'Digest artifact not generated yet.',
-        hint: 'Run `npm run digest:daily` (or `npm run digest:daily -- --send`) to create the daily digest artifact.',
+        week: issue.weekRange,
+        freshnessTimestamp: issue.freshnessTimestamp,
+        summary: issue.executiveSummary,
+        executiveSummary: issue.executiveSummary,
+        implications: issue.implications,
+        actionSteps: issue.actionSteps,
+        risks: issue.risks,
+        storyCount: stories.length,
+        stories,
+        citations: issue.citations,
+        categories: Object.fromEntries(
+          Object.entries(categories).map(([cat, catItems]) => [
+            cat,
+            catItems.map((i) => ({ title: i.title, url: i.url, source: i.source })),
+          ]),
+        ),
       },
-      { status: 404 },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=3600, s-maxage=86400',
+          'Access-Control-Allow-Origin': '*',
+        },
+      },
     );
   }
 }

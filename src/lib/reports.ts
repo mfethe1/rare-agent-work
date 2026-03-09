@@ -20,6 +20,7 @@ export interface Report {
   readingTime: string;
   emailAccent?: string;
   executiveSummary: string;
+  implications: string[];
   actionSteps: string[];
   risks: string[];
   citations: ReportCitation[];
@@ -47,6 +48,11 @@ export const reports: Record<string, Report> = {
     emailAccent: '#2563eb',
     executiveSummary:
       'Most first-time automation teams fail because they automate a vague process, pick the wrong platform, and skip human approval checkpoints. This brief fixes that by forcing scope lock, tool-fit discipline, and explicit rollback design before any workflow goes live.',
+    implications: [
+      'Platform choice should be treated as an operating-model decision because downstream maintenance cost varies sharply once workflows move beyond simple triggers.',
+      'Human approval gates are not optional compliance overhead; they are the control point that prevents irreversible errors during early rollout.',
+      'Teams that document rollback and ownership before launch materially reduce first-month incident load.',
+    ],
     actionSteps: [
       'Use the platform decision matrix before building anything; tool choice is a cost and reliability decision, not a branding decision.',
       'Define trigger, output, and approval checkpoints in plain English before opening Zapier, Make, n8n, or Relevance AI.',
@@ -120,6 +126,11 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
     emailAccent: '#16a34a',
     executiveSummary:
       'Teams should not jump to multi-agent architecture because it sounds advanced. They should do it when workload diversity, context volume, and review requirements justify explicit planner, executor, and reviewer roles backed by memory and observability.',
+    implications: [
+      'Role-based orchestration only improves outcomes when routing logic reflects real workload diversity rather than organizational preference.',
+      'Memory architecture is a prerequisite for scaling because context loss compounds across coordinated agents and creates rework loops.',
+      'Trajectory metrics should be a release gate; output correctness alone masks expensive, brittle execution patterns.',
+    ],
     actionSteps: [
       'Map current tasks by ambiguity, latency sensitivity, and required domain expertise before splitting a single agent into multiple roles.',
       'Implement L1 conversation memory, L2 summarized sessions, and L3 persistent retrieval before scaling coordination.',
@@ -179,7 +190,7 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
     priceLabel: 'one-time',
     audience: 'Technical leaders, architects, and B2B operators deploying AI at scale',
     valueprop: 'Build a defensible, reproducible evaluation protocol and governance framework for production AI systems.',
-    edition: 'McKinsey-Style Strategic Brief',
+    edition: 'Empirical Strategy Brief',
     revision: 'Rev 2.1',
     updatedAt: '2026-03-09',
     freshnessTimestamp: '2026-03-09T15:00:00-04:00',
@@ -187,6 +198,11 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
     emailAccent: '#7c3aed',
     executiveSummary:
       'Most agent evaluation programs fail because they benchmark demos instead of operating reality. The winning approach is a reproducible measurement system that evaluates trajectories, calibrates judge models, and enforces governance before production incidents make those gaps expensive.',
+    implications: [
+      'Evaluation rigor is now a procurement and governance differentiator, not just an internal quality metric.',
+      'Uncalibrated judge-model scoring creates systemic bias that can misprice model and workflow decisions.',
+      'Governance controls should be treated as launch criteria because post-incident retrofits are materially more expensive.',
+    ],
     actionSteps: [
       'Build evaluation sets from real production distributions, including ambiguous prompts, edge cases, and failure-prone tasks.',
       'Calibrate LLM-as-judge outputs against human review on a representative sample before trusting automated scores.',

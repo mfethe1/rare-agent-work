@@ -161,7 +161,19 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           </div>
         </section>
 
-        <section className="mb-10 grid gap-5 lg:grid-cols-2">
+        <section className="mb-10 grid gap-5 lg:grid-cols-3">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+            <h2 className="text-xl font-bold text-white">Implications</h2>
+            <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-300">
+              {report.implications.map((implication) => (
+                <li key={implication} className="flex gap-3">
+                  <span className="mt-0.5 text-cyan-300">●</span>
+                  <span>{implication}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
             <h2 className="text-xl font-bold text-white">Action steps</h2>
             <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-300">

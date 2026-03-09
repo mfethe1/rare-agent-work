@@ -4,11 +4,10 @@ import { checkCostGate, calculateModelCost } from '@/lib/cost-gate';
 import {
   RESEARCH_SOURCES,
   REPORT_TEMPLATE,
-  filterForPaidValue,
-  type SynthesizedInsight,
   type DeepReport,
   type ReportSection,
 } from '@/lib/research-pipeline';
+import { stripMarkdown, hasMarkdownArtifacts } from '@/lib/premium-content';
 
 export const runtime = 'nodejs';
 export const maxDuration = 300; // 5 min max for report generation
@@ -94,7 +93,9 @@ async function synthesizeWithLLM(
   wordTarget: number,
 ): Promise<string> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) return '[Synthesis unavailable — no API key]';
+  if (!apiKey) {
+    throw new Error('Anthropic API key missing for report synthesis.');
+  }
 
   // Use Anthropic for synthesis (best at long-form analysis)
   const { default: Anthropic } = await import('@anthropic-ai/sdk');
@@ -120,12 +121,34 @@ Target: ~${wordTarget} words. Be thorough but value-dense.
 Raw research data to synthesize:
 ${rawData.slice(0, 30000)}
 
-Write the section content now. Use markdown formatting. Include specific citations where possible.`,
+Write the section content now in plain prose (no markdown, no bullet syntax, no code fences). Include source URLs inline where claims depend on external facts. Avoid generic language and avoid uncited broad claims.`,
     }],
   });
 
   const text = resp.content[0].type === 'text' ? resp.content[0].text : '';
   return text;
+}
+
+function sanitizeGeneratedProse(prose: string) {
+  const cleaned = stripMarkdown(prose)
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+  if (!cleaned) {
+    throw new Error('Generated prose was empty after sanitization.');
+  }
+
+  if (hasMarkdownArtifacts(cleaned)) {
+    throw new Error('Generated prose still contains markdown artifacts after sanitization.');
+  }
+
+  const lower = cleaned.toLowerCase();
+  if (/\b(todo|tbd|placeholder|lorem ipsum)\b/.test(lower)) {
+    throw new Error('Generated prose contains placeholder text.');
+  }
+
+  return cleaned;
 }
 
 // ──────────────────────────────────────────────
@@ -189,17 +212,43 @@ ${redditLLM.map(r => `- **${r.title}** (${r.score} pts, ${r.comments} comments) 
   const sections: ReportSection[] = [];
 
   for (const template of REPORT_TEMPLATE) {
-    const prose = await synthesizeWithLLM(
-      rawDataSummary,
-      template.title,
-      template.contentType,
-      template.wordCountTarget,
-    );
+    let prose: string;
+    try {
+      prose = await synthesizeWithLLM(
+        rawDataSummary,
+        template.title,
+        template.contentType,
+        template.wordCountTarget,
+      );
+    } catch (error) {
+      return NextResponse.json(
+        {
+          error: 'Report section synthesis failed.',
+          section: template.title,
+          details: error instanceof Error ? error.message : 'Unknown synthesis error',
+        },
+        { status: 502 },
+      );
+    }
+
+    let cleanedProse: string;
+    try {
+      cleanedProse = sanitizeGeneratedProse(prose);
+    } catch (error) {
+      return NextResponse.json(
+        {
+          error: 'Generated content failed premium quality checks.',
+          section: template.title,
+          details: error instanceof Error ? error.message : 'Unknown content-quality error',
+        },
+        { status: 422 },
+      );
+    }
 
     sections.push({
       ...template,
       insights: [],
-      prose,
+      prose: cleanedProse,
     });
   }
 

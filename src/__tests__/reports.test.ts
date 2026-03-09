@@ -28,6 +28,7 @@ describe('getReport()', () => {
       updatedAt: expect.any(String),
       freshnessTimestamp: expect.any(String),
       executiveSummary: expect.any(String),
+      implications: expect.any(Array),
       actionSteps: expect.any(Array),
       risks: expect.any(Array),
       citations: expect.any(Array),
@@ -93,12 +94,14 @@ describe('planKey mapping', () => {
     }
   });
 
-  it('each report has citations, action steps, and risks for premium review delivery', () => {
+  it('each report has implications, citations, action steps, and risks for premium review delivery', () => {
     for (const report of getAllReports()) {
+      expect(report.implications.length).toBeGreaterThan(0);
       expect(report.citations.length).toBeGreaterThan(0);
       expect(report.actionSteps.length).toBeGreaterThan(0);
       expect(report.risks.length).toBeGreaterThan(0);
       expect(report.revision).toMatch(/^Rev\s/);
+      expect(report.edition.toLowerCase()).not.toContain('mckinsey-style');
     }
   });
 });

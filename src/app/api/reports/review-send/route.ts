@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getReviewSendPayload } from '@/lib/report-delivery';
+import { getNewsletterReviewPayload } from '@/lib/newsletter-delivery';
+import { getAllNews } from '@/lib/news-store';
 
 export const runtime = 'nodejs';
 
@@ -54,7 +56,33 @@ export async function POST(request: NextRequest) {
   }
 
   const from = process.env.CONSULTING_FROM_EMAIL || 'Rare Agent Work <hello@rareagent.work>';
-  const payloads = getReviewSendPayload();
+
+  const reportPayloads = getReviewSendPayload();
+  const newsItems = await getAllNews();
+  const payloads = [...reportPayloads];
+
+  if (newsItems.length > 0) {
+    payloads.push(getNewsletterReviewPayload(newsItems));
+  }
+
+  const qaFailures = payloads
+    .filter((payload) => payload.qaIssues.some((issue) => issue.severity === 'error'))
+    .map((payload) => ({
+      slug: payload.slug,
+      issues: payload.qaIssues,
+    }));
+
+  if (qaFailures.length > 0) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: 'Premium quality gate failed. Emails were not sent.',
+        qaFailures,
+      },
+      { status: 422 },
+    );
+  }
+
   const results: Array<{ slug: string; ok: boolean; details?: string }> = [];
 
   for (const payload of payloads) {

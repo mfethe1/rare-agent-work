@@ -45,7 +45,7 @@ const PLANS = {
     name: "Newsletter Plan — premium newsletter + hot-news alerts",
     slug: null,
     mode: "subscription" as const,
-    tier: "starter",
+    tier: "newsletter",
   },
   starter: {
     amount: 2900,

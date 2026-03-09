@@ -79,6 +79,12 @@ const TIER_LIMITS: Record<string, CostLimits> = {
     dailyRequestLimit: 10,    // 10 requests/day
     weeklyRequestLimit: 40,   // 40 requests/week
   },
+  newsletter: {
+    weeklyLimit: 6.00,
+    monthlyLimit: 20.00,
+    dailyRequestLimit: 40,
+    weeklyRequestLimit: 200,
+  },
   starter: {
     weeklyLimit: 15.00,
     monthlyLimit: 50.00,

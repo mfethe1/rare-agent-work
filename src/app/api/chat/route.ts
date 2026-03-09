@@ -29,7 +29,7 @@ const AVAILABLE_MODELS: Record<string, ModelConfig> = {
     costKey: 'claude-sonnet-4-6',
     maxTokens: 1024,
     label: 'Claude Sonnet 4.6',
-    tiers: ['free', 'starter', 'pro'],
+    tiers: ['free', 'newsletter', 'starter', 'pro'],
   },
   'gpt-5.4': {
     provider: 'openai',
@@ -37,7 +37,7 @@ const AVAILABLE_MODELS: Record<string, ModelConfig> = {
     costKey: 'gpt-5.4',
     maxTokens: 1024,
     label: 'GPT-5.4',
-    tiers: ['free', 'starter', 'pro'],
+    tiers: ['free', 'newsletter', 'starter', 'pro'],
   },
   'gemini-3.1-pro': {
     provider: 'google',
@@ -45,7 +45,7 @@ const AVAILABLE_MODELS: Record<string, ModelConfig> = {
     costKey: 'gemini-3.1-pro',
     maxTokens: 1024,
     label: 'Gemini 3.1 Pro',
-    tiers: ['free', 'starter', 'pro'],
+    tiers: ['free', 'newsletter', 'starter', 'pro'],
   },
 };
 

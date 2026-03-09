@@ -20,6 +20,7 @@ function getAdminSupabase() {
 }
 
 const TIER_BUDGETS: Record<string, number> = {
+  newsletter: 15_000,
   starter: 50_000,
   pro: 200_000,
 };

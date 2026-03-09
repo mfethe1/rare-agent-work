@@ -5,7 +5,7 @@ const spec = {
   info: {
     title: 'Rare Agent Work API',
     version: '1.0.0',
-    description: 'Public API for AI agents to access model leaderboard, curated news, and research report catalog from Rare Agent Work.',
+    description: 'Public API for AI agents to access curated news and research report catalog from Rare Agent Work. Model index endpoints are currently under review.',
     contact: { email: 'hello@rareagent.work' },
     'x-llms-txt': 'https://rareagent.work/llms.txt',
   },
@@ -59,8 +59,8 @@ const spec = {
     '/api/v1/models': {
       get: {
         operationId: 'getModels',
-        summary: 'Get agentic model leaderboard',
-        description: 'Returns models ranked by tool use, context recall, coding ability, and cost. Filterable by provider and minimum score.',
+        summary: 'Model index (under review)',
+        description: 'This endpoint is temporarily de-emphasized while methodology and refresh cadence are rebuilt. Data may be stale.',
         parameters: [
           { name: 'sort', in: 'query', schema: { type: 'string', enum: ['tool_use_score', 'context_recall_score', 'coding_score', 'cost_per_1k_tokens', 'context_window'], default: 'tool_use_score' }, description: 'Sort field' },
           { name: 'provider', in: 'query', schema: { type: 'string' }, description: 'Filter by provider name (partial match)' },

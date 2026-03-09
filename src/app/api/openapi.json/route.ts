@@ -7,7 +7,7 @@ export async function GET() {
       title: 'Rare Agent Work API',
       version: '1.0.0',
       description:
-        'Public API for AI agent research data — model leaderboard, curated news, report catalog, and weekly digest.',
+        'Public API for AI agent research data — curated news, report catalog, and weekly digest. Model index is currently under review.',
       contact: { email: 'hello@rareagent.work' },
     },
     servers: [{ url: 'https://rareagent.work' }],
@@ -64,9 +64,9 @@ export async function GET() {
       '/api/models': {
         get: {
           operationId: 'getModelRankings',
-          summary: 'Get agentic model leaderboard',
+          summary: 'Model index (under review)',
           description:
-            'Returns LLMs ranked for agentic use: tool calling, context recall, coding ability, and cost efficiency.',
+            'This endpoint is temporarily de-emphasized while methodology and refresh cadence are rebuilt. Data may be stale.',
           parameters: [
             {
               name: 'sort',

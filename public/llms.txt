@@ -6,7 +6,7 @@
 
 - **Operator-grade research reports** on AI agent setup, multi-agent orchestration, and production architecture
 - **AI Agent News Feed** — curated daily links for agent builders, verified, max 14 days old
-- **Agentic Model Leaderboard** — models ranked by tool use, context recall, coding ability, cost
+- **Model index status page** — temporarily offline while methodology and refresh cadence are rebuilt
 - **AI Implementation Guide** — Claude Sonnet 4.6 powered Q&A for subscribers
 
 ## Available Reports
@@ -31,8 +31,7 @@ All Access Starter Plan: $29/mo — all reports + every future report, content u
 
 Structured JSON endpoints for programmatic access:
 
-- `GET/POST /api/v1/ask` — NLWeb natural language query endpoint. Ask any question about models, news, or reports in plain English. Supports multi-turn conversations.
-- `GET /api/v1/models` — Agentic model leaderboard (filterable, sortable)
+- `GET/POST /api/v1/ask` — NLWeb natural language query endpoint. Ask any question about news, reports, and implementation guidance in plain English. Supports multi-turn conversations.
 - `GET /api/v1/news` — Curated news feed with tag filters
 - `GET /api/v1/reports` — Report catalog with metadata and preview content
 - `GET /api/v1/openapi.json` — Full OpenAPI 3.1 specification

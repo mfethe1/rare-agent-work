@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "name": "Rare Agent Work",
-  "description": "Operator-grade AI research: reports on agent setup, multi-agent orchestration, and production architecture. Curated news feed and model leaderboard for agent builders.",
+  "description": "Operator-grade AI research: reports on agent setup, multi-agent orchestration, and production architecture, plus a curated news feed for agent builders.",
   "url": "https://rareagent.work",
   "logo": "https://rareagent.work/globe.svg",
   "contact": "hello@rareagent.work",
   "capabilities": {
     "nlweb_ask": {
-      "description": "NLWeb-compatible natural language query endpoint. Ask questions about AI models, agent news, and research reports in plain English.",
+      "description": "NLWeb-compatible natural language query endpoint. Ask questions about agent news, implementation guidance, and research reports in plain English.",
       "endpoint": "/api/v1/ask",
       "methods": ["GET", "POST"],
       "auth": "none",
@@ -18,15 +18,9 @@
         "prev": "(POST) Comma-separated previous queries for multi-turn context"
       },
       "examples": [
-        "GET /api/v1/ask?q=which model is best for tool use",
-        "POST /api/v1/ask {\"query\": \"cheapest model for coding\", \"prev\": \"which model is best for tool use\"}"
+        "GET /api/v1/ask?q=latest ai agent security news",
+        "POST /api/v1/ask {\"query\": \"which report should I read first\", \"prev\": \"I am building my first agent workflow\"}"
       ]
-    },
-    "models_leaderboard": {
-      "description": "Agentic model rankings by tool use, context recall, coding ability, and cost",
-      "endpoint": "/api/v1/models",
-      "method": "GET",
-      "auth": "none"
     },
     "news_feed": {
       "description": "Curated daily AI agent news with tags, sources, and recency scoring",
@@ -64,6 +58,6 @@
   },
   "terms": {
     "usage": "Free for programmatic access. Attribution appreciated. Do not redistribute full report content.",
-    "data_license": "Leaderboard scores and news metadata are freely usable with attribution."
+    "data_license": "News and report metadata are freely usable with attribution."
   }
 }

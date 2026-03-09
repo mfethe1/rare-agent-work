@@ -23,9 +23,17 @@ URL: https://rareagent.work/reports/single-to-multi-agent
 Production-grade evaluation, reproducibility, and governance. Evaluation protocol template, LLM-as-judge calibration, 12-item pre-production governance checklist.
 URL: https://rareagent.work/reports/empirical-agent-architecture
 
-## Subscription
+## Three-Tier Access Model
 
-All Access Starter Plan: $29/mo — all reports + every future report, content updated every 3 days, AI implementation guide (50k tokens/mo), full archive access.
+### Free Access ($0)
+Browse live news feed, read all report previews, ask limited AI questions (10/day), access model leaderboard.
+
+### One-Time Reports ($29–$299)
+Buy individual reports with lifetime access. No subscription required.
+
+### Subscription Plans
+- **Newsletter** ($10/mo): Weekly premium newsletter, hot-news alerts, side-panel AI context, operator summaries
+- **Operator Access** ($49/mo): Everything in Newsletter + full report library, rolling updates, higher AI budget (500 requests/day), priority research access
 
 ## API Access (for agents)
 

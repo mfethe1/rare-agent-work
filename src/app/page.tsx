@@ -292,23 +292,25 @@ export default function Home() {
       <section id="pricing" className="py-16">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 text-center">
-            <h2 className="mb-3 text-3xl font-bold text-white">Clear pricing, clearer outcomes</h2>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Three-Tier Access Model</p>
+            <h2 className="mb-3 text-3xl font-bold text-white">Start free, buy reports, or subscribe</h2>
             <p className="mx-auto max-w-3xl text-lg text-slate-300">
-              Competitors mostly sell links or hype. Rare Agent Work should sell speed, interpretation, and access to expertise.
+              Operator-grade intelligence with transparent pricing. No hype, no fluff—just speed, interpretation, and access to expertise.
             </p>
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
             <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
               <div className="mb-5">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Free</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Free Access</span>
                 <p className="mt-1 text-3xl font-bold text-white">$0</p>
-                <p className="mt-1 text-sm text-slate-400">Try the product before committing</p>
+                <p className="mt-1 text-sm text-slate-400">Try before you commit</p>
               </div>
               <ul className="mb-7 space-y-3 text-sm text-slate-300">
-                <li>✓ Browse the live news feed</li>
-                <li>✓ Read report previews</li>
-                <li>✓ Ask limited AI questions</li>
+                <li>✓ Browse live news feed</li>
+                <li>✓ Read all report previews</li>
+                <li>✓ Limited AI questions (10/day)</li>
+                <li>✓ Model leaderboard access</li>
               </ul>
               <Link href="/news" className="inline-flex rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/15">
                 Start free
@@ -322,42 +324,50 @@ export default function Home() {
               <div className="mb-5">
                 <span className="text-xs font-semibold uppercase tracking-wider text-fuchsia-200">Newsletter</span>
                 <p className="mt-1 text-3xl font-bold text-white">$10<span className="text-lg font-normal text-slate-300">/mo</span></p>
-                <p className="mt-1 text-sm text-slate-300">For people who want the signal without the noise</p>
+                <p className="mt-1 text-sm text-slate-300">Signal without the noise</p>
               </div>
               <ul className="mb-7 space-y-3 text-sm text-slate-100">
                 <li>✓ Weekly premium newsletter</li>
-                <li>✓ Hot-news alerts as important stories land</li>
-                <li>✓ Side-panel AI context on the news desk</li>
-                <li>✓ Operator summaries focused on what changed and what to do next</li>
+                <li>✓ Hot-news alerts</li>
+                <li>✓ Side-panel AI context</li>
+                <li>✓ Operator summaries</li>
               </ul>
-              <BuyButton plan="newsletter" label="Get the newsletter — $10/mo" className="inline-flex rounded-full bg-fuchsia-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-fuchsia-300" />
+              <BuyButton plan="newsletter" label="Subscribe — $10/mo" className="inline-flex rounded-full bg-fuchsia-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-fuchsia-300" />
             </div>
 
             <div className="rounded-[1.75rem] border border-cyan-400/30 bg-cyan-500/10 p-7 backdrop-blur-sm">
               <div className="mb-5">
                 <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200">Operator Access</span>
                 <p className="mt-1 text-3xl font-bold text-white">$49<span className="text-lg font-normal text-slate-300">/mo</span></p>
-                <p className="mt-1 text-sm text-slate-300">For teams actively building with agents</p>
+                <p className="mt-1 text-sm text-slate-300">For teams actively shipping</p>
               </div>
               <ul className="mb-7 space-y-3 text-sm text-slate-100">
                 <li>✓ Everything in Newsletter</li>
-                <li>✓ Full report library and rolling updates</li>
-                <li>✓ More AI implementation help</li>
-                <li>✓ Priority access to new research drops</li>
+                <li>✓ Full report library + updates</li>
+                <li>✓ Higher AI budget (500/day)</li>
+                <li>✓ Priority research access</li>
               </ul>
-              <BuyButton plan="pro" label="Get Operator Access — $49/mo" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300" />
+              <BuyButton plan="pro" label="Subscribe — $49/mo" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300" />
             </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-sm text-slate-400">
+              Or buy individual reports ($29–$299).{" "}
+              <Link href="/pricing" className="text-cyan-300 hover:text-cyan-200 underline">
+                View full pricing →
+              </Link>
+            </p>
           </div>
         </div>
       </section>
 
       <section id="catalog" className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">What you can actually buy here</p>
-          <h2 className="mb-4 text-4xl font-bold text-white">Rare Agent Work catalog</h2>
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Three ways to access</p>
+          <h2 className="mb-4 text-4xl font-bold text-white">Free browsing, one-time reports, or subscriptions</h2>
           <p className="mx-auto max-w-3xl text-lg text-slate-300">
-            This is not just a report store anymore. The product now has three layers: a live operator news desk, a $10/month
-            newsletter, and direct consulting access for teams that need implementation help.
+            Operator-grade intelligence delivered three ways: start free, buy exactly what you need, or subscribe for continuous access and rolling updates.
           </p>
         </div>
 

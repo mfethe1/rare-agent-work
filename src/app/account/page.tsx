@@ -4,9 +4,9 @@ import { createClient } from '@/lib/supabase/server';
 import ConversionTracker from '@/components/ConversionTracker';
 
 const TIER_LABELS: Record<string, { label: string; color: string }> = {
-  free: { label: 'Free', color: 'text-gray-400' },
-  starter: { label: 'Starter', color: 'text-blue-400' },
-  pro: { label: 'Pro', color: 'text-purple-400' },
+  free: { label: 'Free Access', color: 'text-gray-400' },
+  starter: { label: 'Newsletter', color: 'text-fuchsia-400' },
+  pro: { label: 'Operator Access', color: 'text-cyan-400' },
 };
 
 export default async function AccountPage() {
@@ -92,16 +92,16 @@ export default async function AccountPage() {
 
           {/* Upgrade prompt for free users */}
           {tier === 'free' && (
-            <div className="bg-blue-950/20 border border-blue-500/30 rounded-2xl p-6">
-              <h2 className="text-lg font-semibold text-white mb-2">Upgrade Your Plan</h2>
+            <div className="bg-fuchsia-950/20 border border-fuchsia-500/30 rounded-2xl p-6">
+              <h2 className="text-lg font-semibold text-white mb-2">Upgrade Your Access</h2>
               <p className="text-gray-400 text-sm mb-4">
-                Get live newsletter updates for $10/mo, with full Operator Access ($49/mo) for all reports and AI guide + token usage.
+                Get the Newsletter ($10/mo) for premium updates and alerts, or Operator Access ($49/mo) for full reports, higher AI budgets, and priority support.
               </p>
               <a
                 href="/pricing"
-                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+                className="inline-block bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
               >
-                View plans →
+                View pricing →
               </a>
             </div>
           )}

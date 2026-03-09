@@ -1,40 +1,19 @@
 import Link from "next/link";
 import BuyButton from "@/components/BuyButton";
-
-const plans = [
-  {
-    id: "newsletter",
-    title: "Newsletter",
-    price: "$10/mo",
-    blurb: "Premium AI agent news drops and alerts for people tracking the fast-changing space.",
-    features: ["Daily operator summaries", "Priority signal alerts", "No paywall on news pages"],
-  },
-  {
-    id: "starter",
-    title: "Starter",
-    price: "$29/mo",
-    blurb: "All reports + AI guide + rolling updates every 3 days.",
-    features: ["Full access to all reports", "AI implementation guide", "Rolling report updates"],
-  },
-  {
-    id: "pro",
-    title: "Operator Access",
-    price: "$49/mo",
-    blurb: "Everything in Starter, plus bigger token budget and faster support for urgent work.",
-    features: ["Higher AI token budget", "Priority research updates", "Best support path for operators"],
-  },
-];
+import { getAllReports } from "@/lib/reports";
 
 export const metadata = {
   title: "Pricing | Rare Agent Work",
-  description: "Compare plans for Rare Agent Work access, from newsletter to operator plans.",
+  description: "Three-tier access model: free browsing, one-time reports, or subscription plans for operators.",
 };
 
 export default function PricingPage() {
+  const reports = getAllReports();
+
   return (
     <div className="min-h-screen bg-black text-white">
       <nav className="border-b border-gray-800 bg-black/90 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
           <Link href="/" className="font-bold tracking-tight">
             Rare Agent Work
           </Link>
@@ -46,46 +25,224 @@ export default function PricingPage() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
-        <header className="mb-12">
-          <h1 className="text-3xl font-semibold sm:text-4xl">Plan options</h1>
-          <p className="mt-3 text-slate-300">Choose the level of access that matches your execution bandwidth.</p>
+      <main className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        {/* Header */}
+        <header className="mb-16 text-center">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Pricing</p>
+          <h1 className="text-4xl font-bold sm:text-5xl">Three ways to access operator-grade intelligence</h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
+            Start free, buy reports as you need them, or subscribe for full access and continuous updates.
+          </p>
         </header>
 
-        <section className="grid gap-5 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <div
-              key={plan.id}
-              className="rounded-2xl border border-gray-800 bg-gray-900 p-5 text-sm text-gray-300"
-            >
-              <div className="mb-4 flex items-start justify-between">
-                <p className="text-sm uppercase tracking-[0.2em] text-blue-300">{plan.title}</p>
-                <p className="text-lg font-semibold text-white">{plan.price}</p>
-              </div>
-              <p className="mb-4 text-gray-400">{plan.blurb}</p>
-
-              <ul className="mb-6 space-y-2 text-sm text-gray-300">
-                {plan.features.map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <span className="mt-1 block h-1.5 w-1.5 rounded-full bg-cyan-300" />
-                    <span>{item}</span>
+        {/* Tier 1: Free */}
+        <section className="mb-16">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-white">Free Access</h2>
+            <p className="mt-2 text-slate-400">Try the product before committing. No credit card required.</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm">
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div>
+                <div className="mb-6">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Always Free</span>
+                  <p className="mt-1 text-4xl font-bold text-white">$0</p>
+                </div>
+                <ul className="space-y-3 text-slate-300">
+                  <li className="flex items-start gap-3">
+                    <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                    <span>Browse the live news feed with freshness signals</span>
                   </li>
-                ))}
-              </ul>
-
-              <BuyButton
-                plan={plan.id}
-                label={`Choose ${plan.title}`}
-                className="rounded-lg border border-gray-700 bg-white px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-gray-200"
-              />
+                  <li className="flex items-start gap-3">
+                    <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                    <span>Read full previews of all research reports</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                    <span>Ask limited AI questions (10 requests/day, $2/week token budget)</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                    <span>Access the model leaderboard and comparison tools</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="flex items-center justify-center lg:justify-end">
+                <Link
+                  href="/news"
+                  className="inline-flex rounded-full bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/15"
+                >
+                  Start browsing for free →
+                </Link>
+              </div>
             </div>
-          ))}
+          </div>
         </section>
 
-        <p className="mt-8 text-xs text-gray-500">
-          Billing changes are handled at checkout. Need help choosing? Visit
-          <Link href="/assessment" className="ml-1 underline text-gray-300">Assessment</Link>.
-        </p>
+        {/* Tier 2: One-Time Reports */}
+        <section className="mb-16">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-white">One-Time Reports</h2>
+            <p className="mt-2 text-slate-400">
+              Buy exactly what you need. Lifetime access, no subscription required.
+            </p>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {reports.map((report) => {
+              const colorMap: Record<string, { border: string; badge: string; button: string }> = {
+                blue: {
+                  border: "border-blue-400/30",
+                  badge: "border-blue-300/30 bg-blue-300/10 text-blue-200",
+                  button: "bg-blue-600 hover:bg-blue-700",
+                },
+                green: {
+                  border: "border-green-400/30",
+                  badge: "border-green-300/30 bg-green-300/10 text-green-200",
+                  button: "bg-green-600 hover:bg-green-700",
+                },
+                purple: {
+                  border: "border-purple-400/30",
+                  badge: "border-purple-300/30 bg-purple-300/10 text-purple-200",
+                  button: "bg-purple-600 hover:bg-purple-700",
+                },
+              };
+              const c = colorMap[report.color] || colorMap.blue;
+
+              return (
+                <div
+                  key={report.slug}
+                  className={`rounded-2xl border ${c.border} bg-white/5 p-6 transition-all hover:border-white/30`}
+                >
+                  <div className="mb-4">
+                    <span className={`inline-block rounded-full border px-3 py-1 text-xs font-semibold ${c.badge}`}>
+                      {report.price} {report.priceLabel}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">{report.title}</h3>
+                  <p className="mt-2 text-sm text-slate-300">{report.subtitle}</p>
+                  <p className="mt-3 text-xs text-slate-400">{report.audience}</p>
+                  <div className="mt-6 flex flex-col gap-3">
+                    <BuyButton
+                      plan={report.planKey}
+                      label={`Buy for ${report.price}`}
+                      className={`w-full rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-colors ${c.button}`}
+                    />
+                    <Link
+                      href={`/reports/${report.slug}`}
+                      className="text-center text-xs text-slate-400 hover:text-white transition-colors"
+                    >
+                      Read preview →
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Tier 3: Subscription Plans */}
+        <section className="mb-16">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-white">Subscription Plans</h2>
+            <p className="mt-2 text-slate-400">
+              Continuous access, rolling updates, and higher AI budgets for teams actively shipping.
+            </p>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            {/* Newsletter Plan */}
+            <div className="relative overflow-hidden rounded-2xl border border-fuchsia-400/30 bg-fuchsia-500/10 p-8 backdrop-blur-sm">
+              <div className="absolute right-6 top-6">
+                <span className="rounded-full bg-fuchsia-400 px-3 py-1 text-xs font-semibold text-slate-950">
+                  Best entry point
+                </span>
+              </div>
+              <div className="mb-6">
+                <span className="text-xs font-semibold uppercase tracking-wider text-fuchsia-200">Newsletter</span>
+                <p className="mt-1 text-4xl font-bold text-white">
+                  $10<span className="text-xl font-normal text-slate-300">/mo</span>
+                </p>
+                <p className="mt-2 text-sm text-slate-300">For people who want the signal without the noise</p>
+              </div>
+              <ul className="mb-8 space-y-3 text-sm text-slate-100">
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fuchsia-300" />
+                  <span>Weekly premium newsletter with operator summaries</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fuchsia-300" />
+                  <span>Hot-news alerts as important stories land</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fuchsia-300" />
+                  <span>Side-panel AI context on the news desk</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-fuchsia-300" />
+                  <span>No paywall on news pages</span>
+                </li>
+              </ul>
+              <BuyButton
+                plan="newsletter"
+                label="Subscribe — $10/mo"
+                className="w-full rounded-lg bg-fuchsia-400 px-4 py-3 text-sm font-semibold text-slate-950 transition-colors hover:bg-fuchsia-300"
+              />
+            </div>
+
+            {/* Operator Access Plan */}
+            <div className="relative overflow-hidden rounded-2xl border border-cyan-400/30 bg-cyan-500/10 p-8 backdrop-blur-sm">
+              <div className="absolute right-6 top-6">
+                <span className="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-200">
+                  For operators
+                </span>
+              </div>
+              <div className="mb-6">
+                <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200">Operator Access</span>
+                <p className="mt-1 text-4xl font-bold text-white">
+                  $49<span className="text-xl font-normal text-slate-300">/mo</span>
+                </p>
+                <p className="mt-2 text-sm text-slate-300">For teams actively building with agents</p>
+              </div>
+              <ul className="mb-8 space-y-3 text-sm text-slate-100">
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                  <span><strong>Everything in Newsletter</strong></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                  <span>Full access to all research reports + rolling updates</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                  <span>Higher AI token budget (500 requests/day, $60/week)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                  <span>Priority access to new research drops</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
+                  <span>Best support path for urgent implementation work</span>
+                </li>
+              </ul>
+              <BuyButton
+                plan="pro"
+                label="Subscribe — $49/mo"
+                className="w-full rounded-lg bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="border-t border-white/10 pt-8 text-center">
+          <p className="text-sm text-gray-500">
+            All plans are billed monthly. Cancel anytime. Need help choosing?{" "}
+            <Link href="/assessment" className="text-cyan-300 hover:text-cyan-200 underline">
+              Take the assessment
+            </Link>
+            .
+          </p>
+        </footer>
       </main>
     </div>
   );

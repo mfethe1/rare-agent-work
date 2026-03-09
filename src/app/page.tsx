@@ -42,12 +42,13 @@ export default function Home() {
             </Link>
 
             <div className="flex items-center gap-2 sm:gap-3">
-              <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News Feed</Link>
-              <Link href="/digest" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Weekly Digest</Link>
-              <Link href="/reports" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
-              <Link href="/assessment" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
+              <Link href="/news" prefetch={true} className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News Feed</Link>
+              <Link href="/digest" prefetch={true} className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Weekly Digest</Link>
+              <Link href="/reports" prefetch={true} className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
+              <Link href="/assessment" prefetch={true} className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
               <Link
                 href="/pricing"
+                prefetch={true}
                 className="ml-1 rounded-full border border-cyan-300/40 bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20 sm:px-4 sm:text-sm"
               >
                 View Plans

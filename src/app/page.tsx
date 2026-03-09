@@ -108,8 +108,8 @@ export default function Home() {
                 <p className="mt-2 text-sm font-medium text-white">Premium operator identity, not generic AI SaaS chrome</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
-                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Brand assets</p>
-                <p className="mt-2 text-sm font-medium text-white">New logos and figures woven into the front page narrative</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Daily Intelligence</p>
+                <p className="mt-2 text-sm font-medium text-white">Continuously updated operator-grade research and news</p>
               </div>
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                 <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Tone</p>

@@ -111,6 +111,9 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           <div className="flex flex-wrap gap-3 mt-6 no-print">
             <PrintButton />
             <BuyButton label={`Buy Full Report — ${report.price}`} plan={report.planKey} className={`${c.btn} text-white px-5 py-3 rounded-lg text-sm font-semibold transition-colors`} />
+            <Link href={`/reports/${report.slug}/html`} className={`border ${c.border} text-white hover:bg-gray-800 px-5 py-3 rounded-lg text-sm font-semibold transition-colors`}>
+              Read Online (Interactive)
+            </Link>
           </div>
         </div>
 

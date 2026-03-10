@@ -54,8 +54,9 @@ export default function ModelsTable({ models }: ModelsTableProps) {
     }
   }
 
-  const SortHeader = ({ col, label }: { col: SortKey; label: string }) => (
+  const renderSortHeader = (col: SortKey, label: string) => (
     <th
+      key={col}
       className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider cursor-pointer hover:text-white select-none whitespace-nowrap"
       onClick={() => handleSort(col)}
     >
@@ -69,11 +70,11 @@ export default function ModelsTable({ models }: ModelsTableProps) {
         <thead className="bg-gray-900/80 border-b border-gray-800">
           <tr>
             <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Model</th>
-            <SortHeader col="tool_use_score" label="Tool Use" />
-            <SortHeader col="context_recall_score" label="Context Recall" />
-            <SortHeader col="coding_score" label="Coding" />
-            <SortHeader col="cost_per_1k_tokens" label="Cost/1k" />
-            <SortHeader col="context_window" label="Context" />
+            {renderSortHeader("tool_use_score", "Tool Use")}
+            {renderSortHeader("context_recall_score", "Context Recall")}
+            {renderSortHeader("coding_score", "Coding")}
+            {renderSortHeader("cost_per_1k_tokens", "Cost/1k")}
+            {renderSortHeader("context_window", "Context")}
             <th className="px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider">Best For</th>
           </tr>
         </thead>

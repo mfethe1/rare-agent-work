@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllNews, getNewsByTag, getAllTags, type NewsItem } from '@/lib/news-store';
+import { getAllNews, getNewsByTag, getAllTags, getNewsSummary, type NewsItem } from '@/lib/news-store';
 import { getHotNewsCount } from '@/lib/news-helpers';
 import NewsClient from '@/components/NewsClient';
 import NewsContextPanel from '@/components/NewsContextPanel';
@@ -41,6 +41,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
 
   const items: NewsItem[] = activeTag ? await getNewsByTag(activeTag) : await getAllNews();
   const allItems = await getAllNews();
+  const summaryData = await getNewsSummary();
   const tags = getAllTags(allItems).slice(0, 15);
   const latestPublishedAt = allItems[0]?.publishedAt;
   const hotItems = getHotNewsCount(allItems.map((item) => item.publishedAt));
@@ -122,20 +123,17 @@ export default async function NewsPage({ searchParams }: PageProps) {
               </div>
             )}
 
-            <div className="mb-6 grid gap-4 md:grid-cols-3">
-              <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">Why subscribe</p>
-                <p className="mt-2 text-sm text-gray-300">Breaking news alerts, weekly briefings, and agent context in one flow.</p>
+            {summaryData && (
+              <div className="mb-6 rounded-2xl border border-gray-800 bg-gray-900/50 p-6">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-orange-400">Past 24h Summary</p>
+                  <p className="text-xs text-gray-500">Updated hourly</p>
+                </div>
+                <div className="prose prose-sm prose-invert max-w-none whitespace-pre-wrap text-gray-300">
+                  {summaryData.summary}
+                </div>
               </div>
-              <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">Freshness promise</p>
-                <p className="mt-2 text-sm text-gray-300">Stories stay recent, ranked by recency + operator relevance.</p>
-              </div>
-              <div className="rounded-2xl border border-gray-800 bg-gray-900/50 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">Built for action</p>
-                <p className="mt-2 text-sm text-gray-300">Every story can be turned into implications, risks, and next steps via the copilot.</p>
-              </div>
-            </div>
+            )}
 
             {items.length === 0 ? (
               <div className="rounded-xl border border-gray-800 bg-gray-900 p-8 text-center">

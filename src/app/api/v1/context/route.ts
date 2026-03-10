@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 import { getAllNews } from '@/lib/news-store';
 import { getAllReports } from '@/lib/reports';
 
@@ -9,7 +10,6 @@ import { getAllReports } from '@/lib/reports';
  */
 
 export async function GET(request: NextRequest) {
-  // TODO (Winnie/Mack): Wire up real subscription check using Bearer token vs Stripe status
   const authHeader = request.headers.get('authorization');
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return NextResponse.json(
@@ -20,14 +20,37 @@ export async function GET(request: NextRequest) {
 
   const apiKey = authHeader.replace('Bearer ', '').trim();
   
-  // Basic validation check - Winnie to expand with real API keys table
-  // For now, allow known system keys so it works before full auth is wired
+  // Basic validation check
   const isSystemKey = apiKey === process.env.INGEST_API_KEY || apiKey === process.env.REVIEW_API_KEY;
   
-  // NOTE: This is temporary. Mack/Winnie must implement real subscriber API key validation.
-  // We need an `api_keys` table linking to `subscriptions` in Supabase.
-  if (!isSystemKey && apiKey !== 'dev_subscriber_key') {
-     return NextResponse.json({ error: 'Invalid API key or not a subscribed user' }, { status: 403 });
+  if (!isSystemKey) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (supabaseUrl && supabaseServiceKey) {
+      const supabase = createClient(supabaseUrl, supabaseServiceKey);
+      
+      const { data, error } = await supabase
+        .from('api_keys')
+        .select('user_id, is_active')
+        .eq('key_value', apiKey)
+        .eq('is_active', true)
+        .single();
+        
+      if (error || !data) {
+        return NextResponse.json({ error: 'Invalid API key or key is disabled' }, { status: 403 });
+      }
+      
+      // Update last_used_at timestamp
+      await supabase
+        .from('api_keys')
+        .update({ last_used_at: new Date().toISOString() })
+        .eq('key_value', apiKey);
+        
+      // Future: we could also check the user's stripe subscription status here via a join
+    } else if (apiKey !== 'dev_subscriber_key') {
+      return NextResponse.json({ error: 'Invalid API key or not a subscribed user' }, { status: 403 });
+    }
   }
 
   try {

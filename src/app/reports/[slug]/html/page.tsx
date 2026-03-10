@@ -1,26 +1,21 @@
-import Image from 'next/image';
-import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
-import { BreadcrumbJsonLd } from '@/components/JsonLd';
-import PrintButton from '@/components/PrintButton';
-import { getAllReports, getReport } from '@/lib/reports';
+import { getReport } from '@/lib/reports';
 import { createClient } from '@/lib/supabase/server';
+import { promises as fs } from 'fs';
+import path from 'path';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-const colorMap: Record<string, { border: string; text: string; badge: string; surface: string }> = {
-  blue:   { border: 'border-blue-500/30',   text: 'text-blue-400',   badge: 'bg-blue-900/50 border-blue-500/40 text-blue-300',   surface: 'from-blue-950/70 to-slate-950' },
-  green:  { border: 'border-green-500/30',  text: 'text-green-400',  badge: 'bg-green-900/50 border-green-500/40 text-green-300',  surface: 'from-green-950/60 to-slate-950' },
-  purple: { border: 'border-purple-500/30', text: 'text-purple-400', badge: 'bg-purple-900/50 border-purple-500/40 text-purple-300', surface: 'from-purple-950/60 to-slate-950' },
-  red:    { border: 'border-red-500/30',    text: 'text-red-400',    badge: 'bg-red-900/50 border-red-500/40 text-red-300',    surface: 'from-red-950/60 to-slate-950' },
-  amber:  { border: 'border-amber-500/30',  text: 'text-amber-400',  badge: 'bg-amber-900/50 border-amber-500/40 text-amber-300',  surface: 'from-amber-950/60 to-slate-950' },
-};
-
-export default async function ProtectedReportHtmlPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ProtectedReportPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const report = getReport(slug);
   if (!report) notFound();
 
+  // Supabase Auth Gate
   const supabase = await createClient();
   const {
     data: { user },
@@ -30,214 +25,107 @@ export default async function ProtectedReportHtmlPage({ params }: { params: Prom
     redirect(`/auth/login?redirect=/reports/${slug}/html`);
   }
 
-  // --- Purchase / subscription gate ---
-  // Subscribers (starter or pro tier) get access to all reports.
-  // One-time buyers must have a matching row in report_purchases.
-  const { data: profile } = await supabase
-    .from('users')
-    .select('tier')
-    .eq('id', user.id)
-    .single();
-
-  const tier = profile?.tier as string | null | undefined;
-  const hasSubscription = tier === 'starter' || tier === 'pro';
-
-  if (!hasSubscription) {
-    // Check for a one-time purchase record keyed by email + report slug.
-    const email = user.email ?? '';
-    const { data: purchase } = await supabase
-      .from('report_purchases')
-      .select('id')
-      .eq('customer_email', email)
-      .eq('report_slug', slug)
-      .maybeSingle();
-
-    if (!purchase) {
-      // No valid purchase — redirect to the preview page with a paywall flag.
-      redirect(`/reports/${slug}?access=required`);
-    }
+  // Read Markdown
+  const mdPath = path.join(process.cwd(), 'data', 'reports-md', `${slug}.md`);
+  let mdContent = '';
+  try {
+    mdContent = await fs.readFile(mdPath, 'utf-8');
+  } catch (err) {
+    mdContent = `*Markdown file not found for this report (${slug}.md).*`;
   }
 
-  const c = colorMap[report.color] ?? colorMap.blue;
-  const relatedReports = getAllReports().filter((r) => r.slug !== report.slug).slice(0, 2);
+  // Extract headings for TOC
+  const headings: {level: number, text: string, id: string}[] = [];
+  const lines = mdContent.split('\n');
+  lines.forEach(line => {
+    const match = line.match(/^(#{1,4})\s+(.*)$/);
+    if (match) {
+      const level = match[1].length;
+      const text = match[2];
+      const id = text.toLowerCase().replace(/[^\w]+/g, '-');
+      headings.push({ level, text, id });
+    }
+  });
 
   return (
-    <div className="min-h-screen bg-[#020617] text-gray-100 font-sans print:bg-white print:text-black">
-      <BreadcrumbJsonLd
-        items={[
-          { name: 'Home', url: 'https://rareagent.work' },
-          { name: 'Reports', url: 'https://rareagent.work/reports' },
-          { name: report.title, url: `https://rareagent.work/reports/${report.slug}` },
-          { name: 'Interactive HTML', url: `https://rareagent.work/reports/${report.slug}/html` },
-        ]}
-      />
-
-      <nav className="border-b border-gray-800/80 bg-black/60 backdrop-blur-sm no-print print:hidden">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center gap-4">
-          <Link href={`/reports/${slug}`} className="text-white font-bold tracking-tighter">← Back to report</Link>
-          <div className="flex items-center gap-3">
-            <span className={`text-xs font-bold px-3 py-1 rounded-full border ${c.badge}`}>
-              Interactive HTML view
+    <div className="min-h-screen bg-black text-gray-100 font-sans selection:bg-blue-500/30">
+      
+      {/* Top Nav */}
+      <nav className="sticky top-0 z-50 border-b border-gray-800 bg-black/90 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+          <Link href={`/reports/${slug}`} className="text-gray-400 hover:text-white font-medium text-sm transition-colors">
+            ← Back to Report Details
+          </Link>
+          <div className="text-white font-bold text-sm truncate max-w-[50%]">
+            {report.title}
+          </div>
+          <div className="flex items-center gap-4 text-sm">
+            <span className="text-blue-400 font-medium px-2 py-1 bg-blue-500/10 rounded border border-blue-500/20">
+              Interactive HTML
             </span>
-            <PrintButton />
+            <form action="/auth/signout" method="post">
+              <button className="text-gray-400 hover:text-white transition-colors">
+                Sign out
+              </button>
+            </form>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 lg:py-14">
-        <section className={`mb-10 overflow-hidden rounded-[28px] border ${c.border} bg-gradient-to-br ${c.surface}`}>
-          <div className="border-b border-white/10 px-6 py-5 sm:px-8">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-4">
-                <div className="relative h-14 w-14 overflow-hidden rounded-full border border-white/15 bg-white/5">
-                  <Image src="/logo-medallion.jpg" alt="Rare Agent Work" fill className="object-cover" sizes="56px" priority />
-                </div>
-                <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-cyan-300">Rare Agent Work</p>
-                  <p className="mt-1 text-lg font-semibold text-white">Interactive report reader</p>
-                  <p className="text-sm text-slate-300">{report.edition} • {report.revision}</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3 text-xs sm:min-w-[260px]">
-                <div className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3">
-                  <div className="text-slate-400">Last updated</div>
-                  <div className="mt-1 font-semibold text-white">{report.updatedAt}</div>
-                </div>
-                <div className="rounded-2xl border border-white/10 bg-black/25 px-4 py-3">
-                  <div className="text-slate-400">Reading time</div>
-                  <div className="mt-1 font-semibold text-white">{report.readingTime}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="px-6 py-8 sm:px-8">
-            <div className="flex flex-wrap items-center gap-3 mb-5">
-              <span className={`text-xs font-bold px-3 py-1 rounded-full border ${c.badge}`}>
-                {report.price} {report.priceLabel}
-              </span>
-              <span className="text-xs text-gray-300 border border-white/10 px-3 py-1 rounded-full">{report.audience}</span>
-              <span className="text-xs text-gray-300 border border-white/10 px-3 py-1 rounded-full">Freshness: {report.freshnessTimestamp}</span>
-            </div>
-
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">{report.title}</h1>
-            <p className={`text-xl ${c.text} font-medium mb-3`}>{report.subtitle}</p>
-            <p className="text-slate-300 text-lg leading-relaxed max-w-3xl">{report.valueprop}</p>
-          </div>
-        </section>
-
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]">
-          <aside className="space-y-6 lg:sticky lg:top-8 lg:self-start print:hidden">
-            <section className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-              <h2 className="text-lg font-bold text-white">Inside this report</h2>
-              <ul className="mt-4 space-y-3 text-sm text-slate-300">
-                <li><a href="#executive-summary" className="hover:text-white">Executive summary</a></li>
-                <li><a href="#implications" className="hover:text-white">Implications</a></li>
-                <li><a href="#action-steps" className="hover:text-white">Action steps</a></li>
-                <li><a href="#risks" className="hover:text-white">Risks</a></li>
-                <li><a href="#deliverables" className="hover:text-white">Deliverables</a></li>
-                <li><a href="#sample-sections" className="hover:text-white">Sample sections</a></li>
-                <li><a href="#citations" className="hover:text-white">Evidence & citations</a></li>
-              </ul>
-            </section>
-
-            <section className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
-              <h2 className="text-lg font-bold text-white">Related reports</h2>
-              <div className="mt-4 space-y-3">
-                {relatedReports.map((related) => (
-                  <Link key={related.slug} href={`/reports/${related.slug}`} className="block rounded-2xl border border-white/10 bg-black/20 p-4 hover:border-white/20">
-                    <div className="text-xs text-cyan-300 font-semibold">{related.price}</div>
-                    <div className="mt-1 font-semibold text-white">{related.title}</div>
-                    <div className="mt-1 text-sm text-slate-400">{related.subtitle}</div>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          </aside>
-
-          <div className="space-y-8">
-            <section id="executive-summary" className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Executive summary</h2>
-              <p className="mt-4 text-base leading-8 text-slate-200">{report.executiveSummary}</p>
-            </section>
-
-            <section id="implications" className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Implications</h2>
-              <ul className="mt-4 space-y-3 text-base leading-8 text-slate-200">
-                {report.implications.map((item) => (
-                  <li key={item} className="flex gap-3"><span className={`${c.text} mt-1`}>●</span><span>{item}</span></li>
-                ))}
-              </ul>
-            </section>
-
-            <section id="action-steps" className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Action steps</h2>
-              <ol className="mt-4 space-y-3 text-base leading-8 text-slate-200 list-decimal pl-5">
-                {report.actionSteps.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ol>
-            </section>
-
-            <section id="risks" className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Risks and failure modes</h2>
-              <ul className="mt-4 space-y-3 text-base leading-8 text-slate-200">
-                {report.risks.map((item) => (
-                  <li key={item} className="flex gap-3"><span className="mt-1 text-rose-300">●</span><span>{item}</span></li>
-                ))}
-              </ul>
-            </section>
-
-            <section id="deliverables" className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Deliverables</h2>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {report.deliverables.map((item) => (
-                  <div key={item.title} className={`rounded-2xl border ${c.border} bg-black/20 p-5`}>
-                    <div className="text-2xl">{item.icon}</div>
-                    <h3 className="mt-3 font-semibold text-white">{item.title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-slate-300">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section id="sample-sections" className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Sample sections</h2>
-              <div className="mt-6 space-y-8">
-                {report.excerpt.map((section) => (
-                  <article key={section.heading} className={`border-l-2 ${c.text.replace('text-', 'border-')} pl-6`}>
-                    <h3 className={`text-xl font-bold ${c.text}`}>{section.heading}</h3>
-                    <div className="mt-4 space-y-4 text-base leading-8 text-slate-200">
-                      {section.body.split('\n\n').map((para, index) => (
-                        <p key={index}>{para}</p>
-                      ))}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-
-            <section id="citations" className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
-              <h2 className="text-2xl font-bold text-white">Evidence and citations</h2>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {report.citations.map((citation) => (
-                  <a
-                    key={`${citation.label}-${citation.url}`}
-                    href={citation.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-2xl border border-white/10 bg-black/20 p-4 hover:border-white/20"
-                  >
-                    <div className="text-sm font-semibold text-white">{citation.label}</div>
-                    <div className="mt-2 break-all text-sm text-sky-300">{citation.url}</div>
-                    <div className="mt-2 text-xs text-slate-500">Accessed {citation.accessedAt}</div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex flex-col lg:flex-row gap-12 relative">
+        
+        {/* Table of Contents - Sticky Sidebar */}
+        <aside className="lg:w-1/4 shrink-0 hidden lg:block">
+          <div className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent pr-4">
+            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Table of Contents</h3>
+            <ul className="space-y-2.5 text-sm">
+              {headings.map((h, i) => (
+                <li key={i} style={{ paddingLeft: `${(h.level - 1) * 12}px` }}>
+                  <a href={`#${h.id}`} className="text-gray-400 hover:text-white transition-colors block truncate hover:text-clip">
+                    {h.text}
                   </a>
-                ))}
-              </div>
-            </section>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-      </main>
+        </aside>
+
+        {/* Main Content */}
+        <main className="lg:w-3/4 max-w-4xl">
+          <div className="prose prose-invert prose-blue max-w-none 
+            prose-headings:font-bold prose-headings:tracking-tight 
+            prose-h1:text-4xl prose-h1:mb-8 prose-h1:text-white
+            prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-4 prose-h2:text-blue-50
+            prose-h3:text-xl prose-h3:mt-8 prose-h3:text-gray-200
+            prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
+            prose-a:text-blue-400 prose-a:no-underline hover:prose-a:text-blue-300
+            prose-strong:text-white prose-strong:font-semibold
+            prose-ul:text-gray-300 prose-li:my-1
+            prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
+            prose-code:text-blue-300 prose-code:bg-blue-900/20 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded">
+            <ReactMarkdown 
+              remarkPlugins={[remarkGfm]} 
+              rehypePlugins={[rehypeRaw]}
+              components={{
+                h1: ({node, ...props}) => {
+                  const id = props.children?.toString().toLowerCase().replace(/[^\w]+/g, '-') || '';
+                  return <h1 id={id} className="scroll-mt-24" {...props} />;
+                },
+                h2: ({node, ...props}) => {
+                  const id = props.children?.toString().toLowerCase().replace(/[^\w]+/g, '-') || '';
+                  return <h2 id={id} className="scroll-mt-24 border-b border-gray-800 pb-2" {...props} />;
+                },
+                h3: ({node, ...props}) => {
+                  const id = props.children?.toString().toLowerCase().replace(/[^\w]+/g, '-') || '';
+                  return <h3 id={id} className="scroll-mt-24" {...props} />;
+                }
+              }}
+            >
+              {mdContent}
+            </ReactMarkdown>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

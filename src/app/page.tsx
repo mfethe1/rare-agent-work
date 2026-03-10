@@ -46,6 +46,7 @@ export default function Home() {
               <Link href="/digest" prefetch={true} className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Weekly Digest</Link>
               <Link href="/reports" prefetch={true} className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
               <Link href="/assessment" prefetch={true} className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
+              <Link href="/book-demo" prefetch={true} className="hidden text-xs text-cyan-400 transition-colors hover:text-cyan-300 sm:block sm:text-sm">Book Demo</Link>
               <Link
                 href="/pricing"
                 prefetch={true}

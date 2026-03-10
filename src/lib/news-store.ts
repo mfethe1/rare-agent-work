@@ -23,7 +23,17 @@ export interface NewsItem {
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const NEWS_FILE = path.join(DATA_DIR, 'news.json');
+const SUMMARY_FILE = path.join(DATA_DIR, 'news-summary.json');
 const MAX_AGE_DAYS = 14;
+
+export async function getNewsSummary(): Promise<{ summary: string; updatedAt: string } | null> {
+  try {
+    const raw = await readFile(SUMMARY_FILE, 'utf-8');
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
 
 async function ensureDir() {
   await mkdir(DATA_DIR, { recursive: true });

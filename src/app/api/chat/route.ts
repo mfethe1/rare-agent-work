@@ -1,6 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { NextRequest } from 'next/server';
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
+import { createClient as createSupabaseServerClient } from '@/lib/supabase/server';
 import { checkCostGate, calculateModelCost } from '@/lib/cost-gate';
 
 export const runtime = 'nodejs';
@@ -61,26 +62,26 @@ function getSupabaseAdmin() {
   return createSupabaseAdmin(url, key);
 }
 
-async function getUserFromCookie(req: NextRequest) {
-  const sessionToken = req.cookies.get('session')?.value;
-  if (!sessionToken) return null;
+async function getAuthenticatedUser() {
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  const db = getSupabaseAdmin();
-  if (!db) return null;
+  if (!user) return null;
 
-  const { data } = await db
+  const { data: profile } = await supabase
     .from('users')
-    .select('id, email, tier, tokens_used, tokens_budget')
-    .eq('session_token', sessionToken)
+    .select('tier, tokens_used, tokens_budget')
+    .eq('id', user.id)
     .single();
 
-  if (!data) return null;
   return {
-    id: data.id,
-    email: data.email,
-    tier: data.tier ?? 'free',
-    tokensUsed: data.tokens_used ?? 0,
-    tokensBudget: data.tokens_budget ?? 50000,
+    id: user.id,
+    email: user.email ?? '',
+    tier: profile?.tier ?? 'free',
+    tokensUsed: profile?.tokens_used ?? 0,
+    tokensBudget: profile?.tokens_budget ?? 0,
   };
 }
 
@@ -335,19 +336,45 @@ function streamGemini(
 
 export async function POST(req: NextRequest) {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  const user = await getUserFromCookie(req);
+  const user = await getAuthenticatedUser();
   const db = getSupabaseAdmin();
 
-  let userId = 'anon';
-  let userEmail = '';
-  let tier = 'free';
-  let tokensUsed = 0;
+  if (!user) {
+    return new Response(
+      JSON.stringify({
+        error: 'Authentication required to use the AI assistant.',
+        upgrade: true,
+        upgradeUrl: '/auth/login',
+      }),
+      { status: 401, headers: { 'Content-Type': 'application/json' } },
+    );
+  }
 
-  if (user) {
-    userId = user.id;
-    userEmail = user.email;
-    tier = user.tier;
-    tokensUsed = user.tokensUsed;
+  const userId = user.id;
+  const userEmail = user.email;
+  const tier = user.tier;
+  const tokensUsed = user.tokensUsed;
+
+  if (tier === 'free') {
+    return new Response(
+      JSON.stringify({
+        error: 'The AI assistant is available on paid plans only.',
+        upgrade: true,
+        upgradeUrl: '/pricing',
+      }),
+      { status: 403, headers: { 'Content-Type': 'application/json' } },
+    );
+  }
+
+  if (tokensUsed >= user.tokensBudget && user.tokensBudget > 0) {
+    return new Response(
+      JSON.stringify({
+        error: 'Monthly token budget reached for your current plan.',
+        upgrade: true,
+        upgradeUrl: '/pricing',
+      }),
+      { status: 402, headers: { 'Content-Type': 'application/json' } },
+    );
   }
 
   // Cost gate
@@ -358,7 +385,7 @@ export async function POST(req: NextRequest) {
         error: gate.error,
         reason: gate.reason,
         upgrade: true,
-        upgradeUrl: tier === 'free' ? '/auth/login' : '/pricing',
+        upgradeUrl: '/pricing',
         usage: {
           weeklySpend: `$${gate.weeklySpend.toFixed(4)}`,
           weeklyLimit: `$${gate.limits.weeklyLimit.toFixed(2)}`,
@@ -479,6 +506,10 @@ export async function POST(req: NextRequest) {
       'X-Model': modelConfig.label,
     },
   });
+}
+
+export function calculateCost(inputTokens: number, outputTokens: number) {
+  return calculateModelCost('claude-sonnet-4-6', inputTokens, outputTokens).markupCost;
 }
 
 // GET /api/chat — return available models for the client

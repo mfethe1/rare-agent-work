@@ -70,19 +70,11 @@ Create the daily brief following EXACTLY this structure:
 
 Format as clean, professional Markdown. Be concise, direct, and zero-fluff. Do not use hype words like "revolutionary" or "game-changing".`;
 
-  const anthropic = new Anthropic({
-    apiKey: process.env.ANTHROPIC_API_KEY || '',
-  });
-
   try {
-    const response = await anthropic.messages.create({
-      model: 'claude-3-haiku-20240307',
-      max_tokens: 3000,
-      temperature: 0.3,
-      messages: [{ role: 'user', content: prompt }],
-    });
-
-    const summaryText = (response.content[0] as any).text;
+    const tmpFile = path.join(DATA_DIR, 'prompt.txt');
+    fs.writeFileSync(tmpFile, prompt);
+    const summaryText = execSync(`gemini < ${tmpFile}`, { encoding: 'utf-8' });
+    fs.unlinkSync(tmpFile);
 
     fs.writeFileSync(
       SUMMARY_FILE,
@@ -97,7 +89,7 @@ Format as clean, professional Markdown. Be concise, direct, and zero-fluff. Do n
 
     for (const email of SEED_EMAILS) {
       try {
-        const cmd = `gog gmail send --to="${email}" --subject="${subject}" < ${EMAIL_OUTPUT}`;
+        const cmd = `gog gmail send --account="mfethe1@gmail.com" --to="${email}" --subject="${subject}" --body-file="${EMAIL_OUTPUT}"`;
         console.log(`Sending email to ${email}...`);
         execSync(cmd, { stdio: 'pipe' });
       } catch (e: any) {

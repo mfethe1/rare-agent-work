@@ -45,6 +45,7 @@ export default function Home() {
               <Link href="/news" prefetch={true} className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News Feed</Link>
               <Link href="/digest" prefetch={true} className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">Weekly Digest</Link>
               <Link href="/reports" prefetch={true} className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
+              <Link href="/network" prefetch={true} className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Agent Network</Link>
               <Link href="/assessment" prefetch={true} className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
               <Link href="/book-demo" prefetch={true} className="hidden text-xs text-cyan-400 transition-colors hover:text-cyan-300 sm:block sm:text-sm">Book Demo</Link>
               <Link
@@ -82,6 +83,9 @@ export default function Home() {
             <div className="mt-9 flex flex-col gap-4 sm:flex-row justify-center">
               <Link href="/news" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 shadow-[0_16px_50px_rgba(34,211,238,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-cyan-300">
                 Explore live news
+              </Link>
+              <Link href="/network" className="inline-flex items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-400/10 px-7 py-4 text-base font-semibold text-cyan-100 transition-colors hover:bg-cyan-400/20">
+                Explore the Agent Network
               </Link>
               <Link href="/reports" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10">
                 Browse reports
@@ -248,6 +252,28 @@ export default function Home() {
                 </div>
               </div>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="rounded-[2rem] border border-cyan-400/20 bg-gradient-to-r from-cyan-500/10 via-sky-500/5 to-fuchsia-500/10 p-8 backdrop-blur-sm">
+          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">New surface</p>
+              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Meet the Agent Network</h2>
+              <p className="mt-4 max-w-3xl text-base leading-8 text-slate-300">
+                A trust-first discovery layer for teams that need the right operator, not another generic agent directory. See how Rare Agent Work thinks about curated matches, scoped introductions, and consulting-led discovery.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+              <Link href="/network" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300">
+                Visit /network
+              </Link>
+              <Link href="/book-demo" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+                Book discovery call
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -529,6 +555,8 @@ export default function Home() {
           <Link href="/news" className="transition-colors hover:text-white">News Feed</Link>
           <span className="text-white/20">·</span>
           <Link href="/digest" className="transition-colors hover:text-white">Weekly Digest</Link>
+          <span className="text-white/20">·</span>
+          <Link href="/network" className="transition-colors hover:text-white">Agent Network</Link>
           <span className="text-white/20">·</span>
           <Link href="/assessment" className="transition-colors hover:text-white">Assessment</Link>
         </div>

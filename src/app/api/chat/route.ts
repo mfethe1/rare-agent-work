@@ -338,17 +338,21 @@ export async function POST(req: NextRequest) {
   const user = await getUserFromCookie(req);
   const db = getSupabaseAdmin();
 
-  let userId = 'anon';
-  let userEmail = '';
-  let tier = 'free';
-  let tokensUsed = 0;
-
-  if (user) {
-    userId = user.id;
-    userEmail = user.email;
-    tier = user.tier;
-    tokensUsed = user.tokensUsed;
+  if (!user || user.tier === 'free') {
+    return new Response(
+      JSON.stringify({
+        error: 'You must be signed in to a paid plan to use the AI assistant. Upgrade to Operator Access to continue.',
+        upgrade: true,
+        upgradeUrl: '/pricing',
+      }),
+      { status: 403, headers: { 'Content-Type': 'application/json' } },
+    );
   }
+
+  let userId = user.id;
+  let userEmail = user.email;
+  let tier = user.tier;
+  let tokensUsed = user.tokensUsed;
 
   // Cost gate
   const gate = await checkCostGate({ userId, userEmail, ip, app: 'ai-guide', tier });

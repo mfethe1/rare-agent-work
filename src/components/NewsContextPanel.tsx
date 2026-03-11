@@ -6,7 +6,7 @@ interface NewsContextPanelProps {
   latestPublishedAt?: string;
   totalItems: number;
   hotItems: number;
-  summaryData?: { summary: string };
+  summaryData?: { summary: string } | null;
 }
 
 function formatFreshness(date?: string) {

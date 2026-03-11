@@ -16,10 +16,7 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [msgCount, setMsgCount] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  const FREE_LIMIT = 5;
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -29,14 +26,12 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
 
   async function send() {
     if (!input.trim() || loading) return;
-    if (msgCount >= FREE_LIMIT) return;
 
     const userMsg: Message = { role: 'user', content: input.trim() };
     const newMessages = [...messages, userMsg];
     setMessages(newMessages);
     setInput('');
     setLoading(true);
-    setMsgCount((c) => c + 1);
 
     const assistantMsg: Message = { role: 'assistant', content: '' };
     setMessages((m) => [...m, assistantMsg]);
@@ -51,7 +46,14 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
         }),
       });
 
-      if (!res.ok || !res.body) throw new Error('Request failed');
+      if (!res.ok || !res.body) {
+        let errMsg = 'Request failed';
+        try {
+          const errData = await res.json();
+          if (errData.error) errMsg = errData.error;
+        } catch {}
+        throw new Error(errMsg);
+      }
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -67,12 +69,12 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
           return updated;
         });
       }
-    } catch {
+    } catch (err: any) {
       setMessages((prev) => {
         const updated = [...prev];
         updated[updated.length - 1] = {
           role: 'assistant',
-          content: 'Sorry, something went wrong. Please try again.',
+          content: err.message || 'Sorry, something went wrong. Please try again.',
         };
         return updated;
       });
@@ -80,8 +82,6 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
       setLoading(false);
     }
   }
-
-  const atLimit = msgCount >= FREE_LIMIT;
 
   return (
     <div className="flex flex-col h-full">
@@ -108,23 +108,8 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
         <div ref={bottomRef} />
       </div>
 
-      {/* Limit banner */}
-      {atLimit && (
-        <div className="bg-blue-950/50 border border-blue-500/40 rounded-lg p-4 mb-3 text-sm text-center">
-          <p className="text-white font-semibold mb-1">Free questions used ({FREE_LIMIT}/{FREE_LIMIT})</p>
-          <p className="text-gray-400 mb-3">Subscribe for unlimited access to the AI guide + all reports updated every 3 days.</p>
-          <a
-            href="/pricing"
-            className="inline-block bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-          >
-            Upgrade to Operator Access — $49/mo
-          </a>
-        </div>
-      )}
-
       {/* Input */}
-      {!atLimit && (
-        <div className="flex gap-2">
+      <div className="flex gap-2">
           <input
             type="text"
             value={input}
@@ -142,9 +127,8 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
             {loading ? '...' : 'Ask'}
           </button>
         </div>
-      )}
       <p className="text-xs text-gray-600 mt-2 text-center">
-        {FREE_LIMIT - msgCount} free questions remaining · Powered by Gemini 3.1 Pro
+        Powered by Gemini 3.1 Pro
       </p>
     </div>
   );

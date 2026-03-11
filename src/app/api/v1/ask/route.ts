@@ -216,7 +216,7 @@ export async function POST(request: NextRequest) {
       results,
       source: 'https://rareagent.work',
       protocol: 'nlweb',
-      documentation: 'https://rareagent.work/.well-known/agent.json',
+      documentation: 'https://rareagent.work/.well-known/agent-card.json',
     }, {
       headers: {
         'Access-Control-Allow-Origin': '*',

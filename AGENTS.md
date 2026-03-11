@@ -87,7 +87,8 @@ src/
 public/
 ├── llms.txt                # LLM/agent discovery file
 ├── .well-known/
-│   └── agent.json          # Agent capabilities manifest
+│   ├── agent-card.json     # A2A-style agent discovery card
+│   └── agent.json          # Legacy compatibility manifest
 └── research/               # Static research assets
 supabase/
 └── migrations/             # Database migration SQL files
@@ -148,7 +149,8 @@ npx supabase db push
 This site practices what it preaches — it's built to be consumed by AI agents:
 
 - `/llms.txt` — plain-text site description for LLMs
-- `/.well-known/agent.json` — agent capabilities and endpoint discovery
+- `/.well-known/agent-card.json` — A2A-style discovery card
+- `/.well-known/agent.json` — legacy compatibility manifest for older consumers
 - `/api/v1/openapi.json` — full OpenAPI 3.1 specification
 - `/api/v1/models` — queryable model leaderboard
 - `/api/v1/news` — filterable news feed
@@ -162,13 +164,13 @@ This site practices what it preaches — it's built to be consumed by AI agents:
 ### Add a new report
 1. Add the report definition to `src/lib/reports.ts`
 2. The route `/reports/[slug]` will pick it up automatically
-3. Update `llms.txt` and `agent.json` if the report introduces new capabilities
+3. Update `llms.txt`, `agent-card.json`, and the legacy `agent.json` manifest if the report introduces new capabilities
 
 ### Add a new public API endpoint
 1. Create route at `src/app/api/v1/<endpoint>/route.ts`
 2. Include `Cache-Control` and `Access-Control-Allow-Origin: *` headers
 3. Add to the OpenAPI spec in `src/app/api/v1/openapi.json/route.ts`
-4. Update `/.well-known/agent.json` capabilities
+4. Update `/.well-known/agent-card.json` and the compatibility `/.well-known/agent.json` manifest
 5. Update `/llms.txt`
 
 ### Update model leaderboard

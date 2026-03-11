@@ -8,6 +8,7 @@ const spec = {
     description: 'Public API for AI agents to access curated news and research report catalog from Rare Agent Work. Model index endpoints are currently under review.',
     contact: { email: 'hello@rareagent.work' },
     'x-llms-txt': 'https://rareagent.work/llms.txt',
+    'x-a2a-agent-card': 'https://rareagent.work/.well-known/agent-card.json',
   },
   servers: [{ url: 'https://rareagent.work', description: 'Production' }],
   paths: {

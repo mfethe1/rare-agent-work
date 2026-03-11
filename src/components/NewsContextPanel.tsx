@@ -6,7 +6,8 @@ interface NewsContextPanelProps {
   latestPublishedAt?: string;
   totalItems: number;
   hotItems: number;
-  summaryData?: { summary: string } | null;
+  isStale?: boolean;
+  summaryData?: { summary: string; updatedAt: string } | null;
 }
 
 function formatFreshness(date?: string) {
@@ -20,7 +21,7 @@ function formatFreshness(date?: string) {
   return `Updated ${days}d ago`;
 }
 
-export default function NewsContextPanel({ latestPublishedAt, totalItems, hotItems, summaryData }: NewsContextPanelProps) {
+export default function NewsContextPanel({ latestPublishedAt, totalItems, hotItems, isStale = false, summaryData }: NewsContextPanelProps) {
   return (
     <aside className="space-y-4 lg:sticky lg:top-20">
       <div className="rounded-2xl border border-orange-500/30 bg-orange-950/20 p-5">
@@ -52,14 +53,20 @@ export default function NewsContextPanel({ latestPublishedAt, totalItems, hotIte
           </div>
         </div>
 
-        <p className="mt-4 text-xs text-gray-500">{formatFreshness(latestPublishedAt)}</p>
+        <p className={`mt-4 text-xs ${isStale ? 'text-red-300' : 'text-gray-500'}`} data-testid="news-feed-freshness">
+          {formatFreshness(latestPublishedAt)}
+          {isStale ? ' · feed needs refresh' : ''}
+        </p>
       </div>
 
       {summaryData && (
         <div className="rounded-2xl border border-gray-800 bg-gray-900/70 p-5">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-3 flex items-center justify-between gap-3">
             <p className="text-xs font-semibold uppercase tracking-[0.15em] text-orange-400">AI Summary</p>
-            <p className="text-[10px] uppercase text-gray-500">Updated every 3h</p>
+            <div className="text-right">
+              <p className="text-[10px] uppercase text-gray-500">Updated every 3h</p>
+              <p className="text-[10px] text-gray-500" data-testid="news-summary-freshness">{formatFreshness(summaryData.updatedAt)}</p>
+            </div>
           </div>
           <div className="prose prose-sm prose-invert max-w-none whitespace-pre-wrap text-gray-300">
             {summaryData.summary}

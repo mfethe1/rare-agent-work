@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllNews, getNewsByTag, getAllTags, getNewsSummary, type NewsItem } from '@/lib/news-store';
-import { getHotNewsCount } from '@/lib/news-helpers';
+import { getNewsFreshnessSnapshot } from '@/lib/news-helpers';
 import NewsClient from '@/components/NewsClient';
 import NewsContextPanel from '@/components/NewsContextPanel';
 import BuyButton from '@/components/BuyButton';
@@ -44,8 +44,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
   const allItems = await getAllNews();
   const summaryData = await getNewsSummary();
   const tags = getAllTags(allItems).slice(0, 15);
-  const latestPublishedAt = allItems[0]?.publishedAt;
-  const hotItems = getHotNewsCount(allItems.map((item) => item.publishedAt));
+  const freshness = getNewsFreshnessSnapshot(allItems.map((item) => item.publishedAt));
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-gray-100">
@@ -96,11 +95,11 @@ export default async function NewsPage({ searchParams }: PageProps) {
                 </div>
                 <div className="grid min-w-[220px] grid-cols-2 gap-3 text-center text-xs">
                   <div className="rounded-xl border border-gray-800 bg-black/40 p-3">
-                    <p className="text-lg font-bold text-white">{allItems.length}</p>
+                    <p className="text-lg font-bold text-white" data-testid="news-total-count">{freshness.totalItems}</p>
                     <p className="text-gray-500">live stories</p>
                   </div>
                   <div className="rounded-xl border border-gray-800 bg-black/40 p-3">
-                    <p className="text-lg font-bold text-white">{hotItems}</p>
+                    <p className="text-lg font-bold text-white" data-testid="news-hot-count">{freshness.hotItems}</p>
                     <p className="text-gray-500">last 24h</p>
                   </div>
                 </div>
@@ -134,7 +133,13 @@ export default async function NewsPage({ searchParams }: PageProps) {
             )}
           </section>
 
-          <NewsContextPanel latestPublishedAt={latestPublishedAt} totalItems={allItems.length} hotItems={hotItems} summaryData={summaryData} />
+          <NewsContextPanel
+            latestPublishedAt={freshness.latestPublishedAt}
+            totalItems={freshness.totalItems}
+            hotItems={freshness.hotItems}
+            isStale={freshness.stale}
+            summaryData={summaryData}
+          />
         </div>
       </main>
 

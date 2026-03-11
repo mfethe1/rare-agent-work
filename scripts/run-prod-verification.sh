@@ -19,7 +19,7 @@ if command -v railway >/dev/null 2>&1; then
 fi
 
 printf '\n%s\n' '-- HTTP smoke --'
-for route in / /pricing /reports /news /digest /auth/login /api/v1/reports /api/v1/news /api/v1/models; do
+for route in / /pricing /reports /news /digest /auth/login /api/v1/reports /api/v1/news /api/v1/news/health /api/v1/models; do
   code="$(curl -s -o /dev/null -w '%{http_code}' "$BASE_URL$route")"
   printf '%-20s %s\n' "$route" "$code"
   if [[ "$code" -ge 400 ]]; then
@@ -28,8 +28,18 @@ for route in / /pricing /reports /news /digest /auth/login /api/v1/reports /api/
   fi
 done
 
+printf '\n%s\n' '-- News freshness contract --'
+news_health_status="$(curl -s -o /tmp/rare-agent-work-news-health.json -w '%{http_code}' "$BASE_URL/api/v1/news/health")"
+printf 'news health status  %s\n' "$news_health_status"
+cat /tmp/rare-agent-work-news-health.json
+printf '\n'
+if [[ "$news_health_status" -ge 400 ]]; then
+  echo 'FAIL: news health endpoint reports stale feed or stale summary'
+  exit 1
+fi
+
 printf '\n%s\n' '-- Playwright production smoke --'
-PLAYWRIGHT_BASE_URL="$BASE_URL" npx playwright test e2e/homepage.spec.ts --reporter=line
+PLAYWRIGHT_BASE_URL="$BASE_URL" npx playwright test e2e/homepage.spec.ts e2e/news-feed.spec.ts --reporter=line
 
 if [[ "$RUN_UNIT" == "1" ]]; then
   printf '\n%s\n' '-- Vitest regression suite --'

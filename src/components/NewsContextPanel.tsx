@@ -20,7 +20,7 @@ function formatFreshness(date?: string) {
   return `Updated ${days}d ago`;
 }
 
-export default function NewsContextPanel({ latestPublishedAt, totalItems, hotItems }: NewsContextPanelProps) {
+export default function NewsContextPanel({ latestPublishedAt, totalItems, hotItems, summaryData }: NewsContextPanelProps) {
   return (
     <aside className="space-y-4 lg:sticky lg:top-20">
       <div className="rounded-2xl border border-orange-500/30 bg-orange-950/20 p-5">

@@ -84,9 +84,33 @@ HOT_NEWS_API_KEY=...
 INGEST_API_KEY=...
 RESEND_API_KEY=...
 CONSULTING_FROM_EMAIL="Rare Agent Work <hello@rareagent.work>"
+DIGEST_API_KEY=...
+DIGEST_FROM_EMAIL="Rare Agent Work <hello@rareagent.work>"
 ```
 
 Recommended scheduler: every 10–15 minutes.
+
+## Daily AI News Summary
+
+Generate a deterministic digest artifact:
+
+```bash
+npm run digest:daily
+```
+
+Generate + send to the seed delivery list:
+
+```bash
+RESEND_API_KEY=... DIGEST_FROM_EMAIL="Rare Agent Work <hello@rareagent.work>" npm run digest:daily -- --send
+```
+
+Three-hour rolling version:
+
+```bash
+npm run digest:daily -- --window-hours 3
+```
+
+Docs and scheduler setup live in `docs/daily-ai-news-pipeline.md`.
 
 ## Deploy on Vercel
 

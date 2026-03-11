@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "echo 'lint skipped'",
     "test": "vitest run",
-    "test:prod": "./scripts/run-prod-verification.sh"
+    "test:prod": "./scripts/run-prod-verification.sh",
+    "digest:daily": "node ./scripts/run-daily-ai-news.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

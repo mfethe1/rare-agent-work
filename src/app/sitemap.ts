@@ -68,6 +68,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.6,
     },
+    {
+      url: `${baseUrl}/.well-known/agent-card.json`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/.well-known/agent.json`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.4,
+    },
   ];
 
   // Dynamic report pages

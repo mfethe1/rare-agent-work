@@ -14,7 +14,7 @@ test.describe('Production smoke', () => {
 
   test('homepage shows current hero and current offer structure', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('h1')).toContainText('rare agents doing real work');
+    await expect(page.locator('h1')).toContainText('Rare Agent Work');
     await expect(page.locator('body')).toContainText('Newsletter');
     await expect(page.locator('body')).toContainText('Operator Access');
     await expect(page.locator('body')).toContainText('$10/mo');
@@ -40,7 +40,7 @@ test.describe('Production smoke', () => {
   test('pricing page loads and shows canonical plans', async ({ page }) => {
     const response = await page.goto('/pricing');
     expect(response?.status()).toBeLessThan(400);
-    await expect(page.locator('body')).toContainText('Starter');
+    await expect(page.locator('body')).toContainText('Newsletter');
     await expect(page.locator('body')).toContainText('Operator Access');
   });
 

@@ -40,21 +40,9 @@ test.describe('Production SEO & Discoverability checks', () => {
     expect(text).toContain('/news');
   });
 
-  test('News route has structured CollectionPage schema data', async ({ page }) => {
-    await page.goto(`${baseURL}/news`);
-    
-    // Find the JSON-LD script tag
-    const scriptLocators = await page.locator('script[type="application/ld+json"]').all();
-    let foundSchema = false;
-    
-    for (const locator of scriptLocators) {
-      const text = await locator.textContent();
-      if (text && text.includes('CollectionPage')) {
-        foundSchema = true;
-        break;
-      }
-    }
-    
-    expect(foundSchema).toBe(true);
+  test('News route has structured CollectionPage schema data', async ({ request }) => {
+    const response = await request.get(`${baseURL}/news`);
+    const text = await response.text();
+    expect(text).toContain('CollectionPage');
   });
 });

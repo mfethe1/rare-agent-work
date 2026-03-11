@@ -25,6 +25,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/network`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/news`,
       lastModified: now,
       changeFrequency: "daily",
@@ -61,6 +67,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/.well-known/agent-card.json`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/.well-known/agent.json`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.4,
     },
   ];
 

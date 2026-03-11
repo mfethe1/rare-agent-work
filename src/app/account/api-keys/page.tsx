@@ -8,13 +8,19 @@ export default function ApiKeysPage() {
   const [loading, setLoading] = useState(true);
   const [newKeyName, setNewKeyName] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
+  const supabase = typeof window !== "undefined" ? createClient() : null;
 
   useEffect(() => {
     fetchKeys();
   }, []);
 
   const fetchKeys = async () => {
+    if (!supabase) {
+      setError("Supabase is not configured");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     const { data: userData, error: userError } = await supabase.auth.getUser();
     if (userError || !userData?.user) {
@@ -38,6 +44,11 @@ export default function ApiKeysPage() {
   };
 
   const createKey = async () => {
+    if (!supabase) {
+      setError("Supabase is not configured");
+      return;
+    }
+
     setError(null);
     if (!newKeyName.trim()) {
       setError("Please enter a name for the key");
@@ -65,6 +76,11 @@ export default function ApiKeysPage() {
   };
 
   const deleteKey = async (id: string) => {
+    if (!supabase) {
+      setError("Supabase is not configured");
+      return;
+    }
+
     const { error } = await supabase.from("api_keys").delete().eq("id", id);
     if (error) {
       setError(error.message);

@@ -147,7 +147,7 @@ export async function GET(request: NextRequest) {
     count: filtered.length,
     updated_at: new Date().toISOString(),
     source: 'https://rareagent.work/models',
-    documentation: 'https://rareagent.work/.well-known/agent.json',
+    documentation: 'https://rareagent.work/.well-known/agent-card.json',
   }, {
     headers: {
       'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',

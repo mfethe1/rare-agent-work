@@ -22,18 +22,26 @@ ${reports.map(r => `- [${r.title}](https://rareagent.work/reports/${r.slug}): ${
 - [Model index status](https://rareagent.work/models): Temporarily offline while evaluation methodology and refresh cadence are rebuilt.
 - [AI Agent News Feed](https://rareagent.work/news): Curated daily, verified, max 14 days old. Top links for agent builders.
 - [Weekly Digest](https://rareagent.work/digest): Executive summary of the week's most important AI agent developments.
+- [Agent Network](https://rareagent.work/network): Trust-first discovery surface for curated operator introductions, consulting-led matches, and early access.
 - [Report History](https://rareagent.work/research/history): Every version archived.
 
 ## Natural Language Query (NLWeb)
-- [GET /ask?q=your question](https://rareagent.work/ask): Ask anything about news, reports, implementation, or the digest in natural language. Returns structured JSON with answer + citations.
-- Examples: /ask?q=which model is best for tool use, /ask?q=latest security news, /ask?q=what reports do you offer
+- [GET /api/v1/ask?q=your question](https://rareagent.work/api/v1/ask?q=which%20report%20should%20I%20read%20first): Ask anything about news, reports, and implementation guidance in natural language. Returns structured JSON with answer + citations.
+- Examples: /api/v1/ask?q=which model is best for tool use, /api/v1/ask?q=latest security news, /api/v1/ask?q=what reports do you offer
 
 ## API Endpoints (JSON)
-- [GET /api/news](https://rareagent.work/api/news): Curated AI agent news feed. Supports ?tag= filter.
-- [GET /api/reports](https://rareagent.work/api/reports): Report catalog metadata and preview content.
-- [GET /api/digest](https://rareagent.work/api/digest): Latest weekly digest in structured format.
-- [GET /api/openapi.json](https://rareagent.work/api/openapi.json): Full OpenAPI 3.1 specification.
+- [GET /api/v1/news](https://rareagent.work/api/v1/news): Curated AI agent news feed. Supports ?tag=, ?days=, and ?limit= filters.
+- [GET /api/v1/reports](https://rareagent.work/api/v1/reports): Report catalog metadata and preview content.
+- [GET /api/v1/models](https://rareagent.work/api/v1/models): Public model index response with methodology caveats while refresh cadence is rebuilt.
+- [GET /api/v1/openapi.json](https://rareagent.work/api/v1/openapi.json): Full OpenAPI 3.1 specification.
 - [GET /feed.xml](https://rareagent.work/feed.xml): RSS feed of curated AI agent news.
+
+## Agent Discovery
+- A2A agent card: \`/.well-known/agent-card.json\`
+- Legacy agent manifest: \`/.well-known/agent.json\`
+- OpenAPI spec: \`/api/v1/openapi.json\`
+- Sitemap: \`/sitemap.xml\`
+- RSS: \`/feed.xml\`
 
 ## Topics Covered
 - AI agent frameworks (CrewAI, LangGraph, AutoGen, OpenAI Swarm)

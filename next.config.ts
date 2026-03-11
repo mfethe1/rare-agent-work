@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
           {
             key: "Link",
             value:
-              '<https://rareagent.work/llms.txt>; rel="ai-content-index", <https://rareagent.work/.well-known/agent.json>; rel="agent-card"',
+              '<https://rareagent.work/llms.txt>; rel="ai-content-index", <https://rareagent.work/.well-known/agent-card.json>; rel="agent-card", <https://rareagent.work/.well-known/agent.json>; rel="alternate"',
           },
         ],
       },

@@ -1,0 +1,189 @@
+{
+  "digestId": "ce0f8b8e0f07",
+  "generatedAt": "2026-03-11T03:33:26.596Z",
+  "windowHours": 24,
+  "recipientSeedList": [
+    "mfethe1@gmail.com",
+    "protelynx@gmail.com",
+    "Michael.fethe@protelynx.ai"
+  ],
+  "storyCount": 3,
+  "sections": {
+    "tldr": "Window: last 24h. 3 high-priority AI stories surfaced, led by How NVIDIA Builds Open Data for AI. Dominant themes: huggingface, open-source, builders, google, ai.",
+    "topStories": [
+      {
+        "rank": 1,
+        "title": "How NVIDIA Builds Open Data for AI",
+        "source": "Hugging Face",
+        "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
+        "timestamp": "2026-03-10T19:49:28Z",
+        "confidence": "high",
+        "category": "open-source",
+        "tags": [
+          "huggingface",
+          "open-source",
+          "builders"
+        ],
+        "summary": "Latest update from Hugging Face",
+        "whyItMatters": "This is a live market signal, not just a headline.",
+        "action": "Capture the implication in product planning and decide whether this changes build priorities."
+      },
+      {
+        "rank": 2,
+        "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+        "source": "Google AI",
+        "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
+        "timestamp": "2026-03-10T13:00:00Z",
+        "confidence": "high",
+        "category": "research",
+        "tags": [
+          "google",
+          "ai",
+          "research"
+        ],
+        "summary": "<img src=\"https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Workspace_Jan_Moment_Sheets_Blo.max-600x600.format-webp.webp\">Today we announced new beta features for Gemini in Sheets to help you create, organize and edit entire sheets, from basic tasks to complex data analysis — just describe …",
+        "whyItMatters": "Model capability shifts can immediately change what is viable to automate.",
+        "action": "Test the new tooling in a small internal workflow before it becomes table stakes."
+      },
+      {
+        "rank": 3,
+        "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+        "source": "MIT Technology Review",
+        "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
+        "timestamp": "2026-03-10T13:47:26Z",
+        "confidence": "high",
+        "category": "industry-news",
+        "tags": [
+          "industry",
+          "analysis"
+        ],
+        "summary": "Latest update from MIT Technology Review",
+        "whyItMatters": "This is a live market signal, not just a headline.",
+        "action": "Capture the implication in product planning and decide whether this changes build priorities."
+      }
+    ],
+    "signalVsNoise": {
+      "signalSummary": "3 items concentrated around huggingface, open-source, builders.",
+      "noiseSummary": "Low-signal chatter stayed muted in this window.",
+      "signal": [
+        {
+          "title": "How NVIDIA Builds Open Data for AI",
+          "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
+          "source": "Hugging Face",
+          "timestamp": "2026-03-10T19:49:28Z",
+          "confidence": "high"
+        },
+        {
+          "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+          "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
+          "source": "Google AI",
+          "timestamp": "2026-03-10T13:00:00Z",
+          "confidence": "high"
+        },
+        {
+          "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+          "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
+          "source": "MIT Technology Review",
+          "timestamp": "2026-03-10T13:47:26Z",
+          "confidence": "high"
+        }
+      ],
+      "noise": []
+    },
+    "buildersCorner": [
+      {
+        "title": "How NVIDIA Builds Open Data for AI",
+        "source": "Hugging Face",
+        "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
+        "timestamp": "2026-03-10T19:49:28Z",
+        "confidence": "high",
+        "takeaway": "Capture the implication in product planning and decide whether this changes build priorities."
+      }
+    ],
+    "marketAndPolicy": [
+      {
+        "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+        "source": "MIT Technology Review",
+        "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
+        "timestamp": "2026-03-10T13:47:26Z",
+        "confidence": "high",
+        "takeaway": "This is a live market signal, not just a headline."
+      }
+    ],
+    "deepDive": {
+      "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+      "source": "Google AI",
+      "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
+      "timestamp": "2026-03-10T13:00:00Z",
+      "confidence": "high",
+      "angle": "Benchmarks are separating marketing narratives from operational reality.",
+      "takeaway": "Model capability shifts can immediately change what is viable to automate. Test the new tooling in a small internal workflow before it becomes table stakes."
+    },
+    "tomorrowRadar": [
+      {
+        "title": "How NVIDIA Builds Open Data for AI",
+        "source": "Hugging Face",
+        "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
+        "timestamp": "2026-03-10T19:49:28Z",
+        "confidence": "high",
+        "watchFor": "Capture the implication in product planning and decide whether this changes build priorities."
+      },
+      {
+        "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+        "source": "Google AI",
+        "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
+        "timestamp": "2026-03-10T13:00:00Z",
+        "confidence": "high",
+        "watchFor": "Test the new tooling in a small internal workflow before it becomes table stakes."
+      },
+      {
+        "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+        "source": "MIT Technology Review",
+        "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
+        "timestamp": "2026-03-10T13:47:26Z",
+        "confidence": "high",
+        "watchFor": "Capture the implication in product planning and decide whether this changes build priorities."
+      }
+    ]
+  },
+  "sources": [
+    {
+      "title": "How NVIDIA Builds Open Data for AI",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
+      "timestamp": "2026-03-10T19:49:28Z",
+      "confidence": "high",
+      "category": "open-source",
+      "tags": [
+        "huggingface",
+        "open-source",
+        "builders"
+      ]
+    },
+    {
+      "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+      "source": "Google AI",
+      "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
+      "timestamp": "2026-03-10T13:00:00Z",
+      "confidence": "high",
+      "category": "research",
+      "tags": [
+        "google",
+        "ai",
+        "research"
+      ]
+    },
+    {
+      "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+      "source": "MIT Technology Review",
+      "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
+      "timestamp": "2026-03-10T13:47:26Z",
+      "confidence": "high",
+      "category": "industry-news",
+      "tags": [
+        "industry",
+        "analysis"
+      ]
+    }
+  ]
+}

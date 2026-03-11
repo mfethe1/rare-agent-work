@@ -1,62 +1,81 @@
-import { NextResponse } from 'next/server';
-import { getAllNews, getAllTags } from '@/lib/news-store';
+import { NextRequest, NextResponse } from 'next/server';
+import { readFile } from 'fs/promises';
+import path from 'path';
 
+export const runtime = 'nodejs';
 export const revalidate = 3600;
 
+async function readLatestDigest() {
+  const digestPath = path.join(process.cwd(), 'data', 'digests', 'latest.json');
+  const raw = await readFile(digestPath, 'utf8');
+  return JSON.parse(raw);
+}
+
 export async function GET() {
-  const items = await getAllNews();
-
-  // Build week range
-  const now = new Date();
-  const weekAgo = new Date(now.getTime() - 7 * 86400000);
-  const weekStr = `${weekAgo.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — ${now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-
-  // Get top categories
-  const categories: Record<string, typeof items> = {};
-  for (const item of items) {
-    const cat = item.category || 'uncategorized';
-    if (!categories[cat]) categories[cat] = [];
-    categories[cat].push(item);
-  }
-
-  // Top themes from tags
-  const tags = getAllTags(items);
-  const themes = tags.slice(0, 5).map(t => t.tag);
-
-  // Build summary
-  const catNames = Object.keys(categories).slice(0, 3).join(', ');
-  const summary = `This week saw ${items.length} notable developments in the AI agent space. Key themes include ${catNames}.${items.length > 0 ? ` The most upvoted story was "${items[0].title}".` : ''}`;
-
-  const stories = items.map(item => ({
-    title: item.title,
-    url: item.url,
-    source: item.source,
-    summary: item.summary,
-    category: item.category,
-    tags: item.tags,
-    publishedAt: item.publishedAt,
-    upvotes: item.upvotes,
-  }));
-
-  return NextResponse.json(
-    {
-      week: weekStr,
-      summary,
-      storyCount: items.length,
-      themes,
-      stories,
-      categories: Object.fromEntries(
-        Object.entries(categories).map(([cat, catItems]) => [
-          cat,
-          catItems.map(i => ({ title: i.title, url: i.url, source: i.source })),
-        ])
-      ),
-    },
-    {
+  try {
+    const digest = await readLatestDigest();
+    return NextResponse.json(digest, {
       headers: {
-        'Cache-Control': 'public, max-age=3600, s-maxage=86400',
+        'Cache-Control': 'public, max-age=1800, s-maxage=3600',
         'Access-Control-Allow-Origin': '*',
       },
-    }
-  );
+    });
+  } catch {
+    return NextResponse.json(
+      {
+        error: 'Digest artifact not generated yet.',
+        hint: 'Run `npm run digest:daily` (or `npm run digest:daily -- --send`) to create the daily digest artifact.',
+      },
+      { status: 404 },
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  const expectedKey = process.env.DIGEST_API_KEY || process.env.INGEST_API_KEY;
+  if (!expectedKey) {
+    return NextResponse.json({ error: 'DIGEST_API_KEY or INGEST_API_KEY not configured' }, { status: 503 });
+  }
+
+  const auth = request.headers.get('authorization');
+  if (auth !== `Bearer ${expectedKey}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  let body: { windowHours?: number; send?: boolean } = {};
+  try {
+    body = await request.json();
+  } catch {
+    // allow empty body
+  }
+
+  const { spawn } = await import('child_process');
+  const args = ['scripts/run-daily-ai-news.mjs', '--window-hours', String(body.windowHours || 24)];
+  if (body.send) args.push('--send');
+
+  const child = spawn(process.execPath, args, {
+    cwd: process.cwd(),
+    env: process.env,
+  });
+
+  let stdout = '';
+  let stderr = '';
+
+  child.stdout.on('data', (chunk) => {
+    stdout += chunk.toString();
+  });
+
+  child.stderr.on('data', (chunk) => {
+    stderr += chunk.toString();
+  });
+
+  const exitCode: number = await new Promise((resolve) => {
+    child.on('close', resolve);
+  });
+
+  if (exitCode !== 0) {
+    return NextResponse.json({ error: 'Digest pipeline failed', details: stderr || stdout }, { status: 500 });
+  }
+
+  return NextResponse.json(JSON.parse(stdout));
 }

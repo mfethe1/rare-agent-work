@@ -6,6 +6,7 @@ import { getHotNewsCount } from '@/lib/news-helpers';
 import NewsClient from '@/components/NewsClient';
 import NewsContextPanel from '@/components/NewsContextPanel';
 import BuyButton from '@/components/BuyButton';
+import { NewsFeedJsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
   title: 'AI Agent News Feed',
@@ -48,6 +49,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-gray-100">
+      <NewsFeedJsonLd />
       <nav className="sticky top-0 z-50 border-b border-gray-800 bg-[#0d0d0d]/90 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-12 items-center justify-between">

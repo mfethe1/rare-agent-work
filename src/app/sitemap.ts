@@ -68,12 +68,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.5,
     },
-    {
-      url: `${baseUrl}/ask`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.7,
-    },
   ];
 
   // Dynamic report pages

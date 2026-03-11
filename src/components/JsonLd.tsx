@@ -126,22 +126,56 @@ export function ReportJsonLd({
   datePublished?: string;
 }) {
   const priceNum = price.replace(/[^0-9.]/g, "");
+  const data = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: title,
+      description,
+      url: `https://rareagent.work/reports/${slug}`,
+      image: "https://rareagent.work/og-image.png",
+      brand: ORGANIZATION,
+      offers: {
+        "@type": "Offer",
+        price: priceNum,
+        priceCurrency: "USD",
+        availability: "https://schema.org/InStock",
+        url: `https://rareagent.work/reports/${slug}`,
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Report",
+      name: title,
+      description,
+      url: `https://rareagent.work/reports/${slug}`,
+      datePublished,
+      publisher: ORGANIZATION,
+      author: { "@type": "Person", name: "Michael" },
+    }
+  ];
+
+  return (
+    <>
+      {data.map((d, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }}
+        />
+      ))}
+    </>
+  );
+}
+
+export function NewsFeedJsonLd() {
   const data = {
     "@context": "https://schema.org",
-    "@type": "Product",
-    name: title,
-    description,
-    url: `https://rareagent.work/reports/${slug}`,
-    image: "https://rareagent.work/og-image.png",
-    brand: ORGANIZATION,
-    offers: {
-      "@type": "Offer",
-      price: priceNum,
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-      url: `https://rareagent.work/reports/${slug}`,
-    },
-    datePublished,
+    "@type": "CollectionPage",
+    name: "AI Agent News Feed",
+    description: "Daily-updated news feed for AI agent builders.",
+    url: "https://rareagent.work/news",
+    publisher: ORGANIZATION,
   };
 
   return (

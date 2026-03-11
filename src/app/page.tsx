@@ -64,13 +64,13 @@ export default function Home() {
           <div className="flex flex-col items-center">
             <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-cyan-300/20 bg-white/5 px-4 py-2 text-sm text-cyan-200 shadow-[0_0_30px_rgba(34,211,238,0.08)]">
               <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(103,232,249,0.9)]" />
-              RareAgent.work for people actually shipping agents
+              Rare Agent Work for people actually shipping agents
             </div>
 
             <h1 className="max-w-4xl text-5xl font-black tracking-tight text-white md:text-7xl">
-              Bespoke intelligence for the
+              Bespoke intelligence for{' '}
               <span className="block bg-gradient-to-r from-cyan-300 via-sky-300 to-fuchsia-300 bg-clip-text text-transparent">
-                rare agents doing real work
+                Rare Agent Work
               </span>
             </h1>
 

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { formatNewsAge, isBreakingNews } from '@/lib/news-helpers';
+import BuyButton from '@/components/BuyButton';
 
 interface NewsItem {
   id: string;
@@ -57,9 +58,12 @@ export default function NewsClient({ items }: { items: NewsItem[] }) {
     'security': 'bg-orange-500/20 text-orange-400',
   };
 
+  const visibleItems = items.slice(0, 3);
+  const hiddenItemsCount = items.length - 3;
+
   return (
     <div className="space-y-3">
-      {items.map((item, i) => (
+      {visibleItems.map((item, i) => (
         <div
           key={item.id}
           className="bg-gray-900/50 border border-gray-800 rounded-xl p-4 hover:border-gray-700 transition-colors"
@@ -128,6 +132,25 @@ export default function NewsClient({ items }: { items: NewsItem[] }) {
           </div>
         </div>
       ))}
+
+      {hiddenItemsCount > 0 && (
+        <div className="mt-8 rounded-2xl border border-orange-500/40 bg-orange-950/20 p-8 text-center shadow-lg relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0d0d0d] pointer-events-none opacity-80" />
+          <div className="relative z-10 max-w-lg mx-auto">
+            <h3 className="text-2xl font-bold text-white mb-3">Skip the noise.</h3>
+            <p className="text-gray-300 mb-6 text-sm">
+              Get the full AI brief in your inbox before 8am. 10 stories + what to do next. Daily AI updates that are actually useful. Read {hiddenItemsCount} more stories today.
+            </p>
+            <div className="flex justify-center">
+              <BuyButton
+                plan="newsletter"
+                label="Subscribe & Read On ($10/mo)"
+                className="bg-orange-600 hover:bg-orange-500 text-white px-8 py-3 rounded-xl text-sm font-bold tracking-wide transition-all shadow-lg hover:shadow-orange-500/20"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -6,6 +6,7 @@ interface NewsContextPanelProps {
   latestPublishedAt?: string;
   totalItems: number;
   hotItems: number;
+  summaryData?: { summary: string };
 }
 
 function formatFreshness(date?: string) {
@@ -53,6 +54,18 @@ export default function NewsContextPanel({ latestPublishedAt, totalItems, hotIte
 
         <p className="mt-4 text-xs text-gray-500">{formatFreshness(latestPublishedAt)}</p>
       </div>
+
+      {summaryData && (
+        <div className="rounded-2xl border border-gray-800 bg-gray-900/70 p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-xs font-semibold uppercase tracking-[0.15em] text-orange-400">AI Summary</p>
+            <p className="text-[10px] uppercase text-gray-500">Updated every 3h</p>
+          </div>
+          <div className="prose prose-sm prose-invert max-w-none whitespace-pre-wrap text-gray-300">
+            {summaryData.summary}
+          </div>
+        </div>
+      )}
 
       <div className="rounded-2xl border border-gray-800 bg-gray-900/70 p-4">
         <ReportChat

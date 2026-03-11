@@ -125,18 +125,6 @@ export default async function NewsPage({ searchParams }: PageProps) {
               </div>
             )}
 
-            {summaryData && (
-              <div className="mb-6 rounded-2xl border border-gray-800 bg-gray-900/50 p-6">
-                <div className="mb-3 flex items-center justify-between">
-                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-orange-400">Past 24h Summary</p>
-                  <p className="text-xs text-gray-500">Updated hourly</p>
-                </div>
-                <div className="prose prose-sm prose-invert max-w-none whitespace-pre-wrap text-gray-300">
-                  {summaryData.summary}
-                </div>
-              </div>
-            )}
-
             {items.length === 0 ? (
               <div className="rounded-xl border border-gray-800 bg-gray-900 p-8 text-center">
                 <p className="text-gray-400">No news items yet. Check back soon.</p>
@@ -146,7 +134,7 @@ export default async function NewsPage({ searchParams }: PageProps) {
             )}
           </section>
 
-          <NewsContextPanel latestPublishedAt={latestPublishedAt} totalItems={allItems.length} hotItems={hotItems} />
+          <NewsContextPanel latestPublishedAt={latestPublishedAt} totalItems={allItems.length} hotItems={hotItems} summaryData={summaryData} />
         </div>
       </main>
 

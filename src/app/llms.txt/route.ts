@@ -22,6 +22,7 @@ ${reports.map(r => `- [${r.title}](https://rareagent.work/reports/${r.slug}): ${
 - [Model index status](https://rareagent.work/models): Temporarily offline while evaluation methodology and refresh cadence are rebuilt.
 - [AI Agent News Feed](https://rareagent.work/news): Curated daily, verified, max 14 days old. Top links for agent builders.
 - [Weekly Digest](https://rareagent.work/digest): Executive summary of the week's most important AI agent developments.
+- [Agent Network](https://rareagent.work/network): Trust-first discovery surface for curated operator introductions, consulting-led matches, and early access.
 - [Report History](https://rareagent.work/research/history): Every version archived.
 
 ## Natural Language Query (NLWeb)

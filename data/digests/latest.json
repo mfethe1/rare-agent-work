@@ -1,6 +1,6 @@
 {
-  "digestId": "ce0f8b8e0f07",
-  "generatedAt": "2026-03-11T03:33:26.596Z",
+  "digestId": "e76d429e2d8f",
+  "generatedAt": "2026-03-12T15:44:22.509Z",
   "windowHours": 24,
   "recipientSeedList": [
     "mfethe1@gmail.com",
@@ -9,31 +9,14 @@
   ],
   "storyCount": 3,
   "sections": {
-    "tldr": "Window: last 24h. 3 high-priority AI stories surfaced, led by How NVIDIA Builds Open Data for AI. Dominant themes: huggingface, open-source, builders, google, ai.",
+    "tldr": "Window: last 24h. 3 high-priority AI stories surfaced, led by How AI is helping improve heart health in rural Australia. Dominant themes: research, google, ai, industry, analysis.",
     "topStories": [
       {
         "rank": 1,
-        "title": "How NVIDIA Builds Open Data for AI",
-        "source": "Hugging Face",
-        "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
-        "timestamp": "2026-03-10T19:49:28Z",
-        "confidence": "high",
-        "category": "open-source",
-        "tags": [
-          "huggingface",
-          "open-source",
-          "builders"
-        ],
-        "summary": "Latest update from Hugging Face",
-        "whyItMatters": "This is a live market signal, not just a headline.",
-        "action": "Capture the implication in product planning and decide whether this changes build priorities."
-      },
-      {
-        "rank": 2,
-        "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+        "title": "How AI is helping improve heart health in rural Australia",
         "source": "Google AI",
-        "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
-        "timestamp": "2026-03-10T13:00:00Z",
+        "url": "https://blog.google/innovation-and-ai/technology/health/google-ai-heart-health-australia/",
+        "timestamp": "2026-03-12T15:00:00Z",
         "confidence": "high",
         "category": "research",
         "tags": [
@@ -41,16 +24,16 @@
           "ai",
           "research"
         ],
-        "summary": "<img src=\"https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Workspace_Jan_Moment_Sheets_Blo.max-600x600.format-webp.webp\">Today we announced new beta features for Gemini in Sheets to help you create, organize and edit entire sheets, from basic tasks to complex data analysis — just describe …",
-        "whyItMatters": "Model capability shifts can immediately change what is viable to automate.",
+        "summary": "<img src=\"https://storage.googleapis.com/gweb-uniblog-publish-prod/images/AIHealth_v2_2096x1182_02.max-600x600.format-webp.webp\">A new Google AI initiative aims to improve heart health outcomes for people living in remote Australian communities.",
+        "whyItMatters": "This is a live market signal, not just a headline.",
         "action": "Test the new tooling in a small internal workflow before it becomes table stakes."
       },
       {
-        "rank": 3,
-        "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+        "rank": 2,
+        "title": "Pragmatic by design: Engineering AI for the real world",
         "source": "MIT Technology Review",
-        "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
-        "timestamp": "2026-03-10T13:47:26Z",
+        "url": "https://www.technologyreview.com/2026/03/12/1133675/pragmatic-by-design-engineering-ai-for-the-real-world/",
+        "timestamp": "2026-03-12T13:00:00Z",
         "confidence": "high",
         "category": "industry-news",
         "tags": [
@@ -60,31 +43,49 @@
         "summary": "Latest update from MIT Technology Review",
         "whyItMatters": "This is a live market signal, not just a headline.",
         "action": "Capture the implication in product planning and decide whether this changes build priorities."
+      },
+      {
+        "rank": 3,
+        "title": "How NVIDIA AI-Q Reached \\#1 on DeepResearch Bench I and II",
+        "source": "Hugging Face",
+        "url": "https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench",
+        "timestamp": "2026-03-12T03:53:34Z",
+        "confidence": "high",
+        "category": "open-source",
+        "tags": [
+          "huggingface",
+          "open-source",
+          "builders",
+          "research"
+        ],
+        "summary": "Latest update from Hugging Face",
+        "whyItMatters": "This is a live market signal, not just a headline.",
+        "action": "Benchmark your stack against the claim before adopting vendor narratives."
       }
     ],
     "signalVsNoise": {
-      "signalSummary": "3 items concentrated around huggingface, open-source, builders.",
+      "signalSummary": "3 items concentrated around research, google, ai.",
       "noiseSummary": "Low-signal chatter stayed muted in this window.",
       "signal": [
         {
-          "title": "How NVIDIA Builds Open Data for AI",
-          "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
-          "source": "Hugging Face",
-          "timestamp": "2026-03-10T19:49:28Z",
-          "confidence": "high"
-        },
-        {
-          "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
-          "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
+          "title": "How AI is helping improve heart health in rural Australia",
+          "url": "https://blog.google/innovation-and-ai/technology/health/google-ai-heart-health-australia/",
           "source": "Google AI",
-          "timestamp": "2026-03-10T13:00:00Z",
+          "timestamp": "2026-03-12T15:00:00Z",
           "confidence": "high"
         },
         {
-          "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
-          "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
+          "title": "Pragmatic by design: Engineering AI for the real world",
+          "url": "https://www.technologyreview.com/2026/03/12/1133675/pragmatic-by-design-engineering-ai-for-the-real-world/",
           "source": "MIT Technology Review",
-          "timestamp": "2026-03-10T13:47:26Z",
+          "timestamp": "2026-03-12T13:00:00Z",
+          "confidence": "high"
+        },
+        {
+          "title": "How NVIDIA AI-Q Reached \\#1 on DeepResearch Bench I and II",
+          "url": "https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench",
+          "source": "Hugging Face",
+          "timestamp": "2026-03-12T03:53:34Z",
           "confidence": "high"
         }
       ],
@@ -92,79 +93,66 @@
     },
     "buildersCorner": [
       {
-        "title": "How NVIDIA Builds Open Data for AI",
+        "title": "How NVIDIA AI-Q Reached \\#1 on DeepResearch Bench I and II",
         "source": "Hugging Face",
-        "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
-        "timestamp": "2026-03-10T19:49:28Z",
+        "url": "https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench",
+        "timestamp": "2026-03-12T03:53:34Z",
         "confidence": "high",
-        "takeaway": "Capture the implication in product planning and decide whether this changes build priorities."
+        "takeaway": "Benchmark your stack against the claim before adopting vendor narratives."
       }
     ],
     "marketAndPolicy": [
       {
-        "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+        "title": "Pragmatic by design: Engineering AI for the real world",
         "source": "MIT Technology Review",
-        "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
-        "timestamp": "2026-03-10T13:47:26Z",
+        "url": "https://www.technologyreview.com/2026/03/12/1133675/pragmatic-by-design-engineering-ai-for-the-real-world/",
+        "timestamp": "2026-03-12T13:00:00Z",
         "confidence": "high",
         "takeaway": "This is a live market signal, not just a headline."
       }
     ],
     "deepDive": {
-      "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+      "title": "How AI is helping improve heart health in rural Australia",
       "source": "Google AI",
-      "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
-      "timestamp": "2026-03-10T13:00:00Z",
+      "url": "https://blog.google/innovation-and-ai/technology/health/google-ai-heart-health-australia/",
+      "timestamp": "2026-03-12T15:00:00Z",
       "confidence": "high",
       "angle": "Benchmarks are separating marketing narratives from operational reality.",
-      "takeaway": "Model capability shifts can immediately change what is viable to automate. Test the new tooling in a small internal workflow before it becomes table stakes."
+      "takeaway": "This is a live market signal, not just a headline. Test the new tooling in a small internal workflow before it becomes table stakes."
     },
     "tomorrowRadar": [
       {
-        "title": "How NVIDIA Builds Open Data for AI",
-        "source": "Hugging Face",
-        "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
-        "timestamp": "2026-03-10T19:49:28Z",
-        "confidence": "high",
-        "watchFor": "Capture the implication in product planning and decide whether this changes build priorities."
-      },
-      {
-        "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+        "title": "How AI is helping improve heart health in rural Australia",
         "source": "Google AI",
-        "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
-        "timestamp": "2026-03-10T13:00:00Z",
+        "url": "https://blog.google/innovation-and-ai/technology/health/google-ai-heart-health-australia/",
+        "timestamp": "2026-03-12T15:00:00Z",
         "confidence": "high",
         "watchFor": "Test the new tooling in a small internal workflow before it becomes table stakes."
       },
       {
-        "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+        "title": "Pragmatic by design: Engineering AI for the real world",
         "source": "MIT Technology Review",
-        "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
-        "timestamp": "2026-03-10T13:47:26Z",
+        "url": "https://www.technologyreview.com/2026/03/12/1133675/pragmatic-by-design-engineering-ai-for-the-real-world/",
+        "timestamp": "2026-03-12T13:00:00Z",
         "confidence": "high",
         "watchFor": "Capture the implication in product planning and decide whether this changes build priorities."
+      },
+      {
+        "title": "How NVIDIA AI-Q Reached \\#1 on DeepResearch Bench I and II",
+        "source": "Hugging Face",
+        "url": "https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench",
+        "timestamp": "2026-03-12T03:53:34Z",
+        "confidence": "high",
+        "watchFor": "Benchmark your stack against the claim before adopting vendor narratives."
       }
     ]
   },
   "sources": [
     {
-      "title": "How NVIDIA Builds Open Data for AI",
-      "source": "Hugging Face",
-      "url": "https://huggingface.co/blog/nvidia/open-data-for-ai",
-      "timestamp": "2026-03-10T19:49:28Z",
-      "confidence": "high",
-      "category": "open-source",
-      "tags": [
-        "huggingface",
-        "open-source",
-        "builders"
-      ]
-    },
-    {
-      "title": "Gemini in Google Sheets just achieved state-of-the-art performance.",
+      "title": "How AI is helping improve heart health in rural Australia",
       "source": "Google AI",
-      "url": "https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/",
-      "timestamp": "2026-03-10T13:00:00Z",
+      "url": "https://blog.google/innovation-and-ai/technology/health/google-ai-heart-health-australia/",
+      "timestamp": "2026-03-12T15:00:00Z",
       "confidence": "high",
       "category": "research",
       "tags": [
@@ -174,15 +162,29 @@
       ]
     },
     {
-      "title": "How Pokémon Go is giving delivery robots an inch-perfect view of the world",
+      "title": "Pragmatic by design: Engineering AI for the real world",
       "source": "MIT Technology Review",
-      "url": "https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/",
-      "timestamp": "2026-03-10T13:47:26Z",
+      "url": "https://www.technologyreview.com/2026/03/12/1133675/pragmatic-by-design-engineering-ai-for-the-real-world/",
+      "timestamp": "2026-03-12T13:00:00Z",
       "confidence": "high",
       "category": "industry-news",
       "tags": [
         "industry",
         "analysis"
+      ]
+    },
+    {
+      "title": "How NVIDIA AI-Q Reached \\#1 on DeepResearch Bench I and II",
+      "source": "Hugging Face",
+      "url": "https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench",
+      "timestamp": "2026-03-12T03:53:34Z",
+      "confidence": "high",
+      "category": "open-source",
+      "tags": [
+        "huggingface",
+        "open-source",
+        "builders",
+        "research"
       ]
     }
   ]

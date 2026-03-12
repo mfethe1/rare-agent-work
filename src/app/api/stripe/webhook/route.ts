@@ -2,6 +2,12 @@ import { headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+import { enqueueJob } from '@/lib/queue';
+import type {
+  StripeCheckoutJobPayload,
+  StripeInvoiceJobPayload,
+  StripeSubscriptionJobPayload,
+} from '@/lib/queue/types';
 
 export const runtime = 'nodejs';
 
@@ -53,6 +59,7 @@ export async function POST(req: Request) {
   }
 
   const supabase = getAdminSupabase();
+  const useJobQueue = process.env.USE_JOB_QUEUE === 'true';
 
   try {
     switch (event.type) {
@@ -69,23 +76,43 @@ export async function POST(req: Request) {
           amount_total: session.amount_total,
         });
 
-        if (supabase && customerId && customerEmail && tier) {
-          const budget = TIER_BUDGETS[tier] ?? 0;
-          // Upsert user profile with new tier
-          await supabase.from('users').upsert(
-            {
-              email: customerEmail,
+        if (customerId && customerEmail && tier) {
+          if (useJobQueue) {
+            // Enqueue job for async processing
+            const payload: StripeCheckoutJobPayload = {
+              type: 'stripe.checkout.completed',
+              sessionId: session.id,
+              customerId,
+              customerEmail,
               tier,
-              tokens_budget: budget,
-              stripe_customer_id: customerId,
-              stripe_subscription_id:
+              subscriptionId:
                 typeof session.subscription === 'string'
                   ? session.subscription
-                  : session.subscription?.id ?? null,
-              updated_at: new Date().toISOString(),
-            },
-            { onConflict: 'email' }
-          );
+                  : session.subscription?.id ?? undefined,
+              priority: 'high',
+            };
+            await enqueueJob(payload, { priority: 'high' });
+            console.log('[Webhook] Enqueued checkout.session.completed job');
+          } else {
+            // Process synchronously (legacy behavior)
+            if (supabase) {
+              const budget = TIER_BUDGETS[tier] ?? 0;
+              await supabase.from('users').upsert(
+                {
+                  email: customerEmail,
+                  tier,
+                  tokens_budget: budget,
+                  stripe_customer_id: customerId,
+                  stripe_subscription_id:
+                    typeof session.subscription === 'string'
+                      ? session.subscription
+                      : session.subscription?.id ?? null,
+                  updated_at: new Date().toISOString(),
+                },
+                { onConflict: 'email' }
+              );
+            }
+          }
         }
         break;
       }
@@ -100,12 +127,27 @@ export async function POST(req: Request) {
           amount_paid: invoice.amount_paid,
         });
 
-        if (supabase && customerId) {
-          // Reset monthly token usage on each paid invoice cycle
-          await supabase
-            .from('users')
-            .update({ tokens_used: 0, updated_at: new Date().toISOString() })
-            .eq('stripe_customer_id', customerId);
+        if (customerId) {
+          if (useJobQueue) {
+            // Enqueue job for async processing
+            const payload: StripeInvoiceJobPayload = {
+              type: 'stripe.invoice.paid',
+              customerId,
+              invoiceId: invoice.id,
+              amountPaid: invoice.amount_paid || 0,
+              priority: 'normal',
+            };
+            await enqueueJob(payload, { priority: 'normal' });
+            console.log('[Webhook] Enqueued invoice.paid job');
+          } else {
+            // Process synchronously (legacy behavior)
+            if (supabase) {
+              await supabase
+                .from('users')
+                .update({ tokens_used: 0, updated_at: new Date().toISOString() })
+                .eq('stripe_customer_id', customerId);
+            }
+          }
         }
         break;
       }
@@ -123,16 +165,59 @@ export async function POST(req: Request) {
           status: subscription.status,
         });
 
-        if (supabase && customerId) {
-          await supabase
-            .from('users')
-            .update({
-              tier: 'free',
-              tokens_budget: 0,
-              stripe_subscription_id: null,
-              updated_at: new Date().toISOString(),
-            })
-            .eq('stripe_customer_id', customerId);
+        if (customerId) {
+          if (useJobQueue) {
+            // Enqueue job for async processing
+            const payload: StripeSubscriptionJobPayload = {
+              type: 'stripe.subscription.deleted',
+              customerId,
+              subscriptionId: subscription.id,
+              status: subscription.status,
+              priority: 'high',
+            };
+            await enqueueJob(payload, { priority: 'high' });
+            console.log('[Webhook] Enqueued subscription.deleted job');
+          } else {
+            // Process synchronously (legacy behavior)
+            if (supabase) {
+              await supabase
+                .from('users')
+                .update({
+                  tier: 'free',
+                  tokens_budget: 0,
+                  stripe_subscription_id: null,
+                  updated_at: new Date().toISOString(),
+                })
+                .eq('stripe_customer_id', customerId);
+            }
+          }
+        }
+        break;
+      }
+
+      case 'customer.subscription.updated': {
+        const subscription = event.data.object as Stripe.Subscription;
+        const customerId =
+          typeof subscription.customer === 'string'
+            ? subscription.customer
+            : subscription.customer?.id;
+
+        console.log('customer.subscription.updated', {
+          id: subscription.id,
+          customer: customerId,
+          status: subscription.status,
+        });
+
+        if (customerId && useJobQueue) {
+          const payload: StripeSubscriptionJobPayload = {
+            type: 'stripe.subscription.updated',
+            customerId,
+            subscriptionId: subscription.id,
+            status: subscription.status,
+            priority: 'normal',
+          };
+          await enqueueJob(payload, { priority: 'normal' });
+          console.log('[Webhook] Enqueued subscription.updated job');
         }
         break;
       }

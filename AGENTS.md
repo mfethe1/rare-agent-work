@@ -47,11 +47,22 @@ STRIPE_WEBHOOK_SECRET=<stripe-webhook-secret>
 ANTHROPIC_API_KEY=<anthropic-api-key>  # Powers the AI chat feature
 ```
 
+Job Queue (Upstash Redis):
+```
+UPSTASH_REDIS_REST_URL=<upstash-redis-rest-url>
+UPSTASH_REDIS_REST_TOKEN=<upstash-redis-rest-token>
+REDIS_URL=<redis-connection-url>  # For BullMQ worker
+USE_JOB_QUEUE=true  # Enable async job processing
+SERVICE_API_KEY=<service-api-key>  # For /api/jobs endpoints
+```
+
 Optional:
 ```
 NEXT_PUBLIC_GA4_MEASUREMENT_ID=<ga4-id>
 NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL_SUBSCRIBE=<label>
 NEXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL_REPORT=<label>
+WORKER_CONCURRENCY=5
+WORKER_MAX_JOBS_PER_SECOND=10
 ```
 
 ## Project Structure
@@ -67,6 +78,7 @@ src/
 │   │   │   └── openapi.json/ # GET - OpenAPI 3.1 spec
 │   │   ├── articles/       # Internal article management (service auth)
 │   │   ├── chat/           # AI chat endpoint (user auth)
+│   │   ├── jobs/           # Job queue management API (service auth)
 │   │   ├── news/           # Internal news store API
 │   │   ├── stripe/         # Stripe checkout + webhooks
 │   │   └── ...
@@ -83,6 +95,12 @@ src/
 │   ├── news-store.ts       # File-based news storage
 │   ├── supabase/           # Supabase client helpers
 │   ├── cost-gate.ts        # Token usage cost controls
+│   ├── queue/              # Async job queue (Upstash Redis + BullMQ)
+│   │   ├── types.ts        # Job type definitions
+│   │   ├── client.ts       # Queue client for enqueuing jobs
+│   │   ├── handlers.ts     # Job processing handlers
+│   │   ├── worker.ts       # Background worker process
+│   │   └── README.md       # Job queue documentation
 │   └── analytics.ts        # GA4 event helpers
 public/
 ├── llms.txt                # LLM/agent discovery file
@@ -106,6 +124,7 @@ data/
 - **Reports are defined in code** (`src/lib/reports.ts`) as a typed Record, not in the database. Full report content is delivered as Supabase-stored markdown after purchase verification.
 - **News has dual storage** — file-based (`data/news.json`) for the curated feed, Supabase `articles` table for the full article pipeline. Both are used.
 - **Models** — stored in Supabase `models` table with seed data fallback in the page component.
+- **Async job queue** — Upstash Redis + BullMQ for background processing. Stripe webhooks can optionally enqueue jobs instead of processing synchronously. Enable with `USE_JOB_QUEUE=true`.
 
 ## Coding Conventions
 
@@ -143,6 +162,19 @@ npx supabase db push
 - **Auto-deploy:** Push to `main` triggers build + deploy
 - **Build command:** `npm run build`
 - **Start command:** `npm start`
+- **Worker process:** `npm run worker` (separate Railway service recommended)
+
+### Railway Multi-Service Setup
+
+For production, run two Railway services:
+
+1. **Web service** - Next.js app (`npm start`)
+2. **Worker service** - Background job processor (`npm run worker`)
+
+Both services share the same environment variables. The worker service should have:
+- Same codebase (linked to same GitHub repo)
+- Same environment variables
+- Start command: `npm run worker`
 
 ## Agent-Friendly Features
 
@@ -175,3 +207,10 @@ This site practices what it preaches — it's built to be consumed by AI agents:
 
 ### Update model leaderboard
 Use the admin endpoint `POST /api/models/update` with service auth, or update seed data in `src/app/models/page.tsx` and `src/app/api/v1/models/route.ts`.
+
+### Add a new background job type
+1. Add job type and payload interface to `src/lib/queue/types.ts`
+2. Add handler function to `src/lib/queue/handlers.ts`
+3. Add case to the switch statement in `handleJob()`
+4. Enqueue jobs using `enqueueJob()` from anywhere in the app
+5. See `src/lib/queue/README.md` for detailed examples

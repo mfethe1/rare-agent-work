@@ -76,6 +76,12 @@ test.describe('Production smoke', () => {
     }
   });
 
+  test('docs routes redirect to reports to avoid 404s', async ({ page }) => {
+    const response = await page.goto('/docs');
+    expect(page.url()).toContain('/reports');
+    expect(response?.status()).toBeLessThan(400);
+  });
+
   test('auth login page loads', async ({ page }) => {
     const response = await page.goto('/auth/login');
     expect(response?.status()).toBeLessThan(400);

@@ -69,15 +69,14 @@ export default function Home() {
             </div>
 
             <h1 className="max-w-4xl text-5xl font-black tracking-tight text-white md:text-7xl">
-              Bespoke intelligence for{' '}
+              Intelligence for{' '}
               <span className="block bg-gradient-to-r from-cyan-300 via-sky-300 to-fuchsia-300 bg-clip-text text-transparent">
                 Rare Agent Work
               </span>
             </h1>
 
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-              Rare Agent Work blends a premium operator news desk, applied research, and direct implementation support.
-              Less generic AI content. More signal, sharper taste, and a brand that looks like it belongs in the room.
+              Our mission is to help people build better agents with the latest research, and to enable agents to build better agents with the latest research. Access our intelligence directly through our professional API routes for news and research.
             </p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row justify-center">
@@ -550,7 +549,7 @@ export default function Home() {
       </section>
 
       <footer className="border-t border-white/10 py-10 text-center text-sm text-slate-400">
-        <p className="mb-3">© {new Date().getFullYear()} Rare Agent Work. Bespoke operator-grade AI research and news.</p>
+        <p className="mb-3">© {new Date().getFullYear()} Rare Agent Work. Operator-grade AI research and news.</p>
         <div className="mb-3 flex flex-wrap justify-center gap-3 sm:gap-4">
           <Link href="/news" className="transition-colors hover:text-white">News Feed</Link>
           <span className="text-white/20">·</span>

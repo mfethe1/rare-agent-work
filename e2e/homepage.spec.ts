@@ -12,23 +12,22 @@ test.describe('Production smoke', () => {
     expect(response?.status()).toBeLessThan(400);
   });
 
-  test('homepage shows current hero and current offer structure', async ({ page }) => {
+  test('homepage shows current hero and current conversion structure', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('h1')).toContainText('Rare Agent Work');
-    await expect(page.locator('body')).toContainText('Newsletter');
-    await expect(page.locator('body')).toContainText('Operator Access');
-    await expect(page.locator('body')).toContainText('$10/mo');
-    await expect(page.locator('body')).toContainText('$49/mo');
+    await expect(page.locator('h1')).toContainText('Ship high-trust agent systems faster.');
+    await expect(page.locator('body')).toContainText('Submit Work (Beta)');
+    await expect(page.locator('body')).toContainText('Book Strategy Call');
+    await expect(page.locator('body')).toContainText('Curated matching beta');
   });
 
   test('top navigation points to stable routes', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('a[href="/start-here"]').first()).toBeVisible();
     await expect(page.locator('a[href="/news"]').first()).toBeVisible();
-    await expect(page.locator('a[href="/digest"]').first()).toBeVisible();
     await expect(page.locator('a[href="/reports"]').first()).toBeVisible();
-    await expect(page.locator('a[href="/docs"]').first()).toBeVisible();
-    await expect(page.locator('a[href="/pricing"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/network"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/assessment"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/book-demo"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/submit-work"]').first()).toBeVisible();
   });
 
   test('homepage body does not expose raw markdown/UI placeholders', async ({ page }) => {
@@ -39,25 +38,23 @@ test.describe('Production smoke', () => {
     expect(bodyText).not.toMatch(/Open Report \d+/i);
   });
 
-  test('homepage exposes a clear testable CTA path', async ({ page }) => {
+  test('homepage exposes a clear CTA path', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByTestId('hero-primary-cta')).toBeVisible();
-    await expect(page.getByTestId('hero-assessment-cta')).toBeVisible();
-    await expect(page.getByTestId('hero-docs-link')).toBeVisible();
-    await expect(page.getByTestId('quick-test-section')).toContainText('A cleaner way for Michael to test the site right now');
-    await expect(page.getByTestId('quicktest-docs')).toBeVisible();
-    await expect(page.getByTestId('quicktest-assessment')).toBeVisible();
+    await expect(page.locator('a[href="/submit-work"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/book-demo"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/news"]').first()).toBeVisible();
   });
 
-  test('pricing page loads and shows canonical plans', async ({ page }) => {
+  test('pricing page loads and shows current conversion options', async ({ page }) => {
     const response = await page.goto('/pricing');
     expect(response?.status()).toBeLessThan(400);
     await expect(page.locator('body')).toContainText('Newsletter');
     await expect(page.locator('body')).toContainText('Operator Access');
+    await expect(page.locator('body')).toContainText('Free Access');
   });
 
-  test('news, digest, and docs pages load', async ({ page }) => {
-    for (const route of ['/news', '/digest', '/docs']) {
+  test('news, network, submit-work, and docs routes load', async ({ page }) => {
+    for (const route of ['/news', '/network', '/submit-work', '/docs']) {
       const response = await page.goto(route);
       expect(response?.status(), route).toBeLessThan(400);
     }

@@ -8,9 +8,15 @@ declare global {
 
 const ADS_ID = "AW-17716841198";
 
-function gtagEvent(event: string, params: Record<string, unknown>) {
+type EventParams = Record<string, unknown>;
+
+function gtagEvent(event: string, params: EventParams) {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
   window.gtag("event", event, params);
+}
+
+function trackCustomEvent(event: string, params: EventParams = {}) {
+  gtagEvent(event, params);
 }
 
 /* ── Funnel events (GA4 recommended e-commerce events) ── */
@@ -92,6 +98,52 @@ export function trackNewsClick(articleUrl: string) {
 
 export function trackSignupIntent(source: string) {
   gtagEvent("sign_up", { method: source });
+}
+
+/* ── Submit work / consulting funnel events ── */
+
+export function trackHeroCtaClick(params: EventParams = {}) {
+  trackCustomEvent("hero_cta_click", params);
+}
+
+export function trackOfferingCardClick(params: EventParams = {}) {
+  trackCustomEvent("offering_card_click", params);
+}
+
+export function trackCapabilityMatrixInteraction(params: EventParams = {}) {
+  trackCustomEvent("capability_matrix_interaction", params);
+}
+
+export function trackSubmitWorkStart(params: EventParams = {}) {
+  trackCustomEvent("submit_work_start", params);
+}
+
+export function trackSubmitWorkStepComplete(params: EventParams = {}) {
+  trackCustomEvent("submit_work_step_complete", params);
+}
+
+export function trackSubmitWorkValidationError(params: EventParams = {}) {
+  trackCustomEvent("submit_work_validation_error", params);
+}
+
+export function trackSubmitWorkSubmit(params: EventParams = {}) {
+  trackCustomEvent("submit_work_submit", params);
+}
+
+export function trackSubmitWorkQualified(params: EventParams = {}) {
+  trackCustomEvent("submit_work_qualified", params);
+}
+
+export function trackSubmitWorkMatched(params: EventParams = {}) {
+  trackCustomEvent("submit_work_matched", params);
+}
+
+export function trackProposalSent(params: EventParams = {}) {
+  trackCustomEvent("proposal_sent", params);
+}
+
+export function trackProposalAccepted(params: EventParams = {}) {
+  trackCustomEvent("proposal_accepted", params);
 }
 
 /* ── Google Ads remarketing helper ── */

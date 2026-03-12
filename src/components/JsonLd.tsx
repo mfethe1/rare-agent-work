@@ -1,37 +1,55 @@
+const SITE_URL = "https://rareagent.work";
+
 const ORGANIZATION = {
   "@type": "Organization",
+  "@id": `${SITE_URL}/#organization`,
   name: "Rare Agent Work",
-  url: "https://rareagent.work",
+  url: SITE_URL,
   logo: {
     "@type": "ImageObject",
-    url: "https://rareagent.work/logo-badge-color.jpg",
+    url: `${SITE_URL}/logo-badge-color.jpg`,
   },
   contactPoint: {
     "@type": "ContactPoint",
     email: "hello@rareagent.work",
     contactType: "customer service",
   },
+  sameAs: [
+    `${SITE_URL}/news`,
+    `${SITE_URL}/network`,
+    `${SITE_URL}/pricing`,
+  ],
 };
+
+function JsonLdScript({ data }: { data: Record<string, unknown> }) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
+export function OrganizationJsonLd() {
+  return <JsonLdScript data={{ "@context": "https://schema.org", ...ORGANIZATION }} />;
+}
 
 export function WebsiteJsonLd() {
   const data = [
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
       name: "Rare Agent Work",
-      url: "https://rareagent.work",
+      url: SITE_URL,
       description:
-        "Practical, deeply researched reports on low-code automation, multi-agent systems, and empirical deployment standards.",
-      publisher: ORGANIZATION,
+        "Trusted multi-agent execution research, consulting, and operator-grade brief intake for teams shipping real AI systems.",
+      publisher: { "@id": `${SITE_URL}/#organization` },
       potentialAction: {
         "@type": "SearchAction",
-        target: "https://rareagent.work/news?tag={search_term_string}",
+        target: `${SITE_URL}/news?tag={search_term_string}`,
         "query-input": "required name=search_term_string",
       },
-    },
-    {
-      "@context": "https://schema.org",
-      ...ORGANIZATION,
     },
     {
       "@context": "https://schema.org",
@@ -42,23 +60,23 @@ export function WebsiteJsonLd() {
           name: "What is Rare Agent Work?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Rare Agent Work publishes operator-grade AI research reports — practical playbooks for setting up AI agents, scaling to multi-agent systems, and evaluating production deployments. Not tutorials or overviews, but implementation-ready guides.",
+            text: "Rare Agent Work helps teams scope, evaluate, and execute serious AI agent work through operator-grade research, trusted consulting, and curated access to proven builders.",
           },
         },
         {
           "@type": "Question",
-          name: "How do I set up my first AI agent?",
+          name: "What kind of work fits best?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Our 'Agent Setup in 60 Minutes' report walks you through platform selection (Zapier, Make, n8n, Relevance AI), building a trigger-to-action chain, adding human-in-the-loop approval gates, and testing with production data — all in under an hour.",
+            text: "The best fit is high-trust implementation work: multi-agent operations, workflow redesign, agent reliability, internal copilots, and scoped delivery where teams need judgment as much as code.",
           },
         },
         {
           "@type": "Question",
-          name: "What is multi-agent orchestration?",
+          name: "How should a team start?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Multi-agent orchestration is the practice of coordinating multiple AI agents to work together on complex tasks. Our 'From Single Agent to Multi-Agent' report covers framework selection, memory architecture, and the planner-executor-reviewer pattern used in production systems.",
+            text: "Start with a concrete brief. Share the workflow, the failure point, the trust constraints, and the outcome you need. That makes it easier to qualify the work and route it to the right operator or consulting path.",
           },
         },
       ],
@@ -67,22 +85,19 @@ export function WebsiteJsonLd() {
       "@context": "https://schema.org",
       "@type": "WebAPI",
       name: "Rare Agent Work API",
-      url: "https://rareagent.work/api/openapi.json",
-      documentation: "https://rareagent.work/llms.txt",
+      url: `${SITE_URL}/api/openapi.json`,
+      documentation: `${SITE_URL}/llms.txt`,
       description:
         "Public JSON API providing curated AI agent news, report catalog, and weekly digests. Designed for consumption by AI agents and LLMs.",
-      provider: ORGANIZATION,
+      provider: { "@id": `${SITE_URL}/#organization` },
     },
   ];
 
   return (
     <>
+      <OrganizationJsonLd />
       {data.map((d, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }}
-        />
+        <JsonLdScript key={i} data={d} />
       ))}
     </>
   );
@@ -104,12 +119,59 @@ export function BreadcrumbJsonLd({
     })),
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
-  );
+  return <JsonLdScript data={data} />;
+}
+
+export function FAQJsonLd({
+  questions,
+}: {
+  questions: { question: string; answer: string }[];
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
+  return <JsonLdScript data={data} />;
+}
+
+export function ServiceJsonLd({
+  name,
+  description,
+  url,
+  areaServed = "Global",
+  serviceType = "AI agent consulting",
+}: {
+  name: string;
+  description: string;
+  url: string;
+  areaServed?: string;
+  serviceType?: string;
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name,
+    description,
+    url,
+    serviceType,
+    provider: { "@id": `${SITE_URL}/#organization` },
+    areaServed,
+    audience: {
+      "@type": "Audience",
+      audienceType: "Teams deploying or evaluating AI agents",
+    },
+  };
+
+  return <JsonLdScript data={data} />;
 }
 
 export function ReportJsonLd({
@@ -132,15 +194,15 @@ export function ReportJsonLd({
       "@type": "Product",
       name: title,
       description,
-      url: `https://rareagent.work/reports/${slug}`,
-      image: "https://rareagent.work/og-image.png",
-      brand: ORGANIZATION,
+      url: `${SITE_URL}/reports/${slug}`,
+      image: `${SITE_URL}/og-image.png`,
+      brand: { "@id": `${SITE_URL}/#organization` },
       offers: {
         "@type": "Offer",
         price: priceNum,
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
-        url: `https://rareagent.work/reports/${slug}`,
+        url: `${SITE_URL}/reports/${slug}`,
       },
     },
     {
@@ -148,21 +210,17 @@ export function ReportJsonLd({
       "@type": "Report",
       name: title,
       description,
-      url: `https://rareagent.work/reports/${slug}`,
+      url: `${SITE_URL}/reports/${slug}`,
       datePublished,
-      publisher: ORGANIZATION,
+      publisher: { "@id": `${SITE_URL}/#organization` },
       author: { "@type": "Person", name: "Michael" },
-    }
+    },
   ];
 
   return (
     <>
       {data.map((d, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }}
-        />
+        <JsonLdScript key={i} data={d} />
       ))}
     </>
   );
@@ -173,15 +231,17 @@ export function NewsFeedJsonLd() {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: "AI Agent News Feed",
-    description: "Daily-updated news feed for AI agent builders.",
-    url: "https://rareagent.work/news",
-    publisher: ORGANIZATION,
+    description:
+      "Daily-updated news feed for teams building, buying, or operating AI agents with context on execution and trust.",
+    url: `${SITE_URL}/news`,
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    about: [
+      "AI agents",
+      "multi-agent execution",
+      "agent operations",
+      "trusted implementation",
+    ],
   };
 
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
-  );
+  return <JsonLdScript data={data} />;
 }

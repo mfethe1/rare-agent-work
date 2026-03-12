@@ -31,7 +31,7 @@ export default function PricingPage() {
           <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Pricing</p>
           <h1 className="text-4xl font-bold sm:text-5xl">Three ways to access operator-grade intelligence</h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-300">
-            Start free, buy reports as you need them, or subscribe for full access and continuous updates.
+            Start free, buy reports as you need them, subscribe for full access, or <Link href="/submit-work" className="text-cyan-300 underline hover:text-cyan-200">submit scoped work for human-reviewed matching</Link>.
           </p>
         </header>
 

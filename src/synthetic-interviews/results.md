@@ -2,6 +2,16 @@
 
 10 simulated user visits. Each persona browses the site as a realistic first-time visitor and provides honest feedback.
 
+## New council-driven review system
+
+For the harsher multi-perspective panel and ongoing scoring framework, see:
+
+- `src/synthetic-interviews/council-review-v2.md`
+- `src/synthetic-interviews/continuous-improvement-council.json`
+- `docs/continuous-improvement-council.md`
+
+The new council expands beyond first-time visitors into API consumers, autonomous agents, enterprise buyers, consultants, and prominent-figure-inspired strategic critics.
+
 ---
 
 ## Persona 1: Solo Founder, No Tech Background

@@ -116,7 +116,8 @@ export default function Home() {
               <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News</Link>
               <Link href="/docs" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Docs</Link>
               <Link href="/reports" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
-              <Link href="/network" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Network</Link>
+              <Link href="/docs" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Docs</Link>
+              <Link href="/about" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">About</Link>
               <Link href="/assessment" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
               <Link href="/book-demo" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Book Strategy Call</Link>
               <Link
@@ -321,6 +322,38 @@ export default function Home() {
               <div key={item} className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/70 p-5 text-sm leading-7 text-slate-200">{item}</div>
             ))}
           </div>
+        </section>
+
+        <section className="mt-20 grid gap-6 lg:grid-cols-3">
+          <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Trust scaffolding</p>
+            <h2 className="mt-3 text-2xl font-bold text-white">See how the research is produced.</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-300">If you want to know who this is for, what standards the research follows, and how freshness is handled, start with the trust pages.</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/about" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">About</Link>
+              <Link href="/methodology" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Methodology</Link>
+            </div>
+          </article>
+
+          <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">For agents + builders</p>
+            <h2 className="mt-3 text-2xl font-bold text-white">Use the machine-readable layer.</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-300">Rare Agent Work also exposes public APIs, OpenAPI, agent metadata, and llms.txt surfaces for agent-native use cases.</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/docs" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Open docs</Link>
+              <Link href="/api/v1/openapi.json" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">OpenAPI</Link>
+            </div>
+          </article>
+
+          <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">For teams</p>
+            <h2 className="mt-3 text-2xl font-bold text-white">Need team or enterprise access?</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-300">If you need procurement-friendly access, shared report usage, or a scoped architecture review, use the team lane instead of a solo checkout flow.</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/enterprise" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Team access</Link>
+              <Link href="/assessment" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Request assessment</Link>
+            </div>
+          </article>
         </section>
 
         <section className="mt-20">

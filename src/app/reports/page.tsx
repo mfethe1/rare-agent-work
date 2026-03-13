@@ -35,8 +35,11 @@ export default function ReportsPage() {
             <Link href="/news" className="text-gray-300 hover:text-white">
               News Feed
             </Link>
-            <Link href="/digest" className="text-gray-300 hover:text-white">
-              Weekly Digest
+            <Link href="/docs" className="text-gray-300 hover:text-white">
+              Docs
+            </Link>
+            <Link href="/enterprise" className="text-gray-300 hover:text-white">
+              Enterprise
             </Link>
             <Link href="/assessment" className="text-gray-300 hover:text-white">
               Assessment
@@ -101,12 +104,18 @@ export default function ReportsPage() {
           <p className="mt-2 text-slate-300">
             Compare one-time reports, Operator Access, consultant-friendly bundles, and enterprise working sessions from the pricing page.
           </p>
-          <div className="mt-5">
+          <div className="mt-5 flex flex-wrap gap-3">
             <Link
               href="/pricing"
               className="inline-flex rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-400"
             >
               Compare plans
+            </Link>
+            <Link
+              href="/enterprise"
+              className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+            >
+              Team / enterprise access
             </Link>
           </div>
         </section>

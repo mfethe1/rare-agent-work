@@ -110,6 +110,7 @@ export default function DocsPage() {
             <div className="hidden items-center gap-4 sm:flex">
               <Link href="/start-here" className="text-sm text-slate-400 hover:text-white">Start Here</Link>
               <Link href="/reports" className="text-sm text-slate-400 hover:text-white">Reports</Link>
+              <Link href="/methodology" className="text-sm text-slate-400 hover:text-white">Methodology</Link>
               <Link href="/assessment" className="text-sm text-slate-400 hover:text-white">Assessment</Link>
               <Link href="/docs" className="text-sm font-medium text-white">Docs</Link>
             </div>

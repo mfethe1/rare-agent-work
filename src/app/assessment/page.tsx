@@ -102,6 +102,14 @@ export default function AssessmentPage() {
                 ))}
               </div>
             </div>
+
+            <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/10 p-5 text-sm text-slate-200">
+              <p className="font-semibold text-white">Need team or procurement-friendly access?</p>
+              <p className="mt-3">
+                If this review is for multiple stakeholders, an internal working group, or an enterprise buying process, use the team path and mention that in your request.
+              </p>
+              <Link href="/enterprise" className="mt-4 inline-flex text-sm font-semibold text-cyan-300 hover:text-cyan-200">Open enterprise overview →</Link>
+            </div>
           </aside>
 
           <section className="rounded-3xl border border-gray-800 bg-black/50 p-6 sm:p-8">

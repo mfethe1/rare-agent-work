@@ -131,6 +131,9 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               <span className="text-xs text-gray-300 border border-white/10 px-3 py-1 rounded-full">
                 Freshness: {report.freshnessTimestamp}
               </span>
+              <span className="text-xs text-gray-300 border border-white/10 px-3 py-1 rounded-full">
+                Methodology + citations visible
+              </span>
             </div>
 
             <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
@@ -156,21 +159,24 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               </div>
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-3">
+            <div className="mt-4 grid gap-4 lg:grid-cols-4">
               <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Author</p>
                 <p className="mt-2 text-base font-semibold text-white">{report.author}</p>
                 <p className="mt-2 text-sm leading-6 text-slate-300">{report.attribution}</p>
               </div>
               <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Best for</p>
-                <p className="mt-2 text-sm leading-6 text-slate-200">{report.bestFor.join(' • ')}</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Best for</p>
+                <p className="mt-2 text-sm leading-7 text-slate-200">{report.audience}</p>
               </div>
               <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Buying path</p>
-                <p className="mt-2 text-sm leading-6 text-slate-200">
-                  Buy this report once, or use Operator Access if you want the full library and future updates.
-                </p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Trust signal</p>
+                <p className="mt-2 text-sm leading-7 text-slate-200">Visible citations, visible freshness, and explicit risk framing are built into every report surface.</p>
+              </div>
+              <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Need team access?</p>
+                <p className="mt-2 text-sm leading-7 text-slate-200">If multiple people need this report or you need a procurement-friendly path, use the team / enterprise lane.</p>
+                <Link href="/enterprise" className="mt-3 inline-flex text-sm font-semibold text-cyan-300 hover:text-cyan-200">Open enterprise path →</Link>
               </div>
             </div>
 
@@ -362,7 +368,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
             </div>
             <p className="text-gray-400 text-sm mb-6">
               Powered by Claude Sonnet 4.6 — knows this report and can help you implement it.
-              5 free questions, then upgrade for unlimited access.
+              Your first question is free as a preview, then sign in to continue.
             </p>
             <ReportChat reportSlug={report.slug} placeholder={report.chatPlaceholder} />
           </div>

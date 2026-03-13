@@ -93,3 +93,26 @@ Rare Agent Work is ready for Michael review when:
 - Include at least 3 API/agent-native perspectives every run.
 - Include at least 3 prominent-figure-inspired critiques every run, but frame them as style-inspired, not impersonation.
 - Preserve longitudinal scoring so improvements can be measured without lowering standards.
+
+## 2026-03-13 20-loop implementation run
+
+1. Added shared proof/routing/trust copy primitives in `src/lib/site-copy.ts` so homepage, docs, pricing, and service pages stop inventing inconsistent language.
+2. Reworked the homepage hero copy to state the real offer more plainly: research, public API surfaces, and human-reviewed service paths.
+3. Added a homepage proof layer with counts for reports, API routes, trust-gated service paths, and machine-readable surfaces.
+4. Added a homepage "choose the right first click" router to reduce start-path ambiguity across humans and agent users.
+5. Added homepage trust-control and buyer-path sections so enterprise and consultant visitors see a visible operating model instead of premium-sounding claims.
+6. Strengthened `/start-here` with proof stats and route cards so it actually behaves like an orientation layer.
+7. Added integration-pattern content to `/start-here` to improve the workflow/embed story for agent consumers.
+8. Improved `/reports` catalog copy and cards with methodology/proof framing and better "best for" guidance.
+9. Expanded report metadata in `src/lib/reports.ts` with author, attribution, methodology, best-fit, and proof-point fields.
+10. Reworked report pages to surface author attribution, methodology, proof points, and clearer package contents before purchase.
+11. Added stronger buying paths on report pages: single report, pricing comparison, assessment, submit-work, and docs.
+12. Updated report JSON-LD to expose author and modified date, improving human attribution and machine-readable provenance.
+13. Added bundle and buyer-path framing to `/pricing`, including consultant and enterprise packaging instead of subscription-only framing.
+14. Added a dedicated `/trust` page to make intake boundaries, review sequence, and per-surface controls explicit.
+15. Extended `/submit-work` with a visible controls section and a direct link to the trust-controls page.
+16. Hardened `ConsultingForm` with credential-removal and human-review confirmations plus clearer scoping guidance.
+17. Expanded `/assessment` and `/network` with trust-control and package sections so service buyers can see how work routes.
+18. Strengthened `/docs` with integration patterns and a public trust package so API consumers can validate the site faster.
+19. Expanded public API responses and OpenAPI metadata with provenance, pricing/docs/trust links, and methodology caveats.
+20. Updated the agent card, legacy manifest coverage tests, `llms.txt`, and news commentary framing so discovery surfaces better reflect the new critique-council standard.

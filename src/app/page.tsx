@@ -3,6 +3,7 @@ import Link from 'next/link';
 import BuyButton from '@/components/BuyButton';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 import { getAllReports } from '@/lib/reports';
+import { operatorProofStats, startHereRoutes, trustControlBullets } from '@/lib/site-copy';
 
 const liveNowItems = [
   {
@@ -71,9 +72,9 @@ const capabilityRows = [
 ];
 
 const proofItems = [
-  'Live news, reports, pricing, and network surfaces are already public and usable.',
-  'Assessment and consulting paths already support direct inbound work.',
-  'Submit Work is being introduced as a tightly-scoped, curated beta rather than an open marketplace.',
+  'Every public report includes citations, freshness timestamps, explicit risks, and preview content before purchase.',
+  'The public API already exposes agent-readable news, report metadata, NL query, OpenAPI, RSS, and discovery manifests.',
+  'Submit Work, consulting, and network surfaces state their trust boundaries instead of implying hidden automation.',
 ];
 
 const submitSteps = [
@@ -111,7 +112,9 @@ export default function Home() {
             </Link>
 
             <div className="flex items-center gap-2 sm:gap-3">
+              <Link href="/start-here" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Start Here</Link>
               <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News</Link>
+              <Link href="/docs" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Docs</Link>
               <Link href="/reports" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
               <Link href="/network" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Network</Link>
               <Link href="/assessment" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
@@ -140,8 +143,8 @@ export default function Home() {
             </h1>
 
             <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
-              Get operator intelligence, implementation playbooks, and curated expert matching without marketplace noise.
-              Rare Agent Work is built for teams that need judgment, trust boundaries, and real shipping support.
+              Operator research, public API surfaces, and human-reviewed service paths for teams that need more than generic AI content.
+              Start with guidance, buy a concrete report, or bring a messy implementation problem for review.
             </p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -158,17 +161,36 @@ export default function Home() {
           </div>
 
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm shadow-[0_20px_70px_rgba(5,8,22,0.45)]">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">What’s live right now</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">Proof layer</p>
             <div className="mt-5 grid gap-4">
-              {liveNowItems.slice(0, 3).map((item) => (
-                <div key={item.title} className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
-                  <div className="flex items-center justify-between gap-4">
-                    <p className="text-sm font-semibold uppercase tracking-[0.18em] text-cyan-300">{item.status}</p>
-                    <Link href={item.href} className="text-sm text-cyan-300 hover:text-cyan-200">Open →</Link>
-                  </div>
-                  <h2 className="mt-2 text-lg font-semibold text-white">{item.title}</h2>
-                  <p className="mt-2 text-sm leading-7 text-slate-300">{item.description}</p>
+              {operatorProofStats.map((item) => (
+                <div key={item.label} className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{item.label}</p>
+                  <h2 className="mt-2 text-3xl font-semibold text-white">{item.value}</h2>
+                  <p className="mt-2 text-sm leading-7 text-slate-300">{item.detail}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-14 rounded-[2rem] border border-cyan-300/20 bg-cyan-400/[0.06] p-8">
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Start here</p>
+              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Choose the right first click.</h2>
+              <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
+                The site has multiple surfaces because it serves different jobs. This section removes the guesswork.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {startHereRoutes.map((item) => (
+                <Link key={item.href} href={item.href} className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5 transition-colors hover:border-cyan-300/40">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">{item.badge}</p>
+                  <h3 className="mt-2 text-lg font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-300">{item.description}</p>
+                  <span className="mt-4 inline-flex text-sm font-semibold text-cyan-300">Open route →</span>
+                </Link>
               ))}
             </div>
           </div>
@@ -236,6 +258,32 @@ export default function Home() {
                 <p className="mt-2 text-sm leading-7 text-slate-200">{item}</p>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="mt-20 grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-8">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Trust controls</p>
+            <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Visible process beats vague trust language.</h2>
+            <div className="mt-6 grid gap-3">
+              {trustControlBullets.map((item) => (
+                <div key={item} className="rounded-2xl border border-white/10 bg-black/20 px-4 py-4 text-sm text-slate-200">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-[2rem] border border-white/10 bg-[#07111f]/80 p-8">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">For buyers with real stakes</p>
+            <div className="mt-4 space-y-4 text-sm leading-7 text-slate-300">
+              <p>Research buyers can start with previews and one-time reports.</p>
+              <p>Consultants can use reports and docs as a working evidence pack for proposals and delivery alignment.</p>
+              <p>Enterprise teams can start with an assessment or submit-work intake when governance and ownership are part of the problem.</p>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/pricing" className="inline-flex rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Compare plans</Link>
+              <Link href="/docs" className="inline-flex rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10">Open docs</Link>
+            </div>
           </div>
         </section>
 

@@ -82,11 +82,12 @@ export default function NewsContextPanel({ latestPublishedAt, totalItems, hotIte
       </div>
 
       <div className="rounded-2xl border border-gray-800 bg-gray-900/70 p-5">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">Why this wins</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">Operator commentary standard</p>
         <ul className="mt-3 space-y-2 text-sm text-gray-300">
           <li>• Context beside the feed, not hidden behind another page</li>
           <li>• Clear freshness signal so people trust the product</li>
           <li>• Subscriber value tied to speed + interpretation, not just links</li>
+          <li>• Commentary should tell teams what changed in stack choice, risk, or deployment timing</li>
         </ul>
       </div>
     </aside>

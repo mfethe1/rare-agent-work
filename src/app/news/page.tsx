@@ -83,7 +83,8 @@ export default async function NewsPage({ searchParams }: PageProps) {
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-300">Agentic news desk</p>
                   <h1 className="mt-2 text-3xl font-bold text-white">AI agent news with context, not just links</h1>
                   <p className="mt-3 max-w-2xl text-sm leading-6 text-gray-400">
-                    We surface what changed, why it matters, and what operators should do next. Subscribers get the live newsletter,
+                    We surface what changed, why it matters operationally, and what a builder should do next. The framing is intentionally opinionated:
+                    fewer generic summaries, more routing signal around deployment risk, stack movement, and workflow implications. Subscribers get the live newsletter,
                     hot-news alerts, and the side-panel copilot for immediate context. If you need help shipping a workflow instead of just reading about one,
                     <Link href="/submit-work" className="ml-1 text-orange-400 underline hover:text-orange-300">submit scoped work for human review</Link>.
                     {activeTag && (

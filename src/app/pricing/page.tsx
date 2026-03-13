@@ -1,6 +1,7 @@
 import Link from "next/link";
 import BuyButton from "@/components/BuyButton";
 import { getAllReports } from "@/lib/reports";
+import { consultingPackages } from "@/lib/site-copy";
 
 export const metadata = {
   title: "Pricing | Rare Agent Work",
@@ -84,7 +85,7 @@ export default function PricingPage() {
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-white">One-Time Reports</h2>
             <p className="mt-2 text-slate-400">
-              Buy exactly what you need. Lifetime access, no subscription required.
+              Buy exactly what you need. Lifetime access, no subscription required. Every report includes visible methodology, citations, risks, and preview content before purchase.
             </p>
           </div>
           <div className="grid gap-5 lg:grid-cols-3">
@@ -131,12 +132,44 @@ export default function PricingPage() {
                       href={`/reports/${report.slug}`}
                       className="text-center text-xs text-slate-400 hover:text-white transition-colors"
                     >
-                      Read preview →
+                      Read preview + proof →
                     </Link>
                   </div>
                 </div>
               );
             })}
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-white">Bundles and buyer paths</h2>
+            <p className="mt-2 text-slate-400">
+              Lower the buying friction: pick a single report, subscribe for the full library, or use a service package when the work needs a human process.
+            </p>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Best solo path</p>
+              <h3 className="mt-3 text-xl font-bold text-white">Buy one report first</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-300">
+                Best if you have one urgent decision: framework choice, first workflow setup, or evaluation design.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-cyan-400/30 bg-cyan-500/10 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">Best repeat-use path</p>
+              <h3 className="mt-3 text-xl font-bold text-white">Operator Access</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-200">
+                Best if you expect to use multiple reports, want rolling updates, and need the AI guide regularly.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Best team path</p>
+              <h3 className="mt-3 text-xl font-bold text-white">Assessment or submit-work</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-300">
+                Best if the real problem is routing, governance, ownership, or implementation rescue rather than content access alone.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -230,6 +263,32 @@ export default function PricingPage() {
                 className="w-full rounded-lg bg-cyan-400 px-4 py-3 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-300"
               />
             </div>
+          </div>
+        </section>
+
+        <section className="mb-16">
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-white">Consultant and enterprise packaging</h2>
+            <p className="mt-2 text-slate-400">
+              Some buyers need a working session, audit, or scoped intervention instead of a content-only purchase.
+            </p>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {consultingPackages.map((pkg) => (
+              <div key={pkg.name} className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">{pkg.price}</p>
+                <h3 className="mt-3 text-xl font-bold text-white">{pkg.name}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-300">{pkg.description}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href="/assessment" className="inline-flex rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-300">
+              Request assessment
+            </Link>
+            <Link href="/submit-work" className="inline-flex rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white hover:bg-white/5">
+              Submit work
+            </Link>
           </div>
         </section>
 

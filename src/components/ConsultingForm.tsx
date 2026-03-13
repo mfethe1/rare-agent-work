@@ -9,6 +9,8 @@ const initialState = {
   useCase: '',
   budget: '',
   timeline: '',
+  confirmsNoCredentials: false,
+  confirmsHumanReview: false,
 };
 
 export default function ConsultingForm() {
@@ -22,6 +24,12 @@ export default function ConsultingForm() {
     setLoading(true);
     setMessage(null);
     setError(null);
+
+    if (!form.confirmsNoCredentials || !form.confirmsHumanReview) {
+      setError('Please confirm the trust requirements before submitting.');
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch('/api/consulting', {
@@ -45,7 +53,7 @@ export default function ConsultingForm() {
     }
   }
 
-  function updateField<K extends keyof typeof initialState>(key: K, value: string) {
+  function updateField<K extends keyof typeof initialState>(key: K, value: (typeof initialState)[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
@@ -123,6 +131,21 @@ export default function ConsultingForm() {
         />
       </label>
 
+      <div className="rounded-2xl border border-blue-400/20 bg-blue-400/5 p-5 text-sm leading-7 text-blue-100">
+        Use this form for scoping and review. Do not include passwords, API keys, private repos that require shared credentials, or production secrets.
+      </div>
+
+      <div className="space-y-3 rounded-2xl border border-white/10 bg-white/[0.04] p-5 text-sm text-slate-200">
+        <label className="flex items-start gap-3">
+          <input type="checkbox" checked={form.confirmsNoCredentials} onChange={(e) => updateField('confirmsNoCredentials', e.target.checked)} className="mt-1" />
+          <span>I confirm I have removed credentials and secrets.</span>
+        </label>
+        <label className="flex items-start gap-3">
+          <input type="checkbox" checked={form.confirmsHumanReview} onChange={(e) => updateField('confirmsHumanReview', e.target.checked)} className="mt-1" />
+          <span>I understand this path is for human review and scoped follow-up, not immediate autonomous execution.</span>
+        </label>
+      </div>
+
       <button
         type="submit"
         disabled={loading}
@@ -131,6 +154,10 @@ export default function ConsultingForm() {
       >
         {loading ? 'Sending…' : 'Request consulting access'}
       </button>
+
+      <p className="text-xs text-gray-500">
+        Typical first response: within one business day for qualified requests.
+      </p>
 
       <p className="text-xs text-gray-500">
         Prefer email? Use{' '}

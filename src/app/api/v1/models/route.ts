@@ -145,6 +145,11 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     data: filtered,
     count: filtered.length,
+    provenance: {
+      caveat: 'Model index methodology and refresh cadence are still being rebuilt; treat this endpoint as directional, not authoritative procurement evidence.',
+      trust_url: 'https://rareagent.work/trust',
+      docs_url: 'https://rareagent.work/docs',
+    },
     updated_at: new Date().toISOString(),
     source: 'https://rareagent.work/models',
     documentation: 'https://rareagent.work/.well-known/agent-card.json',

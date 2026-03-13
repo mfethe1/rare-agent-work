@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
+import { integrationPatterns, trustControlBullets } from '@/lib/site-copy';
 
 export const metadata: Metadata = {
   title: 'Public Docs & API Quickstart',
@@ -84,6 +85,11 @@ const humanFlow = [
     title: 'Pricing',
     href: '/pricing',
     description: 'Clear offer page for newsletter, operator access, and next-step purchase decisions.',
+  },
+  {
+    title: 'Trust Controls',
+    href: '/trust',
+    description: 'Process visibility for submit-work, consulting, network, and public API consumers.',
   },
 ];
 
@@ -200,6 +206,39 @@ export default function DocsPage() {
               </a>
             </div>
           </aside>
+        </section>
+
+        <section className="mt-14 grid gap-6 lg:grid-cols-2">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Integration patterns</p>
+            <div className="mt-5 space-y-4">
+              {integrationPatterns.map((item) => (
+                <div key={item.title} className="rounded-2xl border border-white/10 bg-black/20 p-4">
+                  <h3 className="text-base font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-3xl border border-cyan-400/20 bg-cyan-400/10 p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-200">Public trust package</p>
+            <div className="mt-5 space-y-3">
+              {trustControlBullets.map((item) => (
+                <div key={item} className="rounded-2xl border border-cyan-300/20 bg-[#07111f]/60 px-4 py-4 text-sm text-slate-100">
+                  {item}
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/trust" className="inline-flex rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300">
+                Open trust controls
+              </Link>
+              <Link href="/.well-known/agent-card.json" className="inline-flex rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white hover:bg-white/5">
+                View agent card
+              </Link>
+            </div>
+          </div>
         </section>
       </main>
     </div>

@@ -50,6 +50,12 @@ export async function GET(request: NextRequest) {
     data,
     count: data.length,
     filters: { tag: tag || null, days, limit },
+    provenance: {
+      collection: 'Rare Agent Work curated news feed',
+      methodology: 'Human-curated AI agent news feed for operators; recency-limited and exposed as read-only public data.',
+      docs_url: 'https://rareagent.work/docs',
+      rss: 'https://rareagent.work/feed.xml',
+    },
     updated_at: new Date().toISOString(),
     source: 'https://rareagent.work/news',
     rss: 'https://rareagent.work/feed.xml',

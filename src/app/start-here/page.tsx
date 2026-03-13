@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
+import { integrationPatterns, operatorProofStats, startHereRoutes } from '@/lib/site-copy';
 
 export const metadata: Metadata = {
   title: 'Start Here for Agentic Systems',
@@ -116,11 +117,23 @@ export default function StartHerePage() {
         </section>
 
         <section className="mt-10 grid gap-4 md:grid-cols-4">
-          {principles.map((item) => (
-            <div key={item.title} className="rounded-2xl border border-gray-800 bg-gray-900/50 p-5">
-              <h2 className="text-base font-semibold text-white">{item.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-gray-400">{item.body}</p>
+          {operatorProofStats.map((item) => (
+            <div key={item.label} className="rounded-2xl border border-gray-800 bg-gray-900/50 p-5">
+              <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-300">{item.label}</h2>
+              <p className="mt-3 text-3xl font-bold text-white">{item.value}</p>
+              <p className="mt-2 text-sm leading-6 text-gray-400">{item.detail}</p>
             </div>
+          ))}
+        </section>
+
+        <section className="mt-10 grid gap-4 lg:grid-cols-4">
+          {startHereRoutes.map((item) => (
+            <Link key={item.href} href={item.href} className="rounded-2xl border border-orange-500/20 bg-orange-500/5 p-5 transition-colors hover:border-orange-400/40">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-300">{item.badge}</p>
+              <h2 className="mt-3 text-lg font-semibold text-white">{item.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-gray-400">{item.description}</p>
+              <span className="mt-4 inline-flex text-sm font-semibold text-orange-300">Open →</span>
+            </Link>
           ))}
         </section>
 
@@ -141,6 +154,32 @@ export default function StartHerePage() {
               </Link>
             </div>
           ))}
+        </section>
+
+        <section className="mt-14 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-300">Working principles</p>
+            <div className="mt-5 grid gap-4">
+              {principles.map((item) => (
+                <div key={item.title} className="rounded-2xl border border-gray-800 bg-black/20 p-4">
+                  <h3 className="text-base font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-blue-500/30 bg-blue-950/20 p-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-300">If you are integrating Rare Agent Work into a workflow</p>
+            <div className="mt-5 space-y-4">
+              {integrationPatterns.map((item) => (
+                <div key={item.title} className="rounded-2xl border border-blue-400/20 bg-black/20 p-4">
+                  <h3 className="text-base font-semibold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-gray-300">{item.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="mt-14 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">

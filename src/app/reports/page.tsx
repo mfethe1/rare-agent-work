@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllReports } from "@/lib/reports";
 import { startHereRoutes } from "@/lib/site-copy";
+import AuthorSignal from '@/components/AuthorSignal';
 
 const colorMap: Record<
   string,
@@ -99,6 +100,10 @@ export default function ReportsPage() {
           })}
         </section>
 
+        <div className="mt-12">
+          <AuthorSignal />
+        </div>
+
         <section className="mt-12 rounded-2xl border border-white/10 bg-white/5 p-6">
           <h2 className="text-2xl font-semibold text-white">Need the full catalog, bundles, or a buyer path?</h2>
           <p className="mt-2 text-slate-300">
@@ -110,6 +115,12 @@ export default function ReportsPage() {
               className="inline-flex rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-400"
             >
               Compare plans
+            </Link>
+            <Link
+              href="/reports/choose"
+              className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+            >
+              Help me choose a report
             </Link>
             <Link
               href="/enterprise"

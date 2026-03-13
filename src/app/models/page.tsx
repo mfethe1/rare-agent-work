@@ -27,6 +27,7 @@ export default function ModelsPage() {
               <div className="hidden items-center gap-4 sm:flex">
                 <Link href="/news" className="text-sm text-gray-400 transition-colors hover:text-white">News Feed</Link>
                 <Link href="/reports" className="text-sm text-gray-400 transition-colors hover:text-white">Reports</Link>
+                <Link href="/methodology" className="text-sm text-gray-400 transition-colors hover:text-white">Methodology</Link>
                 <Link href="/assessment" className="text-sm text-gray-400 transition-colors hover:text-white">Assessment</Link>
               </div>
             </div>
@@ -82,6 +83,12 @@ export default function ModelsPage() {
               className="inline-flex items-center rounded-lg bg-orange-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-orange-700"
             >
               Read Start Here
+            </Link>
+            <Link
+              href="/methodology"
+              className="inline-flex items-center rounded-lg border border-gray-700 px-5 py-3 text-sm font-semibold text-white transition-colors hover:border-gray-500"
+            >
+              Review methodology
             </Link>
             <Link
               href="/reports/empirical-agent-architecture"

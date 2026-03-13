@@ -26,6 +26,7 @@ export default function BookDemoPage() {
             <div className="flex items-center gap-2 sm:gap-3">
               <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News Feed</Link>
               <Link href="/reports" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
+              <Link href="/about" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">About</Link>
               <Link href="/assessment" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
             </div>
           </div>
@@ -38,6 +39,9 @@ export default function BookDemoPage() {
           <h1 className="mb-4 text-4xl font-bold text-white md:text-5xl">Book an Operator Demo</h1>
           <p className="mx-auto max-w-2xl text-lg text-slate-300">
             Schedule a direct consultation with Michael to review your agentic workflow, architecture, and deployment risk.
+          </p>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
+            This path is best when the issue is strategic, high-stakes, or tied to architecture and rollout decisions rather than a simple report purchase.
           </p>
         </div>
 

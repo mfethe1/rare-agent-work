@@ -116,6 +116,7 @@ export default function Home() {
               <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News</Link>
               <Link href="/docs" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Docs</Link>
               <Link href="/reports" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
+              <Link href="/reports/choose" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Start Here</Link>
               <Link href="/docs" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Docs</Link>
               <Link href="/about" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">About</Link>
               <Link href="/assessment" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>

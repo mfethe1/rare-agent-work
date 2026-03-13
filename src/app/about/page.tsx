@@ -72,6 +72,12 @@ export default function AboutPage() {
               Most AI content either sells generic optimism or collapses into implementation trivia. Rare Agent Work is trying to occupy the harder middle:
               opinionated enough to be useful, rigorous enough to be defensible, and commercial enough to help teams actually move.
             </p>
+            <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-5 text-sm leading-7 text-slate-300">
+              <p className="font-semibold text-white">Operator point of view</p>
+              <p className="mt-2">
+                Michael Fethe’s perspective matters here because the product is not pretending to be neutral content infrastructure. It is deliberately shaped around shipping, trust boundaries, and practical implementation pressure.
+              </p>
+            </div>
           </div>
 
           <aside className="rounded-3xl border border-white/10 bg-black/30 p-6">

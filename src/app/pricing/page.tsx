@@ -36,6 +36,37 @@ export default function PricingPage() {
           </p>
         </header>
 
+        <section className="mb-16 rounded-3xl border border-cyan-400/20 bg-cyan-500/5 p-8 backdrop-blur-sm">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Help me choose</p>
+              <h2 className="mt-3 text-3xl font-bold text-white">Pick the buying path in under a minute.</h2>
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <p className="text-sm font-semibold text-white">Just staying up to date</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">Start with the $10/mo newsletter if you want signal, summaries, and hot-news context without buying technical reports.</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <p className="text-sm font-semibold text-white">Need one concrete playbook</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">Buy a one-time report if you have a specific problem to solve right now and don’t want another subscription.</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <p className="text-sm font-semibold text-white">Actively building with agents</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">Choose Operator Access if your team needs all reports, deeper AI guidance, and ongoing updates while shipping.</p>
+                </div>
+              </div>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-black/30 p-6">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">What token budgets really mean</p>
+              <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-300">
+                <li>Free = light experimentation and a few quick questions each day.</li>
+                <li>Operator Access = hundreds of deeper implementation questions each month.</li>
+                <li>If you hate token math, ignore it — choose based on whether you need casual reading, one report, or an active build partner.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Tier 1: Free */}
         <section className="mb-16">
           <div className="mb-6">
@@ -60,7 +91,7 @@ export default function PricingPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
-                    <span>Ask limited AI questions (10 requests/day, $2/week token budget)</span>
+                    <span>Ask a small number of AI questions for lightweight exploration before you commit</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
@@ -141,34 +172,37 @@ export default function PricingPage() {
           </div>
         </section>
 
-        <section className="mb-16">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white">Bundles and buyer paths</h2>
-            <p className="mt-2 text-slate-400">
-              Lower the buying friction: pick a single report, subscribe for the full library, or use a service package when the work needs a human process.
-            </p>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Best solo path</p>
-              <h3 className="mt-3 text-xl font-bold text-white">Buy one report first</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-300">
-                Best if you have one urgent decision: framework choice, first workflow setup, or evaluation design.
+        <section className="mb-16 rounded-3xl border border-emerald-400/20 bg-emerald-500/5 p-8 backdrop-blur-sm">
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Bundles and buyer paths</p>
+              <h2 className="mt-3 text-3xl font-bold text-white">Get the full report stack in one shot.</h2>
+              <p className="mt-3 max-w-3xl text-slate-300">
+                If you already know you need the operator playbook, the multi-agent architecture guide, and the empirical governance brief, don’t make three separate buying decisions.
               </p>
+              <div className="mt-6 grid gap-4 md:grid-cols-3">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <p className="text-sm font-semibold text-white">Best solo path</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">Buy one report first if you have one urgent decision: framework choice, first workflow setup, or evaluation design.</p>
+                </div>
+                <div className="rounded-2xl border border-cyan-400/30 bg-cyan-500/10 p-5">
+                  <p className="text-sm font-semibold text-white">Best repeat-use path</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">Choose Operator Access if you expect to use multiple reports, want rolling updates, and need the AI guide regularly.</p>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <p className="text-sm font-semibold text-white">Best team path</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">Use assessment or submit-work if the real problem is routing, governance, ownership, or implementation rescue rather than content access alone.</p>
+                </div>
+              </div>
             </div>
-            <div className="rounded-2xl border border-cyan-400/30 bg-cyan-500/10 p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">Best repeat-use path</p>
-              <h3 className="mt-3 text-xl font-bold text-white">Operator Access</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-200">
-                Best if you expect to use multiple reports, want rolling updates, and need the AI guide regularly.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Best team path</p>
-              <h3 className="mt-3 text-xl font-bold text-white">Assessment or submit-work</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-300">
-                Best if the real problem is routing, governance, ownership, or implementation rescue rather than content access alone.
-              </p>
+            <div className="rounded-2xl border border-white/10 bg-black/30 p-6 text-left">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300">Bundle signal</p>
+              <p className="mt-2 text-3xl font-bold text-white">$199 suggested bundle</p>
+              <p className="mt-2 text-sm text-slate-300">Includes all 3 current reports, best for teams standardizing how they build and evaluate agent systems.</p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link href="/assessment" className="inline-flex rounded-full bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-300">Request bundle access</Link>
+                <Link href="/reports" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Review reports</Link>
+              </div>
             </div>
           </div>
         </section>

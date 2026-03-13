@@ -57,7 +57,7 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
 
         if (res.status === 401) {
           setGate({
-            title: 'Sign in to use the AI assistant',
+            title: 'Free preview used — sign in to keep going',
             body: payload.error ?? 'Create an account or sign in to continue.',
             ctaHref: payload.upgradeUrl ?? '/auth/login',
             ctaLabel: 'Sign in',
@@ -110,7 +110,7 @@ export default function ReportChat({ reportSlug, placeholder }: ReportChatProps)
       <div className="flex-1 overflow-y-auto space-y-4 mb-4 max-h-80 pr-1">
         {messages.length === 0 && (
           <p className="text-sm text-gray-500 italic">
-            Ask anything about implementation, setup, or how to apply the concepts in this report.
+            Ask anything about implementation, setup, or how to apply the concepts in this report. Your first question is free — then we’ll ask you to sign in.
           </p>
         )}
         {messages.map((m, i) => (

@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
 import { createClient as createSupabaseServerClient } from '@/lib/supabase/server';
 import { checkCostGate, calculateModelCost } from '@/lib/cost-gate';
@@ -339,34 +339,49 @@ export async function POST(req: NextRequest) {
   const user = await getAuthenticatedUser();
   const db = getSupabaseAdmin();
 
-  if (!user) {
-    return new Response(
-      JSON.stringify({
-        error: 'Authentication required to use the AI assistant.',
+  let body: { messages: Array<{ role: string; content: string }>; reportSlug?: string; model?: string };
+  try {
+    body = await req.json();
+  } catch {
+    return new Response(JSON.stringify({ error: 'Invalid request.' }), { status: 400 });
+  }
+
+  const previewCookieUsed = req.cookies?.get?.('rareagent_preview_chat_used')?.value === '1';
+  const previewEligible = !user && !!body.reportSlug && !previewCookieUsed;
+  const requestedModel = body.model || DEFAULT_MODEL;
+
+  const userId = user?.id ?? null;
+  const userEmail = user?.email ?? '';
+  const tier = previewEligible ? 'free' : (user?.tier ?? 'free');
+  const tokensUsed = user?.tokensUsed ?? 0;
+
+  if (!user && !previewEligible) {
+    const error = body.reportSlug
+      ? 'Your free preview question has been used. Sign in to keep asking the AI assistant.'
+      : 'Authentication required to use the AI assistant.';
+
+    return NextResponse.json(
+      {
+        error,
         upgrade: true,
         upgradeUrl: '/auth/login',
-      }),
-      { status: 401, headers: { 'Content-Type': 'application/json' } },
+      },
+      { status: 401 },
     );
   }
 
-  const userId = user.id;
-  const userEmail = user.email;
-  const tier = user.tier;
-  const tokensUsed = user.tokensUsed;
-
-  if (tier === 'free') {
-    return new Response(
-      JSON.stringify({
-        error: 'The AI assistant is available on paid plans only.',
+  if (user && tier === 'free') {
+    return NextResponse.json(
+      {
+        error: 'The AI assistant is available on paid plans only after your free preview is used.',
         upgrade: true,
         upgradeUrl: '/pricing',
-      }),
-      { status: 403, headers: { 'Content-Type': 'application/json' } },
+      },
+      { status: 403 },
     );
   }
 
-  if (tokensUsed >= user.tokensBudget && user.tokensBudget > 0) {
+  if (user && tokensUsed >= user.tokensBudget && user.tokensBudget > 0) {
     return new Response(
       JSON.stringify({
         error: 'Monthly token budget reached for your current plan.',
@@ -378,38 +393,33 @@ export async function POST(req: NextRequest) {
   }
 
   // Cost gate
-  const gate = await checkCostGate({ userId, userEmail, ip, app: 'ai-guide', tier });
-  if (gate.blocked) {
-    return new Response(
-      JSON.stringify({
-        error: gate.error,
-        reason: gate.reason,
-        upgrade: true,
-        upgradeUrl: '/pricing',
-        usage: {
-          weeklySpend: `$${gate.weeklySpend.toFixed(4)}`,
-          weeklyLimit: `$${gate.limits.weeklyLimit.toFixed(2)}`,
-          dailyRequests: gate.dailyRequests,
-          weeklyRequests: gate.weeklyRequests,
-        },
-      }),
-      { status: 402, headers: { 'Content-Type': 'application/json' } },
-    );
-  }
-
-  let body: { messages: Array<{ role: string; content: string }>; reportSlug?: string; model?: string };
-  try {
-    body = await req.json();
-  } catch {
-    return new Response(JSON.stringify({ error: 'Invalid request.' }), { status: 400 });
+  if (user) {
+    const gate = await checkCostGate({ userId, userEmail, ip, app: 'ai-guide', tier });
+    if (gate.blocked) {
+      return new Response(
+        JSON.stringify({
+          error: gate.error,
+          reason: gate.reason,
+          upgrade: true,
+          upgradeUrl: '/pricing',
+          usage: {
+            weeklySpend: `$${gate.weeklySpend.toFixed(4)}`,
+            weeklyLimit: `$${gate.limits.weeklyLimit.toFixed(2)}`,
+            dailyRequests: gate.dailyRequests,
+            weeklyRequests: gate.weeklyRequests,
+          },
+        }),
+        { status: 402, headers: { 'Content-Type': 'application/json' } },
+      );
+    }
   }
 
   const { messages, reportSlug } = body;
   const systemPrompt = systemPrompts[reportSlug ?? 'default'] ?? systemPrompts.default;
 
   // Resolve model
-  const requestedModel = body.model || DEFAULT_MODEL;
-  const modelConfig = AVAILABLE_MODELS[requestedModel] ?? AVAILABLE_MODELS[DEFAULT_MODEL];
+  const resolvedModelKey = previewEligible ? DEFAULT_MODEL : requestedModel;
+  const modelConfig = AVAILABLE_MODELS[resolvedModelKey] ?? AVAILABLE_MODELS[DEFAULT_MODEL];
 
   // Tier access check
   if (!modelConfig.tiers.includes(tier)) {
@@ -469,7 +479,7 @@ export async function POST(req: NextRequest) {
 
       // Log usage after stream completes
       const usage = result.getUsage();
-      if (db && (usage.inputTokens > 0 || usage.outputTokens > 0)) {
+      if (db && user && (usage.inputTokens > 0 || usage.outputTokens > 0)) {
         const { providerCost, markupCost } = calculateModelCost(modelConfig.costKey, usage.inputTokens, usage.outputTokens);
         const totalTokens = usage.inputTokens + usage.outputTokens;
 
@@ -488,24 +498,35 @@ export async function POST(req: NextRequest) {
           })
           .then(() => {});
 
-        if (user) {
-          db.from('users')
-            .update({ tokens_used: tokensUsed + totalTokens })
-            .eq('id', user.id)
-            .then(() => {});
-        }
+        db.from('users')
+          .update({ tokens_used: tokensUsed + totalTokens })
+          .eq('id', user.id)
+          .then(() => {});
       }
 
       controller.close();
     },
   });
 
-  return new Response(wrappedStream, {
+  const response = new NextResponse(wrappedStream, {
     headers: {
       'Content-Type': 'text/plain; charset=utf-8',
       'X-Model': modelConfig.label,
+      ...(previewEligible ? { 'X-Preview-Question': 'used' } : {}),
     },
   });
+
+  if (previewEligible) {
+    response.cookies.set('rareagent_preview_chat_used', '1', {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: true,
+      maxAge: 60 * 60 * 24 * 30,
+      path: '/',
+    });
+  }
+
+  return response;
 }
 
 export function calculateCost(inputTokens: number, outputTokens: number) {

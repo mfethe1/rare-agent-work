@@ -101,7 +101,7 @@ export default function Home() {
       <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/80 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
-            <Link href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3 flex-shrink-0">
               <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-[0_0_30px_rgba(34,211,238,0.18)]">
                 <Image src="/logo-medallion.jpg" alt="Rare Agent Work logo" fill className="object-cover" sizes="40px" priority />
               </div>
@@ -111,21 +111,27 @@ export default function Home() {
               </div>
             </Link>
 
+            <div className="hidden items-center gap-6 md:flex">
+              <Link href="/reports" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Reports</Link>
+              <Link href="/news" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">News</Link>
+              <Link href="/assessment" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Consulting</Link>
+              <Link href="/docs" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Docs</Link>
+            </div>
+
             <div className="flex items-center gap-2 sm:gap-3">
-              <Link href="/start-here" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Start Here</Link>
-              <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News</Link>
-              <Link href="/docs" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Docs</Link>
-              <Link href="/reports" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
-              <Link href="/reports/choose" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Start Here</Link>
-              <Link href="/docs" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Docs</Link>
-              <Link href="/about" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">About</Link>
-              <Link href="/assessment" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
-              <Link href="/book-demo" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Book Strategy Call</Link>
+              <Link href="/reports" className="hidden text-sm font-medium text-slate-300 transition-colors hover:text-white sm:block md:hidden">Reports</Link>
+              <Link href="/news" className="text-sm font-medium text-slate-300 transition-colors hover:text-white sm:hidden">News</Link>
               <Link
-                href="/submit-work"
-                className="ml-1 rounded-full border border-cyan-300/40 bg-cyan-400/10 px-3 py-2 text-xs font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20 sm:px-4 sm:text-sm"
+                href="/reports"
+                className="rounded-full border border-cyan-300/40 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20"
               >
-                Submit Work
+                View Reports
+              </Link>
+              <Link
+                href="/assessment"
+                className="hidden rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-300 sm:inline-flex"
+              >
+                Work With Us
               </Link>
             </div>
           </div>
@@ -137,41 +143,49 @@ export default function Home() {
           <div>
             <div className="inline-flex items-center gap-3 rounded-full border border-cyan-300/20 bg-white/5 px-4 py-2 text-sm text-cyan-200 shadow-[0_0_30px_rgba(34,211,238,0.08)]">
               <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(103,232,249,0.9)]" />
-              Curated matching beta · human-reviewed
+              For engineering teams shipping production AI agents
             </div>
 
             <h1 className="mt-8 max-w-4xl text-5xl font-black tracking-tight text-white md:text-7xl">
-              Ship high-trust agent systems faster.
+              Research, consulting, and APIs for teams building serious agent systems.
             </h1>
 
             <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
-              Operator research, public API surfaces, and human-reviewed service paths for teams that need more than generic AI content.
-              Start with guidance, buy a concrete report, or bring a messy implementation problem for review.
+              Operator-grade reports, a live AI news desk, and direct consulting paths — without the generic AI content noise.
+              Buy a concrete playbook, bring a hard implementation problem, or integrate the public API into your stack.
             </p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-              <Link href="/submit-work" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 shadow-[0_16px_50px_rgba(34,211,238,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-cyan-300">
-                Submit Work (Beta)
+              <Link href="/reports" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 shadow-[0_16px_50px_rgba(34,211,238,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-cyan-300">
+                Browse Reports
               </Link>
-              <Link href="/news" className="inline-flex items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-400/10 px-7 py-4 text-base font-semibold text-cyan-100 transition-colors hover:bg-cyan-400/20">
-                Explore Live News
+              <Link href="/assessment" className="inline-flex items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-400/10 px-7 py-4 text-base font-semibold text-cyan-100 transition-colors hover:bg-cyan-400/20">
+                Talk to a Consultant
               </Link>
-              <Link href="/book-demo" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10">
-                Book Strategy Call
+              <Link href="/news" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10">
+                Live News →
               </Link>
             </div>
           </div>
 
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm shadow-[0_20px_70px_rgba(5,8,22,0.45)]">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">Proof layer</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">What you get</p>
             <div className="mt-5 grid gap-4">
-              {operatorProofStats.map((item) => (
-                <div key={item.label} className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{item.label}</p>
-                  <h2 className="mt-2 text-3xl font-semibold text-white">{item.value}</h2>
-                  <p className="mt-2 text-sm leading-7 text-slate-300">{item.detail}</p>
-                </div>
-              ))}
+              <div className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Implementation reports</p>
+                <h2 className="mt-2 text-3xl font-semibold text-white">3 playbooks</h2>
+                <p className="mt-2 text-sm leading-7 text-slate-300">Full preview before purchase. Cited sources, explicit risks, and action steps — not blog posts.</p>
+              </div>
+              <div className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Live consulting path</p>
+                <h2 className="mt-2 text-3xl font-semibold text-white">Human-reviewed</h2>
+                <p className="mt-2 text-sm leading-7 text-slate-300">Architecture review, implementation rescue, and strategy calls. No automated intake theater.</p>
+              </div>
+              <div className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Public API surfaces</p>
+                <h2 className="mt-2 text-3xl font-semibold text-white">5 endpoints</h2>
+                <p className="mt-2 text-sm leading-7 text-slate-300">OpenAPI-documented news, reports, models, NL query, and discovery manifests for agent integration.</p>
+              </div>
             </div>
           </div>
         </section>
@@ -202,7 +216,7 @@ export default function Home() {
           <div className="mb-10 flex items-end justify-between gap-6">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">What’s live now</p>
-              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">The business is already shipping — submit-work is additive.</h2>
+              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Every surface is live and available now.</h2>
             </div>
           </div>
           <div className="grid gap-6 lg:grid-cols-5">
@@ -246,11 +260,11 @@ export default function Home() {
 
         <section className="mt-20 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">In-flight proof</p>
-            <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Real surfaces, real intent, no fake marketplace theater.</h2>
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">How it works</p>
+            <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Transparent process. Visible methodology. No black boxes.</h2>
             <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
-              This site is already operating as a trust-first front door for research, consulting, and curated discovery.
-              The beta is narrowing and clarifying that motion, not inventing it from scratch.
+              Research, consulting, and API surfaces built for operators who need to trust what they&apos;re buying.
+              Citations are visible before purchase. Every consulting intake is human-reviewed. No opaque automation.
             </p>
           </div>
           <div className="grid gap-4">
@@ -376,7 +390,7 @@ export default function Home() {
             <div className="rounded-[1.75rem] border border-cyan-400/30 bg-cyan-500/10 p-7 backdrop-blur-sm">
               <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200">Engage</span>
               <p className="mt-1 text-3xl font-bold text-white">Scoped</p>
-              <p className="mt-3 text-sm leading-7 text-slate-200">Use assessment, strategy calls, or submit-work beta for high-trust implementation help.</p>
+              <p className="mt-3 text-sm leading-7 text-slate-200">Assessment, strategy calls, and curated specialist matching for high-trust implementation work.</p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link href="/assessment" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Open assessment</Link>
                 <Link href="/submit-work" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Submit work</Link>
@@ -409,17 +423,17 @@ export default function Home() {
         </section>
 
         <section className="mt-20 rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center backdrop-blur-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Final CTA</p>
-          <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Bring a real problem. Get a scoped next step in under 24 hours.</h2>
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Get started today</p>
+          <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Bring a real problem. Get a concrete next step within 24 hours.</h2>
           <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-slate-300">
-            Start with Submit Work for curated review, or book a strategy call if the problem needs direct discussion first.
+            Every engagement starts with a human review. Start with a strategy call if you want to talk it through first.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link href="/submit-work" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 hover:bg-cyan-300">
-              Submit Work (Beta)
+            <Link href="/assessment" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 hover:bg-cyan-300">
+              Start an Assessment
             </Link>
             <Link href="/book-demo" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white hover:bg-white/10">
-              Book Strategy Call
+              Book a Strategy Call
             </Link>
           </div>
         </section>

@@ -403,38 +403,50 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
         {/* Sentinel: sticky bar watches this element — placed after hero CTA */}
         <div id="hero-buy-sentinel" />
 
-        {/* ── Implications / Action steps / Risks ──────────────────── */}
+        {/* ── Stakes / Decision triggers / Failure costs ──────────────── */}
         <section className="mb-10 grid gap-5 sm:grid-cols-3">
+          {/* Panel 1: Business / org stakes — WHY this matters beyond methodology */}
           <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-6">
-            <h2 className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-slate-400">Implications</h2>
+            <div className="mb-4 flex items-center gap-2">
+              <span className="text-base">🏛️</span>
+              <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">What&apos;s at stake</h2>
+            </div>
             <ul className="space-y-3">
               {report.implications.map((implication) => (
                 <li key={implication} className="flex gap-3 text-sm leading-6 text-slate-300">
-                  <span className="mt-1 shrink-0 text-cyan-400">●</span>
+                  <span className="mt-1 shrink-0 text-cyan-400">→</span>
                   <span>{implication}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-6">
-            <h2 className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-slate-400">Action Steps</h2>
+          {/* Panel 2: Decision sequence — the ORDER in which to use this report */}
+          <div className={`rounded-2xl border ${c.border} bg-white/[0.025] p-6`}>
+            <div className="mb-4 flex items-center gap-2">
+              <span className="text-base">⚡</span>
+              <h2 className={`text-sm font-bold uppercase tracking-[0.18em] ${c.text}`}>Decision sequence</h2>
+            </div>
             <ul className="space-y-3">
-              {report.actionSteps.map((step) => (
+              {report.actionSteps.map((step, i) => (
                 <li key={step} className="flex gap-3 text-sm leading-6 text-slate-300">
-                  <span className={`mt-1 shrink-0 ${c.text}`}>●</span>
+                  <span className={`mt-0.5 shrink-0 font-mono text-[10px] font-black ${c.text}`}>{String(i + 1).padStart(2, '0')}</span>
                   <span>{step}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-6">
-            <h2 className="mb-4 text-sm font-bold uppercase tracking-[0.18em] text-slate-400">Risks & Failure Modes</h2>
+          {/* Panel 3: Failure cost — what happens at scale when this is skipped */}
+          <div className="rounded-2xl border border-rose-500/20 bg-white/[0.025] p-6">
+            <div className="mb-4 flex items-center gap-2">
+              <span className="text-base">⚠️</span>
+              <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-rose-400/80">Cost of skipping this</h2>
+            </div>
             <ul className="space-y-3">
               {report.risks.map((risk) => (
                 <li key={risk} className="flex gap-3 text-sm leading-6 text-slate-300">
-                  <span className="mt-1 shrink-0 text-rose-400">●</span>
+                  <span className="mt-1 shrink-0 text-rose-400">✕</span>
                   <span>{risk}</span>
                 </li>
               ))}

@@ -407,19 +407,19 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
     executiveSummary:
       'Most agent evaluation programs fail not because teams skip evaluation — they fail because the evaluation setup has three structural flaws that make the results untrustworthy before a single test is run: benchmarks built from best-case examples instead of production traffic distributions, judge models deployed without calibration against human raters, and sample sizes that are statistically incapable of detecting the differences they are being asked to measure. This report replaces all three with a defensible, reproducible protocol that enterprise teams can present under procurement scrutiny.',
     implications: [
-      'Evaluation rigor is now a procurement and liability differentiator: sophisticated buyers ask for calibration evidence, reproducibility records, and red team results — the teams that cannot produce them are losing enterprise deals to teams that can.',
-      'Uncalibrated LLM-as-judge scoring introduces systematic directional bias — length bias, self-similarity bias, confidence bias — that actively misprices model selection and architectural decisions at enterprise scale. The bias is invisible unless you run calibration, which means most teams are optimizing against a distorted signal without knowing it.',
-      'Underpowered evaluations (n < 100) cannot distinguish real quality differences from random variation. With n=50 — the most common evaluation set size — the minimum detectable difference at 80% power is 20 percentage points. Most published comparisons claiming a 5–10 point advantage are statistically indistinguishable from noise.',
+      'Enterprise procurement committees now routinely ask for calibration evidence, reproducibility records, and red team results as part of AI vendor qualification. Teams that cannot produce this evidence are losing deals — not on product quality, but on their inability to demonstrate process maturity.',
+      'Model selection and framework decisions made from uncalibrated evaluation pipelines carry false precision that compounds into architectural debt. The same judge-model bias that inflated your evaluation scores also made your framework comparison look more decisive than it was — meaning you may be operating on the wrong architecture for the wrong reasons.',
+      'The cost of establishing evaluation rigor before production is roughly 2–3 weeks of engineering time. The cost of retrofitting evaluation governance after a procurement challenge or a production incident ranges from 6 weeks to contract loss. The asymmetry is not subtle.'
     ],
     actionSteps: [
-      'Build evaluation sets by sampling real production traffic, stratified by task type and difficulty tier — not from curated best-case examples. The gap between curated benchmark performance and production performance averages 15–25 percentage points across all major agent deployments.',
-      'Calibrate your LLM-as-judge against two independent human raters on a 50–100 example sample before trusting any automated evaluation scores. Target Pearson r > 0.75. Below 0.65 means your evaluation prompt has a structural problem that will corrupt every decision downstream.',
-      'Complete the 12-item pre-production governance checklist with test evidence for each item before any agent system touches production — not as a compliance exercise, but because each item maps to a specific incident class that teams consistently discover the hard way.'
+      'Before running any evaluation: calculate your minimum detectable effect at your planned sample size. If n=50, you cannot distinguish 76% from 71%. If that gap matters to your decision, you need more data — and knowing this before you run saves weeks of false confidence.',
+      'Before presenting results to procurement or a board: assemble the reproducibility pack — model version pin, prompt hash, evaluation set manifest, judge calibration record. Teams that cannot produce this on first request lose enterprise deals that are otherwise won.',
+      'Before any agent system goes to production: run the 12-item governance checklist with test evidence for each item, not assertions. Items 4 (adversarial prompt test) and 8 (cost budget enforcement) are the two items that generate the most post-launch incidents when skipped.'
     ],
     risks: [
-      'Curated benchmark sets create false confidence and systematically hide the actual production error envelope — the gap between benchmark and production performance averages 15–25 percentage points.',
-      'Judge-model length bias rewards verbose, confident answers over correct, concise ones — without calibration this can actively select for hallucinated specificity.',
-      'Underpowered evaluations (n < 100 per condition) cannot detect differences smaller than ~15 percentage points with 80% power — most teams are making architectural decisions from noise.',
+      'Teams that rely on curated benchmark sets for model selection are often choosing the wrong model — the benchmark-to-production performance gap averages 15–25 percentage points. A model that won the internal benchmark may perform worse in production than the alternative you didn\'t ship.',
+      'Without model version pinning, a silent upstream model update can change your agent\'s behavior in ways that break your evaluation baseline and make production incidents hard to attribute. This has happened to multiple enterprise teams post-deployment.',
+      'Judge-model bias that goes uncorrected doesn\'t just produce wrong scores — it produces wrong decisions. Teams optimizing against a length-biased judge tend to ship agents that are verbose and confidently wrong, which is exactly the failure mode that surfaces in customer-facing quality complaints and procurement security reviews.'
     ],
     citations: [
       { label: 'ReAct: Synergizing Reasoning and Acting in Language Models (Yao et al., 2023)', url: 'https://arxiv.org/abs/2210.03629', accessedAt: '2026-03-14' },
@@ -453,32 +453,30 @@ Three failure modes dominate production evaluation programs:
 **Ignoring trajectory evaluation in favor of output evaluation.** The ReAct framework (Yao et al., 2023) demonstrated that the reasoning trace — not just the final answer — is the primary signal for evaluating agent quality. If your agent uses 14 tool calls to accomplish a task that should require 3, and produces the correct final output, most output-only evaluation systems will score it as a success. In production, that 14-call trajectory means higher latency, 4.7x higher cost, and an error surface 5x larger than the efficient path. Trajectory efficiency is a first-class metric.`,
       },
       {
-        heading: 'The Pre-Production Governance Checklist',
-        body: `These 12 items represent the failure modes that teams consistently discover in production rather than staging. Each item is mapped to the specific incident class it prevents — not compliance theater.
+        heading: 'Statistical Validity: The Evaluation Mistake That Makes Your Results Meaningless',
+        body: `Most production agent evaluations are statistically underpowered. This is not a minor methodological issue — it means the evaluations cannot detect real performance differences from random variation, and the architectural decisions made from them are based on noise.
 
-**1. Idempotency verification** — Every irreversible action (send, create, charge, post) has been tested for duplicate execution. What happens if the agent runs the same action twice? Maps to: bulk-send incident class.
+The core problem: teams run evaluations on 20, 30, or 50 examples because larger sets are expensive to create and review. They observe a difference — say, Model A scores 76% versus Model B's 71% — and make an architectural decision. What they don't calculate is whether this difference is statistically distinguishable from chance.
 
-**2. Rate limit handling** — All external API calls have retry logic with exponential backoff. The agent degrades gracefully when rate-limited rather than looping. Maps to: tool failure cascade class.
+**The minimum detectable effect at common evaluation set sizes (80% power, α = 0.05):**
 
-**3. Context window exhaustion test** — What happens in session 50, after the context is full? Has this been tested explicitly? Maps to: memory degradation and orchestration drift class.
+**n = 25:** Minimum detectable difference ≈ 28 percentage points. You cannot reliably distinguish 76% from 71%, or 80% from 60%, with 25 examples.
 
-**4. Adversarial prompt test** — Has the system been tested against prompt injection via user input, retrieved documents, and tool outputs? Maps to: MCP poisoning and indirect injection class.
+**n = 50:** Minimum detectable difference ≈ 20 percentage points. You can detect 76% vs. 56%, but not 76% vs. 66%.
 
-**5. Tool failure cascade test** — What happens when a tool the agent depends on returns an error? Does the agent recover gracefully or spin? Maps to: orchestration deadlock class.
+**n = 100:** Minimum detectable difference ≈ 14 percentage points. Sufficient for detecting differences of practical significance in most agent evaluation contexts.
 
-**6. Human escalation path** — Is there a defined and tested path for the agent to escalate to a human when it detects it is operating outside its competence boundary? Maps to: confidence boundary violation class.
+**n = 200:** Minimum detectable difference ≈ 10 percentage points. Recommended minimum for production evaluation sets where architectural decisions carry real cost and risk.
 
-**7. Audit log completeness** — Every agent action is logged with enough context to reconstruct the decision. Logs are stored outside the agent's own memory. Maps to: incident investigation and regulatory compliance class.
+**n = 500:** Minimum detectable difference ≈ 6 percentage points. Required for high-stakes model selection decisions where you need to detect subtle quality differences.
 
-**8. Cost budget enforcement** — There is a hard ceiling on token spend and tool call count per session, enforced at the infrastructure level, not the prompt level. Maps to: cost explosion class.
+**Why most teams evaluate with n < 50 and what to do about it:**
 
-**9. PII handling verification** — Any personally identifiable information that enters the agent's context has a documented handling policy and is not logged in plaintext. Maps to: data exposure and regulatory breach class.
+The cost of human labeling drives evaluation set sizes down. Teams annotate 30–50 examples, run their eval, get a number, and make a decision. The statistical reality is that they are making a decision from data that cannot distinguish 10-point differences from random chance.
 
-**10. Rollback procedure** — There is a documented and tested procedure to reverse any action the agent can take that has real-world consequences. Maps to: production incident recovery class.
+**The practical fix:** Stratified sampling over LLM-generated test cases, with human validation only on a random 20% subsample. This lets you build 500-example evaluation sets with the labeling cost of 100-example sets. The LLM generates plausible test cases across all task categories in your distribution; humans validate a random sample to verify the generated test cases are representative. The remaining 80% are used with LLM-as-judge scoring only, which is valid because the calibration procedure (Section 3) ensures your judge is aligned with human ratings.
 
-**11. Model version pinning** — The production deployment is pinned to a specific model version. Automatic model updates are disabled. Maps to: reproducibility failure and silent behavior drift class.
-
-**12. Evaluation pipeline coverage** — The automated eval pipeline covers at least 80% of the task categories present in production traffic. Maps to: evaluation blindspot class.`,
+**Confidence interval reporting:** Every evaluation result should be reported with a 95% confidence interval, not just a point estimate. '76% accuracy (95% CI: 69–83%)' is honest. '76% accuracy' from n=50 without a CI is misleading — the true value could be anywhere from 62% to 88%.`,
       },
       {
         heading: 'Building a Judge Model That You Can Actually Trust',
@@ -507,30 +505,32 @@ Three failure modes dominate production evaluation programs:
 **Step 5:** Re-calibrate every 90 days or after any judge model version change. Calibration from six months ago on a model that has since been updated is not calibration.`,
       },
       {
-        heading: 'Statistical Validity: The Evaluation Mistake That Makes Your Results Meaningless',
-        body: `Most production agent evaluations are statistically underpowered. This is not a minor methodological issue — it means the evaluations cannot detect real performance differences from random variation, and the architectural decisions made from them are based on noise.
+        heading: 'The Pre-Production Governance Checklist',
+        body: `These 12 items represent the failure modes that teams consistently discover in production rather than staging. Each item is mapped to the specific incident class it prevents — not compliance theater.
 
-The core problem: teams run evaluations on 20, 30, or 50 examples because larger sets are expensive to create and review. They observe a difference — say, Model A scores 76% versus Model B's 71% — and make an architectural decision. What they don't calculate is whether this difference is statistically distinguishable from chance.
+**1. Idempotency verification** — Every irreversible action (send, create, charge, post) has been tested for duplicate execution. What happens if the agent runs the same action twice? Maps to: bulk-send incident class.
 
-**The minimum detectable effect at common evaluation set sizes (80% power, α = 0.05):**
+**2. Rate limit handling** — All external API calls have retry logic with exponential backoff. The agent degrades gracefully when rate-limited rather than looping. Maps to: tool failure cascade class.
 
-**n = 25:** Minimum detectable difference ≈ 28 percentage points. You cannot reliably distinguish 76% from 71%, or 80% from 60%, with 25 examples.
+**3. Context window exhaustion test** — What happens in session 50, after the context is full? Has this been tested explicitly? Maps to: memory degradation and orchestration drift class.
 
-**n = 50:** Minimum detectable difference ≈ 20 percentage points. You can detect 76% vs. 56%, but not 76% vs. 66%.
+**4. Adversarial prompt test** — Has the system been tested against prompt injection via user input, retrieved documents, and tool outputs? Maps to: MCP poisoning and indirect injection class.
 
-**n = 100:** Minimum detectable difference ≈ 14 percentage points. Sufficient for detecting differences of practical significance in most agent evaluation contexts.
+**5. Tool failure cascade test** — What happens when a tool the agent depends on returns an error? Does the agent recover gracefully or spin? Maps to: orchestration deadlock class.
 
-**n = 200:** Minimum detectable difference ≈ 10 percentage points. Recommended minimum for production evaluation sets where architectural decisions carry real cost and risk.
+**6. Human escalation path** — Is there a defined and tested path for the agent to escalate to a human when it detects it is operating outside its competence boundary? Maps to: confidence boundary violation class.
 
-**n = 500:** Minimum detectable difference ≈ 6 percentage points. Required for high-stakes model selection decisions where you need to detect subtle quality differences.
+**7. Audit log completeness** — Every agent action is logged with enough context to reconstruct the decision. Logs are stored outside the agent's own memory. Maps to: incident investigation and regulatory compliance class.
 
-**Why most teams evaluate with n < 50 and what to do about it:**
+**8. Cost budget enforcement** — There is a hard ceiling on token spend and tool call count per session, enforced at the infrastructure level, not the prompt level. Maps to: cost explosion class.
 
-The cost of human labeling drives evaluation set sizes down. Teams annotate 30–50 examples, run their eval, get a number, and make a decision. The statistical reality is that they are making a decision from data that cannot distinguish 10-point differences from random chance.
+**9. PII handling verification** — Any personally identifiable information that enters the agent's context has a documented handling policy and is not logged in plaintext. Maps to: data exposure and regulatory breach class.
 
-**The practical fix:** Stratified sampling over LLM-generated test cases, with human validation only on a random 20% subsample. This lets you build 500-example evaluation sets with the labeling cost of 100-example sets. The LLM generates plausible test cases across all task categories in your distribution; humans validate a random sample to verify the generated test cases are representative. The remaining 80% are used with LLM-as-judge scoring only, which is valid because the calibration procedure (Section 3) ensures your judge is aligned with human ratings.
+**10. Rollback procedure** — There is a documented and tested procedure to reverse any action the agent can take that has real-world consequences. Maps to: production incident recovery class.
 
-**Confidence interval reporting:** Every evaluation result should be reported with a 95% confidence interval, not just a point estimate. '76% accuracy (95% CI: 69–83%)' is honest. '76% accuracy' from n=50 without a CI is misleading — the true value could be anywhere from 62% to 88%.`,
+**11. Model version pinning** — The production deployment is pinned to a specific model version. Automatic model updates are disabled. Maps to: reproducibility failure and silent behavior drift class.
+
+**12. Evaluation pipeline coverage** — The automated eval pipeline covers at least 80% of the task categories present in production traffic. Maps to: evaluation blindspot class.`,
       },
       {
         heading: 'Red Team Protocol: Finding the Failures Before Production Does',
@@ -611,12 +611,12 @@ The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certificat
     ],
     excerptHooks: [
       'Why most agent evaluations are unreliable: three failure modes, grounded in research (ReAct, SWE-bench), that explain the 15–25 point benchmark-to-production gap.',
+      'The MDE table: minimum detectable effect at n=25, 50, 100, 200, 500 — and why most architectural decisions are being made from statistical noise.',
       'The pre-production governance checklist: 12 items, each mapped to the specific incident class it prevents — not compliance boxes.',
-      'Judge model bias taxonomy: four systematic biases that corrupt your eval pipeline, with exact rubric corrections for each.',
-      'Statistical validity: the minimum detectable effect at n=25, 50, 100, 200, 500 — and why most architectural decisions are being made from noise.',
+      'Judge model bias taxonomy: four systematic biases that corrupt your eval pipeline, with the exact 5-step calibration process and rubric corrections.',
       'Red team protocol: 3-day adversarial exercise design covering 8 attack surfaces, including indirect injection via retrieved content.',
-      'The real cost architecture: per-session token budget controls, tool call compounding, and why a model routing layer cuts per-session costs 40-60% versus uniform frontier model use.',
-      'How enterprise procurement actually evaluates agent systems: the three gates most teams fail -- reproducibility audit, incident record, and governance control evidence -- and the exact pack that moves fastest.',
+      'The real cost architecture: per-session token budget controls, tool call compounding, and why a model routing layer cuts costs 40–60% versus uniform frontier model use.',
+      'How enterprise procurement actually evaluates agent systems: the three gates most teams fail — reproducibility audit, incident record, and governance control evidence.',
     ],
     color: 'purple',
   },

@@ -188,7 +188,7 @@ export default function PricingPage() {
             <div className="rounded-2xl border border-white/10 bg-black/30 p-6 text-left">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300">Bundle signal</p>
               <p className="mt-2 text-3xl font-bold text-white">$199 suggested bundle</p>
-              <p className="mt-2 text-sm text-slate-300">Includes all 3 current reports, best for teams standardizing how they build and evaluate agent systems.</p>
+              <p className="mt-2 text-sm text-slate-300">Includes all 5 current reports, best for teams standardizing how they build and evaluate agent systems.</p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link href="/assessment" className="inline-flex rounded-full bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-emerald-300">Request bundle access</Link>
                 <Link href="/reports" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Review reports</Link>

@@ -95,22 +95,21 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
   const paragraphs = body.split('\n\n').filter(p => p.trim().length > 0);
 
   return (
-    <div className="space-y-3 text-sm leading-7 text-slate-300">
+    <div className="space-y-4 text-sm leading-7 text-slate-300">
       {paragraphs.map((para, i) => {
         const trimmed = para.trim();
 
         // Numbered list item: starts with digit + dot (no bold lead)
         // e.g. "1. plain text" or "1. text with **bold** inside"
         // Must check BEFORE leadBoldMatch since "1. **text**" would otherwise match leadBoldMatch.
-        // Use anchored single-line match (no s flag needed — items are single paragraphs).
         const numberedMatch = trimmed.match(/^(\d+\.)(\s+)(.+)$/);
         if (numberedMatch) {
           const num = numberedMatch[1];
           const rest = numberedMatch[3];
           return (
-            <div key={i} className={`flex gap-3 rounded-xl border ${borderClass} bg-black/20 px-4 py-3`}>
+            <div key={i} className={`flex gap-3 rounded-xl border ${borderClass} bg-black/20 px-4 py-3.5`}>
               <span className={`shrink-0 font-mono text-xs font-black mt-0.5 ${colorClass}`}>{num}</span>
-              <span>{renderInlineBold(rest, colorClass)}</span>
+              <span className="leading-6">{renderInlineBold(rest, colorClass)}</span>
             </div>
           );
         }
@@ -120,15 +119,13 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
         const standaloneBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*\s*$/);
         if (standaloneBoldMatch) {
           return (
-            <p key={i} className={`mt-3 text-xs font-bold uppercase tracking-[0.18em] ${colorClass}`}>
+            <p key={i} className={`mt-5 mb-0.5 text-[11px] font-bold uppercase tracking-[0.2em] ${colorClass}`}>
               {standaloneBoldMatch[1]}
             </p>
           );
         }
 
         // Paragraph that STARTS with **Bold term** — possibly a numbered checklist item
-        // e.g. "**1. Source review** — Have you reviewed..." or "**Zapier** is the right choice..."
-        // leadBoldMatch[1] = bold term (may include number), leadBoldMatch[2] = rest of content
         const leadBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*(.+)$/s);
         if (leadBoldMatch) {
           const boldTerm = leadBoldMatch[1];
@@ -136,7 +133,6 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
           // Detect if bold term starts with a number (e.g. "1. Source review" or "12. Eval coverage")
           const numericLead = boldTerm.match(/^(\d+)\.\s+(.+)$/);
           if (numericLead) {
-            // Numbered checklist item — render with a prominent number badge + label
             return (
               <div key={i} className={`flex gap-3 rounded-xl border ${borderClass} bg-black/20 px-4 py-3.5`}>
                 <span className={`shrink-0 rounded-md border ${borderClass} bg-black/40 px-1.5 py-0.5 font-mono text-[10px] font-black leading-none mt-0.5 ${colorClass}`}>
@@ -149,10 +145,10 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
               </div>
             );
           }
-          // Non-numbered lead-bold: render as left accent bar callout
+          // Non-numbered lead-bold: render as left accent bar callout with improved spacing
           return (
-            <div key={i} className={`border-l-2 ${borderClass} pl-4`}>
-              <p>
+            <div key={i} className={`border-l-2 ${borderClass} pl-4 py-1`}>
+              <p className="leading-6">
                 <strong className="font-semibold text-white">{boldTerm}</strong>
                 {renderInlineBold(rest, colorClass)}
               </p>
@@ -160,8 +156,8 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
           );
         }
 
-        // Plain paragraph — apply inline bold rendering for any **text** within it
-        return <p key={i}>{renderInlineBold(trimmed, colorClass)}</p>;
+        // Plain paragraph
+        return <p key={i} className="leading-7">{renderInlineBold(trimmed, colorClass)}</p>;
       })}
     </div>
   );
@@ -324,40 +320,28 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               <p className={`mt-3 text-xl font-medium ${c.text}`}>{report.subtitle}</p>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">{report.valueprop}</p>
 
-              {/* === SHARPEST INSIGHT === free insight callout that makes the sale */}
+              {/* === WHAT YOU WALK AWAY WITH — sharp takeaways, no summary stack === */}
+              <div className="mt-6 rounded-xl border border-white/10 bg-black/20 p-5">
+                <p className={`mb-3 text-[10px] font-bold uppercase tracking-[0.22em] ${c.text}`}>What this report gives you</p>
+                <ul className="space-y-2.5">
+                  {report.keyTakeaways.map((kt, idx) => (
+                    <li key={kt} className="flex items-start gap-2.5 text-sm leading-6 text-slate-200">
+                      <span className={`mt-0.5 shrink-0 font-mono text-[10px] font-black ${c.text}`}>{String(idx + 1).padStart(2, '0')}</span>
+                      {kt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* === SHARPEST INSIGHT — the one finding given away free === */}
               {report.sharpestInsight && (
-                <div className={`mt-6 rounded-xl border-l-4 ${c.border} bg-black/30 p-5`}>
+                <div className={`mt-4 rounded-xl border-l-4 ${c.border} bg-black/30 p-5`}>
                   <p className={`mb-2 text-[10px] font-bold uppercase tracking-[0.22em] ${c.text}`}>
-                    The finding you need to know — free
+                    The finding that makes this worth buying — free
                   </p>
                   <p className="text-sm leading-7 text-slate-200 italic">&ldquo;{report.sharpestInsight}&rdquo;</p>
                 </div>
               )}
-
-              {/* === EXECUTIVE SUMMARY === */}
-              <div className="mt-5 rounded-xl border border-white/10 bg-black/25 p-5">
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">Executive Summary</p>
-                <p className="text-sm leading-7 text-slate-200">{report.executiveSummary}</p>
-              </div>
-
-              {/* === WHAT YOU WALK AWAY WITH === concise key takeaways */}
-              <div className="mt-5 rounded-xl border border-white/10 bg-black/20 p-5">
-                <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">What you walk away with</p>
-                <ul className="space-y-2">
-                  {report.keyTakeaways.slice(0, 3).map((kt) => (
-                    <li key={kt} className="flex items-start gap-2.5 text-xs leading-5 text-slate-300">
-                      <span className={`mt-0.5 shrink-0 text-[9px] font-black ${c.text}`}>▸</span>
-                      {kt}
-                    </li>
-                  ))}
-                  {report.keyTakeaways.length > 3 && (
-                    <li className="flex items-start gap-2.5 text-xs leading-5 text-slate-500 italic">
-                      <span className="mt-0.5 shrink-0 text-[9px] font-black text-slate-600">▸</span>
-                      +{report.keyTakeaways.length - 3} more — visible after purchase
-                    </li>
-                  )}
-                </ul>
-              </div>
               {/* Primary CTA block — the sentinel for StickyBuyBar lives right below this */}
               <div className="mt-7 space-y-3">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -592,10 +576,10 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                       <div className={`mt-6 flex flex-col gap-3 rounded-2xl border ${c.border} bg-black/30 p-5 sm:flex-row sm:items-center sm:justify-between`}>
                         <div>
                           <p className={`text-xs font-bold uppercase tracking-wider ${c.text}`}>
-                            {report.excerpt.length - 2} more section{report.excerpt.length - 2 !== 1 ? 's' : ''} locked
+                            {report.excerpt.length - 2} more section{report.excerpt.length - 2 !== 1 ? 's' : ''} in this report
                           </p>
                           <p className="mt-0.5 text-xs text-slate-400">
-                            Buy once. Everything unlocks instantly.
+                            The preview shows the writing quality. The full report delivers the complete playbook.
                           </p>
                         </div>
                         <BuyButton
@@ -618,10 +602,10 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
         <section className="mb-10">
           <div className={`rounded-2xl border ${c.border} bg-gradient-to-br ${c.surface} p-7 text-center`}
             style={{ boxShadow: `0 0 60px ${c.glow}` }}>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">You’ve seen the quality</p>
-            <h2 className="mt-2 text-2xl font-bold text-white">The rest of the report is locked above. Unlock it now.</h2>
+            <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${c.text}`}>You&apos;ve read the preview</p>
+            <h2 className="mt-2 text-2xl font-bold text-white">The remaining sections go significantly deeper.</h2>
             <p className="mx-auto mt-2 max-w-lg text-sm text-slate-400">
-              One-time purchase. Instant access. Full report delivered immediately — no subscription, no waiting.
+              One-time purchase. Full report delivered immediately — no subscription, no expiry.
             </p>
             <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <BuyButton

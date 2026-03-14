@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) {
     return NextResponse.json(
-      { error: 'Consulting email is not configured yet. Add RESEND_API_KEY in production.' },
+      { error: 'Consulting intake is temporarily unavailable. Please email hello@rareagent.work directly.' },
       { status: 503 },
     );
   }
@@ -93,7 +93,8 @@ export async function POST(req: NextRequest) {
 
   if (!response.ok) {
     const details = await response.text();
-    return NextResponse.json({ error: 'Email send failed.', details: details.slice(0, 500) }, { status: 502 });
+    console.error('[Consulting] Resend API error:', response.status, details.slice(0, 500));
+    return NextResponse.json({ error: 'Unable to send your request right now. Please try again or email hello@rareagent.work directly.' }, { status: 502 });
   }
 
   return NextResponse.json({ ok: true });

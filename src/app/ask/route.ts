@@ -300,22 +300,7 @@ function buildFallbackResponse(query: string): NLWebResponse {
   };
 }
 
-// ── Rate limiting (simple in-memory) ──
-
-const rateLimits = new Map<string, { count: number; resetAt: number }>();
-const RATE_LIMIT = 60; // requests per minute
-const RATE_WINDOW = 60_000; // 1 minute
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimits.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimits.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
-    return true;
-  }
-  entry.count++;
-  return entry.count <= RATE_LIMIT;
-}
+// Rate limiting is handled globally by src/middleware.ts (Redis-backed, "llm" tier)
 
 // ── Handler ──
 
@@ -347,15 +332,6 @@ export async function GET(request: NextRequest) {
           'Access-Control-Allow-Origin': '*',
         },
       },
-    );
-  }
-
-  // Rate limit
-  const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json(
-      { error: 'Rate limit exceeded. Max 60 requests per minute.', retryAfter: 60 },
-      { status: 429, headers: { 'Retry-After': '60' } },
     );
   }
 

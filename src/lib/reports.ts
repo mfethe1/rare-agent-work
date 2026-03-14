@@ -153,6 +153,24 @@ The agent produces a draft output and sends it to the responsible human for revi
 
 **The weekly maintenance ritual**: Every Monday morning, spend 10 minutes reviewing last week's run history. Look for: failed runs, unusual volume spikes, and any run that took 3x longer than average. These are the leading indicators of the failure modes that will become outages if you ignore them. Ten minutes of review now versus four hours of incident response later is the entire economics of sustainable automation.`,
       },
+      {
+        heading: 'The Real Week-One Failure Mode Nobody Warns You About',
+        body: `Every guide covers setup. Nobody covers the 72-hour window after your workflow goes live, which is when 80% of first deployments break. Here is the failure pattern, exactly as it happens.
+
+Day one, your workflow runs 20 times without incident. You stop watching. Day two, it runs 340 times because someone imported a CSV. You don't know this yet. Day three, you get an angry Slack message from a customer who received six identical emails. The webhook fired on every row of the import. The automation "worked" — it just did the wrong thing at scale, silently, while you were asleep.
+
+This is not a rare edge case. It is the most common first incident for new operators, and it has a fully preventable root cause: **no volume cap, no deduplication key, and no rate-limit awareness**.
+
+**The three mandatory safeguards that most guides skip:**
+
+**Safeguard 1: Hard monthly execution cap at 120% of expected volume.** Set this before you go live. If you expect 500 runs per month, set a cap at 600. When the cap triggers, route the overflow to a review queue rather than silently dropping or silently executing. The number of teams that learn their Zapier pricing tier this way is not small.
+
+**Safeguard 2: Deduplication key on every trigger that processes records.** If your trigger fires on 'new row in spreadsheet' or 'new item in CRM', define a unique key per record and skip execution if that key has already been processed in the last 24 hours. This one safeguard prevents the bulk-import incident class almost completely.
+
+**Safeguard 3: Separate test and production trigger sources.** Never use a production spreadsheet, production CRM view, or production inbox as your test trigger source. Create a dedicated test environment. Teams that test with production data have approximately 100% rate of at least one accidental production action during development.
+
+The pattern that sustainable operators use: run every new workflow in a shadow mode for 48 hours first. Shadow mode means the workflow executes all steps and logs the intended actions — but does not actually perform irreversible actions until a human reviews the log and confirms the shadow runs look correct. Forty-eight hours of shadow running surfaces edge cases that 100 synthetic test cases miss.`,
+      },
     ],
     chatPlaceholder: 'Which platform should I use for my use case? How do I set up approval gates?',
     color: 'blue',
@@ -265,6 +283,28 @@ The agent produces a draft output and sends it to the responsible human for revi
 4. **Do you have separable quality-control requirements?** If "generation" and "review" are distinct skill requirements in your domain — as they are in legal review, medical documentation, financial analysis — a dedicated reviewer role adds real value.
 
 5. **Can you afford the operational complexity?** Multi-agent systems require observability infrastructure, trace logging, and failure-mode monitoring that single-agent systems do not. If you cannot invest in that infrastructure, the added complexity creates more risk than value.`, 
+      },
+      {
+        heading: 'The Migration Decision: A Framework for Knowing When You Are Actually Ready',
+        body: `Most teams ask "how do I build a multi-agent system?" when the real question is "am I ready to operate one?" These are different questions. The first is answered by documentation. The second requires honest assessment of your team's current capabilities.
+
+Here is the migration readiness framework that prevents the most common class of multi-agent failure: building the architecture before the team can operate it.
+
+**The capability prerequisites — in the order you need them:**
+
+**Prerequisite 1: You have observability on your current single-agent system.** Before adding coordination complexity, you need to be able to see what your agent is doing. This means: structured logs for every tool call, session recording for debugging, and some form of cost tracking per session. If you cannot replay a session and understand exactly what happened and why, you are not ready to debug a multi-agent system where the same mystery now has three possible sources.
+
+**Prerequisite 2: Your single agent has a documented failure mode inventory.** Multi-agent architecture does not eliminate your current failure modes — it relocates them. If you don't know where your single agent currently fails, you won't know whether a failure in your multi-agent system is caused by the orchestrator, the executor, the reviewer, or the coordination layer itself. Document your current failure modes before adding complexity.
+
+**Prerequisite 3: You have at least one person who can read the framework logs.** This sounds obvious. In practice, many teams build LangGraph systems with nobody who can interpret the state graph trace when something goes wrong at 2am. The operational question is not whether someone can build the system — it is whether someone can debug it under pressure with incomplete information.
+
+**The migration sequencing that works:**
+
+Phase 1 (week 1–2): Extract the reviewer role first. Keep your existing single agent as the executor, but add a dedicated reviewer step that evaluates its outputs against defined criteria. This gives you the quality-improvement benefit of role separation at the lowest possible coordination cost.
+
+Phase 2 (week 3–4): Add the planner only if Phase 1 reveals that ambiguous task decomposition is causing reviewer failures. If the reviewer is mostly passing outputs, your current agent's planning is already adequate.
+
+Phase 3 (week 5+): Add parallel execution only after the planner-executor-reviewer loop is stable and you have explicit tasks that benefit from parallel processing. Parallel execution is the highest-complexity addition and should come last, not first.`,
       },
     ],
     chatPlaceholder: 'Which framework should I use? How do I implement memory for my agents?',
@@ -396,6 +436,20 @@ Three failure modes dominate production evaluation programs:
 **The right cost architecture has three controls:** (1) Per-session token budget enforced at the gateway layer, not the prompt layer. Prompts can be overridden by the model; gateway limits cannot. (2) Tool call rate limiting per agent role, with automatic escalation to human review when a session exceeds expected tool usage by 3x. (3) Daily cost alerts at 50%, 80%, and 100% of budget, routed to the team member responsible for the agent — not a shared operations channel where alerts are ignored.
 
 **Model selection is a cost architecture decision, not a quality decision.** The right model for a given task is the least capable model that reliably achieves the required quality level. Running GPT-4o or Claude Opus on tasks that Claude Haiku or GPT-4o-mini can handle equally well is not a quality investment — it is a cost leak. Build a model routing layer early. Route simple classification and extraction tasks to cheaper models. Reserve frontier models for tasks that genuinely require their capabilities.`,
+      },
+      {
+        heading: 'How Procurement Teams Actually Evaluate Agent Systems — And What Most Vendors Miss',
+        body: `Enterprise procurement of AI agent systems is fundamentally different from traditional software procurement, and most vendors — and most internal teams presenting to procurement — do not understand how to present the right evidence. Here is the evaluation framework that sophisticated enterprise buyers are actually using in 2026.
+
+The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certification, done. The new model has three additional gates that most teams are not prepared for.
+
+**Gate 1: Reproducibility audit.** Enterprise procurement teams are now asking: "Can you reproduce your benchmark results?" This means: given the same inputs, the same model version, the same prompt, and the same evaluation criteria, does your system produce the same outputs with the same quality scores? Most teams cannot answer yes to this question because they did not instrument for reproducibility from the start. The fix is the reproducibility reporting standard described in this brief — but it must be implemented before you enter procurement, not after.
+
+**Gate 2: Incident record.** Sophisticated buyers are asking: "What has gone wrong in production, and how did you handle it?" This is not a trick question to disqualify vendors — it is a maturity signal. A team that can describe three specific production incidents, the root cause of each, the remediation applied, and the governance change that followed is demonstrably more trustworthy than a team that claims zero incidents. Zero incidents usually means insufficient monitoring, not perfect execution.
+
+**Gate 3: Governance control evidence.** The 12-item pre-production governance checklist in this report was designed specifically to produce the evidence that procurement needs. Each checklist item maps to a procurement control: idempotency → audit trail, rate limit handling → reliability SLA, adversarial prompt testing → security posture. When your team can produce a completed checklist with evidence, procurement reviews move 3x faster.
+
+**The internal presentation mistake that kills enterprise deals:** Teams presenting AI agent systems to procurement committees almost universally lead with capabilities and accuracy metrics. Procurement committees almost universally care first about liability, control, and reversibility. The sequence that converts: (1) what can go wrong and what is the blast radius, (2) what controls prevent or contain each failure mode, (3) what is the evidence that these controls work, (4) then — and only then — what the system can do when it works correctly.`,
       },
     ],
     chatPlaceholder: 'How do I calibrate LLM-as-judge? What metrics should I track in production?',
@@ -552,6 +606,40 @@ Define baseline expected behavior for each agent deployment: expected tool call 
 9. **Incident response plan** — If this server is compromised or begins behaving maliciously, what is the isolation and remediation procedure? Is it documented and tested?
 
 10. **Re-vetting schedule** — When was this server last vetted? Is there a calendar reminder to re-vet it within 90 days and after any major update?`,
+      },
+      {
+        heading: 'When You Suspect an MCP Server Is Behaving Maliciously: A Step-by-Step Response Protocol',
+        body: `The question is not whether you will face a potential MCP security incident. The question is whether you will have a response protocol in place when it happens, or whether you will be improvising under pressure with users actively using the system.
+
+This is the incident response playbook for MCP-connected agent systems. Run it in sequence. Do not skip steps to move faster — skipping steps is how you miss the scope of an attack.
+
+**Phase 1: Detection and Initial Assessment (minutes 0–15)**
+
+Step 1: Identify the anomaly signal. Common signals: tool call patterns you cannot explain, unexpected external requests in your network logs, user reports of agent behavior that doesn't match the system's purpose, cost spikes inconsistent with session volume. The signal does not need to be certain — it needs to be unexplained.
+
+Step 2: Immediately disable new session creation for the affected agent deployment. Do not tear down active sessions yet — you need the logs. Do not alert users yet — you need to assess scope first. Do not rotate credentials yet — you may need them to reconstruct the attack chain.
+
+Step 3: Pull the last 100 sessions' tool call logs. You are looking for: unexpected tool call sequences, calls to external endpoints not in your approved list, unusually high tool call counts in individual sessions, and sessions that accessed sensitive context they should not have needed.
+
+**Phase 2: Isolation (minutes 15–60)**
+
+Step 4: Identify which MCP server or servers are implicated. Look for: the server that was first called in anomalous sessions, tool descriptions that contain text addressed to the AI model, any server that was updated recently without a corresponding re-vetting review.
+
+Step 5: Disable the implicated server at the gateway layer. Not at the prompt layer. Not by asking the agent to avoid it. Hard disable at the infrastructure level. If you cannot do this without taking down the entire deployment, you have a gap in your architecture that this incident is now surfacing.
+
+Step 6: Assess the blast radius. For each anomalous session: what data did the agent have access to, what actions did the agent take, and what external systems were affected? Build a session inventory before you start remediation.
+
+**Phase 3: Remediation and Recovery (hours 1–48)**
+
+Step 7: If user data was accessed beyond normal scope, initiate your data breach protocol. This is not optional. Know before the incident whether your deployment's scope of data access constitutes a reportable breach under the regulations relevant to your industry and jurisdiction.
+
+Step 8: Audit every other MCP server connected to the affected deployment. Treat this as an opportunity to run your full security checklist, not just the implicated server.
+
+Step 9: Before re-enabling the deployment, implement the structural defense that would have detected or blocked this attack. Do not reopen the same vulnerability.
+
+**Phase 4: Documentation (mandatory)**
+
+Step 10: Document exactly what happened, what the attack vector was, what the impact was, and what governance change you are implementing as a result. This document is your evidence pack if you face external scrutiny, and it is the input to your next security review cycle.`,
       },
     ],
     chatPlaceholder: 'How do I audit MCP tool descriptions? What are the signs of tool poisoning?',

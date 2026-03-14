@@ -5,7 +5,7 @@ import { getAllReports } from "@/lib/reports";
 export const metadata = {
   title: "Implementation Reports | Rare Agent Work",
   description:
-    "Operator-grade AI agent implementation playbooks. Full preview before purchase — methodology, citations, risks, and sample content included.",
+    "Operator-grade AI agent implementation playbooks. Full preview before purchase — methodology, citations, risks, and sample content included. Includes new MCP Security report.",
 };
 
 const colorAccent: Record<string, { border: string; badge: string; btn: string; step: string }> = {
@@ -62,6 +62,33 @@ export default function ReportsPage() {
             </span>
           ))}
         </div>
+
+        {/* New report callout */}
+        {(() => {
+          const newest = reports.find((r) => r.isNew);
+          if (!newest) return null;
+          const c = colorAccent[newest.color] ?? colorAccent.red;
+          return (
+            <div className="mt-8 rounded-2xl border border-red-500/30 bg-red-500/[0.06] p-5">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-4">
+                  <span className="mt-0.5 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white shrink-0">New</span>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red-300">Just published</p>
+                    <h2 className="mt-1 text-lg font-bold text-white">{newest.title}</h2>
+                    <p className="mt-1 text-sm text-slate-400">{newest.valueprop}</p>
+                  </div>
+                </div>
+                <div className="flex shrink-0 flex-wrap gap-3">
+                  <a href={`/reports/${newest.slug}`} className="inline-flex rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">
+                    Read free preview
+                  </a>
+                  <span className={`inline-flex items-center rounded-full px-3 py-2 text-xs font-bold ${c.badge}`}>{newest.price}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Report grid */}
         <section className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">

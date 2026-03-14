@@ -4,6 +4,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getUpstashClient, getBullQueue } from '@/lib/queue';
+import { safeErrorBody } from '@/lib/api-errors';
 
 export const runtime = 'nodejs';
 
@@ -89,9 +90,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to get stats';
-    console.error('[API] Job stats failed:', message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(safeErrorBody(error, 'queue', 'GET /api/jobs/stats'), { status: 500 });
   }
 }
 

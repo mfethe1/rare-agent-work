@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createServiceClient } from '@supabase/supabase-js';
+import { safeErrorBody } from '@/lib/api-errors';
 
 const MAX_AGE_DAYS = 14;
 
@@ -71,7 +72,7 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(safeErrorBody(error, 'db', 'POST /api/articles'), { status: 500 });
   }
 
   return NextResponse.json({ success: true, article: data });

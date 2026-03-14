@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { safeErrorBody } from '@/lib/api-errors';
 
 function getAdmin() {
   return createClient(
@@ -16,7 +17,7 @@ export async function GET() {
     .select('*')
     .order('created_at', { ascending: false });
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json(safeErrorBody(error, 'db', 'GET /api/drafts'), { status: 500 });
   return NextResponse.json(data);
 }
 
@@ -51,7 +52,7 @@ export async function POST(request: NextRequest) {
     .select()
     .single();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json(safeErrorBody(error, 'db', 'POST /api/drafts'), { status: 500 });
   return NextResponse.json(data);
 }
 
@@ -103,6 +104,6 @@ export async function PATCH(request: NextRequest) {
     .select()
     .single();
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  if (error) return NextResponse.json(safeErrorBody(error, 'db', 'PATCH /api/drafts'), { status: 500 });
   return NextResponse.json(data);
 }

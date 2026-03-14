@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 import { enqueueJob } from '@/lib/queue';
+import { sanitizeError } from '@/lib/api-errors';
 import type {
   StripeCheckoutJobPayload,
   StripeInvoiceJobPayload,
@@ -64,8 +65,8 @@ export async function POST(req: Request) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, secret);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Invalid signature';
-    return NextResponse.json({ error: message }, { status: 400 });
+    sanitizeError(error, 'webhook', 'Stripe signature verification');
+    return NextResponse.json({ error: 'Invalid webhook signature.' }, { status: 400 });
   }
 
   const supabase = getAdminSupabase();
@@ -259,8 +260,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ received: true });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Webhook handling failed';
-    console.error('Webhook error:', message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    sanitizeError(error, 'webhook', `Stripe event ${event.type}`);
+    return NextResponse.json({ error: 'Webhook processing encountered an error.' }, { status: 500 });
   }
 }

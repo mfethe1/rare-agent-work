@@ -206,8 +206,8 @@ function streamAnthropic(
           }
         }
       } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Stream error';
-        controller.enqueue(new TextEncoder().encode(`\n\n[Error: ${msg}]`));
+        console.error('[Chat] Anthropic stream error:', err instanceof Error ? err.message : err);
+        controller.enqueue(new TextEncoder().encode(`\n\n[The AI response was interrupted. Please try again.]`));
       }
       controller.close();
     },
@@ -246,7 +246,8 @@ function streamOpenAI(
 
         if (!response.ok || !response.body) {
           const errText = await response.text();
-          controller.enqueue(new TextEncoder().encode(`[Error: OpenAI ${response.status} — ${errText.slice(0, 200)}]`));
+          console.error('[Chat] OpenAI API error:', response.status, errText.slice(0, 500));
+          controller.enqueue(new TextEncoder().encode(`[The AI provider returned an error. Please try a different model or retry.]`));
           controller.close();
           return;
         }
@@ -277,8 +278,8 @@ function streamOpenAI(
           }
         }
       } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Stream error';
-        controller.enqueue(new TextEncoder().encode(`\n\n[Error: ${msg}]`));
+        console.error('[Chat] OpenAI stream error:', err instanceof Error ? err.message : err);
+        controller.enqueue(new TextEncoder().encode(`\n\n[The AI response was interrupted. Please try again.]`));
       }
       controller.close();
     },
@@ -321,7 +322,8 @@ function streamGemini(
 
         if (!response.ok || !response.body) {
           const errText = await response.text();
-          controller.enqueue(new TextEncoder().encode(`[Error: Gemini ${response.status} — ${errText.slice(0, 200)}]`));
+          console.error('[Chat] Gemini API error:', response.status, errText.slice(0, 500));
+          controller.enqueue(new TextEncoder().encode(`[The AI provider returned an error. Please try a different model or retry.]`));
           controller.close();
           return;
         }
@@ -352,8 +354,8 @@ function streamGemini(
           }
         }
       } catch (err) {
-        const msg = err instanceof Error ? err.message : 'Stream error';
-        controller.enqueue(new TextEncoder().encode(`\n\n[Error: ${msg}]`));
+        console.error('[Chat] Gemini stream error:', err instanceof Error ? err.message : err);
+        controller.enqueue(new TextEncoder().encode(`\n\n[The AI response was interrupted. Please try again.]`));
       }
       controller.close();
     },

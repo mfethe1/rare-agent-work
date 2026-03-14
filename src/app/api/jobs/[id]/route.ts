@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getJobStatus, getUpstashClient, getBullQueue } from '@/lib/queue';
+import { safeErrorBody } from '@/lib/api-errors';
 
 export const runtime = 'nodejs';
 
@@ -56,9 +57,7 @@ export async function GET(
 
     return NextResponse.json({ job });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to get job status';
-    console.error('[API] Job status check failed:', message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(safeErrorBody(error, 'queue', 'GET /api/jobs/[id]'), { status: 500 });
   }
 }
 
@@ -114,9 +113,7 @@ export async function DELETE(
       status: 'cancelled',
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to cancel job';
-    console.error('[API] Job cancellation failed:', message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(safeErrorBody(error, 'queue', 'DELETE /api/jobs/[id]'), { status: 500 });
   }
 }
 

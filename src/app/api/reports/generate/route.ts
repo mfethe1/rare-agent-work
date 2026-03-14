@@ -8,6 +8,7 @@ import {
   type ReportSection,
 } from '@/lib/research-pipeline';
 import { stripMarkdown, hasMarkdownArtifacts } from '@/lib/premium-content';
+import { sanitizeError } from '@/lib/api-errors';
 
 export const runtime = 'nodejs';
 export const maxDuration = 300; // 5 min max for report generation
@@ -221,11 +222,11 @@ ${redditLLM.map(r => `- **${r.title}** (${r.score} pts, ${r.comments} comments) 
         template.wordCountTarget,
       );
     } catch (error) {
+      sanitizeError(error, 'synthesis', `Report section: ${template.title}`);
       return NextResponse.json(
         {
           error: 'Report section synthesis failed.',
           section: template.title,
-          details: error instanceof Error ? error.message : 'Unknown synthesis error',
         },
         { status: 502 },
       );
@@ -235,11 +236,11 @@ ${redditLLM.map(r => `- **${r.title}** (${r.score} pts, ${r.comments} comments) 
     try {
       cleanedProse = sanitizeGeneratedProse(prose);
     } catch (error) {
+      sanitizeError(error, 'quality', `Report section: ${template.title}`);
       return NextResponse.json(
         {
-          error: 'Generated content failed premium quality checks.',
+          error: 'Generated content did not pass quality checks.',
           section: template.title,
-          details: error instanceof Error ? error.message : 'Unknown content-quality error',
         },
         { status: 422 },
       );

@@ -6,6 +6,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { enqueueJob, getUpstashClient } from '@/lib/queue';
 import type { JobPayload, CreateJobOptions, Job } from '@/lib/queue/types';
+import { safeErrorBody } from '@/lib/api-errors';
 
 export const runtime = 'nodejs';
 
@@ -68,9 +69,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to create job';
-    console.error('[API] Job creation failed:', message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(safeErrorBody(error, 'queue', 'POST /api/jobs'), { status: 500 });
   }
 }
 
@@ -129,9 +128,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to list jobs';
-    console.error('[API] Job listing failed:', message);
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(safeErrorBody(error, 'queue', 'GET /api/jobs'), { status: 500 });
   }
 }
 

@@ -33,8 +33,8 @@ const incidentCards = [
     icon: '🧹',
     title: 'MCP tool poisoning',
     detail: "Third-party MCP server's tool description contained hidden instructions addressed to the model. Content filters didn't catch it. The agent followed them anyway.",
-    report: 'empirical-agent-architecture',
-    reportLabel: 'Empirical Architecture',
+    report: 'mcp-security',
+    reportLabel: 'MCP Security',
   },
 ];
 
@@ -64,6 +64,39 @@ export default function Home() {
   const reports = getAllReports();
   const newReport = reports.find((r) => r.isNew);
 
+  const accentMap: Record<string, { card: string; price: string; btn: string; previewBtn: string }> = {
+    blue: {
+      card: 'border-blue-500/25 hover:border-blue-400/50',
+      price: 'text-blue-300 bg-blue-900/30 border border-blue-500/25',
+      btn: 'bg-blue-500 hover:bg-blue-400 text-white shadow-[0_8px_24px_rgba(59,130,246,0.25)]',
+      previewBtn: 'border-blue-500/30 text-blue-300 hover:bg-blue-500/10',
+    },
+    green: {
+      card: 'border-green-500/25 hover:border-green-400/50',
+      price: 'text-green-300 bg-green-900/30 border border-green-500/25',
+      btn: 'bg-green-500 hover:bg-green-400 text-white shadow-[0_8px_24px_rgba(34,197,94,0.25)]',
+      previewBtn: 'border-green-500/30 text-green-300 hover:bg-green-500/10',
+    },
+    purple: {
+      card: 'border-purple-500/25 hover:border-purple-400/50',
+      price: 'text-purple-300 bg-purple-900/30 border border-purple-500/25',
+      btn: 'bg-purple-500 hover:bg-purple-400 text-white shadow-[0_8px_24px_rgba(168,85,247,0.25)]',
+      previewBtn: 'border-purple-500/30 text-purple-300 hover:bg-purple-500/10',
+    },
+    red: {
+      card: 'border-red-500/25 hover:border-red-400/50',
+      price: 'text-red-300 bg-red-900/30 border border-red-500/25',
+      btn: 'bg-red-500 hover:bg-red-400 text-white shadow-[0_8px_24px_rgba(239,68,68,0.25)]',
+      previewBtn: 'border-red-500/30 text-red-300 hover:bg-red-500/10',
+    },
+    amber: {
+      card: 'border-amber-500/25 hover:border-amber-400/50',
+      price: 'text-amber-300 bg-amber-900/30 border border-amber-500/25',
+      btn: 'bg-amber-500 hover:bg-amber-400 text-white shadow-[0_8px_24px_rgba(245,158,11,0.25)]',
+      previewBtn: 'border-amber-500/30 text-amber-300 hover:bg-amber-500/10',
+    },
+  };
+
   return (
     <div className="min-h-screen bg-[#050816] font-sans text-slate-100 selection:bg-cyan-400 selection:text-slate-950">
       <WebsiteJsonLd />
@@ -85,26 +118,14 @@ export default function Home() {
 
         {/* ── HERO ────────────────────────────────────────────────── */}
         <section className="text-center">
-          {/* Social proof bar — first thing visible, before any product claim */}
-          <div className="mb-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {[
-              { n: '3', label: 'operator reports' },
-              { n: '3', label: 'production failure classes documented' },
-              { n: '100%', label: 'preview before purchase' },
-            ].map((stat) => (
-              <div key={stat.label} className="flex items-baseline gap-1.5">
-                <span className="text-lg font-black text-cyan-300">{stat.n}</span>
-                <span className="text-xs text-slate-400">{stat.label}</span>
-              </div>
-            ))}
-          </div>
 
-          {/* ICP qualifier — the reader immediately knows if this is for them */}
+          {/* Qualifier pill — immediate ICP filter */}
           <div className="inline-flex items-center gap-2.5 rounded-full border border-cyan-300/25 bg-white/[0.05] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90 shadow-[0_0_24px_rgba(34,211,238,0.07)]">
             <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
             For engineering teams shipping production agent systems
           </div>
 
+          {/* Main headline — problem-first, specific */}
           <h1 className="mx-auto mt-7 max-w-5xl text-5xl font-black tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5rem] lg:leading-[1.06]">
             Your agent works in the demo.
             <span className="block mt-2 bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent">
@@ -112,19 +133,36 @@ export default function Home() {
             </span>
           </h1>
 
-          {/* Sharp value prop — specific problem, specific deliverable */}
+          {/* Value prop — specific deliverable, specific audience */}
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-            Playbooks for the failure modes vendor docs skip—auth cascade, deduplication,
-            memory architecture, evaluation governance. Read the full preview before
-            spending a dollar. Find the exact failure mode you&apos;re hitting.
+            Playbooks for the failure modes vendor docs skip — auth cascade, deduplication,
+            memory architecture, evaluation governance.{' '}
+            <span className="font-semibold text-white">Read the full preview free before spending a dollar.</span>
           </p>
 
+          {/* Price anchor — the conversion-critical signal most sites bury */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
+            <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
+              <span className="text-sm font-black text-cyan-300">From $29</span>
+              <span className="text-xs text-slate-500">· one-time purchase</span>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
+              <span className="text-sm font-black text-emerald-300">100%</span>
+              <span className="text-xs text-slate-500">free preview before you buy</span>
+            </div>
+            <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
+              <span className="text-sm font-black text-slate-200">Zero</span>
+              <span className="text-xs text-slate-500">vendor-sponsored content</span>
+            </div>
+          </div>
+
+          {/* Primary CTAs */}
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/reports"
               className="inline-flex w-full items-center justify-center rounded-full bg-cyan-400 px-8 py-4 text-base font-bold text-slate-950 shadow-[0_16px_48px_rgba(34,211,238,0.25)] transition-all hover:-translate-y-0.5 hover:bg-cyan-300 sm:w-auto"
             >
-              Find your failure mode →
+              Browse the reports →
             </Link>
             <Link
               href="/assessment"
@@ -132,46 +170,6 @@ export default function Home() {
             >
               Get an expert review
             </Link>
-          </div>
-
-          <p className="mt-4 text-sm text-slate-500">
-            Full preview free · One-time purchase · No subscription required
-          </p>
-        </section>
-
-        {/* ── WHO THIS IS FOR — self-selection filter ──────────────── */}
-        <section className="mt-12">
-          <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 sm:p-8">
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 text-center">
-              Who reads these reports
-            </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                {
-                  role: 'Engineering leads',
-                  signal: '✓',
-                  detail: "You've shipped a working agent. Now it's failing silently at 3am, spitting duplicate emails, or looping endlessly in a workflow that passed staging. You need a post-demo playbook, not an intro tutorial.",
-                },
-                {
-                  role: 'CTOs & architects',
-                  signal: '✓',
-                  detail: "You're making decisions: framework selection, evaluation protocol, governance structure. You need cited, defensible analysis you can put in front of a board or procurement team. Not vendor marketing with a different font.",
-                },
-                {
-                  role: 'Technical operators',
-                  signal: '✓',
-                  detail: "You own the deployment, not just the model. Approval gates, rollback procedures, cost ceilings, the 72-hour window after go-live. Your job is keeping the thing alive after the demo ends.",
-                },
-              ].map((item) => (
-                <div key={item.role} className="rounded-xl border border-white/10 bg-black/20 p-5">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-sm font-black text-emerald-400">{item.signal}</span>
-                    <p className="text-sm font-bold text-white">{item.role}</p>
-                  </div>
-                  <p className="text-xs leading-5 text-slate-400">{item.detail}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -240,7 +238,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── FAILURE MODES — urgency before solution ─────────────── */}
+        {/* ── FAILURE MODES — visceral problem urgency before the solution ─── */}
         <section className="mt-16">
           <div className="mb-6 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-rose-400/80">
@@ -271,9 +269,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── REPORTS — the product ─────────────────────────────────── */}
-        <section className="mt-16">
-          <div className="flex items-end justify-between gap-4">
+        {/* ── REPORTS — the product, immediately after the problem hook ─────── */}
+        <section className="mt-12">
+          <div className="flex items-end justify-between gap-4 mb-8">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">
                 Implementation reports
@@ -291,40 +289,8 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {reports.map((report) => {
-              const accentMap: Record<string, { card: string; price: string; btn: string; previewBtn: string }> = {
-                blue: {
-                  card: 'border-blue-500/25 hover:border-blue-400/50',
-                  price: 'text-blue-300 bg-blue-900/30 border border-blue-500/25',
-                  btn: 'bg-blue-500 hover:bg-blue-400 text-white shadow-[0_8px_24px_rgba(59,130,246,0.25)]',
-                  previewBtn: 'border-blue-500/30 text-blue-300 hover:bg-blue-500/10',
-                },
-                green: {
-                  card: 'border-green-500/25 hover:border-green-400/50',
-                  price: 'text-green-300 bg-green-900/30 border border-green-500/25',
-                  btn: 'bg-green-500 hover:bg-green-400 text-white shadow-[0_8px_24px_rgba(34,197,94,0.25)]',
-                  previewBtn: 'border-green-500/30 text-green-300 hover:bg-green-500/10',
-                },
-                purple: {
-                  card: 'border-purple-500/25 hover:border-purple-400/50',
-                  price: 'text-purple-300 bg-purple-900/30 border border-purple-500/25',
-                  btn: 'bg-purple-500 hover:bg-purple-400 text-white shadow-[0_8px_24px_rgba(168,85,247,0.25)]',
-                  previewBtn: 'border-purple-500/30 text-purple-300 hover:bg-purple-500/10',
-                },
-                red: {
-                  card: 'border-red-500/25 hover:border-red-400/50',
-                  price: 'text-red-300 bg-red-900/30 border border-red-500/25',
-                  btn: 'bg-red-500 hover:bg-red-400 text-white shadow-[0_8px_24px_rgba(239,68,68,0.25)]',
-                  previewBtn: 'border-red-500/30 text-red-300 hover:bg-red-500/10',
-                },
-                amber: {
-                  card: 'border-amber-500/25 hover:border-amber-400/50',
-                  price: 'text-amber-300 bg-amber-900/30 border border-amber-500/25',
-                  btn: 'bg-amber-500 hover:bg-amber-400 text-white shadow-[0_8px_24px_rgba(245,158,11,0.25)]',
-                  previewBtn: 'border-amber-500/30 text-amber-300 hover:bg-amber-500/10',
-                },
-              };
               const accent = accentMap[report.color] ?? accentMap.blue;
 
               return (
@@ -391,6 +357,42 @@ export default function Home() {
           <p className="mt-4 text-center text-xs text-slate-500">
             Preview includes methodology, citations, and full sample sections. Read before you commit.
           </p>
+        </section>
+
+        {/* ── WHO THIS IS FOR — self-selection filter ──────────────── */}
+        <section className="mt-12">
+          <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-6 sm:p-8">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 text-center">
+              Who reads these reports
+            </p>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  role: 'Engineering leads',
+                  signal: '✓',
+                  detail: "You've shipped a working agent. Now it's failing silently at 3am, spitting duplicate emails, or looping endlessly in a workflow that passed staging. You need a post-demo playbook, not an intro tutorial.",
+                },
+                {
+                  role: 'CTOs & architects',
+                  signal: '✓',
+                  detail: "You're making decisions: framework selection, evaluation protocol, governance structure. You need cited, defensible analysis you can put in front of a board or procurement team. Not vendor marketing with a different font.",
+                },
+                {
+                  role: 'Technical operators',
+                  signal: '✓',
+                  detail: "You own the deployment, not just the model. Approval gates, rollback procedures, cost ceilings, the 72-hour window after go-live. Your job is keeping the thing alive after the demo ends.",
+                },
+              ].map((item) => (
+                <div key={item.role} className="rounded-xl border border-white/10 bg-black/20 p-5">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-sm font-black text-emerald-400">{item.signal}</span>
+                    <p className="text-sm font-bold text-white">{item.role}</p>
+                  </div>
+                  <p className="text-xs leading-5 text-slate-400">{item.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* ── CONSULTING — premium upgrade, after product is established ─────── */}
@@ -496,7 +498,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── TRUST / ABOUT + ENTERPRISE (bottom of page) ──────────────────────── */}
+        {/* ── TRUST / ABOUT + ENTERPRISE ──────────────────────────────────────── */}
         <section className="mt-16 grid gap-6 lg:grid-cols-2">
           <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-7">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">About the research</p>
@@ -561,7 +563,7 @@ export default function Home() {
               href="/reports"
               className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-8 py-4 text-base font-bold text-slate-950 shadow-[0_12px_40px_rgba(34,211,238,0.2)] transition-all hover:-translate-y-0.5 hover:bg-cyan-300"
             >
-              Read the free previews →
+              Browse the reports →
             </Link>
             <Link
               href="/assessment"
@@ -570,7 +572,7 @@ export default function Home() {
               Bring a live problem
             </Link>
           </div>
-          <p className="mt-4 text-xs text-slate-600">Human review response within 24 hours</p>
+          <p className="mt-4 text-xs text-slate-600">Human review response within 24 hours · From $29 · Full preview free</p>
         </section>
 
       </main>

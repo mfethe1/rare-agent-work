@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
 import { integrationPatterns, trustControlBullets } from '@/lib/site-copy';
+import SiteNav from '@/components/SiteNav';
 
 export const metadata: Metadata = {
   title: 'Public Docs & API Quickstart',
@@ -103,23 +104,9 @@ export default function DocsPage() {
         ]}
       />
 
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#07111f]/85 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="text-lg font-bold tracking-tight text-cyan-300">Rare Agent Work</Link>
-            <div className="hidden items-center gap-4 sm:flex">
-              <Link href="/start-here" className="text-sm text-slate-400 hover:text-white">Start Here</Link>
-              <Link href="/reports" className="text-sm text-slate-400 hover:text-white">Reports</Link>
-              <Link href="/methodology" className="text-sm text-slate-400 hover:text-white">Methodology</Link>
-              <Link href="/assessment" className="text-sm text-slate-400 hover:text-white">Assessment</Link>
-              <Link href="/docs" className="text-sm font-medium text-white">Docs</Link>
-            </div>
-          </div>
-          <Link href="/assessment" className="rounded-full border border-cyan-300/30 bg-cyan-400/10 px-4 py-2 text-xs font-semibold text-cyan-200 hover:bg-cyan-400/20">
-            Request an assessment
-          </Link>
-        </div>
-      </nav>
+      <SiteNav
+        primaryCta={{ label: 'Browse Reports', href: '/reports' }}
+      />
 
       <main className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <section className="max-w-4xl">

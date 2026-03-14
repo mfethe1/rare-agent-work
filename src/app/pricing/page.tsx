@@ -2,6 +2,7 @@ import Link from "next/link";
 import BuyButton from "@/components/BuyButton";
 import { getAllReports } from "@/lib/reports";
 import { consultingPackages } from "@/lib/site-copy";
+import SiteNav from "@/components/SiteNav";
 
 export const metadata = {
   title: "Pricing | Rare Agent Work",
@@ -12,19 +13,8 @@ export default function PricingPage() {
   const reports = getAllReports();
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <nav className="border-b border-gray-800 bg-black/90 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-          <Link href="/" className="font-bold tracking-tight">
-            Rare Agent Work
-          </Link>
-          <div className="flex gap-4 text-sm">
-            <Link href="/news" className="text-gray-300 hover:text-white">News Feed</Link>
-            <Link href="/digest" className="text-gray-300 hover:text-white">Weekly Digest</Link>
-            <Link href="/reports" className="text-gray-300 hover:text-white">Reports</Link>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-[#050816] text-white">
+      <SiteNav primaryCta={{ label: 'Browse Reports', href: '/reports' }} />
 
       <main className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         {/* Header */}

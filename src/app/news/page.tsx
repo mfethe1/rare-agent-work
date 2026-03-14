@@ -7,6 +7,7 @@ import NewsClient from '@/components/NewsClient';
 import NewsContextPanel from '@/components/NewsContextPanel';
 import BuyButton from '@/components/BuyButton';
 import { NewsFeedJsonLd } from '@/components/JsonLd';
+import SiteNav from '@/components/SiteNav';
 
 export const metadata: Metadata = {
   title: 'AI Agent News Feed',
@@ -49,30 +50,10 @@ export default async function NewsPage({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen bg-[#0d0d0d] text-gray-100">
       <NewsFeedJsonLd />
-      <nav className="sticky top-0 z-50 border-b border-gray-800 bg-[#0d0d0d]/90 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-12 items-center justify-between">
-            <div className="flex items-center gap-6">
-              <Link href="/" className="text-lg font-bold tracking-tight text-orange-500">
-                Rare Agent Work
-              </Link>
-              <div className="hidden items-center gap-4 sm:flex">
-                <Link href="/news" className="text-sm font-medium text-white">News Feed</Link>
-                <Link href="/digest" className="text-sm text-gray-400 transition-colors hover:text-white">Weekly Digest</Link>
-                <Link href="/reports" className="text-sm text-gray-400 transition-colors hover:text-white">Reports</Link>
-                <Link href="/assessment" className="text-sm text-gray-400 transition-colors hover:text-white">Assessment</Link>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <BuyButton
-                plan="newsletter"
-                label="Newsletter · $10/mo"
-                className="rounded-md border border-orange-500/40 bg-orange-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-orange-700"
-              />
-            </div>
-          </div>
-        </div>
-      </nav>
+      <SiteNav
+        variant="news"
+        primaryCta={{ label: 'Subscribe · $10/mo', href: '/pricing' }}
+      />
 
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">

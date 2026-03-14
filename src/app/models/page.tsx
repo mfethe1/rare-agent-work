@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import SiteNav from '@/components/SiteNav';
 
 export const metadata: Metadata = {
   title: 'Model index under review',
@@ -16,30 +17,8 @@ export const metadata: Metadata = {
 
 export default function ModelsPage() {
   return (
-    <div className="min-h-screen bg-[#0d0d0d] text-gray-100">
-      <nav className="sticky top-0 z-50 border-b border-gray-800 bg-[#0d0d0d]/90 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-12 items-center justify-between">
-            <div className="flex items-center gap-6">
-              <Link href="/" className="text-lg font-bold tracking-tight text-orange-500">
-                Rare Agent Work
-              </Link>
-              <div className="hidden items-center gap-4 sm:flex">
-                <Link href="/news" className="text-sm text-gray-400 transition-colors hover:text-white">News Feed</Link>
-                <Link href="/reports" className="text-sm text-gray-400 transition-colors hover:text-white">Reports</Link>
-                <Link href="/methodology" className="text-sm text-gray-400 transition-colors hover:text-white">Methodology</Link>
-                <Link href="/assessment" className="text-sm text-gray-400 transition-colors hover:text-white">Assessment</Link>
-              </div>
-            </div>
-            <Link
-              href="/reports"
-              className="rounded bg-orange-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-orange-700"
-            >
-              Get Reports
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-[#050816] text-gray-100">
+      <SiteNav primaryCta={{ label: 'Browse Reports', href: '/reports' }} />
 
       <main className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="rounded-3xl border border-amber-500/30 bg-amber-950/10 p-8 shadow-[0_0_40px_rgba(245,158,11,0.08)]">

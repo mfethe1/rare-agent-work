@@ -3,6 +3,7 @@ import Link from 'next/link';
 import ConsultingForm from '@/components/ConsultingForm';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
 import { consultingPackages, trustControlBullets } from '@/lib/site-copy';
+import SiteNav from '@/components/SiteNav';
 
 export const metadata: Metadata = {
   title: 'Agentic System Assessment',
@@ -46,22 +47,9 @@ export default function AssessmentPage() {
         ]}
       />
 
-      <nav className="sticky top-0 z-50 border-b border-gray-800 bg-[#0d0d0d]/90 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="text-lg font-bold tracking-tight text-orange-500">Rare Agent Work</Link>
-            <div className="hidden items-center gap-4 sm:flex">
-              <Link href="/start-here" className="text-sm text-gray-400 hover:text-white">Start Here</Link>
-              <Link href="/news" className="text-sm text-gray-400 hover:text-white">News Feed</Link>
-              <Link href="/docs" className="text-sm text-gray-400 hover:text-white">Docs</Link>
-              <Link href="/assessment" className="text-sm font-medium text-white">Assessment</Link>
-            </div>
-          </div>
-          <Link href="/reports" className="rounded-md border border-gray-700 px-3 py-2 text-xs font-semibold text-white hover:border-gray-500">
-            Browse reports
-          </Link>
-        </div>
-      </nav>
+      <SiteNav
+        primaryCta={{ label: 'Start Assessment', href: '#form' }}
+      />
 
       <main className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-[340px_minmax(0,1fr)]">

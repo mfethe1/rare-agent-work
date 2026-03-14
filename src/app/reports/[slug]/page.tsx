@@ -9,10 +9,14 @@ import StickyBuyBar from '@/components/StickyBuyBar';
 import Link from 'next/link';
 import ConversionTracker from '@/components/ConversionTracker';
 import { ReportJsonLd, BreadcrumbJsonLd } from '@/components/JsonLd';
+import SiteNav from '@/components/SiteNav';
 
 export function generateStaticParams() {
   return getAllReports().map((r) => ({ slug: r.slug }));
 }
+
+// Allow new reports added after build time to render dynamically (never 404)
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -221,26 +225,13 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
         color={report.color}
       />
 
-      {/* ── Nav ──────────────────────────────────────────────────────── */}
-      <nav className="border-b border-white/8 bg-[#020617]/90 backdrop-blur-md print:hidden">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2 text-sm font-semibold text-slate-300 transition-colors hover:text-white">
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Rare Agent Work
-          </Link>
-          <div className="flex items-center gap-2">
-            <PrintButton />
-            <Link
-              href="/reports"
-              className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              All Reports
-            </Link>
-          </div>
-        </div>
-      </nav>
+      {/* ── Nav ───────────────────────────────────────────────── */}
+      <div className="print:hidden">
+        <SiteNav
+          variant="darker"
+          primaryCta={{ label: `Buy — ${report.price}`, href: '#guide' }}
+        />
+      </div>
 
       <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:py-12">
 

@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { WebsiteJsonLd } from '@/components/JsonLd';
 import { getAllReports } from '@/lib/reports';
+import SiteNav from '@/components/SiteNav';
 
 // Specific, named failure modes — real credibility signals
 const failureModes = [
@@ -92,66 +93,14 @@ export default function Home() {
       </div>
 
       {/* ── Navigation ─────────────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between gap-4">
-            <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-              <div className="relative h-9 w-9 overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-[0_0_24px_rgba(34,211,238,0.15)]">
-                <Image src="/logo-medallion.jpg" alt="Rare Agent Work logo" fill className="object-cover" sizes="36px" priority />
-              </div>
-              <span className="text-sm font-bold tracking-tight text-white">Rare Agent Work</span>
-            </Link>
-
-            <div className="hidden items-center gap-7 md:flex">
-              <Link href="/reports" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Reports</Link>
-              <Link href="/news" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">News</Link>
-              <Link href="/assessment" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Consulting</Link>
-              <Link href="/docs" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">API</Link>
-            </div>
-
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Link
-                href="/reports"
-                className="rounded-full border border-cyan-300/35 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20"
-              >
-                Browse Reports
-              </Link>
-              <Link
-                href="/assessment"
-                className="hidden rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-300 sm:inline-flex"
-              >
-                Get Help
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <SiteNav
+        newReport={newReport ? { title: newReport.title, slug: newReport.slug, price: newReport.price } : null}
+        primaryCta={{ label: 'Browse Reports', href: '/reports' }}
+      />
 
       <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
 
-        {/* ── New report announcement bar ─────────────────────────── */}
-        {newReport && (
-          <div className="mb-10 rounded-2xl border border-red-500/30 bg-red-500/[0.06] p-4 sm:p-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-start gap-3">
-                <span className="mt-0.5 shrink-0 rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                  New
-                </span>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-300">Just published · {newReport.price}</p>
-                  <p className="mt-0.5 text-base font-bold text-white">{newReport.title}</p>
-                  <p className="mt-0.5 text-sm text-slate-400">{newReport.valueprop}</p>
-                </div>
-              </div>
-              <Link
-                href={`/reports/${newReport.slug}`}
-                className="shrink-0 inline-flex items-center justify-center rounded-full border border-red-400/30 bg-red-500/10 px-5 py-2.5 text-sm font-bold text-red-200 transition-all hover:bg-red-500/20"
-              >
-                Read free preview →
-              </Link>
-            </div>
-          </div>
-        )}
+
 
         {/* ── Hero ───────────────────────────────────────────────────── */}
         <section className="text-center">

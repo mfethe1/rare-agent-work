@@ -1,6 +1,7 @@
 import Link from "next/link";
 import BuyButton from "@/components/BuyButton";
 import { getAllReports } from "@/lib/reports";
+import SiteNav from "@/components/SiteNav";
 
 export const metadata = {
   title: "Implementation Reports | Rare Agent Work",
@@ -31,28 +32,11 @@ export default function ReportsPage() {
   return (
     <div className="min-h-screen bg-[#050816] text-white">
 
-      {/* ── Nav ───────────────────────────────────────────────────── */}
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2 text-sm font-bold text-white hover:text-slate-200 transition-colors">
-            <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Rare Agent Work
-          </Link>
-          <div className="flex items-center gap-3 text-sm">
-            <Link href="/news" className="hidden text-slate-400 hover:text-white sm:block transition-colors">News</Link>
-            <Link href="/assessment" className="hidden text-slate-400 hover:text-white sm:block transition-colors">Consulting</Link>
-            <Link href="/pricing" className="hidden text-cyan-300 hover:text-cyan-200 sm:block transition-colors font-semibold">Pricing</Link>
-            <Link
-              href="/assessment"
-              className="rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300 transition-colors"
-            >
-              Work With Us
-            </Link>
-          </div>
-        </div>
-      </nav>
+      {/* ── Nav ─────────────────────────────────────────────── */}
+      <SiteNav
+        newReport={reports.find((r) => r.isNew) ? { title: reports.find((r) => r.isNew)!.title, slug: reports.find((r) => r.isNew)!.slug, price: reports.find((r) => r.isNew)!.price } : null}
+        primaryCta={{ label: 'Browse Reports', href: '/reports' }}
+      />
 
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
 

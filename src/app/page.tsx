@@ -1,15 +1,39 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import BuyButton from '@/components/BuyButton';
 
 import { WebsiteJsonLd } from '@/components/JsonLd';
 import { getAllReports } from '@/lib/reports';
 
-const trustSignals = [
-  { icon: '🔍', label: 'Full preview before purchase', detail: 'Read methodology, citations, risks, and real sample content before committing a dollar. No teaser-wall gatekeeping.' },
-  { icon: '📎', label: 'Every claim is cited', detail: 'Recommendations trace to specific, verifiable sources — not the author\'s intuition or vendor marketing.' },
-  { icon: '⚡', label: 'Buy once, own it permanently', detail: 'One-time purchase. No subscription required for the report. The full document is yours from the moment of checkout.' },
-  { icon: '🛡️', label: 'Human review on every intake', detail: 'Consulting requests are read by a human before any next step. No automated routing, no opaque triage.' },
+// What makes this work genuinely different — specific, falsifiable, credible
+const differentiators = [
+  {
+    label: 'Full preview before you pay',
+    detail:
+      'Every report ships with its executive summary, methodology, sample sections, action steps, citations, and explicit risks. If the preview doesn\'t justify the price, don\'t buy it. No teaser walls.',
+  },
+  {
+    label: 'Every claim traces to a source',
+    detail:
+      'Recommendations link to specific, dated, verifiable sources — not "industry consensus" or author intuition. You can check every citation yourself before committing.',
+  },
+  {
+    label: 'Written from failure, not theory',
+    detail:
+      'The failure modes in these reports are documented because they happen repeatedly. Auth drift at 3am. Volume surprises on import day. Approval gates that nobody reviews. These aren\'t hypotheticals.',
+  },
+  {
+    label: 'Human review on every consulting intake',
+    detail:
+      'Consulting requests are read by a human before any next step is proposed. No automated routing, no form-to-calendar pipeline, no anonymous triage theater.',
+  },
+];
+
+// What this site explicitly is NOT — the most credible thing you can say
+const notThis = [
+  'Not a vendor showcase. No sponsored content, no affiliate rankings.',
+  'Not a tutorial site. No "getting started with LangChain" basics.',
+  'Not a news aggregator. News is manually curated and filtered for operator relevance.',
+  'Not a marketplace. Consulting intake is reviewed and selective, not open-enrollment.',
 ];
 
 const howItWorks = [
@@ -26,7 +50,7 @@ const howItWorks = [
   {
     step: '03',
     title: 'Bring hard problems to consulting',
-    body: 'When the report isn\'t enough — messy architecture, political blockers, live incidents — use the assessment path for direct human review.',
+    body: "When the report isn't enough — messy architecture, political blockers, live incidents — use the assessment path for direct human review.",
   },
 ];
 
@@ -117,8 +141,8 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-            Operator-grade implementation reports, consulting, and a live news desk for teams building real agent systems.
-            Written by practitioners. Cited. Previewed in full before you spend a dollar.
+            Implementation reports, consulting, and a live news desk for teams building serious agent systems.
+            Written by a practitioner. Every claim cited. Every preview free before you pay a dollar.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -137,26 +161,86 @@ export default function Home() {
           </div>
 
           <p className="mt-4 text-sm text-slate-500">
-            Read the full preview for free · Buy once, keep forever · No subscription required
+            Full preview free · Buy once, keep forever · No subscription required
           </p>
         </section>
 
-        {/* ── Trust signals row ──────────────────────────────────────── */}
-        <section className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {trustSignals.map((signal) => (
-            <div
-              key={signal.label}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm"
-            >
-              <span className="text-2xl">{signal.icon}</span>
-              <p className="mt-3 text-sm font-semibold text-white">{signal.label}</p>
-              <p className="mt-1.5 text-xs leading-6 text-slate-400">{signal.detail}</p>
+        {/* ── Author authority ─────────────────────────────────────── */}
+        <section className="mt-16">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.025] p-8 sm:p-10 backdrop-blur-sm">
+            <div className="grid gap-8 lg:grid-cols-[auto_1fr] lg:items-start lg:gap-12">
+              {/* Author identity */}
+              <div className="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left lg:w-56">
+                <div className="relative h-20 w-20 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_0_32px_rgba(34,211,238,0.1)]">
+                  <Image src="/logo-medallion.jpg" alt="Michael Fethe" fill className="object-cover" sizes="80px" />
+                </div>
+                <div>
+                  <p className="text-base font-bold text-white">Michael Fethe</p>
+                  <p className="mt-0.5 text-sm text-slate-400">Founder, Rare Agent Work</p>
+                  <p className="mt-0.5 text-xs text-slate-500">Indianapolis, IN</p>
+                </div>
+                <a
+                  href="mailto:hello@rareagent.work"
+                  className="text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors"
+                >
+                  hello@rareagent.work
+                </a>
+              </div>
+
+              {/* Substantive credibility */}
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Why this research exists</p>
+                <p className="mt-3 text-base leading-8 text-slate-300">
+                  The pattern I kept seeing: teams would ship a prototype, it would work in demos, and then break in production in exactly the same ways — auth drift, silent volume explosions, approval gates nobody reviewed, memory that reset every session. The vendor documentation didn't cover this. The generic AI tutorials definitely didn't. I started writing what I wished existed.
+                </p>
+                <p className="mt-4 text-base leading-8 text-slate-300">
+                  These reports are written for operators who are past the "can I build it?" question and are asking "why does it break, and how do I prevent that before it hits production?" The consulting work is for the cases where that question has a political dimension, a deadline, or an architecture that's already in trouble.
+                </p>
+
+                {/* Specific claim strip */}
+                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                  {[
+                    { stat: '4', label: 'operator reports', sub: 'With full previews, citations, and failure-mode coverage' },
+                    { stat: '28+', label: 'documented failure modes', sub: 'Across auth, memory, volume, and approval gate patterns' },
+                    { stat: '100%', label: 'human-reviewed', sub: 'Every consulting intake read before any next step is proposed' },
+                  ].map((item) => (
+                    <div key={item.label} className="rounded-xl border border-white/10 bg-black/20 p-4">
+                      <p className="text-2xl font-black text-white">{item.stat}</p>
+                      <p className="mt-0.5 text-sm font-semibold text-slate-300">{item.label}</p>
+                      <p className="mt-1 text-xs leading-5 text-slate-500">{item.sub}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
+          </div>
+        </section>
+
+        {/* ── What this site is NOT ────────────────────────────────── */}
+        <section className="mt-8">
+          <div className="rounded-[2rem] border border-amber-400/15 bg-amber-500/[0.04] p-6 sm:p-8 backdrop-blur-sm">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
+              <div className="shrink-0">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Scope</p>
+                <p className="mt-1.5 text-xl font-bold text-white">What this isn&apos;t.</p>
+                <p className="mt-2 max-w-xs text-sm leading-6 text-slate-400">
+                  Being specific about what you don&apos;t cover is more credible than claiming to cover everything.
+                </p>
+              </div>
+              <ul className="grid gap-3 sm:grid-cols-2 flex-1">
+                {notThis.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-slate-300">
+                    <span className="mt-1 shrink-0 text-amber-400 font-bold">✗</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </section>
 
         {/* ── Reports ────────────────────────────────────────────────── */}
-        <section className="mt-20">
+        <section className="mt-16">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Implementation reports</p>
@@ -186,15 +270,8 @@ export default function Home() {
                 purple: 'text-purple-300 bg-purple-900/30 border border-purple-500/25',
                 red: 'text-red-300 bg-red-900/30 border border-red-500/25',
               };
-              const btnMap: Record<string, string> = {
-                blue: 'bg-blue-600 hover:bg-blue-500 text-white',
-                green: 'bg-green-600 hover:bg-green-500 text-white',
-                purple: 'bg-purple-600 hover:bg-purple-500 text-white',
-                red: 'bg-red-600 hover:bg-red-500 text-white',
-              };
               const accent = accentMap[report.color] ?? accentMap.blue;
               const badge = badgeMap[report.color] ?? badgeMap.blue;
-              const btn = btnMap[report.color] ?? btnMap.blue;
 
               return (
                 <article
@@ -204,35 +281,60 @@ export default function Home() {
                   {report.isNew && (
                     <span className="absolute right-4 top-4 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
                   )}
-                  <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-bold ${badge}`}>
-                    {report.price}
-                  </span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-bold ${badge}`}>
+                      {report.price}
+                    </span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{report.priceLabel}</span>
+                  </div>
                   <h3 className="mt-4 text-lg font-bold leading-snug text-white">{report.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-400">{report.subtitle}</p>
                   <p className="mt-3 text-xs text-slate-500">
                     Best for: {report.bestFor.slice(0, 2).join(' · ')}
                   </p>
-                  <div className="mt-auto pt-6 flex flex-col gap-2">
+                  {/* Single primary CTA: read preview first, buy on the report page */}
+                  <div className="mt-auto pt-6">
                     <Link
                       href={`/reports/${report.slug}`}
-                      className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                      className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                     >
                       Read free preview →
                     </Link>
-                    <BuyButton
-                      plan={report.planKey}
-                      label={`Buy — ${report.price}`}
-                      className={`inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${btn}`}
-                    />
                   </div>
                 </article>
               );
             })}
           </div>
+
+          {/* Inline reassurance */}
+          <p className="mt-4 text-center text-xs text-slate-500">
+            Buy buttons are on the report pages — after you&apos;ve read the preview and decided it&apos;s worth it.
+          </p>
+        </section>
+
+        {/* ── Why this work is different ───────────────────────────── */}
+        <section className="mt-16 rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 backdrop-blur-sm">
+          <div className="mb-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">What makes this different</p>
+            <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
+              Four things most AI research gets wrong.
+            </h2>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2">
+            {differentiators.map((item, i) => (
+              <div key={item.label} className="flex gap-4">
+                <span className="mt-0.5 shrink-0 text-2xl font-black text-cyan-300/30">0{i + 1}</span>
+                <div>
+                  <h3 className="text-base font-bold text-white">{item.label}</h3>
+                  <p className="mt-1.5 text-sm leading-7 text-slate-400">{item.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* ── How it works ───────────────────────────────────────────── */}
-        <section className="mt-20 rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 backdrop-blur-sm">
+        <section className="mt-8 rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 backdrop-blur-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">How it works</p>
           <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
             No risk. Full transparency before you pay.
@@ -251,25 +353,26 @@ export default function Home() {
         </section>
 
         {/* ── Newsletter CTA ─────────────────────────────────────────── */}
-        <section className="mt-12 rounded-[2rem] border border-fuchsia-400/25 bg-fuchsia-500/[0.07] p-6 sm:p-8">
+        <section className="mt-8 rounded-[2rem] border border-fuchsia-400/25 bg-fuchsia-500/[0.07] p-6 sm:p-8">
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Newsletter — $10/mo</p>
               <h2 className="mt-2 text-xl font-bold text-white">Operator-grade AI signal, weekly.</h2>
               <p className="mt-1.5 text-sm text-slate-400">
-                Curated AI agent news, platform changes, and implementation notes — without the noise.
+                The same filtering lens as the reports — applied to the week&apos;s AI agent news. No hype, no tutorials, no vendor announcements dressed as research.
               </p>
             </div>
-            <BuyButton
-              plan="newsletter"
-              label="Subscribe — $10/mo"
+            <Link
+              href="/pricing"
               className="shrink-0 inline-flex rounded-full bg-fuchsia-400 px-6 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-fuchsia-300"
-            />
+            >
+              See what&apos;s included →
+            </Link>
           </div>
         </section>
 
         {/* ── Consulting ─────────────────────────────────────────────── */}
-        <section className="mt-20">
+        <section className="mt-16">
           <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Human consulting</p>
@@ -327,7 +430,7 @@ export default function Home() {
         </section>
 
         {/* ── API / Docs strip ───────────────────────────────────────── */}
-        <section className="mt-20 rounded-[2rem] border border-white/10 bg-white/[0.02] p-7 backdrop-blur-sm">
+        <section className="mt-16 rounded-[2rem] border border-white/10 bg-white/[0.02] p-7 backdrop-blur-sm">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">For builders and agents</p>
@@ -357,7 +460,7 @@ export default function Home() {
               </div>
               <h2 className="mt-2 text-2xl font-bold text-white">Operator-grade AI news, updated daily.</h2>
               <p className="mt-2 text-sm leading-7 text-slate-400">
-                Curated and filtered for teams building production agent systems. No hype. No tutorials.
+                Manually curated and filtered for teams building production agent systems. No hype. No tutorials.
               </p>
             </div>
             <Link
@@ -370,7 +473,7 @@ export default function Home() {
         </section>
 
         {/* ── Trust / about ──────────────────────────────────────────── */}
-        <section className="mt-20 grid gap-6 lg:grid-cols-2">
+        <section className="mt-16 grid gap-6 lg:grid-cols-2">
           <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-7">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">About the research</p>
             <h2 className="mt-3 text-xl font-bold text-white">Who is behind this and how the research is produced.</h2>
@@ -397,7 +500,7 @@ export default function Home() {
         </section>
 
         {/* ── Final CTA ──────────────────────────────────────────────── */}
-        <section className="mt-20 rounded-[2rem] border border-cyan-400/20 bg-gradient-to-br from-cyan-500/10 via-sky-600/5 to-fuchsia-600/8 p-10 text-center">
+        <section className="mt-16 rounded-[2rem] border border-cyan-400/20 bg-gradient-to-br from-cyan-500/10 via-sky-600/5 to-fuchsia-600/8 p-10 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Ready to start?</p>
           <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-bold text-white md:text-4xl">
             A concrete next step in under 24 hours.

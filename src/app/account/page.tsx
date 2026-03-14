@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { createClient as createAdminClient } from '@supabase/supabase-js';
 import ConversionTracker from '@/components/ConversionTracker';
+import SubscriptionSuccessBanner from '@/components/SubscriptionSuccessBanner';
 import SiteNav from '@/components/SiteNav';
 import { getReport } from '@/lib/reports';
 
@@ -166,6 +167,8 @@ export default async function AccountPage() {
             {user.email}
           </h1>
         </div>
+
+        <SubscriptionSuccessBanner />
 
         <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
 

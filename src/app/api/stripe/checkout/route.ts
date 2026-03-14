@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { safeErrorBody } from "@/lib/api-errors";
 
 export const runtime = "nodejs";
 
@@ -165,8 +166,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ url: session.url });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "Stripe error";
-    console.error("Stripe checkout error:", msg);
-    return NextResponse.json({ error: msg }, { status: 500 });
+    return NextResponse.json(
+      safeErrorBody(err, 'unknown', 'POST /api/stripe/checkout'),
+      { status: 500 },
+    );
   }
 }

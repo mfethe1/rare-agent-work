@@ -15,6 +15,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
+import { safeErrorBody } from '@/lib/api-errors';
 
 export const runtime = 'nodejs';
 
@@ -112,8 +113,9 @@ export async function POST(req: NextRequest) {
       reportSlug: expectedSlug ?? reportSlug,
     });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Verification failed';
-    console.error('[verify-purchase] error:', msg);
-    return NextResponse.json({ error: msg }, { status: 500 });
+    return NextResponse.json(
+      safeErrorBody(err, 'unknown', 'POST /api/stripe/verify-purchase'),
+      { status: 500 },
+    );
   }
 }

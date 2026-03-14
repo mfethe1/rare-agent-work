@@ -18,7 +18,17 @@ export async function POST(request: NextRequest) {
     const validation = await validateRequest(request, newsIngestSchema);
     if (!validation.success) return validation.response;
 
-    const items = Array.isArray(validation.data) ? validation.data : validation.data.items;
+    const rawItems = Array.isArray(validation.data) ? validation.data : validation.data.items;
+    // Map validated items to match ingestNews signature (all fields required)
+    const items = rawItems.map((item) => ({
+      title: item.title,
+      url: item.url,
+      source: item.source,
+      summary: item.summary ?? '',
+      category: item.category ?? 'general',
+      tags: item.tags ?? [],
+      publishedAt: item.publishedAt,
+    }));
     const result = await ingestNews(items);
     return NextResponse.json({ ok: true, ...result });
   } catch (err) {

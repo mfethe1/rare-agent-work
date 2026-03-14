@@ -12,22 +12,22 @@ const incidentCards = [
     icon: '💣',
     title: 'The bulk-send incident',
     detail: '847 customers got the same email. CSV imported. No deduplication key. No volume cap. The automation ran exactly as designed — and that was the problem.',
-    report: 'agent-setup-60',
-    reportLabel: 'Agent Setup in 60 Minutes',
+    report: 'agent-incident-postmortems',
+    reportLabel: 'Production Post-Mortems',
   },
   {
     icon: '🔒',
     title: 'Auth cascade, 4 days silent',
     detail: 'Employee left. Service account deleted. 14 workflows failed silently. Error alerts routed to the deleted inbox. Engineering found out from a customer — four days later.',
-    report: 'agent-setup-60',
-    reportLabel: 'Agent Setup in 60 Minutes',
+    report: 'agent-incident-postmortems',
+    reportLabel: 'Production Post-Mortems',
   },
   {
     icon: '💸',
     title: '$47k in 72 hours',
     detail: 'One config variable wrong on prod deploy. GPT-4o instead of mini. No per-session cost ceiling. No daily spend alert. The bill arrived before anyone noticed.',
-    report: 'empirical-agent-architecture',
-    reportLabel: 'Empirical Architecture',
+    report: 'agent-incident-postmortems',
+    reportLabel: 'Production Post-Mortems',
   },
   {
     icon: '🧹',
@@ -136,10 +136,9 @@ export default function Home() {
           {/* Value prop — specific deliverable, specific audience */}
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
             Playbooks for the failure modes vendor docs skip — auth cascade, deduplication,
-            memory architecture, evaluation governance.{' '}
+            MCP tool poisoning, orchestration deadlocks, cost explosions.{' '}
             <span className="font-semibold text-white">Read the full preview free before spending a dollar.</span>
           </p>
-
           {/* Price anchor — the conversion-critical signal most sites bury */}
           <div className="mt-5 flex flex-wrap items-center justify-center gap-4">
             <div className="flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5">
@@ -269,12 +268,66 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── REPORTS — the product, immediately after the problem hook ─────── */}
+        {/* ── NEW RELEASES — urgency banner for newest reports ──────────────────────────── */}
+        {reports.filter((r) => r.isNew).length > 0 && (
+          <section className="mt-12">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Just published</p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {reports.filter((r) => r.isNew).map((report) => {
+                const accent = accentMap[report.color] ?? accentMap.red;
+                return (
+                  <article
+                    key={report.slug}
+                    className={`relative overflow-hidden rounded-2xl border bg-white/[0.04] p-6 backdrop-blur-sm ${accent.card}`}
+                  >
+                    <span className="absolute right-4 top-4 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                      New
+                    </span>
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className={`inline-flex rounded-full px-3 py-1 text-xs font-bold ${accent.price}`}>
+                        {report.price}
+                      </span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{report.priceLabel}</span>
+                    </div>
+                    <h3 className="text-lg font-bold leading-snug text-white">{report.title}</h3>
+                    <p className="mt-1.5 text-sm text-slate-400">{report.subtitle}</p>
+                    {report.sharpestInsight && (
+                      <div className="mt-4 rounded-xl border border-white/8 bg-black/20 p-3">
+                        <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-1.5">Free finding</p>
+                        <p className="text-[11px] leading-5 text-slate-200 italic">
+                          &ldquo;{report.sharpestInsight.split(/\.\s+/)[0]}.&rdquo;
+                        </p>
+                      </div>
+                    )}
+                    <div className="mt-5 flex gap-2">
+                      <Link
+                        href={`/reports/${report.slug}`}
+                        className={`inline-flex flex-1 items-center justify-center rounded-full border ${accent.previewBtn} bg-transparent px-4 py-2.5 text-sm font-bold transition-all`}
+                      >
+                        Read free preview →
+                      </Link>
+                      <BuyButton
+                        plan={report.planKey}
+                        label={`Buy — ${report.price}`}
+                        className="inline-flex flex-1 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-4 py-2.5 text-xs font-medium text-slate-400 transition-all hover:text-white hover:bg-white/[0.08] hover:border-white/20"
+                      />
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* ── REPORTS — the product, immediately after the problem hook ────────── */}
         <section className="mt-12">
           <div className="flex items-end justify-between gap-4 mb-8">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">
-                Implementation reports
+                All implementation reports
               </p>
               <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
                 Pick the playbook that matches your problem.

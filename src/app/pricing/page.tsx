@@ -205,7 +205,7 @@ export default function PricingPage() {
               Continuous access, rolling updates, and higher AI budgets for teams actively shipping.
             </p>
           </div>
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-6 lg:grid-cols-3">
             {/* Newsletter Plan */}
             <div className="relative overflow-hidden rounded-2xl border border-fuchsia-400/30 bg-fuchsia-500/10 p-8 backdrop-blur-sm">
               <div className="absolute right-6 top-6">
@@ -245,6 +245,45 @@ export default function PricingPage() {
               />
             </div>
 
+            {/* Starter Plan */}
+            <div className="relative overflow-hidden rounded-2xl border border-amber-400/30 bg-amber-500/10 p-8 backdrop-blur-sm">
+              <div className="absolute right-6 top-6">
+                <span className="rounded-full bg-amber-400 px-3 py-1 text-xs font-semibold text-slate-950">
+                  Most popular
+                </span>
+              </div>
+              <div className="mb-6">
+                <span className="text-xs font-semibold uppercase tracking-wider text-amber-200">Starter</span>
+                <p className="mt-1 text-4xl font-bold text-white">
+                  $29<span className="text-xl font-normal text-slate-300">/mo</span>
+                </p>
+                <p className="mt-2 text-sm text-slate-300">All reports + AI guide for solo operators and small teams</p>
+              </div>
+              <ul className="mb-8 space-y-3 text-sm text-slate-100">
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-300" />
+                  <span><strong>Everything in Newsletter</strong></span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-300" />
+                  <span>Full access to all research reports + rolling updates</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-300" />
+                  <span>AI implementation guide (100 requests/day, $15/week budget)</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-300" />
+                  <span>Access to new research drops on publish</span>
+                </li>
+              </ul>
+              <BuyButton
+                plan="starter"
+                label="Subscribe — $29/mo"
+                className="w-full rounded-lg bg-amber-400 px-4 py-3 text-sm font-semibold text-slate-950 transition-colors hover:bg-amber-300"
+              />
+            </div>
+
             {/* Operator Access Plan */}
             <div className="relative overflow-hidden rounded-2xl border border-cyan-400/30 bg-cyan-500/10 p-8 backdrop-blur-sm">
               <div className="absolute right-6 top-6">
@@ -262,15 +301,11 @@ export default function PricingPage() {
               <ul className="mb-8 space-y-3 text-sm text-slate-100">
                 <li className="flex items-start gap-3">
                   <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
-                  <span><strong>Everything in Newsletter</strong></span>
+                  <span><strong>Everything in Starter</strong></span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
-                  <span>Full access to all research reports + rolling updates</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
-                  <span>Higher AI token budget (500 requests/day, $60/week)</span>
+                  <span>5x higher AI token budget (500 requests/day, $60/week)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />

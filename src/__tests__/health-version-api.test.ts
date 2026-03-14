@@ -92,6 +92,7 @@ describe('/api/version', () => {
     const data = await response.json();
     
     expect(data.offers).toHaveProperty('free');
+    expect(data.offers).toHaveProperty('newsletter');
     expect(data.offers).toHaveProperty('starter');
     expect(data.offers).toHaveProperty('pro');
     expect(data.offers).toHaveProperty('reports');

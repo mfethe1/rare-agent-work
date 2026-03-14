@@ -53,16 +53,28 @@ export async function GET() {
         'AI chat (10 requests/day, $2/week)',
       ],
     },
-    starter: {
+    newsletter: {
       label: 'Newsletter',
       price: '$10/mo',
-      tier: 'starter',
+      tier: 'newsletter',
       features: [
         'Weekly premium newsletter',
         'Hot-news alerts',
         'AI context on news desk',
         'No paywall on news pages',
-        'AI chat (100 requests/day, $15/week)',
+        'AI chat (40 requests/day, $6/week)',
+      ],
+    },
+    starter: {
+      label: 'Starter',
+      price: '$29/mo',
+      tier: 'starter',
+      features: [
+        'Everything in Newsletter',
+        'Full access to all research reports',
+        'Rolling updates',
+        'AI implementation guide (100 requests/day, $15/week)',
+        'Access to new research on publish',
       ],
     },
     pro: {
@@ -70,12 +82,10 @@ export async function GET() {
       price: '$49/mo',
       tier: 'pro',
       features: [
-        'Everything in Newsletter',
-        'Full access to all research reports',
-        'Rolling updates',
-        'Higher AI token budget (500 requests/day, $60/week)',
+        'Everything in Starter',
+        '5x higher AI token budget (500 requests/day, $60/week)',
         'Priority access to new research',
-        'Best support path',
+        'Best support path for urgent implementation work',
       ],
     },
     reports: {

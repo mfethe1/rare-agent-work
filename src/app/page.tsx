@@ -4,53 +4,53 @@ import Link from 'next/link';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 import { getAllReports } from '@/lib/reports';
 
-// What makes this work genuinely different — specific, falsifiable, credible
-const differentiators = [
+// Specific, named failure modes — real credibility signals
+const failureModes = [
   {
-    label: 'Full preview before you pay',
-    detail:
-      'Every report ships with its executive summary, methodology, sample sections, action steps, citations, and explicit risks. If the preview doesn\'t justify the price, don\'t buy it. No teaser walls.',
+    icon: '💀',
+    title: 'Auth drift at 3am',
+    detail: 'OAuth token expired. Nobody set a reminder. Workflow stopped silently. Monday morning triage.',
   },
   {
-    label: 'Every claim traces to a source',
-    detail:
-      'Recommendations link to specific, dated, verifiable sources — not "industry consensus" or author intuition. You can check every citation yourself before committing.',
+    icon: '💸',
+    title: 'The bulk-import incident',
+    detail: '500 customers got the same email. CSV imported 500 rows. No deduplication key. Automation "worked."',
   },
   {
-    label: 'Written from failure, not theory',
-    detail:
-      'The failure modes in these reports are documented because they happen repeatedly. Auth drift at 3am. Volume surprises on import day. Approval gates that nobody reviews. These aren\'t hypotheticals.',
+    icon: '🔁',
+    title: 'Memory reset on session 2',
+    detail: 'Agent works perfectly in the demo. By session 4 it has forgotten everything. No L2 summarization layer.',
   },
   {
-    label: 'Human review on every consulting intake',
-    detail:
-      'Consulting requests are read by a human before any next step is proposed. No automated routing, no form-to-calendar pipeline, no anonymous triage theater.',
+    icon: '🛠️',
+    title: 'MCP tool poisoning',
+    detail: "Third-party MCP server's description field contained instructions addressed to the model, not documentation for the tool.",
   },
 ];
 
-// What this site explicitly is NOT — the most credible thing you can say
+// What this site explicitly is NOT — credibility through honest scope
 const notThis = [
   'Not a vendor showcase. No sponsored content, no affiliate rankings.',
   'Not a tutorial site. No "getting started with LangChain" basics.',
-  'Not a news aggregator. News is manually curated and filtered for operator relevance.',
+  'Not a news aggregator. News is manually curated for operator relevance.',
   'Not a marketplace. Consulting intake is reviewed and selective, not open-enrollment.',
 ];
 
 const howItWorks = [
   {
     step: '01',
-    title: 'Read the preview for free',
-    body: 'Every report ships with a full preview: executive summary, sample sections, citations, action steps, and explicit risks. Enough to judge fit before you buy.',
+    title: 'Read the full preview, free',
+    body: 'Every report ships with its executive summary, methodology, sample sections, action steps, citations, and explicit risks. If the preview doesn\'t justify the price, don\'t buy it.',
   },
   {
     step: '02',
-    title: 'Buy once, use immediately',
+    title: 'Buy once, keep forever',
     body: 'One-time purchase. No subscription required. The full report unlocks instantly with access to the AI implementation guide powered by Claude.',
   },
   {
     step: '03',
     title: 'Bring hard problems to consulting',
-    body: "When the report isn't enough — messy architecture, political blockers, live incidents — use the assessment path for direct human review.",
+    body: 'When the report isn\'t enough — messy architecture, political blockers, live incidents — use the assessment path for direct human review.',
   },
 ];
 
@@ -58,7 +58,7 @@ const consultingServices = [
   {
     name: 'Operator Review',
     time: '48–72 hrs',
-    description: 'Short diagnostic for stack fit, failure modes, and next actions when a team needs an outside read fast.',
+    description: 'Outside diagnostic for stack fit, failure modes, and next actions when a team needs an unbiased read fast.',
     href: '/assessment',
   },
   {
@@ -77,6 +77,7 @@ const consultingServices = [
 
 export default function Home() {
   const reports = getAllReports();
+  const newReport = reports.find((r) => r.isNew);
 
   return (
     <div className="min-h-screen bg-[#050816] font-sans text-slate-100 selection:bg-cyan-400 selection:text-slate-950">
@@ -105,7 +106,7 @@ export default function Home() {
               <Link href="/reports" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Reports</Link>
               <Link href="/news" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">News</Link>
               <Link href="/assessment" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Consulting</Link>
-              <Link href="/docs" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">API Docs</Link>
+              <Link href="/docs" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">API</Link>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
@@ -119,7 +120,7 @@ export default function Home() {
                 href="/assessment"
                 className="hidden rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 transition-all hover:bg-cyan-300 sm:inline-flex"
               >
-                Work With Us
+                Get Help
               </Link>
             </div>
           </div>
@@ -128,21 +129,45 @@ export default function Home() {
 
       <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
 
+        {/* ── New report announcement bar ─────────────────────────── */}
+        {newReport && (
+          <div className="mb-10 rounded-2xl border border-red-500/30 bg-red-500/[0.06] p-4 sm:p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <span className="mt-0.5 shrink-0 rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                  New
+                </span>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-300">Just published · {newReport.price}</p>
+                  <p className="mt-0.5 text-base font-bold text-white">{newReport.title}</p>
+                  <p className="mt-0.5 text-sm text-slate-400">{newReport.valueprop}</p>
+                </div>
+              </div>
+              <Link
+                href={`/reports/${newReport.slug}`}
+                className="shrink-0 inline-flex items-center justify-center rounded-full border border-red-400/30 bg-red-500/10 px-5 py-2.5 text-sm font-bold text-red-200 transition-all hover:bg-red-500/20"
+              >
+                Read free preview →
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* ── Hero ───────────────────────────────────────────────────── */}
         <section className="text-center">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-cyan-300/25 bg-white/[0.05] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90 shadow-[0_0_24px_rgba(34,211,238,0.07)]">
             <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
-            For engineering teams shipping production AI agents
+            Implementation research for production AI teams
           </div>
 
-          <h1 className="mx-auto mt-7 max-w-5xl text-5xl font-black tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.25rem] lg:leading-[1.06]">
-            Most agent systems break in the same ways.
-            <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent"> Here&apos;s the playbook.</span>
+          <h1 className="mx-auto mt-7 max-w-5xl text-5xl font-black tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5rem] lg:leading-[1.06]">
+            Your agent works in the demo.
+            <span className="block mt-2 bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent">Here's why it breaks in production.</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-            Implementation reports, consulting, and a live news desk for teams building serious agent systems.
-            Written by a practitioner. Every claim cited. Every preview free before you pay a dollar.
+            Practitioner-written reports on auth drift, memory failures, MCP security, and multi-agent coordination.
+            Every claim cited. Every preview free before you spend a dollar.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -150,18 +175,131 @@ export default function Home() {
               href="/reports"
               className="inline-flex w-full items-center justify-center rounded-full bg-cyan-400 px-8 py-4 text-base font-bold text-slate-950 shadow-[0_16px_48px_rgba(34,211,238,0.25)] transition-all hover:-translate-y-0.5 hover:bg-cyan-300 sm:w-auto"
             >
-              Browse Reports — Free Preview →
+              Read the Free Previews →
             </Link>
             <Link
               href="/assessment"
               className="inline-flex w-full items-center justify-center rounded-full border border-white/20 bg-white/[0.06] px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
             >
-              Book a Consulting Call
+              Talk to a Human
             </Link>
           </div>
 
           <p className="mt-4 text-sm text-slate-500">
-            Full preview free · Buy once, keep forever · No subscription required
+            Free full previews · One-time purchase · No subscription required
+          </p>
+        </section>
+
+        {/* ── The failure modes this solves ─────────────────────────── */}
+        <section className="mt-16">
+          <div className="mb-6 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">What these reports are actually about</p>
+            <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
+              Four incidents that happen to almost every team.
+            </h2>
+            <p className="mt-2 text-sm text-slate-400">Not hypotheticals. These are the specific production failures documented in these reports.</p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {failureModes.map((fm) => (
+              <div key={fm.title} className="rounded-2xl border border-white/8 bg-white/[0.025] p-5">
+                <div className="mb-3 text-2xl">{fm.icon}</div>
+                <h3 className="text-sm font-bold text-white">{fm.title}</h3>
+                <p className="mt-2 text-xs leading-5 text-slate-400">{fm.detail}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Reports ────────────────────────────────────────────────── */}
+        <section className="mt-16">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Implementation reports</p>
+              <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
+                Pick the playbook that matches your problem.
+              </h2>
+              <p className="mt-3 max-w-2xl text-base text-slate-400">
+                Full free preview on every report. Methodology, citations, risks, and sample sections before you spend a dollar.
+              </p>
+            </div>
+            <Link href="/reports" className="hidden shrink-0 text-sm font-semibold text-cyan-300 hover:text-cyan-200 sm:inline-flex">
+              All reports →
+            </Link>
+          </div>
+
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {reports.map((report) => {
+              const accentMap: Record<string, { card: string; price: string; cta: string }> = {
+                blue: {
+                  card: 'border-blue-500/25 hover:border-blue-400/50',
+                  price: 'text-blue-300 bg-blue-900/30 border border-blue-500/25',
+                  cta: 'hover:border-blue-400/40 hover:text-blue-200',
+                },
+                green: {
+                  card: 'border-green-500/25 hover:border-green-400/50',
+                  price: 'text-green-300 bg-green-900/30 border border-green-500/25',
+                  cta: 'hover:border-green-400/40 hover:text-green-200',
+                },
+                purple: {
+                  card: 'border-purple-500/25 hover:border-purple-400/50',
+                  price: 'text-purple-300 bg-purple-900/30 border border-purple-500/25',
+                  cta: 'hover:border-purple-400/40 hover:text-purple-200',
+                },
+                red: {
+                  card: 'border-red-500/25 hover:border-red-400/50',
+                  price: 'text-red-300 bg-red-900/30 border border-red-500/25',
+                  cta: 'hover:border-red-400/40 hover:text-red-200',
+                },
+              };
+              const accent = accentMap[report.color] ?? accentMap.blue;
+
+              return (
+                <article
+                  key={report.slug}
+                  className={`group relative flex flex-col rounded-2xl border bg-white/[0.035] p-6 backdrop-blur-sm transition-all ${accent.card}`}
+                >
+                  {report.isNew && (
+                    <span className="absolute right-4 top-4 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
+                  )}
+
+                  <div className="flex items-center justify-between gap-2">
+                    <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-bold ${accent.price}`}>
+                      {report.price}
+                    </span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{report.priceLabel}</span>
+                  </div>
+
+                  <h3 className="mt-4 text-lg font-bold leading-snug text-white">{report.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{report.valueprop}</p>
+
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {report.bestFor.slice(0, 2).map((tag) => (
+                      <span key={tag} className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] text-slate-400">{tag}</span>
+                    ))}
+                  </div>
+
+                  <div className="mt-4 rounded-xl border border-white/8 bg-black/20 px-3 py-2">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-500">Reading time</p>
+                    <p className="mt-0.5 text-xs text-slate-300">{report.readingTime}</p>
+                  </div>
+
+                  <div className="mt-auto pt-5">
+                    <Link
+                      href={`/reports/${report.slug}`}
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition-all ${accent.cta}`}
+                    >
+                      <span>Read free preview</span>
+                      <span className="text-slate-500">→</span>
+                    </Link>
+                    <p className="mt-2 text-center text-[10px] text-slate-600">Preview includes methodology, citations, and sample content</p>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <p className="mt-4 text-center text-xs text-slate-500">
+            Buy buttons appear after the free preview — once you've decided it's worth it.
           </p>
         </section>
 
@@ -191,18 +329,18 @@ export default function Home() {
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Why this research exists</p>
                 <p className="mt-3 text-base leading-8 text-slate-300">
-                  The pattern I kept seeing: teams would ship a prototype, it would work in demos, and then break in production in exactly the same ways — auth drift, silent volume explosions, approval gates nobody reviewed, memory that reset every session. The vendor documentation didn't cover this. The generic AI tutorials definitely didn't. I started writing what I wished existed.
+                  The same failures kept appearing across teams shipping AI agents: auth tokens expiring silently at 3am, bulk CSV imports triggering duplicate sends to hundreds of customers, multi-agent systems that worked in staging and looped endlessly in production. The vendor documentation covered setup. Nobody covered the 72-hour window after go-live.
                 </p>
                 <p className="mt-4 text-base leading-8 text-slate-300">
-                  These reports are written for operators who are past the "can I build it?" question and are asking "why does it break, and how do I prevent that before it hits production?" The consulting work is for the cases where that question has a political dimension, a deadline, or an architecture that's already in trouble.
+                  These reports exist for operators who are past "can I build it?" and are asking "why will this break, and how do I prevent that before it costs me?" The consulting work is for the cases where that question has a deadline or an architecture that's already in trouble.
                 </p>
 
                 {/* Specific claim strip */}
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   {[
-                    { stat: '4', label: 'operator reports', sub: 'With full previews, citations, and failure-mode coverage' },
-                    { stat: '28+', label: 'documented failure modes', sub: 'Across auth, memory, volume, and approval gate patterns' },
-                    { stat: '100%', label: 'human-reviewed', sub: 'Every consulting intake read before any next step is proposed' },
+                    { stat: '4', label: 'implementation reports', sub: 'With full previews, citations, and failure-mode coverage' },
+                    { stat: '28+', label: 'documented failure modes', sub: 'Auth, memory, volume, approval gates, MCP security' },
+                    { stat: '100%', label: 'human-reviewed intakes', sub: 'Every consulting request read before any next step' },
                   ].map((item) => (
                     <div key={item.label} className="rounded-xl border border-white/10 bg-black/20 p-4">
                       <p className="text-2xl font-black text-white">{item.stat}</p>
@@ -216,163 +354,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── What this site is NOT ────────────────────────────────── */}
-        <section className="mt-8">
-          <div className="rounded-[2rem] border border-amber-400/15 bg-amber-500/[0.04] p-6 sm:p-8 backdrop-blur-sm">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
-              <div className="shrink-0">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Scope</p>
-                <p className="mt-1.5 text-xl font-bold text-white">What this isn&apos;t.</p>
-                <p className="mt-2 max-w-xs text-sm leading-6 text-slate-400">
-                  Being specific about what you don&apos;t cover is more credible than claiming to cover everything.
-                </p>
-              </div>
-              <ul className="grid gap-3 sm:grid-cols-2 flex-1">
-                {notThis.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-slate-300">
-                    <span className="mt-1 shrink-0 text-amber-400 font-bold">✗</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Reports ────────────────────────────────────────────────── */}
-        <section className="mt-16">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Implementation reports</p>
-              <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
-                Pick the playbook that matches your problem.
-              </h2>
-              <p className="mt-3 max-w-2xl text-base text-slate-400">
-                Every report ships with a full free preview — methodology, citations, risks, and sample sections — before you spend a dollar.
-              </p>
-            </div>
-            <Link href="/reports" className="hidden shrink-0 text-sm font-semibold text-cyan-300 hover:text-cyan-200 sm:inline-flex">
-              All reports →
-            </Link>
-          </div>
-
-          {/* Featured new report banner */}
-          {(() => {
-            const featured = reports.find((r) => r.isNew);
-            if (!featured) return null;
-            const featuredAccentMap: Record<string, { border: string; badge: string; text: string; bg: string }> = {
-              blue:   { border: 'border-blue-500/40',   badge: 'text-blue-200 bg-blue-900/40 border-blue-500/30',   text: 'text-blue-300',   bg: 'bg-blue-500/[0.06]' },
-              green:  { border: 'border-green-500/40',  badge: 'text-green-200 bg-green-900/40 border-green-500/30',  text: 'text-green-300',  bg: 'bg-green-500/[0.06]' },
-              purple: { border: 'border-purple-500/40', badge: 'text-purple-200 bg-purple-900/40 border-purple-500/30', text: 'text-purple-300', bg: 'bg-purple-500/[0.06]' },
-              red:    { border: 'border-red-500/40',    badge: 'text-red-200 bg-red-900/40 border-red-500/30',    text: 'text-red-300',    bg: 'bg-red-500/[0.07]' },
-            };
-            const fa = featuredAccentMap[featured.color] ?? featuredAccentMap.red;
-            return (
-              <div className={`mt-8 rounded-2xl border ${fa.border} ${fa.bg} p-5 sm:p-6`}>
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex items-start gap-4">
-                    <span className="mt-0.5 shrink-0 rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                      New
-                    </span>
-                    <div>
-                      <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${fa.text}`}>Just published · {featured.price}</p>
-                      <h3 className="mt-1 text-lg font-bold text-white">{featured.title}</h3>
-                      <p className="mt-1 max-w-lg text-sm text-slate-400">{featured.valueprop}</p>
-                    </div>
-                  </div>
-                  <Link
-                    href={`/reports/${featured.slug}`}
-                    className="shrink-0 inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-white/15"
-                  >
-                    Read free preview →
-                  </Link>
-                </div>
-              </div>
-            );
-          })()}
-
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {reports.map((report) => {
-              const accentMap: Record<string, string> = {
-                blue: 'border-blue-500/30 hover:border-blue-400/50',
-                green: 'border-green-500/30 hover:border-green-400/50',
-                purple: 'border-purple-500/30 hover:border-purple-400/50',
-                red: 'border-red-500/30 hover:border-red-400/50',
-              };
-              const badgeMap: Record<string, string> = {
-                blue: 'text-blue-300 bg-blue-900/30 border border-blue-500/25',
-                green: 'text-green-300 bg-green-900/30 border border-green-500/25',
-                purple: 'text-purple-300 bg-purple-900/30 border border-purple-500/25',
-                red: 'text-red-300 bg-red-900/30 border border-red-500/25',
-              };
-              const accent = accentMap[report.color] ?? accentMap.blue;
-              const badge = badgeMap[report.color] ?? badgeMap.blue;
-
-              return (
-                <article
-                  key={report.slug}
-                  className={`group relative flex flex-col rounded-2xl border bg-white/[0.035] p-6 backdrop-blur-sm transition-all ${accent}`}
-                >
-                  {report.isNew && (
-                    <span className="absolute right-4 top-4 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
-                  )}
-                  <div className="flex items-center justify-between gap-2">
-                    <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-bold ${badge}`}>
-                      {report.price}
-                    </span>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{report.priceLabel}</span>
-                  </div>
-                  <h3 className="mt-4 text-lg font-bold leading-snug text-white">{report.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">{report.subtitle}</p>
-                  <p className="mt-3 text-xs text-slate-500">
-                    Best for: {report.bestFor.slice(0, 2).join(' · ')}
-                  </p>
-                  {/* Single primary CTA: read preview first, buy on the report page */}
-                  <div className="mt-auto pt-6">
-                    <Link
-                      href={`/reports/${report.slug}`}
-                      className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-                    >
-                      Read free preview →
-                    </Link>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-
-          {/* Inline reassurance */}
-          <p className="mt-4 text-center text-xs text-slate-500">
-            Buy buttons are on the report pages — after you’ve read the preview and decided it’s worth it.
-          </p>
-        </section>
-
-        {/* ── Why this work is different ───────────────────────────── */}
-        <section className="mt-16 rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 backdrop-blur-sm">
-          <div className="mb-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">What makes this different</p>
-            <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
-              Four things most AI research gets wrong.
-            </h2>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2">
-            {differentiators.map((item, i) => (
-              <div key={item.label} className="flex gap-4">
-                <span className="mt-0.5 shrink-0 text-2xl font-black text-cyan-300/30">0{i + 1}</span>
-                <div>
-                  <h3 className="text-base font-bold text-white">{item.label}</h3>
-                  <p className="mt-1.5 text-sm leading-7 text-slate-400">{item.detail}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* ── How it works ───────────────────────────────────────────── */}
         <section className="mt-8 rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 backdrop-blur-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">How it works</p>
           <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
-            No risk. Full transparency before you pay.
+            No risk. You read before you pay.
           </h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {howItWorks.map((item) => (
@@ -387,14 +373,37 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ── What this site is NOT ────────────────────────────────── */}
+        <section className="mt-8">
+          <div className="rounded-[2rem] border border-amber-400/15 bg-amber-500/[0.04] p-6 sm:p-8 backdrop-blur-sm">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
+              <div className="shrink-0">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Honest scope</p>
+                <p className="mt-1.5 text-xl font-bold text-white">What this isn&apos;t.</p>
+                <p className="mt-2 max-w-xs text-sm leading-6 text-slate-400">
+                  Specificity about what we don&apos;t cover is more credible than claiming to cover everything.
+                </p>
+              </div>
+              <ul className="grid gap-3 sm:grid-cols-2 flex-1">
+                {notThis.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-slate-300">
+                    <span className="mt-1 shrink-0 text-amber-400 font-bold">✗</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* ── Newsletter CTA ─────────────────────────────────────────── */}
         <section className="mt-8 rounded-[2rem] border border-fuchsia-400/25 bg-fuchsia-500/[0.07] p-6 sm:p-8">
           <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Newsletter — $10/mo</p>
-              <h2 className="mt-2 text-xl font-bold text-white">Operator-grade AI signal, weekly.</h2>
+              <h2 className="mt-2 text-xl font-bold text-white">The week's AI agent signal, without the noise.</h2>
               <p className="mt-1.5 text-sm text-slate-400">
-                The same filtering lens as the reports — applied to the week&apos;s AI agent news. No hype, no tutorials, no vendor announcements dressed as research.
+                The same operator lens as the reports — applied to the week's AI news. No hype, no tutorials, no vendor announcements dressed up as research.
               </p>
             </div>
             <Link
@@ -495,7 +504,7 @@ export default function Home() {
               </div>
               <h2 className="mt-2 text-2xl font-bold text-white">Operator-grade AI news, updated daily.</h2>
               <p className="mt-2 text-sm leading-7 text-slate-400">
-                Manually curated and filtered for teams building production agent systems. No hype. No tutorials.
+                Manually curated for teams building production agent systems. No hype. No tutorials.
               </p>
             </div>
             <Link
@@ -538,10 +547,10 @@ export default function Home() {
         <section className="mt-16 rounded-[2rem] border border-cyan-400/20 bg-gradient-to-br from-cyan-500/10 via-sky-600/5 to-fuchsia-600/8 p-10 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Ready to start?</p>
           <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-bold text-white md:text-4xl">
-            A concrete next step in under 24 hours.
+            Read the free preview. Then decide.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-8 text-slate-400">
-            Browse a report with a full free preview, or bring a hard implementation problem for a human review.
+            Every report ships with full methodology, sample sections, citations, action steps, and explicit risks before you spend a dollar. Or bring a live problem for a human review.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
@@ -581,7 +590,7 @@ export default function Home() {
               <Link href="/news" className="hover:text-white">News</Link>
               <Link href="/assessment" className="hover:text-white">Consulting</Link>
               <Link href="/pricing" className="hover:text-white">Pricing</Link>
-              <Link href="/docs" className="hover:text-white">Docs</Link>
+              <Link href="/docs" className="hover:text-white">API</Link>
               <Link href="/about" className="hover:text-white">About</Link>
               <a href="mailto:hello@rareagent.work" className="hover:text-white">hello@rareagent.work</a>
             </nav>

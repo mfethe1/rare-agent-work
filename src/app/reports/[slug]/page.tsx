@@ -8,6 +8,7 @@ import BuyButton from '@/components/BuyButton';
 import StickyBuyBar from '@/components/StickyBuyBar';
 import Link from 'next/link';
 import ConversionTracker from '@/components/ConversionTracker';
+import PurchaseSuccessBanner from '@/components/PurchaseSuccessBanner';
 import { ReportJsonLd, BreadcrumbJsonLd } from '@/components/JsonLd';
 import SiteNav from '@/components/SiteNav';
 
@@ -226,8 +227,11 @@ const colorMap: Record<string, {
   },
 };
 
-export default async function ReportPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ReportPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ purchased?: string; session_id?: string }> }) {
   const { slug } = await params;
+  const sp = await searchParams;
+  const purchased = sp.purchased === 'true' || sp.purchased === '1';
+
   const report = getReport(slug);
   if (!report) notFound();
 
@@ -271,9 +275,20 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
         />
       </div>
 
+
       <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:py-12">
 
-        {/* ── HERO: Report identity + primary purchase decision ─────── */}
+        {/* ── PURCHASE SUCCESS BANNER — only shown immediately after Stripe redirect ── */}
+        {purchased && (
+          <PurchaseSuccessBanner
+            reportTitle={report.title}
+            reportSlug={report.slug}
+            reportPrice={report.price}
+            reportColor={report.color}
+            planKey={report.planKey}
+          />
+        )}
+
         <section className="mb-10">
 
           {/* Letterhead strip */}
@@ -533,9 +548,12 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           <div className="mb-6">
             <div className="flex items-center justify-between gap-4 mb-4">
               <div>
-                <h2 className="text-xl font-bold text-white">Preview Content</h2>
+                <h2 className="text-xl font-bold text-white">{purchased ? 'Full Report' : 'Preview Content'}</h2>
                 <p className="mt-1 text-sm text-slate-400">
-                  {Math.min(2, report.excerpt.length)} of {report.excerpt.length} sections fully unlocked &mdash; the rest open immediately after purchase.
+                  {purchased
+                    ? `All ${report.excerpt.length} sections unlocked — scroll down to read.`
+                    : `${Math.min(2, report.excerpt.length)} of ${report.excerpt.length} sections fully unlocked \u2014 the rest open immediately after purchase.`
+                  }
                 </p>
               </div>
               <span className={`shrink-0 rounded-full border ${c.border} px-3 py-1 text-xs font-semibold ${c.text}`}>
@@ -546,7 +564,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
             {/* Full TOC: all sections visible with hooks for locked ones */}
             <nav className="grid gap-2 sm:grid-cols-2">
               {report.excerpt.map((section, idx) => {
-                const isLockedNav = idx >= 2;
+                const isLockedNav = idx >= 2 && !purchased;
                 const hook = report.excerptHooks?.[idx];
                 return (
                   <a
@@ -576,7 +594,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           {/* Excerpt sections */}
           <div className="space-y-6">
             {report.excerpt.map((section, idx) => {
-              const isLocked = idx >= 2;
+              const isLocked = idx >= 2 && !purchased;
               return (
               <div
                 id={`excerpt-${idx}`}

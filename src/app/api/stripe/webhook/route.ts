@@ -9,6 +9,15 @@ import type {
   StripeSubscriptionJobPayload,
 } from '@/lib/queue/types';
 
+// Plan key → report slug mapping (mirrors checkout/route.ts)
+const PLAN_TO_SLUG: Record<string, string> = {
+  report_60: 'agent-setup-60',
+  report_multi: 'single-to-multi-agent',
+  report_empirical: 'empirical-agent-architecture',
+  report_mcp: 'mcp-security',
+  report_incidents: 'agent-incident-postmortems',
+};
+
 export const runtime = 'nodejs';
 
 // Use service-role key for webhook writes (bypasses RLS)
@@ -115,8 +124,29 @@ export async function POST(req: Request) {
             }
           }
         }
+
+        // One-time payment: record the report purchase (idempotent).
+        if (session.mode === 'payment' && customerEmail) {
+          const planKey = (session.metadata?.plan as string) ?? '';
+          const reportSlug = PLAN_TO_SLUG[planKey] ?? '';
+          if (supabase && reportSlug) {
+            await supabase.from('report_purchases').upsert(
+              {
+                stripe_session_id: session.id,
+                stripe_customer_id: customerId ?? null,
+                customer_email: customerEmail,
+                report_slug: reportSlug,
+                plan_key: planKey,
+                amount_cents: session.amount_total ?? 0,
+              },
+              { onConflict: 'stripe_session_id' },
+            );
+            console.log('[Webhook] Recorded report purchase', { reportSlug, customerEmail });
+          }
+        }
         break;
       }
+
 
       case 'invoice.paid': {
         const invoice = event.data.object as Stripe.Invoice;

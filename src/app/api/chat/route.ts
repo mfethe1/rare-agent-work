@@ -31,20 +31,20 @@ const AVAILABLE_MODELS: Record<string, ModelConfig> = {
     label: 'Claude Sonnet 4.6',
     tiers: ['free', 'newsletter', 'starter', 'pro'],
   },
-  'gpt-5.4': {
+  'gpt-4o': {
     provider: 'openai',
-    apiModel: 'gpt-5.4',
-    costKey: 'gpt-5.4',
+    apiModel: 'gpt-4o',
+    costKey: 'gpt-4o',
     maxTokens: 1024,
-    label: 'GPT-5.4',
+    label: 'GPT-4o',
     tiers: ['free', 'newsletter', 'starter', 'pro'],
   },
-  'gemini-3.1-pro': {
+  'gemini-2.0-flash': {
     provider: 'google',
-    apiModel: 'gemini-3.1-pro-preview',
-    costKey: 'gemini-3.1-pro',
+    apiModel: 'gemini-2.0-flash',
+    costKey: 'gemini-2.0-flash',
     maxTokens: 1024,
-    label: 'Gemini 3.1 Pro',
+    label: 'Gemini 2.0 Flash',
     tiers: ['free', 'newsletter', 'starter', 'pro'],
   },
 };

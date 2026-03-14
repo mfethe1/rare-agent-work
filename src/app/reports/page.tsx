@@ -96,7 +96,8 @@ function formatDate(raw: string): string {
 
 export default function ReportsPage() {
   const reports = getAllReports();
-  const newestReport = reports.find((r) => r.isNew);
+  const newReports = reports.filter((r) => r.isNew);
+  const newestReport = newReports[0] ?? null;
 
   return (
     <div className="min-h-screen bg-[#050816] text-white">
@@ -156,46 +157,66 @@ export default function ReportsPage() {
           </div>
         </header>
 
-        {/* ── New report callout ────────────────────────────────────── */}
-        {newestReport && (() => {
-          const c = colorAccent[newestReport.color] ?? colorAccent.amber;
-          return (
-            <div className="mb-10 rounded-2xl border border-red-500/30 bg-red-500/[0.06] p-5 sm:p-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex items-start gap-4">
-                  <span className="mt-0.5 shrink-0 rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                    New
-                  </span>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red-300">
-                      Just published
-                    </p>
-                    <h2 className="mt-1 text-lg font-bold text-white">
-                      {newestReport.title}
-                    </h2>
-                    <p className="mt-1 text-sm text-slate-400">
-                      {newestReport.valueprop}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex shrink-0 flex-wrap items-center gap-3">
-                  <span
-                    className={`inline-flex rounded-full border px-3 py-1 text-sm font-bold ${c.badge}`}
-                  >
-                    {newestReport.price}
-                  </span>
-                  <Link
-                    href={`/reports/${newestReport.slug}`}
-                    className="inline-flex rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-950 hover:bg-slate-100 transition-colors"
-                  >
-                    Read free preview →
-                  </Link>
-                </div>
-              </div>
+        {/* ── New report callouts — show ALL new reports, not just one ─────── */}
+        {newReports.length > 0 && (
+          <section className="mb-10">
+            <div className="mb-3 flex items-center gap-3">
+              <span className="rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                {newReports.length > 1 ? `${newReports.length} New` : 'New'}
+              </span>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Just published</p>
             </div>
-          );
-        })()}
-
+            <div className={`grid gap-4 ${newReports.length > 1 ? 'sm:grid-cols-2' : ''}`}>
+              {newReports.map((newReport) => {
+                const c = colorAccent[newReport.color] ?? colorAccent.amber;
+                return (
+                  <div key={newReport.slug} className={`rounded-2xl border ${c.border} bg-gradient-to-br ${c.surface} p-5 sm:p-6`}
+                    style={{ boxShadow: `0 0 48px ${c.glow}` }}>
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                      <div className="flex items-start gap-4">
+                        <span className="mt-0.5 shrink-0 rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                          New
+                        </span>
+                        <div>
+                          <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${c.text}`}>
+                            {newReport.edition} · {newReport.price}
+                          </p>
+                          <h2 className="mt-1 text-lg font-bold text-white">
+                            {newReport.title}
+                          </h2>
+                          <p className="mt-1 text-sm text-slate-300">
+                            {newReport.valueprop}
+                          </p>
+                          {newReport.sharpestInsight && (
+                            <p className={`mt-3 text-xs leading-5 ${c.text} italic opacity-80`}>
+                              &ldquo;{newReport.sharpestInsight.slice(0, 160)}{newReport.sharpestInsight.length > 160 ? '…' : ''}&rdquo;
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
+                        <span className={`inline-flex rounded-full border px-3 py-1 text-sm font-bold ${c.badge}`}>
+                          {newReport.price}
+                        </span>
+                        <Link
+                          href={`/reports/${newReport.slug}`}
+                          className={`inline-flex rounded-full px-4 py-2 text-sm font-bold transition-colors ${c.btn}`}
+                        >
+                          Read free preview →
+                        </Link>
+                        <BuyButton
+                          plan={newReport.planKey}
+                          label={`Buy — ${newReport.price}`}
+                          className={`inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm font-semibold transition-all ${c.btnOutline} hover:bg-white/5`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* ── Quick-path matcher — self-select to the right report —──────────────── */}
         <section className="mb-10">
@@ -203,19 +224,24 @@ export default function ReportsPage() {
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 text-center">Not sure where to start?</p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { situation: "First agent deployment, worried about failure modes in week one", report: "agent-setup-60", label: "Agent Setup in 60 Minutes", price: "$29", color: "blue" },
-                { situation: "Single agent working, need to add memory, roles, or parallel execution", report: "single-to-multi-agent", label: "Single to Multi-Agent", price: "$79", color: "green" },
-                { situation: "Building a formal eval protocol or presenting to procurement", report: "empirical-agent-architecture", label: "Empirical Architecture", price: "$299", color: "purple" },
-                { situation: "Something broke in production and I need to understand why auth, deduplication, and cost controls failed", report: "agent-setup-60", label: "Agent Setup in 60 Minutes", price: "$29", color: "blue" },
-                { situation: "Scaling to multi-agent and need to avoid orchestration deadlocks and memory failures", report: "single-to-multi-agent", label: "Single to Multi-Agent", price: "$79", color: "green" },
-                { situation: "Unsure — need all of the above", report: null, label: "Operator Access", price: "$49/mo", color: "purple" },
+                { situation: "First agent deployment, worried about the failure modes that shut down automation programs in week one", report: "agent-setup-60", label: "Agent Setup in 60 Minutes", price: "$29", color: "blue" },
+                { situation: "Single agent working, need to add memory, roles, or parallel execution without blowing up the system", report: "single-to-multi-agent", label: "Single to Multi-Agent", price: "$79", color: "green" },
+                { situation: "Connecting agents to MCP servers and haven't formally assessed the attack surface — including tool poisoning", report: "mcp-security", label: "MCP Security", price: "$149", color: "red", isNew: true },
+                { situation: "Something already broke in production and I need to understand the root cause pattern, not just fix the symptom", report: "agent-incident-postmortems", label: "Production Post-Mortems", price: "$149", color: "amber", isNew: true },
+                { situation: "Building a formal evaluation protocol or presenting agent quality evidence to procurement or a board", report: "empirical-agent-architecture", label: "Empirical Architecture", price: "$299", color: "purple" },
+                { situation: "Need all the failure classes covered — security, orchestration, evaluation, post-mortems, and setup", report: null, label: "Operator Access", price: "$49/mo", color: "purple" },
               ].map((item) => {
                 const borderMap: Record<string, string> = { blue: "border-blue-500/20 hover:border-blue-400/40", green: "border-green-500/20 hover:border-green-400/40", purple: "border-purple-500/20 hover:border-purple-400/40", red: "border-red-500/20 hover:border-red-400/40", amber: "border-amber-500/20 hover:border-amber-400/40" };
                 const textMap: Record<string, string> = { blue: "text-blue-300", green: "text-green-300", purple: "text-purple-300", red: "text-red-300", amber: "text-amber-300" };
                 const href = item.report ? `/reports/${item.report}` : "/pricing";
                 return (
                   <a key={item.situation} href={href} className={`flex flex-col gap-2 rounded-xl border ${borderMap[item.color] ?? "border-white/10"} bg-black/20 p-4 transition-all hover:bg-black/30`}>
-                    <p className="text-xs leading-5 text-slate-300">&#8220;{item.situation}&#8221;</p>
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-xs leading-5 text-slate-300">&#8220;{item.situation}&#8221;</p>
+                      {'isNew' in item && item.isNew && (
+                        <span className="shrink-0 rounded-full bg-red-500 px-1.5 py-0.5 text-[9px] font-bold uppercase text-white">New</span>
+                      )}
+                    </div>
                     <p className={`mt-auto text-xs font-bold ${textMap[item.color] ?? "text-slate-300"}`}>{item.label} — {item.price} →</p>
                   </a>
                 );

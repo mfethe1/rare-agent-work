@@ -62,7 +62,7 @@ const consultingServices = [
 
 export default function Home() {
   const reports = getAllReports();
-  const newReport = reports.find((r) => r.isNew);
+  const newReports = reports.filter((r) => r.isNew);
 
   const accentMap: Record<string, { card: string; price: string; btn: string; previewBtn: string }> = {
     blue: {
@@ -110,7 +110,7 @@ export default function Home() {
       </div>
 
       <SiteNav
-        newReport={newReport ? { title: newReport.title, slug: newReport.slug, price: newReport.price } : null}
+        newReport={newReports[0] ? { title: newReports[0].title, slug: newReports[0].slug, price: newReports[0].price } : null}
         primaryCta={{ label: 'Browse Reports', href: '/reports' }}
       />
 
@@ -269,14 +269,14 @@ export default function Home() {
         </section>
 
         {/* ── NEW RELEASES — urgency banner for newest reports ──────────────────────────── */}
-        {reports.filter((r) => r.isNew).length > 0 && (
+        {newReports.length > 0 && (
           <section className="mt-12">
             <div className="mb-4 flex items-center gap-3">
-              <span className="rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
+              <span className="rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">{newReports.length > 1 ? `${newReports.length} New` : 'New'}</span>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Just published</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              {reports.filter((r) => r.isNew).map((report) => {
+              {newReports.map((report) => {
                 const accent = accentMap[report.color] ?? accentMap.red;
                 return (
                   <article
@@ -343,7 +343,7 @@ export default function Home() {
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {reports.map((report) => {
+            {[...reports].sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0)).map((report) => {
               const accent = accentMap[report.color] ?? accentMap.blue;
 
               return (

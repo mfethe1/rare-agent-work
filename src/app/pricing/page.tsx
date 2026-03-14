@@ -83,9 +83,9 @@ export default function PricingPage() {
                     <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
                     <span>Ask a small number of AI questions for lightweight exploration before you commit</span>
                   </li>
-                  <li className="flex items-start gap-3">
+                <li className="flex items-start gap-3">
                     <span className="mt-1 block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cyan-300" />
-                    <span>Access the model leaderboard and comparison tools</span>
+                    <span>Subscribe to the $10/mo newsletter for hot-news alerts and context</span>
                   </li>
                 </ul>
               </div>

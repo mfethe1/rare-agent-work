@@ -30,12 +30,11 @@ export const MODEL_PRICING: Record<string, ModelPricing> = {
   'claude-sonnet-4-6':     { inputPer1M: 3.00,  outputPer1M: 15.00,  label: 'Claude Sonnet 4.6' },
   'claude-opus-4-6':       { inputPer1M: 15.00, outputPer1M: 75.00,  label: 'Claude Opus 4.6' },
   // OpenAI
-  'gpt-5.4':               { inputPer1M: 2.50,  outputPer1M: 20.00,  label: 'GPT-5.4' },
-  'gpt-5.4-pro':           { inputPer1M: 30.00, outputPer1M: 180.00, label: 'GPT-5.4 Pro' },
-  'gpt-5.2':               { inputPer1M: 1.75,  outputPer1M: 14.00,  label: 'GPT-5.2' },
+  'gpt-4o':               { inputPer1M: 2.50,  outputPer1M: 10.00,  label: 'GPT-4o' },
+  'gpt-4o-mini':           { inputPer1M: 0.15,  outputPer1M: 0.60,   label: 'GPT-4o Mini' },
   // Google
-  'gemini-3.1-pro':        { inputPer1M: 2.00,  outputPer1M: 12.00,  label: 'Gemini 3.1 Pro' },
-  'gemini-3-flash':        { inputPer1M: 0.50,  outputPer1M: 3.00,   label: 'Gemini 3 Flash' },
+  'gemini-2.0-flash':      { inputPer1M: 0.10,  outputPer1M: 0.40,   label: 'Gemini 2.0 Flash' },
+  'gemini-1.5-pro':        { inputPer1M: 1.25,  outputPer1M: 5.00,   label: 'Gemini 1.5 Pro' },
 };
 
 /** 30% markup on provider cost */

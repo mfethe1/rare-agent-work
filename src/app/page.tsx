@@ -296,9 +296,9 @@ export default function Home() {
                     <p className="mt-1.5 text-sm text-slate-400">{report.subtitle}</p>
                     {report.sharpestInsight && (
                       <div className="mt-4 rounded-xl border border-white/8 bg-black/20 p-3">
-                        <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-1.5">Free finding</p>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-1.5">The finding that changes your next decision</p>
                         <p className="text-[11px] leading-5 text-slate-200 italic">
-                          &ldquo;{report.sharpestInsight.split(/\.\s+/)[0]}.&rdquo;
+                          &ldquo;{report.sharpestInsight}&rdquo;
                         </p>
                       </div>
                     )}
@@ -380,9 +380,9 @@ export default function Home() {
                   {/* Sharpest insight — show FIRST complete sentence, never clip mid-thought */}
                   {report.sharpestInsight && (
                     <div className="mt-4 rounded-xl border border-white/8 bg-black/20 p-3">
-                      <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-1.5">Free finding</p>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-1.5">The finding that changes your next decision</p>
                       <p className="text-[11px] leading-5 text-slate-200 italic">
-                        &ldquo;{report.sharpestInsight.split(/\.\s+/)[0]}.&rdquo;
+                        &ldquo;{report.sharpestInsight}&rdquo;
                       </p>
                     </div>
                   )}

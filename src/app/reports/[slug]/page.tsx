@@ -340,7 +340,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                   <div className={`border-b border-white/8 px-5 py-3 flex items-center gap-2.5`}>
                     <span className={`h-2 w-2 rounded-full ${c.dot} shadow-[0_0_8px_currentColor]`} />
                     <p className={`text-[10px] font-bold uppercase tracking-[0.22em] ${c.text}`}>
-                      Key finding — given away free
+                      The finding that changes your next decision
                     </p>
                   </div>
                   <div className="px-5 py-5">
@@ -402,6 +402,23 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
 
         {/* Sentinel: sticky bar watches this element — placed after hero CTA */}
         <div id="hero-buy-sentinel" />
+
+        {/* ── Executive Summary — the persuasive argument, surfaced where it converts ── */}
+        <section className="mb-10">
+          <div className={`rounded-2xl border ${c.border} bg-gradient-to-br from-black/40 to-black/20 overflow-hidden`}>
+            <div className={`border-b border-white/8 px-6 py-3 flex items-center gap-2.5`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${c.dot}`} />
+              <p className={`text-[10px] font-bold uppercase tracking-[0.22em] ${c.text}`}>
+                Why this report exists
+              </p>
+            </div>
+            <div className="px-6 py-6 sm:px-8">
+              <blockquote className="text-base leading-8 text-slate-200 font-medium sm:text-[1.05rem]">
+                {report.executiveSummary}
+              </blockquote>
+            </div>
+          </div>
+        </section>
 
         {/* ── Stakes / Decision triggers / Failure costs ──────────────── */}
         <section className="mb-10 grid gap-5 sm:grid-cols-3">

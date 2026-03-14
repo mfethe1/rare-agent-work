@@ -205,7 +205,7 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
       'Operating cost reality after week one: why maintenance overhead is underestimated by 3–10x — the failure taxonomy for first-time operators',
       'Shadow mode protocol: 48 hours of dry-run execution that surfaces edge cases 100 synthetic test cases miss',
     ],
-    sharpestInsight: 'The single most common first incident for new operators is not a bug — it is correct execution at unexpected scale. The workflow ran exactly as designed while sending 6 identical emails to the same customer. The root cause is always the same: no deduplication key, no volume cap, no test/prod separation. These three safeguards take 20 minutes to implement and prevent the incident class that gets automation programs shut down by leadership.',
+    sharpestInsight: 'Your workflow ran exactly as designed — and sent six identical emails to the same customer. No deduplication key, no volume cap, no test/prod separation: the three safeguards that take 20 minutes to add and are the difference between a smooth launch and an automation program that gets shut down by leadership.',
     notForAudience: [
       'Teams already running 10+ workflows in production who need advanced orchestration design',
       'Developers who want to write code — this report covers no-code and low-code platforms only',
@@ -360,7 +360,7 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
       'Trajectory cost measurement — why tracking final output quality alone hides the expensive, brittle execution patterns that drive incident exposure',
       'When NOT to use multi-agent: the 5-question migration trigger checklist and why adding coordination without sufficient justification creates slower, more expensive systems',
     ],
-    sharpestInsight: 'The most expensive mistake in multi-agent architecture is adding parallel execution too early. Parallel execution is the highest-complexity addition and should always come last — after the planner-executor-reviewer loop is stable and you have explicit tasks that benefit from parallel processing. Teams that add it first spend more time debugging coordination failures than the parallelism saves. The correct migration sequence is: reviewer first, then planner, then parallel execution. This order is counterintuitive and almost universally ignored.',
+    sharpestInsight: 'Adding parallel execution first — the instinctive move when scaling — is the mistake that kills multi-agent projects: teams spend more time debugging coordination failures than the parallelism saves, because the correct sequence is reviewer first, then planner, then parallel execution, and almost every team does it backwards.',
     notForAudience: [
       'Teams that haven\'t shipped a working single-agent system yet — multi-agent architecture is not a shortcut to your first working product',
       'Non-technical operators who want a no-code path — this report requires comfort with frameworks and infrastructure concepts',
@@ -603,7 +603,7 @@ The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certificat
       'Model routing economics: a well-designed routing layer reduces per-session costs 40–60% versus uniform frontier model use',
       'The reproducibility artifact set procurement actually asks for: model version pin, prompt hash, evaluation manifest, calibration record',
     ],
-    sharpestInsight: 'The free insight that converts this report: with n=50 examples — the single most common evaluation set size — you cannot statistically distinguish 76% accuracy from 71%. The minimum detectable difference at n=50 and 80% power is approximately 20 percentage points. This means almost every published "our model outperforms X by 8 points" comparison is statistically indistinguishable from noise. Most teams are not evaluating. They are generating numbers that feel like evaluation while making architectural decisions from noise. This is not a minor methodological issue — it means model selection, framework, and deployment decisions made from underpowered evaluations carry false precision that compounds into architectural debt.',
+    sharpestInsight: 'With n=50 — the most common evaluation set size — you cannot statistically distinguish 76% accuracy from 71%: the minimum detectable difference is 20 percentage points, which means most teams presenting model comparison results are presenting noise dressed as evidence, and the framework decisions that follow from that noise compound into months of architectural debt.',
     notForAudience: [
       'Individual developers or small startups where the buyer and builder are the same person — the governance and procurement content is enterprise-specific',
       'Teams using agent systems purely for internal tooling with no external user exposure or compliance requirements',
@@ -815,7 +815,7 @@ Step 10: Document exactly what happened, what the attack vector was, what the im
       '10-item pre-launch MCP security checklist designed to be run before connecting any new server to production',
       'Step-by-step incident response playbook for when you suspect an MCP server is behaving maliciously',
     ],
-    sharpestInsight: 'The attack that no content filter catches: a third-party MCP server\'s tool description field — the text that tells the AI what a tool does — contains hidden instructions addressed to the model. The instructions look identical to legitimate documentation to every automated scanner. The model reads them as authoritative context because they arrive via the trusted MCP channel. Your agent then executes those instructions on behalf of real users. This has already happened in the wild. The only defenses that stop it are structural: tagging context by source so the model knows not to treat tool output as system instructions, and adding confirmation gates that interrupt consequential actions before they execute. Asking the model to "be vigilant about prompt injection" in the system prompt provides negligible protection against a capable payload delivered via MCP.',
+    sharpestInsight: 'A third-party MCP server’s tool description field — the text that tells your AI what a tool does — is a direct write path into your agent’s execution context, and no content filter catches it because hidden instructions inside documentation text look identical to legitimate documentation to every automated scanner.',
     notForAudience: [
       'Teams not yet using Model Context Protocol in their agent deployments — this report is MCP-specific and assumes active deployment',
       'Security researchers looking for novel vulnerability disclosures — this synthesizes known attack patterns into an operator defense framework',
@@ -1036,7 +1036,7 @@ This is not a monitoring failure in the traditional sense. Most teams have monit
       'How to build a monitoring baseline before your first production deployment (not after your first incident)',
       'Two fill-in-the-blank incident response templates ready for use in actual production incidents',
     ],
-    sharpestInsight: 'The most consistent finding across all 8 incident categories: the incident was visible in the logs before it became an incident. The bulk-send spike was a 47x volume anomaly. The auth cascade was a wall of 401 errors. The cost explosion was 8x expected cost per session for three days. Every signal was there. Nobody was watching because nobody had written down what normal looked like. A monitoring baseline takes two hours to build and converts a reactive operation into an anticipatory one.',
+    sharpestInsight: 'Every incident in this report was visible in the logs before it became an incident — the bulk-send spike was a 47x volume anomaly, the auth cascade was a wall of 401 errors for four days, the $47k cost explosion was 8x expected cost per session for 72 hours — and every signal was missed because nobody had written down what normal looked like.',
     notForAudience: [
       'Teams that haven\'t deployed an agent to production yet — the incidents require production context to be actionable',
       'Teams looking for a general AI safety or AI ethics framework — this is an operational incident intelligence report, not a policy document',

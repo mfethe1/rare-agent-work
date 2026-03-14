@@ -272,7 +272,7 @@ export default function ReportsPage() {
                     {report.sharpestInsight && (
                       <div className={`mt-5 rounded-xl border-l-4 ${c.insightBorder} ${c.insightBg} p-4`}>
                         <p className={`mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] ${c.text}`}>
-                          The finding you need to know — free
+                          The finding that changes your next decision
                         </p>
                         <p className="text-sm leading-6 text-slate-200 italic">
                           &ldquo;{report.sharpestInsight}&rdquo;

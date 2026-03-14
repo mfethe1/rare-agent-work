@@ -70,9 +70,9 @@ export const reports: Record<string, Report> = {
     audience: 'Founders, operators, and non-technical teams launching their first workflow',
     valueprop: 'Build a production-safe AI workflow with human approval gates in under 60 minutes — without writing code.',
     edition: 'Operator Playbook Edition',
-    revision: 'Rev 2.1',
-    updatedAt: '2026-03-09',
-    freshnessTimestamp: '2026-03-09T15:00:00-04:00',
+    revision: 'Rev 2.2',
+    updatedAt: '2026-03-14',
+    freshnessTimestamp: '2026-03-14T13:00:00-04:00',
     readingTime: '18 minute brief + implementation worksheet',
     author: 'Michael Fethe',
     attribution: 'Written and maintained by Michael Fethe for Rare Agent Work.',
@@ -89,7 +89,7 @@ export const reports: Record<string, Report> = {
     ],
     emailAccent: '#2563eb',
     executiveSummary:
-      'Most first-time automation teams fail because they automate a vague process, pick the wrong platform, and skip human approval checkpoints. This brief fixes that by forcing scope lock, tool-fit discipline, and explicit rollback design before any workflow goes live.',
+      'Most first-time automation teams fail in the same three ways: they automate a vague process before it is stable, they pick a platform based on brand recognition instead of fit, and they skip human approval gates because adding them after launch feels optional. It is not. This report forces scope lock before build, applies an honest platform decision matrix that vendors will never give you, and embeds approval-gate architecture as a launch requirement — not an afterthought. The result is a workflow that survives week two, not just the demo.',
     implications: [
       'Platform choice should be treated as an operating-model decision because downstream maintenance cost varies sharply once workflows move beyond simple triggers.',
       'Human approval gates are not optional compliance overhead; they are the control point that prevents irreversible errors during early rollout.',
@@ -231,9 +231,9 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
     audience: 'Engineering teams and technical leads scaling execution across multiple workflows',
     valueprop: 'Architect a coordinated multi-agent system with proper memory layers, role separation, and production-safe failure handling.',
     edition: 'Systems Architecture Edition',
-    revision: 'Rev 2.1',
-    updatedAt: '2026-03-09',
-    freshnessTimestamp: '2026-03-09T15:00:00-04:00',
+    revision: 'Rev 2.2',
+    updatedAt: '2026-03-14',
+    freshnessTimestamp: '2026-03-14T13:00:00-04:00',
     readingTime: '24 minute architecture brief + deployment blueprint',
     author: 'Michael Fethe',
     attribution: 'Written and maintained by Michael Fethe for Rare Agent Work.',
@@ -250,7 +250,7 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
     ],
     emailAccent: '#16a34a',
     executiveSummary:
-      'Teams should not jump to multi-agent architecture because it sounds advanced. They should do it when workload diversity, context volume, and review requirements justify explicit planner, executor, and reviewer roles backed by memory and observability.',
+      'Teams that jump to multi-agent architecture before they are ready end up slower, more expensive, and harder to debug than the single-agent system they replaced. The right move is to add coordination complexity only when you can answer yes to three specific questions: is your workload diverse enough to benefit from role specialization, have you hit context limits consistently, and do you have someone who can read the framework logs at 2am? This report gives you the five-question readiness test, the exact migration sequence (reviewer first, then planner, then parallel execution — in that order), and the memory architecture prerequisites without which multi-agent systems compound context loss instead of solving it.',
     implications: [
       'Role-based orchestration only improves outcomes when routing logic reflects real workload diversity rather than organizational preference.',
       'Memory architecture is a prerequisite for scaling because context loss compounds across coordinated agents and creates rework loops.',

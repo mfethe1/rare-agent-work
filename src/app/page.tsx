@@ -12,25 +12,29 @@ const incidentCards = [
     icon: '💣',
     title: 'The bulk-send incident',
     detail: '847 customers got the same email. CSV imported. No deduplication key. No volume cap. Automation ran as designed.',
-    report: 'agent-incident-postmortems',
+    report: 'agent-setup-60',
+    reportLabel: 'Agent Setup in 60 Minutes',
   },
   {
     icon: '🔒',
     title: 'Auth cascade, 4 days silent',
     detail: 'Employee left. Service account deleted. 14 workflows failed. Error notifications sent to the deleted email. Nobody knew.',
-    report: 'agent-incident-postmortems',
+    report: 'agent-setup-60',
+    reportLabel: 'Agent Setup in 60 Minutes',
   },
   {
     icon: '💸',
     title: '$47k in 72 hours',
     detail: 'One config variable not updated on prod deploy. GPT-4o instead of mini. No per-session cost ceiling. No daily alert.',
     report: 'empirical-agent-architecture',
+    reportLabel: 'Empirical Architecture',
   },
   {
     icon: '🧹',
     title: 'MCP tool poisoning',
     detail: "Third-party MCP server's tool description contained instructions addressed to the model. Content filters didn't catch it.",
-    report: 'mcp-security',
+    report: 'empirical-agent-architecture',
+    reportLabel: 'Empirical Architecture',
   },
 ];
 
@@ -94,10 +98,9 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-            5 implementation reports covering the real failures — MCP security, multi-agent orchestration, evaluation governance, and production post-mortems.
+            3 implementation reports live now — multi-agent orchestration, evaluation governance, and low-code workflow setup.
             Every claim cited. Full preview free before you spend a dollar.
           </p>
-
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/reports"
@@ -127,8 +130,8 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:justify-end">
                 {[
-                  { stat: '5', label: 'reports with full previews and citations' },
-                  { stat: '8', label: 'post-mortem incidents documented' },
+                  { stat: '3', label: 'reports live with full previews and citations' },
+                  { stat: '4', label: 'production failure modes documented in depth' },
                   { stat: '100%', label: 'free preview before purchase' },
                   { stat: 'Human', label: 'review on every consulting intake' },
                   { stat: 'Zero', label: 'vendor-sponsored content' },
@@ -147,13 +150,13 @@ export default function Home() {
         <section className="mt-16">
           <div className="mb-6 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
-              8 post-mortems. Every failure class documented in detail.
+              The failure classes that hit production teams hardest. Covered in the live reports.
             </p>
             <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
               These incidents happen to almost every team.
             </h2>
             <p className="mt-2 text-sm text-slate-400">
-              Real cases, exact timelines, five-layer root cause. Read the report before your team has the same incident.
+              Each failure mode is documented in detail in one of the live reports below. Click any card to read the relevant report.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -167,7 +170,7 @@ export default function Home() {
                 <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">{fm.title}</h3>
                 <p className="mt-2 text-xs leading-5 text-slate-400">{fm.detail}</p>
                 <p className="mt-3 text-[10px] font-semibold text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                  Read the report →
+                  Covered in: {fm.reportLabel} →
                 </p>
               </Link>
             ))}
@@ -327,8 +330,8 @@ export default function Home() {
 
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   {[
-                    { stat: '5', label: 'implementation reports', sub: 'Full previews, citations, and post-mortem depth on every topic' },
-                    { stat: '8', label: 'post-mortems documented', sub: 'Bulk send, auth cascade, cost explosion, MCP poisoning, orchestration deadlock' },
+                    { stat: '3', label: 'implementation reports live', sub: 'Full previews, citations, and operator-grade depth on every topic' },
+                    { stat: '4', label: 'failure modes documented in depth', sub: 'Bulk send, auth cascade, cost explosion, MCP poisoning — covered in the live reports' },
                     { stat: '100%', label: 'human-reviewed intakes', sub: 'Every consulting request read before any next step' },
                   ].map((item) => (
                     <div key={item.label} className="rounded-xl border border-white/10 bg-black/20 p-4">

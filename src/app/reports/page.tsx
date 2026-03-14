@@ -144,8 +144,8 @@ export default function ReportsPage() {
           <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {[
               { stat: "100%", label: "free preview before purchase" },
-              { stat: "5", label: "reports with cited sources" },
-              { stat: "8", label: "post-mortem incidents documented" },
+              { stat: reports.length.toString(), label: "reports with cited sources" },
+              { stat: "4", label: "production failure modes documented in depth" },
               { stat: "Zero", label: "vendor-sponsored content" },
             ].map((item) => (
               <div key={item.label} className="flex items-baseline gap-1.5">

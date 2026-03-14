@@ -225,10 +225,11 @@ const colorMap: Record<string, {
   },
 };
 
-export default async function ReportPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ purchased?: string; session_id?: string }> }) {
+export default async function ReportPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ purchased?: string; session_id?: string; access?: string }> }) {
   const { slug } = await params;
   const sp = await searchParams;
   const purchased = sp.purchased === 'true' || sp.purchased === '1';
+  const accessRequired = sp.access === 'required';
 
   const report = getReport(slug);
   if (!report) notFound();
@@ -275,6 +276,31 @@ export default async function ReportPage({ params, searchParams }: { params: Pro
 
 
       <main className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:py-12">
+
+        {/* ── PURCHASE REQUIRED BANNER — shown when a logged-in user without a purchase tries the full reader ── */}
+        {accessRequired && (
+          <div className="mb-8 overflow-hidden rounded-2xl border border-amber-500/30 bg-amber-500/[0.06]" role="alert">
+            <div className="flex items-center gap-3 border-b border-white/10 bg-amber-500/[0.08] px-5 py-3.5">
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-400 text-slate-950 text-[10px] font-black">!</span>
+              <p className="flex-1 text-sm font-bold text-amber-300">Purchase required to access the full report reader</p>
+            </div>
+            <div className="px-5 py-5">
+              <p className="text-sm leading-6 text-slate-300">
+                You&apos;re logged in, but the full interactive reader is only available after purchasing this report.
+                The free preview below is fully visible — or get instant access to all {report.excerpt.length} sections now.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <BuyButton
+                  label={`Get full access — ${report.price}`}
+                  plan={report.planKey}
+                  className={`inline-flex items-center justify-center rounded-full ${c.btnHero} px-6 py-2.5 text-sm font-bold text-white transition-all`}
+                />
+                <a href="#preview" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.05] px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
+                  Continue reading the free preview</a>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ── PURCHASE SUCCESS BANNER — only shown immediately after Stripe redirect ── */}
         {purchased && (

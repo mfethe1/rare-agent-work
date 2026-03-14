@@ -386,10 +386,10 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
     audience: 'Technical leaders, architects, and B2B operators deploying AI at scale',
     valueprop: 'Build a defensible, reproducible evaluation protocol and governance framework for production AI systems — with real statistical grounding, not benchmark theater.',
     edition: 'Empirical Strategy Brief',
-    revision: 'Rev 3.0',
+    revision: 'Rev 3.1',
     updatedAt: '2026-03-14',
-    freshnessTimestamp: '2026-03-14T09:00:00-04:00',
-    readingTime: '42 minute strategy brief + governance scorecard',
+    freshnessTimestamp: '2026-03-14T13:00:00-04:00',
+    readingTime: '44 minute strategy brief + governance scorecard + red team worksheet',
     author: 'Michael Fethe',
     attribution: 'Written and maintained by Michael Fethe for Rare Agent Work.',
     methodology: [
@@ -405,16 +405,16 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
     ],
     emailAccent: '#7c3aed',
     executiveSummary:
-      'Most agent evaluation programs fail because they benchmark demos instead of operating reality — and then compound the error with uncalibrated judge models and statistically invalid sample sizes. This report provides the evaluation protocol, governance framework, and procurement evidence pack that enterprise teams need to defend architectural decisions under scrutiny.',
+      'Most agent evaluation programs fail not because teams skip evaluation — they fail because the evaluation setup has three structural flaws that make the results untrustworthy before a single test is run: benchmarks built from best-case examples instead of production traffic distributions, judge models deployed without calibration against human raters, and sample sizes that are statistically incapable of detecting the differences they are being asked to measure. This report replaces all three with a defensible, reproducible protocol that enterprise teams can present under procurement scrutiny.',
     implications: [
-      'Evaluation rigor is now a procurement and liability differentiator: sophisticated buyers ask for calibration evidence, reproducibility records, and red team results — not benchmark scores.',
-      'Uncalibrated judge-model scoring creates systemic directional bias that actively misprice model-selection and workflow decisions at enterprise scale.',
-      'Statistical validity in evaluation design is not a research luxury — underpowered evaluations (n < 100) cannot distinguish real quality differences from noise, producing decisions with false confidence.',
+      'Evaluation rigor is now a procurement and liability differentiator: sophisticated buyers ask for calibration evidence, reproducibility records, and red team results — the teams that cannot produce them are losing enterprise deals to teams that can.',
+      'Uncalibrated LLM-as-judge scoring introduces systematic directional bias — length bias, self-similarity bias, confidence bias — that actively misprices model selection and architectural decisions at enterprise scale. The bias is invisible unless you run calibration, which means most teams are optimizing against a distorted signal without knowing it.',
+      'Underpowered evaluations (n < 100) cannot distinguish real quality differences from random variation. With n=50 — the most common evaluation set size — the minimum detectable difference at 80% power is 20 percentage points. Most published comparisons claiming a 5–10 point advantage are statistically indistinguishable from noise.',
     ],
     actionSteps: [
-      'Build evaluation sets from real production traffic distributions, stratified by task type, difficulty tier, and edge-case frequency — not best-case examples.',
-      'Calibrate LLM-as-judge outputs against two independent human raters on a representative sample; do not trust automated scores until inter-rater correlation exceeds 0.75.',
-      'Run a structured red team exercise against your production deployment before launch — prompt injection via retrieved content, context exhaustion, and tool failure cascades are the three highest-yield attack surfaces.',
+      'Build evaluation sets by sampling real production traffic, stratified by task type and difficulty tier — not from curated best-case examples. The gap between curated benchmark performance and production performance averages 15–25 percentage points across all major agent deployments.',
+      'Calibrate your LLM-as-judge against two independent human raters on a 50–100 example sample before trusting any automated evaluation scores. Target Pearson r > 0.75. Below 0.65 means your evaluation prompt has a structural problem that will corrupt every decision downstream.',
+      'Complete the 12-item pre-production governance checklist with test evidence for each item before any agent system touches production — not as a compliance exercise, but because each item maps to a specific incident class that teams consistently discover the hard way.'
     ],
     risks: [
       'Curated benchmark sets create false confidence and systematically hide the actual production error envelope — the gap between benchmark and production performance averages 15–25 percentage points.',
@@ -603,7 +603,7 @@ The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certificat
       'Model routing economics: a well-designed routing layer reduces per-session costs 40–60% versus uniform frontier model use',
       'The reproducibility artifact set procurement actually asks for: model version pin, prompt hash, evaluation manifest, calibration record',
     ],
-    sharpestInsight: 'Most production agent evaluations are statistically underpowered to detect the differences that drive architectural decisions. With n=50 examples — the typical evaluation set — you cannot reliably distinguish 76% accuracy from 71%. The minimum detectable difference at n=50 is approximately 20 percentage points. Teams routinely make model selection, framework, and deployment decisions from data that statistically cannot answer the question being asked. This is not a minor issue — it means confidence intervals on most published evaluation results would span the entire range of plausible outcomes.',
+    sharpestInsight: 'The free insight that converts this report: with n=50 examples — the single most common evaluation set size — you cannot statistically distinguish 76% accuracy from 71%. The minimum detectable difference at n=50 and 80% power is approximately 20 percentage points. This means almost every published "our model outperforms X by 8 points" comparison is statistically indistinguishable from noise. Most teams are not evaluating. They are generating numbers that feel like evaluation while making architectural decisions from noise. This is not a minor methodological issue — it means model selection, framework, and deployment decisions made from underpowered evaluations carry false precision that compounds into architectural debt.',
     notForAudience: [
       'Individual developers or small startups where the buyer and builder are the same person — the governance and procurement content is enterprise-specific',
       'Teams using agent systems purely for internal tooling with no external user exposure or compliance requirements',
@@ -650,11 +650,11 @@ The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certificat
     ],
     emailAccent: '#dc2626',
     executiveSummary:
-      'Model Context Protocol has become the default integration layer for production agent systems, and it has a security problem most teams are not taking seriously. Tool poisoning, indirect prompt injection via MCP, and rug-pull server attacks are already happening in the wild. This report gives operators the threat model, the defenses, and the pre-launch checklist they need before connecting an agent to external MCP servers.',
+      'MCP has become the default integration layer for production agent systems faster than the security community could document its attack surface. Tool description poisoning, rug-pull server attacks, and cross-server escalation are not theoretical — they are already happening. The problem teams miss: MCP attacks arrive via the trusted channel, which means they bypass every content filter and anomaly detector that looks for malicious-looking inputs. The only defenses that work are structural, not detective. This report delivers the threat model, the tiered defense architecture, and the 10-item pre-launch checklist that stops the incident class before it reaches production.',
     implications: [
-      'MCP tool poisoning is a qualitatively different threat from traditional prompt injection because it can persist across sessions and affect all users of a shared agent deployment.',
-      'Connecting agents to unvetted third-party MCP servers is the functional equivalent of executing untrusted code — it requires the same security posture.',
-      'Teams that treat MCP security as a post-launch concern will face incidents that are materially harder to remediate than those caught in pre-production review.',
+      'MCP tool poisoning is categorically different from traditional prompt injection: it arrives via the trusted system channel, persists across sessions, and affects every user of a shared deployment — not just the user who triggered it.',
+      'Most teams apply the security posture of a SaaS integration to MCP server connections. The correct posture is the security review you would apply to an npm package with production code execution privileges: source review, permission scoping, behavioral monitoring, and an explicit re-vetting schedule.',
+      'Post-launch MCP security remediation requires auditing every session that was active while the compromised server was connected — a process that takes days, not hours, and that most teams do not have the log fidelity to complete accurately.'
     ],
     actionSteps: [
       'Classify every MCP server your agents connect to as trusted, restricted, or untrusted, and enforce different execution boundaries for each tier.',
@@ -815,7 +815,7 @@ Step 10: Document exactly what happened, what the attack vector was, what the im
       '10-item pre-launch MCP security checklist designed to be run before connecting any new server to production',
       'Step-by-step incident response playbook for when you suspect an MCP server is behaving maliciously',
     ],
-    sharpestInsight: 'Connecting an agent to an unvetted third-party MCP server is the functional equivalent of executing untrusted code on your infrastructure. A poisoned tool description looks exactly like legitimate documentation to content filters and automated scanners — the attack is invisible to every defense that relies on detecting malicious content. The only defenses that work are structural: context provenance tagging, instruction isolation, and confirmation gates that interrupt the attack chain before it reaches any consequential action.',
+    sharpestInsight: 'The attack that no content filter catches: a third-party MCP server\'s tool description field — the text that tells the AI what a tool does — contains hidden instructions addressed to the model. The instructions look identical to legitimate documentation to every automated scanner. The model reads them as authoritative context because they arrive via the trusted MCP channel. Your agent then executes those instructions on behalf of real users. This has already happened in the wild. The only defenses that stop it are structural: tagging context by source so the model knows not to treat tool output as system instructions, and adding confirmation gates that interrupt consequential actions before they execute. Asking the model to "be vigilant about prompt injection" in the system prompt provides negligible protection against a capable payload delivered via MCP.',
     notForAudience: [
       'Teams not yet using Model Context Protocol in their agent deployments — this report is MCP-specific and assumes active deployment',
       'Security researchers looking for novel vulnerability disclosures — this synthesizes known attack patterns into an operator defense framework',
@@ -829,7 +829,7 @@ Step 10: Document exactly what happened, what the attack vector was, what the im
       'When you suspect an MCP server is behaving maliciously: a step-by-step response protocol, phase by phase.',
     ],
     color: 'red',
-    isNew: false,
+    isNew: true,
   },
 
   'agent-incident-postmortems': {

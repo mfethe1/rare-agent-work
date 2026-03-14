@@ -34,6 +34,12 @@ export interface Report {
   chatPlaceholder: string;
   color: string;
   isNew?: boolean;
+  /**
+   * 4-5 sharp, report-specific bullets shown in the hero 'What you get' box.
+   * Must be concrete deliverables — never generic meta-descriptions like 'includes citations'.
+   * Think: the 4 things a buyer would tell a colleague after reading this report.
+   */
+  keyTakeaways: string[];
 }
 
 export const reports: Record<string, Report> = {
@@ -173,6 +179,13 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
       },
     ],
     chatPlaceholder: 'Which platform should I use for my use case? How do I set up approval gates?',
+    keyTakeaways: [
+      'Zapier vs Make vs n8n vs Relevance AI — exact criteria by use case, not brand recognition',
+      '60-minute implementation protocol broken into 4 phases with explicit checkpoints at each step',
+      'Four approval gate patterns (synchronous, async queue, threshold-gated, draft+confirm) with which to use when',
+      'The week-one failure mode nobody warns you about: deduplication key, volume cap, and test/prod separation',
+      'Weekly optimization checklist so the workflow that works on Friday still works in month three',
+    ],
     color: 'blue',
   },
 
@@ -308,6 +321,13 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
       },
     ],
     chatPlaceholder: 'Which framework should I use? How do I implement memory for my agents?',
+    keyTakeaways: [
+      'CrewAI vs LangGraph vs AutoGen vs OpenAI Swarm — production verdict after the honeymoon phase',
+      'L1/L2/L3 memory architecture that eliminates the "works in session 1, fails in session 4" problem',
+      'Planner-executor-reviewer loop with exact handoff protocol and structured message schema',
+      'Migration readiness framework: 5 questions that tell you whether you are actually ready to operate a multi-agent system',
+      'The five things that must be true before you add parallel execution (it should be last, not first)',
+    ],
     color: 'green',
   },
 
@@ -453,6 +473,13 @@ The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certificat
       },
     ],
     chatPlaceholder: 'How do I calibrate LLM-as-judge? What metrics should I track in production?',
+    keyTakeaways: [
+      'LLM-as-judge calibration procedure: build a 50-100 example calibration set and achieve >0.75 correlation with human scores',
+      '12-item pre-production governance checklist mapped to procurement control categories',
+      'Cost architecture with three mandatory controls: per-session gateway budget, tool call rate limiting, daily cost alerts',
+      'How enterprise procurement teams actually evaluate agent systems in 2026 — and the three gates most vendors miss',
+      'Reproducibility reporting standard that produces evidence procurement needs without re-running evaluations from scratch',
+    ],
     color: 'purple',
   },
 
@@ -643,6 +670,13 @@ Step 10: Document exactly what happened, what the attack vector was, what the im
       },
     ],
     chatPlaceholder: 'How do I audit MCP tool descriptions? What are the signs of tool poisoning?',
+    keyTakeaways: [
+      'All four MCP attack surfaces: tool description poisoning, rug-pull servers, cross-server escalation, context window manipulation',
+      'Three-tier tool trust system (trusted / restricted / untrusted) with specific enforcement patterns for each tier',
+      'Four structural defenses against prompt injection — context provenance tagging, instruction isolation, confirmation gates, anomaly detection',
+      '10-item pre-launch MCP security checklist designed to be run before connecting any new server to production',
+      'Step-by-step incident response playbook for when you suspect an MCP server is behaving maliciously',
+    ],
     color: 'red',
     isNew: false,
   },
@@ -842,6 +876,13 @@ This is not a monitoring failure in the traditional sense. Most teams have monit
       },
     ],
     chatPlaceholder: 'How do I run a tabletop exercise? What monitoring should I set up before launch?',
+    keyTakeaways: [
+      '8 documented incident post-mortems with five-layer root cause analysis: trigger, proximate cause, contributing factors, systemic gap, governance failure',
+      'The bulk-send incident reconstructed minute-by-minute: why 847 customers got the same email and the one gate that prevents recurrence',
+      'The auth cascade: how 14 workflows went silent for 4 days and nobody noticed — and the 30-minute fix that catches it instantly',
+      'How to build a monitoring baseline before your first production deployment (not after your first incident)',
+      'Two fill-in-the-blank incident response templates ready for use in actual production incidents',
+    ],
     color: 'amber',
   },
 }

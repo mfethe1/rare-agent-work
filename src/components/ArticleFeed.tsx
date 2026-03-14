@@ -84,7 +84,7 @@ export default function ArticleFeed({ articles, votedIds, activeTag }: ArticleFe
   };
 
   const hasLowCode = articles.some((a) =>
-    a.tags.some((t) => t.toLowerCase() === 'low-code')
+    (a.tags || []).some((t) => t.toLowerCase() === 'low-code')
   );
 
   return (

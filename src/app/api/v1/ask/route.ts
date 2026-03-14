@@ -59,7 +59,7 @@ function buildContext(models: typeof SEED_MODELS, news: Awaited<ReturnType<typeo
   ).join('\n');
 
   const newsCtx = news.slice(0, 20).map(n =>
-    `- [${n.category}] "${n.title}" (${n.source}, ${n.publishedAt.slice(0, 10)}) tags: ${n.tags.join(', ')} url: ${n.url}`
+    `- [${n.category}] "${n.title}" (${n.source}, ${n.publishedAt.slice(0, 10)}) tags: ${(n.tags || []).join(', ')} url: ${n.url}`
   ).join('\n');
 
   const reportCtx = reports.map(r =>

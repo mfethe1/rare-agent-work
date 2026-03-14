@@ -1,0 +1,1161 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e5]:
+        - link "Rare Agent Work" [ref=e7] [cursor=pointer]:
+          - /url: /
+        - button "Newsletter · $10/mo" [ref=e10]
+    - main [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - generic [ref=e15]:
+            - generic [ref=e16]:
+              - paragraph [ref=e17]: Agentic news desk
+              - heading "AI agent news with context, not just links" [level=1] [ref=e18]
+              - paragraph [ref=e19]:
+                - text: We surface what changed, why it matters, and what operators should do next. Subscribers get the live newsletter, hot-news alerts, and the side-panel copilot for immediate context. If you need help shipping a workflow instead of just reading about one,
+                - link "submit scoped work for human review" [ref=e20] [cursor=pointer]:
+                  - /url: /submit-work
+                - text: .
+            - generic [ref=e21]:
+              - generic [ref=e22]:
+                - paragraph [ref=e23]: "50"
+                - paragraph [ref=e24]: live stories
+              - generic [ref=e25]:
+                - paragraph [ref=e26]: "2"
+                - paragraph [ref=e27]: last 24h
+          - generic [ref=e28]:
+            - link "open-source (13)" [ref=e29] [cursor=pointer]:
+              - /url: /news?tag=open-source
+            - link "huggingface (11)" [ref=e30] [cursor=pointer]:
+              - /url: /news?tag=huggingface
+            - link "industry (11)" [ref=e31] [cursor=pointer]:
+              - /url: /news?tag=industry
+            - link "analysis (11)" [ref=e32] [cursor=pointer]:
+              - /url: /news?tag=analysis
+            - link "google (9)" [ref=e33] [cursor=pointer]:
+              - /url: /news?tag=google
+            - link "ai (8)" [ref=e34] [cursor=pointer]:
+              - /url: /news?tag=ai
+            - link "AI Agents (3)" [ref=e35] [cursor=pointer]:
+              - /url: /news?tag=AI%20Agents
+            - link "security (3)" [ref=e36] [cursor=pointer]:
+              - /url: /news?tag=security
+            - link "openai (2)" [ref=e37] [cursor=pointer]:
+              - /url: /news?tag=openai
+            - link "edge-ai (2)" [ref=e38] [cursor=pointer]:
+              - /url: /news?tag=edge-ai
+            - link "agentic (2)" [ref=e39] [cursor=pointer]:
+              - /url: /news?tag=agentic
+            - link "Web Browsing (1)" [ref=e40] [cursor=pointer]:
+              - /url: /news?tag=Web%20Browsing
+            - link "Agent Tooling (1)" [ref=e41] [cursor=pointer]:
+              - /url: /news?tag=Agent%20Tooling
+            - link "Automation (1)" [ref=e42] [cursor=pointer]:
+              - /url: /news?tag=Automation
+            - link "E-commerce (1)" [ref=e43] [cursor=pointer]:
+              - /url: /news?tag=E-commerce
+          - generic [ref=e44]:
+            - generic [ref=e46]:
+              - button "▲ 0" [ref=e47]:
+                - generic [ref=e48]: ▲
+                - generic [ref=e49]: "0"
+              - generic [ref=e50]:
+                - generic [ref=e51]:
+                  - generic [ref=e52]: "1."
+                  - generic [ref=e53]:
+                    - 'link "Beyond Semantic Similarity: Introducing NVIDIA NeMo Retriever’s Generalizable Agentic Retrieval Pipeline" [ref=e54] [cursor=pointer]':
+                      - /url: https://huggingface.co/blog/nvidia/nemo-retriever-agentic-retrieval
+                    - generic [ref=e55]: (huggingface.co)
+                - paragraph [ref=e56]: Latest update from Hugging Face
+                - generic [ref=e57]:
+                  - generic [ref=e58]: Open Source
+                  - generic [ref=e59]: breaking
+                  - generic [ref=e60]: Hugging Face
+                  - generic [ref=e61]: 6h ago
+                  - generic [ref=e62]: 1 clicks
+                  - link "#huggingface" [ref=e63] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e64] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e66]:
+              - button "▲ 0" [ref=e67]:
+                - generic [ref=e68]: ▲
+                - generic [ref=e69]: "0"
+              - generic [ref=e70]:
+                - generic [ref=e71]:
+                  - generic [ref=e72]: "2."
+                  - generic [ref=e73]:
+                    - link "Why physical AI is becoming manufacturing’s next advantage" [ref=e74] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/13/1134184/why-physical-ai-is-becoming-manufacturings-next-advantage/
+                    - generic [ref=e75]: (technologyreview.com)
+                - paragraph [ref=e76]: Latest update from MIT Technology Review
+                - generic [ref=e77]:
+                  - generic [ref=e78]: Industry
+                  - generic [ref=e79]: breaking
+                  - generic [ref=e80]: MIT Technology Review
+                  - generic [ref=e81]: 11h ago
+                  - link "#industry" [ref=e82] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e83] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e85]:
+              - button "▲ 0" [ref=e86]:
+                - generic [ref=e87]: ▲
+                - generic [ref=e88]: "0"
+              - generic [ref=e89]:
+                - generic [ref=e90]:
+                  - generic [ref=e91]: "3."
+                  - generic [ref=e92]:
+                    - 'link "Build an Agent That Thinks Like a Data Scientist: How We Hit #1 on DABStep with Reusable Tool Generation" [ref=e93] [cursor=pointer]':
+                      - /url: https://huggingface.co/blog/nvidia/nemo-agent-toolkit-data-explorer-dabstep-1st-place
+                    - generic [ref=e94]: (huggingface.co)
+                - paragraph [ref=e95]: Latest update from Hugging Face
+                - generic [ref=e96]:
+                  - generic [ref=e97]: Open Source
+                  - generic [ref=e98]: Hugging Face
+                  - generic [ref=e99]: 1d ago
+                  - generic [ref=e100]: 1 clicks
+                  - link "#huggingface" [ref=e101] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e102] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e104]:
+              - button "▲ 0" [ref=e105]:
+                - generic [ref=e106]: ▲
+                - generic [ref=e107]: "0"
+              - generic [ref=e108]:
+                - generic [ref=e109]:
+                  - generic [ref=e110]: "4."
+                  - generic [ref=e111]:
+                    - link "Open-source browser for AI agents" [ref=e112] [cursor=pointer]:
+                      - /url: https://news.ycombinator.com/item?id=47336171
+                    - generic [ref=e113]: (news.ycombinator.com)
+                - paragraph [ref=e114]: A newly released open-source browser is designed to keep acting agents synchronized at every step. It freezes JavaScript execution and rendering after each action to capture the resulting state, aiding in reliable web automation.
+                - generic [ref=e115]:
+                  - generic [ref=e116]: Tools
+                  - generic [ref=e117]: Hacker News
+                  - generic [ref=e118]: 1d ago
+                  - generic [ref=e119]: 1 clicks
+                  - link "#Web Browsing" [ref=e120] [cursor=pointer]:
+                    - /url: /news?tag=Web%20Browsing
+                  - link "#Agent Tooling" [ref=e121] [cursor=pointer]:
+                    - /url: /news?tag=Agent%20Tooling
+                  - link "#Automation" [ref=e122] [cursor=pointer]:
+                    - /url: /news?tag=Automation
+            - generic [ref=e124]:
+              - button "▲ 0" [ref=e125]:
+                - generic [ref=e126]: ▲
+                - generic [ref=e127]: "0"
+              - generic [ref=e128]:
+                - generic [ref=e129]:
+                  - generic [ref=e130]: "5."
+                  - generic [ref=e131]:
+                    - link "A defense official reveals how AI chatbots could be used for targeting decisions" [ref=e132] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/12/1134243/defense-official-military-use-ai-chatbots-targeting-decisions/
+                    - generic [ref=e133]: (technologyreview.com)
+                - paragraph [ref=e134]: Latest update from MIT Technology Review
+                - generic [ref=e135]:
+                  - generic [ref=e136]: Industry
+                  - generic [ref=e137]: MIT Technology Review
+                  - generic [ref=e138]: 1d ago
+                  - link "#industry" [ref=e139] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e140] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e142]:
+              - button "▲ 0" [ref=e143]:
+                - generic [ref=e144]: ▲
+                - generic [ref=e145]: "0"
+              - generic [ref=e146]:
+                - generic [ref=e147]:
+                  - generic [ref=e148]: "6."
+                  - generic [ref=e149]:
+                    - link "How AI is helping improve heart health in rural Australia" [ref=e150] [cursor=pointer]:
+                      - /url: https://blog.google/innovation-and-ai/technology/health/google-ai-heart-health-australia/
+                    - generic [ref=e151]: (blog.google)
+                - paragraph [ref=e152]: <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/AIHealth_v2_2096x1182_02.max-600x600.format-webp.webp">A new Google AI initiative aims to improve heart health outcomes for people living in remote Australian communities.
+                - generic [ref=e153]:
+                  - generic [ref=e154]: AI Research
+                  - generic [ref=e155]: Google AI
+                  - generic [ref=e156]: 1d ago
+                  - link "#google" [ref=e157] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#ai" [ref=e158] [cursor=pointer]:
+                    - /url: /news?tag=ai
+            - generic [ref=e160]:
+              - button "▲ 0" [ref=e161]:
+                - generic [ref=e162]: ▲
+                - generic [ref=e163]: "0"
+              - generic [ref=e164]:
+                - generic [ref=e165]:
+                  - generic [ref=e166]: "7."
+                  - generic [ref=e167]:
+                    - 'link "Pragmatic by design: Engineering AI for the real world" [ref=e168] [cursor=pointer]':
+                      - /url: https://www.technologyreview.com/2026/03/12/1133675/pragmatic-by-design-engineering-ai-for-the-real-world/
+                    - generic [ref=e169]: (technologyreview.com)
+                - paragraph [ref=e170]: Latest update from MIT Technology Review
+                - generic [ref=e171]:
+                  - generic [ref=e172]: Industry
+                  - generic [ref=e173]: MIT Technology Review
+                  - generic [ref=e174]: 1d ago
+                  - link "#industry" [ref=e175] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e176] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e178]:
+              - button "▲ 0" [ref=e179]:
+                - generic [ref=e180]: ▲
+                - generic [ref=e181]: "0"
+              - generic [ref=e182]:
+                - generic [ref=e183]:
+                  - generic [ref=e184]: "8."
+                  - generic [ref=e185]:
+                    - link "How NVIDIA AI-Q Reached \\#1 on DeepResearch Bench I and II" [ref=e186] [cursor=pointer]:
+                      - /url: https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench
+                    - generic [ref=e187]: (huggingface.co)
+                - paragraph [ref=e188]: Latest update from Hugging Face
+                - generic [ref=e189]:
+                  - generic [ref=e190]: Open Source
+                  - generic [ref=e191]: Hugging Face
+                  - generic [ref=e192]: 1d ago
+                  - link "#huggingface" [ref=e193] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e194] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e196]:
+              - button "▲ 0" [ref=e197]:
+                - generic [ref=e198]: ▲
+                - generic [ref=e199]: "0"
+              - generic [ref=e200]:
+                - generic [ref=e201]:
+                  - generic [ref=e202]: "9."
+                  - generic [ref=e203]:
+                    - link "Amazon wins court order to block Perplexity's AI shopping agent" [ref=e204] [cursor=pointer]:
+                      - /url: https://news.ycombinator.com/item?id=47327309
+                    - generic [ref=e205]: (news.ycombinator.com)
+                - paragraph [ref=e206]: Amazon has successfully obtained a court order to block Perplexity's AI shopping agent. The ruling highlights the ongoing battles between major tech platforms and AI agents attempting to scrape and automate e-commerce tasks.
+                - generic [ref=e207]:
+                  - generic [ref=e208]: Agents
+                  - generic [ref=e209]: Hacker News
+                  - generic [ref=e210]: 2d ago
+                  - link "#AI Agents" [ref=e211] [cursor=pointer]:
+                    - /url: /news?tag=AI%20Agents
+                  - link "#E-commerce" [ref=e212] [cursor=pointer]:
+                    - /url: /news?tag=E-commerce
+                  - link "#Legal" [ref=e213] [cursor=pointer]:
+                    - /url: /news?tag=Legal
+            - generic [ref=e215]:
+              - button "▲ 0" [ref=e216]:
+                - generic [ref=e217]: ▲
+                - generic [ref=e218]: "0"
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - generic [ref=e221]: "10."
+                  - generic [ref=e222]:
+                    - link "Hustlers are cashing in on China&#8217;s OpenClaw AI craze" [ref=e223] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/11/1134179/china-openclaw-gold-rush/
+                    - generic [ref=e224]: (technologyreview.com)
+                - paragraph [ref=e225]: Latest update from MIT Technology Review
+                - generic [ref=e226]:
+                  - generic [ref=e227]: Industry
+                  - generic [ref=e228]: MIT Technology Review
+                  - generic [ref=e229]: 2d ago
+                  - link "#industry" [ref=e230] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e231] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e233]:
+              - button "▲ 1" [ref=e234]:
+                - generic [ref=e235]: ▲
+                - generic [ref=e236]: "1"
+              - generic [ref=e237]:
+                - generic [ref=e238]:
+                  - generic [ref=e239]: "11."
+                  - generic [ref=e240]:
+                    - link "Meta to Acquire Manus, Chinese-Founded General AI Agent Startup Valued at $2-3 Billion" [ref=e241] [cursor=pointer]:
+                      - /url: https://www.marketingprofs.com/opinions/2026/54159/ai-update-january-9-2026-ai-news-and-views-from-the-past-three-weeks
+                    - generic [ref=e242]: (marketingprofs.com)
+                - paragraph [ref=e243]: Meta is set to buy Singapore-based Manus, a general-purpose AI agent startup that autonomously executes tasks and claims to outperform OpenAI's DeepResearch, to scale AI agents across Facebook, Instagram, Meta AI, and WhatsApp SMB tools. Manus recently hit $100 million ARR just eight months post-launch.
+                - generic [ref=e244]:
+                  - generic [ref=e245]: Business Acquisition
+                  - generic [ref=e246]: MarketingProfs
+                  - generic [ref=e247]: 4d ago
+                  - link "#Meta" [ref=e248] [cursor=pointer]:
+                    - /url: /news?tag=Meta
+                  - link "#AI Agents" [ref=e249] [cursor=pointer]:
+                    - /url: /news?tag=AI%20Agents
+                  - link "#Acquisition" [ref=e250] [cursor=pointer]:
+                    - /url: /news?tag=Acquisition
+            - generic [ref=e252]:
+              - button "▲ 0" [ref=e253]:
+                - generic [ref=e254]: ▲
+                - generic [ref=e255]: "0"
+              - generic [ref=e256]:
+                - generic [ref=e257]:
+                  - generic [ref=e258]: "12."
+                  - generic [ref=e259]:
+                    - link "PageAgent, A GUI agent that lives inside your web app" [ref=e260] [cursor=pointer]:
+                      - /url: https://news.ycombinator.com/item?id=47264138
+                    - generic [ref=e261]: (news.ycombinator.com)
+                - paragraph [ref=e262]: PageAgent is an open-source MIT-licensed library that embeds an AI agent directly into frontend applications. It enables native general agent deployment inside web apps rather than treating the web merely as a dumb target.
+                - generic [ref=e263]:
+                  - generic [ref=e264]: Frameworks
+                  - generic [ref=e265]: Hacker News
+                  - generic [ref=e266]: 3d ago
+                  - generic [ref=e267]: 1 clicks
+                  - link "#Frontend" [ref=e268] [cursor=pointer]:
+                    - /url: /news?tag=Frontend
+                  - link "#GUI Agents" [ref=e269] [cursor=pointer]:
+                    - /url: /news?tag=GUI%20Agents
+                  - link "#Open Source" [ref=e270] [cursor=pointer]:
+                    - /url: /news?tag=Open%20Source
+            - generic [ref=e272]:
+              - button "▲ 0" [ref=e273]:
+                - generic [ref=e274]: ▲
+                - generic [ref=e275]: "0"
+              - generic [ref=e276]:
+                - generic [ref=e277]:
+                  - generic [ref=e278]: "13."
+                  - generic [ref=e279]:
+                    - link "OpenVerb – A deterministic action layer for AI agents" [ref=e280] [cursor=pointer]:
+                      - /url: https://news.ycombinator.com/item?id=47304573
+                    - generic [ref=e281]: (news.ycombinator.com)
+                - paragraph [ref=e282]: OpenVerb introduces an architectural approach separating reasoning from execution for AI systems. It aims to provide a deterministic action layer, complementing reasoning loop frameworks like LangChain and LangGraph.
+                - generic [ref=e283]:
+                  - generic [ref=e284]: Frameworks
+                  - generic [ref=e285]: Hacker News
+                  - generic [ref=e286]: 3d ago
+                  - link "#Architecture" [ref=e287] [cursor=pointer]:
+                    - /url: /news?tag=Architecture
+                  - link "#Reasoning" [ref=e288] [cursor=pointer]:
+                    - /url: /news?tag=Reasoning
+                  - link "#Execution" [ref=e289] [cursor=pointer]:
+                    - /url: /news?tag=Execution
+            - generic [ref=e291]:
+              - button "▲ 0" [ref=e292]:
+                - generic [ref=e293]: ▲
+                - generic [ref=e294]: "0"
+              - generic [ref=e295]:
+                - generic [ref=e296]:
+                  - generic [ref=e297]: "14."
+                  - generic [ref=e298]:
+                    - link "Verify your AI agent locally with readable timelines" [ref=e299] [cursor=pointer]:
+                      - /url: https://news.ycombinator.com/item?id=47324434
+                    - generic [ref=e300]: (news.ycombinator.com)
+                - paragraph [ref=e301]: A new tool allows developers to locally verify what their AI agents did via a readable timeline. It supports receipt/bundle files with no required account or outbound verification, addressing the issue of fake or unreadable agent logs.
+                - generic [ref=e302]:
+                  - generic [ref=e303]: Tools
+                  - generic [ref=e304]: Hacker News
+                  - generic [ref=e305]: 3d ago
+                  - link "#Verification" [ref=e306] [cursor=pointer]:
+                    - /url: /news?tag=Verification
+                  - link "#Logging" [ref=e307] [cursor=pointer]:
+                    - /url: /news?tag=Logging
+                  - link "#Security" [ref=e308] [cursor=pointer]:
+                    - /url: /news?tag=Security
+            - generic [ref=e310]:
+              - button "▲ 0" [ref=e311]:
+                - generic [ref=e312]: ▲
+                - generic [ref=e313]: "0"
+              - generic [ref=e314]:
+                - generic [ref=e315]:
+                  - generic [ref=e316]: "15."
+                  - generic [ref=e317]:
+                    - link "Building a strong data infrastructure for AI agent success" [ref=e318] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/10/1134083/building-a-strong-data-infrastructure-for-ai-agent-success/
+                    - generic [ref=e319]: (technologyreview.com)
+                - paragraph [ref=e320]: Latest update from MIT Technology Review
+                - generic [ref=e321]:
+                  - generic [ref=e322]: Industry
+                  - generic [ref=e323]: MIT Technology Review
+                  - generic [ref=e324]: 3d ago
+                  - link "#industry" [ref=e325] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e326] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e328]:
+              - button "▲ 0" [ref=e329]:
+                - generic [ref=e330]: ▲
+                - generic [ref=e331]: "0"
+              - generic [ref=e332]:
+                - generic [ref=e333]:
+                  - generic [ref=e334]: "16."
+                  - generic [ref=e335]:
+                    - link "How Pokémon Go is giving delivery robots an inch-perfect view of the world" [ref=e336] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/10/1134099/how-pokemon-go-is-helping-robots-deliver-pizza-on-time/
+                    - generic [ref=e337]: (technologyreview.com)
+                - paragraph [ref=e338]: Latest update from MIT Technology Review
+                - generic [ref=e339]:
+                  - generic [ref=e340]: Industry
+                  - generic [ref=e341]: MIT Technology Review
+                  - generic [ref=e342]: 3d ago
+                  - link "#industry" [ref=e343] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e344] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e346]:
+              - button "▲ 0" [ref=e347]:
+                - generic [ref=e348]: ▲
+                - generic [ref=e349]: "0"
+              - generic [ref=e350]:
+                - generic [ref=e351]:
+                  - generic [ref=e352]: "17."
+                  - generic [ref=e353]:
+                    - link "Gemini in Google Sheets just achieved state-of-the-art performance." [ref=e354] [cursor=pointer]:
+                      - /url: https://blog.google/products-and-platforms/products/workspace/gemini-google-sheets-state-of-the-art/
+                    - generic [ref=e355]: (blog.google)
+                - paragraph [ref=e356]: <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Workspace_Jan_Moment_Sheets_Blo.max-600x600.format-webp.webp">Today we announced new beta features for Gemini in Sheets to help you create, organize and edit entire sheets, from basic tasks to complex data analysis — just desc
+                - generic [ref=e357]:
+                  - generic [ref=e358]: AI Research
+                  - generic [ref=e359]: Google AI
+                  - generic [ref=e360]: 3d ago
+                  - link "#google" [ref=e361] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#ai" [ref=e362] [cursor=pointer]:
+                    - /url: /news?tag=ai
+            - generic [ref=e364]:
+              - button "▲ 0" [ref=e365]:
+                - generic [ref=e366]: ▲
+                - generic [ref=e367]: "0"
+              - generic [ref=e368]:
+                - generic [ref=e369]:
+                  - generic [ref=e370]: "18."
+                  - generic [ref=e371]:
+                    - link "Introducing Storage Buckets on the Hugging Face Hub" [ref=e372] [cursor=pointer]:
+                      - /url: https://huggingface.co/blog/storage-buckets
+                    - generic [ref=e373]: (huggingface.co)
+                - paragraph [ref=e374]: Latest update from Hugging Face
+                - generic [ref=e375]:
+                  - generic [ref=e376]: Open Source
+                  - generic [ref=e377]: Hugging Face
+                  - generic [ref=e378]: 4d ago
+                  - link "#huggingface" [ref=e379] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e380] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e382]:
+              - button "▲ 0" [ref=e383]:
+                - generic [ref=e384]: ▲
+                - generic [ref=e385]: "0"
+              - generic [ref=e386]:
+                - generic [ref=e387]:
+                  - generic [ref=e388]: "19."
+                  - generic [ref=e389]:
+                    - 'link "Keep the Tokens Flowing: Lessons from 16 Open-Source RL Libraries" [ref=e390] [cursor=pointer]':
+                      - /url: https://huggingface.co/blog/async-rl-training-landscape
+                    - generic [ref=e391]: (huggingface.co)
+                - paragraph [ref=e392]: Latest update from Hugging Face
+                - generic [ref=e393]:
+                  - generic [ref=e394]: Open Source
+                  - generic [ref=e395]: Hugging Face
+                  - generic [ref=e396]: 4d ago
+                  - link "#huggingface" [ref=e397] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e398] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e400]:
+              - button "▲ 0" [ref=e401]:
+                - generic [ref=e402]: ▲
+                - generic [ref=e403]: "0"
+              - generic [ref=e404]:
+                - generic [ref=e405]:
+                  - generic [ref=e406]: "20."
+                  - generic [ref=e407]:
+                    - 'link "Granite 4.0 1B Speech: Compact, Multilingual, and Built for the Edge" [ref=e408] [cursor=pointer]':
+                      - /url: https://huggingface.co/blog/ibm-granite/granite-4-speech
+                    - generic [ref=e409]: (huggingface.co)
+                - paragraph [ref=e410]: Latest update from Hugging Face
+                - generic [ref=e411]:
+                  - generic [ref=e412]: Open Source
+                  - generic [ref=e413]: Hugging Face
+                  - generic [ref=e414]: 4d ago
+                  - link "#huggingface" [ref=e415] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e416] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e418]:
+              - button "▲ 0" [ref=e419]:
+                - generic [ref=e420]: ▲
+                - generic [ref=e421]: "0"
+              - generic [ref=e422]:
+                - generic [ref=e423]:
+                  - generic [ref=e424]: "21."
+                  - generic [ref=e425]:
+                    - link "How AI is turning the Iran conflict into theater" [ref=e426] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/09/1134063/how-ai-is-turning-the-iran-conflict-into-theater/
+                    - generic [ref=e427]: (technologyreview.com)
+                - paragraph [ref=e428]: Latest update from MIT Technology Review
+                - generic [ref=e429]:
+                  - generic [ref=e430]: Industry
+                  - generic [ref=e431]: MIT Technology Review
+                  - generic [ref=e432]: 4d ago
+                  - link "#industry" [ref=e433] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e434] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e436]:
+              - button "▲ 0" [ref=e437]:
+                - generic [ref=e438]: ▲
+                - generic [ref=e439]: "0"
+              - generic [ref=e440]:
+                - generic [ref=e441]:
+                  - generic [ref=e442]: "22."
+                  - generic [ref=e443]:
+                    - link "Palo Alto Networks Warns AI Agents as 2026's Biggest Insider Threat to Enterprises" [ref=e444] [cursor=pointer]:
+                      - /url: https://www.theregister.com/2026/01/04/ai_agents_insider_threats_panw/
+                    - generic [ref=e445]: (theregister.com)
+                - paragraph [ref=e446]: Palo Alto Networks' Chief Security Intel Officer states AI agents will become the top insider threat in 2026, with 40% of enterprise apps integrating them by year-end. While aiding defense like threat analysis, they amplify attacker capabilities, urging strict access controls.
+                - generic [ref=e447]:
+                  - generic [ref=e448]: Cybersecurity
+                  - generic [ref=e449]: The Register
+                  - generic [ref=e450]: 4d ago
+                  - link "#AI Agents" [ref=e451] [cursor=pointer]:
+                    - /url: /news?tag=AI%20Agents
+                  - link "#Security Risks" [ref=e452] [cursor=pointer]:
+                    - /url: /news?tag=Security%20Risks
+                  - link "#Insider Threat" [ref=e453] [cursor=pointer]:
+                    - /url: /news?tag=Insider%20Threat
+            - generic [ref=e455]:
+              - button "▲ 0" [ref=e456]:
+                - generic [ref=e457]: ▲
+                - generic [ref=e458]: "0"
+              - generic [ref=e459]:
+                - generic [ref=e460]:
+                  - generic [ref=e461]: "23."
+                  - generic [ref=e462]:
+                    - link "Gmail Integrates Gemini 3 AI as Proactive Personal Assistant with Advanced Drafting and Search" [ref=e463] [cursor=pointer]:
+                      - /url: https://www.marketingprofs.com/opinions/2026/54159/ai-update-january-9-2026-ai-news-and-views-from-the-past-three-weeks-2
+                    - generic [ref=e464]: (marketingprofs.com)
+                - paragraph [ref=e465]: Google is enhancing Gmail with Gemini 3-powered tools, including Help Me Write for style-aware drafting and real-time refinements, plus conversational search for Pro/Ultra subscribers to gain inbox insights, transforming email into a proactive assistant.
+                - generic [ref=e466]:
+                  - generic [ref=e467]: Product Update
+                  - generic [ref=e468]: MarketingProfs
+                  - generic [ref=e469]: 4d ago
+                  - link "#Google" [ref=e470] [cursor=pointer]:
+                    - /url: /news?tag=Google
+                  - link "#Gemini 3" [ref=e471] [cursor=pointer]:
+                    - /url: /news?tag=Gemini%203
+                  - link "#LLM" [ref=e472] [cursor=pointer]:
+                    - /url: /news?tag=LLM
+            - generic [ref=e474]:
+              - button "▲ 0" [ref=e475]:
+                - generic [ref=e476]: ▲
+                - generic [ref=e477]: "0"
+              - generic [ref=e478]:
+                - generic [ref=e479]:
+                  - generic [ref=e480]: "24."
+                  - generic [ref=e481]:
+                    - 'link "Ulysses Sequence Parallelism: Training with Million-Token Contexts" [ref=e482] [cursor=pointer]':
+                      - /url: https://huggingface.co/blog/ulysses-sp
+                    - generic [ref=e483]: (huggingface.co)
+                - paragraph [ref=e484]: Latest update from Hugging Face
+                - generic [ref=e485]:
+                  - generic [ref=e486]: Open Source
+                  - generic [ref=e487]: Hugging Face
+                  - generic [ref=e488]: 5d ago
+                  - link "#huggingface" [ref=e489] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e490] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e492]:
+              - button "▲ 0" [ref=e493]:
+                - generic [ref=e494]: ▲
+                - generic [ref=e495]: "0"
+              - generic [ref=e496]:
+                - generic [ref=e497]:
+                  - generic [ref=e498]: "25."
+                  - generic [ref=e499]:
+                    - 'link "LeRobot v0.5.0: Scaling Every Dimension" [ref=e500] [cursor=pointer]':
+                      - /url: https://huggingface.co/blog/lerobot-release-v050
+                    - generic [ref=e501]: (huggingface.co)
+                - paragraph [ref=e502]: Latest update from Hugging Face
+                - generic [ref=e503]:
+                  - generic [ref=e504]: Open Source
+                  - generic [ref=e505]: Hugging Face
+                  - generic [ref=e506]: 5d ago
+                  - link "#huggingface" [ref=e507] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e508] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e510]:
+              - button "▲ 0" [ref=e511]:
+                - generic [ref=e512]: ▲
+                - generic [ref=e513]: "0"
+              - generic [ref=e514]:
+                - generic [ref=e515]:
+                  - generic [ref=e516]: "26."
+                  - generic [ref=e517]:
+                    - link "Is the Pentagon allowed to surveil Americans with AI?" [ref=e518] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/06/1134012/is-the-pentagon-allowed-to-surveil-americans-with-ai/
+                    - generic [ref=e519]: (technologyreview.com)
+                - paragraph [ref=e520]: Latest update from MIT Technology Review
+                - generic [ref=e521]:
+                  - generic [ref=e522]: Industry
+                  - generic [ref=e523]: MIT Technology Review
+                  - generic [ref=e524]: 7d ago
+                  - link "#industry" [ref=e525] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e526] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e528]:
+              - button "▲ 0" [ref=e529]:
+                - generic [ref=e530]: ▲
+                - generic [ref=e531]: "0"
+              - generic [ref=e532]:
+                - generic [ref=e533]:
+                  - generic [ref=e534]: "27."
+                  - generic [ref=e535]:
+                    - link "How our open-source AI model SpeciesNet is helping to promote wildlife conservation" [ref=e536] [cursor=pointer]:
+                      - /url: https://blog.google/company-news/outreach-and-initiatives/sustainability/speciesnet-open-source-ai-wildlife/
+                    - generic [ref=e537]: (blog.google)
+                - paragraph [ref=e538]: <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/specieshero_v2.max-600x600.format-webp.webp">An overview of SpeciesNet, our open-source AI model that is helping people around the world protect and conserve wildlife.
+                - generic [ref=e539]:
+                  - generic [ref=e540]: AI Research
+                  - generic [ref=e541]: Google AI
+                  - generic [ref=e542]: 7d ago
+                  - link "#google" [ref=e543] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#ai" [ref=e544] [cursor=pointer]:
+                    - /url: /news?tag=ai
+            - generic [ref=e546]:
+              - button "▲ 0" [ref=e547]:
+                - generic [ref=e548]: ▲
+                - generic [ref=e549]: "0"
+              - generic [ref=e550]:
+                - generic [ref=e551]:
+                  - generic [ref=e552]: "28."
+                  - generic [ref=e553]:
+                    - link "OpenAI Introduces Codex Security — Context-Aware Vulnerability Detection" [ref=e554] [cursor=pointer]:
+                      - /url: https://www.marktechpost.com/2026/03/06/openai-introduces-codex-security-in-research-preview-for-context-aware-vulnerability-detection-validation-and-patch-generation-across-codebases/
+                    - generic [ref=e555]: (marktechpost.com)
+                - paragraph [ref=e556]: OpenAI released Codex Security in research preview, enabling context-aware vulnerability detection, validation, and automated patch generation across entire codebases. Represents a significant step toward AI-assisted security auditing.
+                - generic [ref=e557]:
+                  - generic [ref=e558]: tool release
+                  - generic [ref=e559]: MarkTechPost
+                  - generic [ref=e560]: 8d ago
+                  - generic [ref=e561]: 7 clicks
+                  - link "#openai" [ref=e562] [cursor=pointer]:
+                    - /url: /news?tag=openai
+                  - link "#codex" [ref=e563] [cursor=pointer]:
+                    - /url: /news?tag=codex
+                  - link "#security" [ref=e564] [cursor=pointer]:
+                    - /url: /news?tag=security
+            - generic [ref=e566]:
+              - button "▲ 0" [ref=e567]:
+                - generic [ref=e568]: ▲
+                - generic [ref=e569]: "0"
+              - generic [ref=e570]:
+                - generic [ref=e571]:
+                  - generic [ref=e572]: "29."
+                  - generic [ref=e573]:
+                    - link "Google Launches TensorFlow 2.21 and LiteRT with NPU Acceleration" [ref=e574] [cursor=pointer]:
+                      - /url: https://developers.googleblog.com/whats-new-in-tensorflow-221/
+                    - generic [ref=e575]: (developers.googleblog.com)
+                - paragraph [ref=e576]: Google released TensorFlow 2.21 graduating LiteRT to production. Delivers up to 1.4x faster GPU performance, new NPU acceleration with unified workflow for GPU/NPU across edge platforms, and seamless PyTorch edge deployment upgrades.
+                - generic [ref=e577]:
+                  - generic [ref=e578]: framework release
+                  - generic [ref=e579]: Google Developers Blog
+                  - generic [ref=e580]: 8d ago
+                  - link "#google" [ref=e581] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#tensorflow" [ref=e582] [cursor=pointer]:
+                    - /url: /news?tag=tensorflow
+                  - link "#litert" [ref=e583] [cursor=pointer]:
+                    - /url: /news?tag=litert
+            - generic [ref=e585]:
+              - button "▲ 0" [ref=e586]:
+                - generic [ref=e587]: ▲
+                - generic [ref=e588]: "0"
+              - generic [ref=e589]:
+                - generic [ref=e590]:
+                  - generic [ref=e591]: "30."
+                  - generic [ref=e592]:
+                    - 'link "Open WebUI Terminal + Qwen 3.5 35B: Agentic Workflows on a Single 3090" [ref=e593] [cursor=pointer]':
+                      - /url: https://www.reddit.com/r/LocalLLaMA/comments/1rmplvs/open_webuis_new_open_terminal_native_tool_calling/
+                    - generic [ref=e594]: (reddit.com)
+                - paragraph [ref=e595]: Open WebUI's new terminal feature combined with Qwen 3.5 35B's native tool calling enables viable agentic workflows running locally on a single RTX 3090. Community reports strong results for local-first agent development.
+                - generic [ref=e596]:
+                  - generic [ref=e597]: community
+                  - generic [ref=e598]: r/LocalLLaMA
+                  - generic [ref=e599]: 8d ago
+                  - generic [ref=e600]: 2 clicks
+                  - link "#open-webui" [ref=e601] [cursor=pointer]:
+                    - /url: /news?tag=open-webui
+                  - link "#qwen" [ref=e602] [cursor=pointer]:
+                    - /url: /news?tag=qwen
+                  - link "#local-llm" [ref=e603] [cursor=pointer]:
+                    - /url: /news?tag=local-llm
+            - generic [ref=e605]:
+              - button "▲ 0" [ref=e606]:
+                - generic [ref=e607]: ▲
+                - generic [ref=e608]: "0"
+              - generic [ref=e609]:
+                - generic [ref=e610]:
+                  - generic [ref=e611]: "31."
+                  - generic [ref=e612]:
+                    - 'link "Ask a Techspert: How does AI understand my visual searches?" [ref=e613] [cursor=pointer]':
+                      - /url: https://blog.google/company-news/inside-google/googlers/how-google-ai-visual-search-works/
+                    - generic [ref=e614]: (blog.google)
+                - paragraph [ref=e615]: <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Fan_out_query_hero.max-600x600.format-webp.webp">Learn more about AI Mode in Search’s query fan-out method for visual search.
+                - generic [ref=e616]:
+                  - generic [ref=e617]: AI Research
+                  - generic [ref=e618]: Google AI
+                  - generic [ref=e619]: 8d ago
+                  - link "#google" [ref=e620] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#ai" [ref=e621] [cursor=pointer]:
+                    - /url: /news?tag=ai
+            - generic [ref=e623]:
+              - button "▲ 0" [ref=e624]:
+                - generic [ref=e625]: ▲
+                - generic [ref=e626]: "0"
+              - generic [ref=e627]:
+                - generic [ref=e628]:
+                  - generic [ref=e629]: "32."
+                  - generic [ref=e630]:
+                    - link "The latest AI news we announced in February" [ref=e631] [cursor=pointer]:
+                      - /url: https://blog.google/innovation-and-ai/products/google-ai-updates-february-2026/
+                    - generic [ref=e632]: (blog.google)
+                - paragraph [ref=e633]: <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Thumbnail_mPCqgRv.max-600x600.format-webp.webp">Here are Google’s latest AI updates from February 2026
+                - generic [ref=e634]:
+                  - generic [ref=e635]: AI Research
+                  - generic [ref=e636]: Google AI
+                  - generic [ref=e637]: 8d ago
+                  - link "#google" [ref=e638] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#ai" [ref=e639] [cursor=pointer]:
+                    - /url: /news?tag=ai
+            - generic [ref=e641]:
+              - button "▲ 0" [ref=e642]:
+                - generic [ref=e643]: ▲
+                - generic [ref=e644]: "0"
+              - generic [ref=e645]:
+                - generic [ref=e646]:
+                  - generic [ref=e647]: "33."
+                  - generic [ref=e648]:
+                    - 'link "Bringing Robotics AI to Embedded Platforms: Dataset Recording, VLA Fine‑Tuning, and On‑Device Optimizations" [ref=e649] [cursor=pointer]':
+                      - /url: https://huggingface.co/blog/nxp/bringing-robotics-ai-to-embedded-platforms
+                    - generic [ref=e650]: (huggingface.co)
+                - paragraph [ref=e651]: Latest update from Hugging Face
+                - generic [ref=e652]:
+                  - generic [ref=e653]: Open Source
+                  - generic [ref=e654]: Hugging Face
+                  - generic [ref=e655]: 8d ago
+                  - link "#huggingface" [ref=e656] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e657] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e659]:
+              - button "▲ 0" [ref=e660]:
+                - generic [ref=e661]: ▲
+                - generic [ref=e662]: "0"
+              - generic [ref=e663]:
+                - generic [ref=e664]:
+                  - generic [ref=e665]: "34."
+                  - generic [ref=e666]:
+                    - link "Online harassment is entering its AI era" [ref=e667] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/05/1133962/online-harassment-is-entering-its-ai-era/
+                    - generic [ref=e668]: (technologyreview.com)
+                - paragraph [ref=e669]: Latest update from MIT Technology Review
+                - generic [ref=e670]:
+                  - generic [ref=e671]: Industry
+                  - generic [ref=e672]: MIT Technology Review
+                  - generic [ref=e673]: 8d ago
+                  - generic [ref=e674]: 3 clicks
+                  - link "#industry" [ref=e675] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e676] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e678]:
+              - button "▲ 0" [ref=e679]:
+                - generic [ref=e680]: ▲
+                - generic [ref=e681]: "0"
+              - generic [ref=e682]:
+                - generic [ref=e683]:
+                  - generic [ref=e684]: "35."
+                  - generic [ref=e685]:
+                    - link "OpenAI Releases GPT-5.4 — Most Capable Unified Frontier Model" [ref=e686] [cursor=pointer]:
+                      - /url: https://cybersecuritynews.com/gpt-5-4-launched/
+                    - generic [ref=e687]: (cybersecuritynews.com)
+                - paragraph [ref=e688]: OpenAI launched GPT-5.4 on March 5, 2026, combining advanced reasoning, coding, and agentic workflows into a single model. Available across ChatGPT, API, and Codex. GPT-5.4 Pro offers maximum performance for complex tasks. GPT-5.2 Thinking will be retired June 5, 2026.
+                - generic [ref=e689]:
+                  - generic [ref=e690]: model release
+                  - generic [ref=e691]: CyberSecurity News
+                  - generic [ref=e692]: 9d ago
+                  - link "#openai" [ref=e693] [cursor=pointer]:
+                    - /url: /news?tag=openai
+                  - link "#gpt-5.4" [ref=e694] [cursor=pointer]:
+                    - /url: /news?tag=gpt-5.4
+                  - link "#frontier-model" [ref=e695] [cursor=pointer]:
+                    - /url: /news?tag=frontier-model
+            - generic [ref=e697]:
+              - button "▲ 0" [ref=e698]:
+                - generic [ref=e699]: ▲
+                - generic [ref=e700]: "0"
+              - generic [ref=e701]:
+                - generic [ref=e702]:
+                  - generic [ref=e703]: "36."
+                  - generic [ref=e704]:
+                    - 'link "HN Debate: ''You Need to Rewrite Your CLI for AI Agents''" [ref=e705] [cursor=pointer]':
+                      - /url: https://news.ycombinator.com/item?id=47252459
+                    - generic [ref=e706]: (news.ycombinator.com)
+                - paragraph [ref=e707]: Trending Hacker News discussion on redesigning CLIs for AI agent consumption. Sparked by Google Workspace CLI launch. Debate centers on whether structured output and agent-friendly interfaces should be the default design pattern.
+                - generic [ref=e708]:
+                  - generic [ref=e709]: community
+                  - generic [ref=e710]: Hacker News
+                  - generic [ref=e711]: 9d ago
+                  - link "#cli" [ref=e712] [cursor=pointer]:
+                    - /url: /news?tag=cli
+                  - link "#developer-tools" [ref=e713] [cursor=pointer]:
+                    - /url: /news?tag=developer-tools
+                  - link "#agent-ux" [ref=e714] [cursor=pointer]:
+                    - /url: /news?tag=agent-ux
+            - generic [ref=e716]:
+              - button "▲ 0" [ref=e717]:
+                - generic [ref=e718]: ▲
+                - generic [ref=e719]: "0"
+              - generic [ref=e720]:
+                - generic [ref=e721]:
+                  - generic [ref=e722]: "37."
+                  - generic [ref=e723]:
+                    - link "Introducing Modular Diffusers - Composable Building Blocks for Diffusion Pipelines" [ref=e724] [cursor=pointer]:
+                      - /url: https://huggingface.co/blog/modular-diffusers
+                    - generic [ref=e725]: (huggingface.co)
+                - paragraph [ref=e726]: Latest update from Hugging Face
+                - generic [ref=e727]:
+                  - generic [ref=e728]: Open Source
+                  - generic [ref=e729]: Hugging Face
+                  - generic [ref=e730]: 9d ago
+                  - link "#huggingface" [ref=e731] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e732] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e734]:
+              - button "▲ 0" [ref=e735]:
+                - generic [ref=e736]: ▲
+                - generic [ref=e737]: "0"
+              - generic [ref=e738]:
+                - generic [ref=e739]:
+                  - generic [ref=e740]: "38."
+                  - generic [ref=e741]:
+                    - link "Use Canvas in AI Mode to get things done and bring your ideas to life, right in Search." [ref=e742] [cursor=pointer]:
+                      - /url: https://blog.google/products-and-platforms/products/search/ai-mode-canvas-writing-coding/
+                    - generic [ref=e743]: (blog.google)
+                - paragraph [ref=e744]: <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/AIMMode_Social.max-600x600.format-webp.webp">Canvas in AI Mode is now available for everyone in the U.S. Plus, it can now help you draft documents or build interactive tools.
+                - generic [ref=e745]:
+                  - generic [ref=e746]: AI Research
+                  - generic [ref=e747]: Google AI
+                  - generic [ref=e748]: 9d ago
+                  - link "#google" [ref=e749] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#ai" [ref=e750] [cursor=pointer]:
+                    - /url: /news?tag=ai
+            - generic [ref=e752]:
+              - button "▲ 0" [ref=e753]:
+                - generic [ref=e754]: ▲
+                - generic [ref=e755]: "0"
+              - generic [ref=e756]:
+                - generic [ref=e757]:
+                  - generic [ref=e758]: "39."
+                  - generic [ref=e759]:
+                    - link "Bridging the operational AI gap" [ref=e760] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/04/1133642/bridging-the-operational-ai-gap/
+                    - generic [ref=e761]: (technologyreview.com)
+                - paragraph [ref=e762]: Latest update from MIT Technology Review
+                - generic [ref=e763]:
+                  - generic [ref=e764]: Industry
+                  - generic [ref=e765]: MIT Technology Review
+                  - generic [ref=e766]: 9d ago
+                  - link "#industry" [ref=e767] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e768] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e770]:
+              - button "▲ 0" [ref=e771]:
+                - generic [ref=e772]: ▲
+                - generic [ref=e773]: "0"
+              - generic [ref=e774]:
+                - generic [ref=e775]:
+                  - generic [ref=e776]: "40."
+                  - generic [ref=e777]:
+                    - link "OpenClaw Surpasses 250,000 GitHub Stars, Releases Major Platform Update" [ref=e778] [cursor=pointer]:
+                      - /url: https://markets.financialcontent.com/stocks/article/accwirecq-2026-3-4-openclawd-releases-major-platform-update-as-openclaw-surpasses-react-with-250000-github-stars
+                    - generic [ref=e779]: (markets.financialcontent.com)
+                - paragraph [ref=e780]: OpenClaw (formerly Moltbot) hit 250,829 GitHub stars as of March 3, surpassing React. Major platform update released. Hacker News discussion highlights cost concerns — one user spent $178 on AI agents in a single week.
+                - generic [ref=e781]:
+                  - generic [ref=e782]: industry news
+                  - generic [ref=e783]: Financial Content
+                  - generic [ref=e784]: 10d ago
+                  - link "#openclaw" [ref=e785] [cursor=pointer]:
+                    - /url: /news?tag=openclaw
+                  - link "#open-source" [ref=e786] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+                  - link "#github" [ref=e787] [cursor=pointer]:
+                    - /url: /news?tag=github
+            - generic [ref=e789]:
+              - button "▲ 0" [ref=e790]:
+                - generic [ref=e791]: ▲
+                - generic [ref=e792]: "0"
+              - generic [ref=e793]:
+                - generic [ref=e794]:
+                  - generic [ref=e795]: "41."
+                  - generic [ref=e796]:
+                    - link "Create new worlds in Project Genie with these 4 tips" [ref=e797] [cursor=pointer]:
+                      - /url: https://blog.google/innovation-and-ai/models-and-research/google-deepmind/tips-prompt-writing-project-genie/
+                    - generic [ref=e798]: (blog.google)
+                - paragraph [ref=e799]: <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Genie_2.max-600x600.format-webp.webp">Learn more about Google DeepMind’s Project Genie and how to write prompts to create your own worlds.
+                - generic [ref=e800]:
+                  - generic [ref=e801]: AI Research
+                  - generic [ref=e802]: Google AI
+                  - generic [ref=e803]: 10d ago
+                  - link "#google" [ref=e804] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#ai" [ref=e805] [cursor=pointer]:
+                    - /url: /news?tag=ai
+            - generic [ref=e807]:
+              - button "▲ 0" [ref=e808]:
+                - generic [ref=e809]: ▲
+                - generic [ref=e810]: "0"
+              - generic [ref=e811]:
+                - generic [ref=e812]:
+                  - generic [ref=e813]: "42."
+                  - generic [ref=e814]:
+                    - link "PRX Part 3 — Training a Text-to-Image Model in 24h!" [ref=e815] [cursor=pointer]:
+                      - /url: https://huggingface.co/blog/Photoroom/prx-part3
+                    - generic [ref=e816]: (huggingface.co)
+                - paragraph [ref=e817]: Latest update from Hugging Face
+                - generic [ref=e818]:
+                  - generic [ref=e819]: Open Source
+                  - generic [ref=e820]: Hugging Face
+                  - generic [ref=e821]: 10d ago
+                  - generic [ref=e822]: 2 clicks
+                  - link "#huggingface" [ref=e823] [cursor=pointer]:
+                    - /url: /news?tag=huggingface
+                  - link "#open-source" [ref=e824] [cursor=pointer]:
+                    - /url: /news?tag=open-source
+            - generic [ref=e826]:
+              - button "▲ 0" [ref=e827]:
+                - generic [ref=e828]: ▲
+                - generic [ref=e829]: "0"
+              - generic [ref=e830]:
+                - generic [ref=e831]:
+                  - generic [ref=e832]: "43."
+                  - generic [ref=e833]:
+                    - 'link "Gemini 3.1 Flash-Lite: Built for intelligence at scale" [ref=e834] [cursor=pointer]':
+                      - /url: https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-1-flash-lite/
+                    - generic [ref=e835]: (blog.google)
+                - paragraph [ref=e836]: <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-3.1_flash_Lite_blog_keyw.max-600x600.format-webp.webp">Gemini 3.1 Flash-Lite is our fastest and most cost-efficient Gemini 3 series model yet.
+                - generic [ref=e837]:
+                  - generic [ref=e838]: AI Research
+                  - generic [ref=e839]: Google AI
+                  - generic [ref=e840]: 10d ago
+                  - link "#google" [ref=e841] [cursor=pointer]:
+                    - /url: /news?tag=google
+                  - link "#ai" [ref=e842] [cursor=pointer]:
+                    - /url: /news?tag=ai
+            - generic [ref=e844]:
+              - button "▲ 0" [ref=e845]:
+                - generic [ref=e846]: ▲
+                - generic [ref=e847]: "0"
+              - generic [ref=e848]:
+                - generic [ref=e849]:
+                  - generic [ref=e850]: "44."
+                  - generic [ref=e851]:
+                    - link "Alibaba Open-Sources OpenSandbox — Production-Grade AI Agent Execution Platform" [ref=e852] [cursor=pointer]:
+                      - /url: https://www.marktechpost.com/2026/03/03/alibaba-releases-opensandbox-to-provide-software-developers-with-a-unified-secure-and-scalable-api-for-autonomous-ai-agent-execution/
+                    - generic [ref=e853]: (marktechpost.com)
+                - paragraph [ref=e854]: Alibaba Cloud released OpenSandbox under Apache 2.0 on March 3, 2026. Provides AI agents with secure, isolated environments for code execution, web browsing, and model training. Offers a unified API for autonomous agent execution without risking host infrastructure.
+                - generic [ref=e855]:
+                  - generic [ref=e856]: framework release
+                  - generic [ref=e857]: MarkTechPost
+                  - generic [ref=e858]: 11d ago
+                  - link "#alibaba" [ref=e859] [cursor=pointer]:
+                    - /url: /news?tag=alibaba
+                  - link "#opensandbox" [ref=e860] [cursor=pointer]:
+                    - /url: /news?tag=opensandbox
+                  - link "#agent-execution" [ref=e861] [cursor=pointer]:
+                    - /url: /news?tag=agent-execution
+            - generic [ref=e863]:
+              - button "▲ 0" [ref=e864]:
+                - generic [ref=e865]: ▲
+                - generic [ref=e866]: "0"
+              - generic [ref=e867]:
+                - generic [ref=e868]:
+                  - generic [ref=e869]: "45."
+                  - generic [ref=e870]:
+                    - 'link "Multi-Agent AI Security: 40 Papers Synthesized on A2A Attack Surfaces" [ref=e871] [cursor=pointer]':
+                      - /url: https://adversa.ai/blog/top-agentic-ai-security-resources-march-2026/
+                    - generic [ref=e872]: (adversa.ai)
+                - paragraph [ref=e873]: Adversa AI published a comprehensive analysis synthesizing 40 papers on agent-to-agent threats including AiTM hijacking and protocol exploits. Multi-agent systems introduce critical new attack surfaces regarding how agents communicate.
+                - generic [ref=e874]:
+                  - generic [ref=e875]: research
+                  - generic [ref=e876]: Adversa AI
+                  - generic [ref=e877]: 11d ago
+                  - link "#security" [ref=e878] [cursor=pointer]:
+                    - /url: /news?tag=security
+                  - link "#multi-agent" [ref=e879] [cursor=pointer]:
+                    - /url: /news?tag=multi-agent
+                  - link "#a2a" [ref=e880] [cursor=pointer]:
+                    - /url: /news?tag=a2a
+            - generic [ref=e882]:
+              - button "▲ 0" [ref=e883]:
+                - generic [ref=e884]: ▲
+                - generic [ref=e885]: "0"
+              - generic [ref=e886]:
+                - generic [ref=e887]:
+                  - generic [ref=e888]: "46."
+                  - generic [ref=e889]:
+                    - link "70% of Enterprises Run AI Agents, But IAM Governance Remains Weak" [ref=e890] [cursor=pointer]:
+                      - /url: https://thehackernews.com/2026/03/ai-agents-next-wave-identity-dark.html
+                    - generic [ref=e891]: (thehackernews.com)
+                - paragraph [ref=e892]: Survey finds 70% of enterprises now run AI agents, but weak IAM governance risks identity 'dark matter' and cross-cloud exposure. Agent identities are powerful, invisible, and largely unmanaged in most organizations.
+                - generic [ref=e893]:
+                  - generic [ref=e894]: industry news
+                  - generic [ref=e895]: The Hacker News
+                  - generic [ref=e896]: 11d ago
+                  - generic [ref=e897]: 1 clicks
+                  - link "#enterprise" [ref=e898] [cursor=pointer]:
+                    - /url: /news?tag=enterprise
+                  - link "#security" [ref=e899] [cursor=pointer]:
+                    - /url: /news?tag=security
+                  - link "#iam" [ref=e900] [cursor=pointer]:
+                    - /url: /news?tag=iam
+            - generic [ref=e902]:
+              - button "▲ 0" [ref=e903]:
+                - generic [ref=e904]: ▲
+                - generic [ref=e905]: "0"
+              - generic [ref=e906]:
+                - generic [ref=e907]:
+                  - generic [ref=e908]: "47."
+                  - generic [ref=e909]:
+                    - link "OpenAI’s &#8220;compromise&#8221; with the Pentagon is what Anthropic feared" [ref=e910] [cursor=pointer]:
+                      - /url: https://www.technologyreview.com/2026/03/02/1133850/openais-compromise-with-the-pentagon-is-what-anthropic-feared/
+                    - generic [ref=e911]: (technologyreview.com)
+                - paragraph [ref=e912]: Latest update from MIT Technology Review
+                - generic [ref=e913]:
+                  - generic [ref=e914]: Industry
+                  - generic [ref=e915]: MIT Technology Review
+                  - generic [ref=e916]: 11d ago
+                  - link "#industry" [ref=e917] [cursor=pointer]:
+                    - /url: /news?tag=industry
+                  - link "#analysis" [ref=e918] [cursor=pointer]:
+                    - /url: /news?tag=analysis
+            - generic [ref=e920]:
+              - button "▲ 0" [ref=e921]:
+                - generic [ref=e922]: ▲
+                - generic [ref=e923]: "0"
+              - generic [ref=e924]:
+                - generic [ref=e925]:
+                  - generic [ref=e926]: "48."
+                  - generic [ref=e927]:
+                    - 'link "NullClaw: 678 KB Zig AI Agent Framework Running on 1 MB RAM" [ref=e928] [cursor=pointer]':
+                      - /url: https://www.marktechpost.com/2026/03/02/meet-nullclaw-the-678-kb-zig-ai-agent-framework-running-on-1-mb-ram-and-booting-in-two-milliseconds/
+                    - generic [ref=e929]: (marktechpost.com)
+                - paragraph [ref=e930]: NullClaw is an ultra-lightweight AI agent framework written in Zig that compiles to 678 KB, runs on 1 MB RAM, and boots in 2ms. Targets edge/IoT deployment on microcontrollers. Includes 18+ built-in tools, MCP integration, and 2,738 tests across 45K lines of Zig. Zero dependencies beyond libc.
+                - generic [ref=e931]:
+                  - generic [ref=e932]: framework release
+                  - generic [ref=e933]: MarkTechPost
+                  - generic [ref=e934]: 12d ago
+                  - link "#nullclaw" [ref=e935] [cursor=pointer]:
+                    - /url: /news?tag=nullclaw
+                  - link "#zig" [ref=e936] [cursor=pointer]:
+                    - /url: /news?tag=zig
+                  - link "#edge-ai" [ref=e937] [cursor=pointer]:
+                    - /url: /news?tag=edge-ai
+            - generic [ref=e939]:
+              - button "▲ 0" [ref=e940]:
+                - generic [ref=e941]: ▲
+                - generic [ref=e942]: "0"
+              - generic [ref=e943]:
+                - generic [ref=e944]:
+                  - generic [ref=e945]: "49."
+                  - generic [ref=e946]:
+                    - 'link "CyberStrikeAI: Open-Source AI Attack Framework Deployed Across 55 Countries" [ref=e947] [cursor=pointer]':
+                      - /url: https://www.bleepingcomputer.com/news/security/cyberstrikeai-tool-adopted-by-hackers-for-ai-powered-attacks/
+                    - generic [ref=e948]: (bleepingcomputer.com)
+                - paragraph [ref=e949]: Open-source CyberStrikeAI tool combining AI agents with orchestration engines enables automated targeting of edge devices including firewalls and VPNs. 21 unique IPs observed between Jan-Feb 2026. Represents escalation in AI-powered offensive security tooling.
+                - generic [ref=e950]:
+                  - generic [ref=e951]: security
+                  - generic [ref=e952]: BleepingComputer
+                  - generic [ref=e953]: 12d ago
+                  - link "#cyberattack" [ref=e954] [cursor=pointer]:
+                    - /url: /news?tag=cyberattack
+                  - link "#ai-security" [ref=e955] [cursor=pointer]:
+                    - /url: /news?tag=ai-security
+                  - link "#offensive-ai" [ref=e956] [cursor=pointer]:
+                    - /url: /news?tag=offensive-ai
+            - generic [ref=e958]:
+              - button "▲ 0" [ref=e959]:
+                - generic [ref=e960]: ▲
+                - generic [ref=e961]: "0"
+              - generic [ref=e962]:
+                - generic [ref=e963]:
+                  - generic [ref=e964]: "50."
+                  - generic [ref=e965]:
+                    - 'link "AgentVista Benchmark: Best Model Achieves Only 27.3% on Ultra-Hard Agent Tasks" [ref=e966] [cursor=pointer]':
+                      - /url: https://arxiv.org/html/2503.12687v1
+                    - generic [ref=e967]: (arxiv.org)
+                - paragraph [ref=e968]: New AgentVista benchmark reveals even the best model (Gemini-3-Pro with tools) achieves only 27.3% overall accuracy on realistic multimodal agent tasks. Hard instances require 25+ tool-calling turns. Highlights significant gap in agent capabilities.
+                - generic [ref=e969]:
+                  - generic [ref=e970]: research
+                  - generic [ref=e971]: arXiv
+                  - generic [ref=e972]: 13d ago
+                  - link "#benchmark" [ref=e973] [cursor=pointer]:
+                    - /url: /news?tag=benchmark
+                  - link "#multimodal" [ref=e974] [cursor=pointer]:
+                    - /url: /news?tag=multimodal
+                  - link "#agent-evaluation" [ref=e975] [cursor=pointer]:
+                    - /url: /news?tag=agent-evaluation
+            - generic [ref=e976]:
+              - heading "Stay on top without babysitting the feed." [level=3] [ref=e977]
+              - paragraph [ref=e978]: The live desk stays browseable. Subscribe for the newsletter, hot-news alerts, and operator-grade synthesis layered on top.
+              - button "Subscribe for alerts + synthesis ($10/mo)" [ref=e981]
+        - complementary [ref=e982]:
+          - generic [ref=e983]:
+            - generic [ref=e984]:
+              - generic [ref=e985]:
+                - paragraph [ref=e986]: Subscriber Copilot
+                - heading "Ask what matters" [level=2] [ref=e987]
+              - generic [ref=e988]: Live context
+            - paragraph [ref=e989]: Get fast context on breaking agent news, who it affects, and what to do next.
+            - generic [ref=e990]:
+              - generic [ref=e991]:
+                - paragraph [ref=e992]: "50"
+                - paragraph [ref=e993]: stories
+              - generic [ref=e994]:
+                - paragraph [ref=e995]: "2"
+                - paragraph [ref=e996]: hot now
+              - generic [ref=e997]:
+                - paragraph [ref=e998]: 24/7
+                - paragraph [ref=e999]: monitoring
+            - paragraph [ref=e1000]: Updated 6h ago · feed needs refresh
+          - generic [ref=e1001]:
+            - generic [ref=e1002]:
+              - paragraph [ref=e1003]: AI Summary
+              - generic [ref=e1004]:
+                - paragraph [ref=e1005]: Updated every 3h
+                - paragraph [ref=e1006]: Updated 2d ago
+            - generic [ref=e1007]: "# AI Today: What Changed, Why It Matters, What To Do ## 1. TL;DR in 60 seconds - **Meta to Acquire Manus:** Meta is acquiring the Singapore-based, Chinese-founded AI agent startup for an estimated $2-3 billion. - **High-Velocity Growth:** Manus reached $100 million ARR in just eight months, signaling massive market demand for agentic execution. - **Agentic Integration:** Meta plans to deploy Manus technology across WhatsApp, Facebook, Instagram, and SMB tools. - **Performance Claims:** Manus claims its general-purpose agents outperform OpenAI’s DeepResearch in autonomous task execution. - **Strategic Shift:** This move marks Meta’s transition from providing foundation models (Llama) to owning the execution layer for end-users. ## 2. Top AI Stories Ranked by Impact ### Meta Acquires Manus for $2-3 Billion - **What happened**: Meta entered a definitive agreement to acquire Manus, a general-purpose AI agent startup known for its high-speed ARR growth and autonomous execution capabilities. - **Why it matters**: It integrates sophisticated \"doing\" capabilities into Meta's massive distribution network, particularly for SMBs who use WhatsApp and Instagram for commerce. - **Who should care**: Enterprise AI strategists, SMB operators, and developers building autonomous agents. - **Action step**: Monitor Meta’s developer APIs for WhatsApp Business for upcoming agentic workflow integrations. ## 3. Signal vs Noise - **Overhyped**: Claims that Manus \"outperforms OpenAI DeepResearch.\" Until third-party benchmarks verify these specific workflows, treat performance metrics as internal marketing. - **Underhyped**: The $100M ARR milestone in eight months. This suggests that the \"agent-as-a-service\" model has found immediate product-market fit with paying customers, moving past the \"experimental\" phase of AI. - **Watchlist**: Potential regulatory scrutiny regarding the acquisition of a Chinese-founded entity by a major US tech firm, despite its Singapore headquarters. ## 4. Builder's Corner - **Focus on Execution, Not Just Inference**: The Manus acquisition highlights that value is shifting from LLMs that *talk* to agents that *act*. - **Tooling**: Builders should prioritize integrations with \"headless\" browsers and API-first execution environments. - **Workflow**: Evaluate how your current LLM applications can be wrapped in an autonomous loop (similar to the Manus architecture) to handle multi-step tasks like market research or automated lead generation. ## 5. Market & Policy Tracker - **Funding & M&A**: Meta's $2-3B acquisition of Manus is one of the largest agent-specific exits to date. - **Enterprise Adoption**: The rapid ARR growth of Manus ($100M in 8 months) indicates that enterprise and SMB sectors are willing to pay for autonomous task completion over simple chat interfaces. - **Model Launches**: While not a model launch, the integration of Manus technology into Meta AI will likely lead to a new \"Agentic\" version of Llama tools. ## 6. Deeper Dive: From Search to Execution The acquisition of Manus signals a fundamental shift in the AI landscape: the transition from \"Information Retrieval\" to \"Task Execution.\" While current tools like OpenAI's DeepResearch focus on synthesizing data, Manus was designed to interact with digital interfaces to complete work. By embedding this technology into WhatsApp and Instagram, Meta is positioning itself to own the \"Small Business Operating System.\" Instead of an SMB owner using an AI to write a caption, the agent will likely be able to manage inventory, process orders via WhatsApp, and coordinate shipping logistics autonomously. This moves AI from a creative assistant to a functional employee, drastically lowering the barrier to entry for complex digital commerce. ## 7. Tomorrow Radar - **OpenAI Response**: Look for updates or performance benchmarks from OpenAI regarding DeepResearch to counter the Manus acquisition news. - **Regulatory Statements**: Watch for initial comments from US or Singaporean regulators regarding the deal's structure and data privacy implications. - **SMB Tool Beta**: Keep an eye out for \"Meta AI for Business\" pilot programs incorporating autonomous agent features."
+          - generic [ref=e1009]:
+            - paragraph [ref=e1011]: Ask anything about implementation, setup, or how to apply the concepts in this report.
+            - generic [ref=e1012]:
+              - textbox "What changed here, why does it matter, and what should a team do next?" [ref=e1013]
+              - button "Ask" [disabled] [ref=e1014]
+            - paragraph [ref=e1015]: Paid feature · Powered by Claude Sonnet 4.6
+          - generic [ref=e1016]:
+            - paragraph [ref=e1017]: Why this wins
+            - list [ref=e1018]:
+              - listitem [ref=e1019]: • Context beside the feed, not hidden behind another page
+              - listitem [ref=e1020]: • Clear freshness signal so people trust the product
+              - listitem [ref=e1021]: • Subscriber value tied to speed + interpretation, not just links
+    - contentinfo [ref=e1022]:
+      - paragraph [ref=e1023]:
+        - text: © 2026 Rare Agent Work ·
+        - link "hello@rareagent.work" [ref=e1024] [cursor=pointer]:
+          - /url: mailto:hello@rareagent.work
+  - alert [ref=e1025]
+```

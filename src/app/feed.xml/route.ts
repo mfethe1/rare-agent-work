@@ -21,7 +21,7 @@ export async function GET() {
       <source url="${escapeXml(item.url)}">${escapeXml(item.source)}</source>
       <pubDate>${new Date(item.publishedAt).toUTCString()}</pubDate>
       <guid isPermaLink="false">${item.id}</guid>
-      ${item.tags.map(t => `<category>${escapeXml(t)}</category>`).join('\n      ')}
+      ${(item.tags || []).map(t => `<category>${escapeXml(t)}</category>`).join('\n      ')}
     </item>`).join('');
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>

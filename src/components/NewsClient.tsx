@@ -110,7 +110,7 @@ export default function NewsClient({ items }: { items: NewsItem[] }) {
                 <span>{item.source}</span>
                 <span>{formatNewsAge(item.publishedAt)}</span>
                 {item.clicks > 0 && <span>{item.clicks} clicks</span>}
-                {item.tags.slice(0, 3).map((tag) => (
+                {(item.tags || []).slice(0, 3).map((tag) => (
                   <a
                     key={tag}
                     href={`/news?tag=${encodeURIComponent(tag)}`}

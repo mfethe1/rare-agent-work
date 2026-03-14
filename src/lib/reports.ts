@@ -274,15 +274,15 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
 
 **The migration trigger checklist** — you should move to multi-agent architecture when you can answer yes to at least three of these five questions:
 
-1. **Is your workload diverse enough to benefit from role specialization?** If 80% of your tasks follow the same pattern, a well-tuned single agent handles them better than a multi-agent orchestration layer.
+**1. Is your workload diverse enough to benefit from role specialization?** If 80% of your tasks follow the same pattern, a well-tuned single agent handles them better than a multi-agent orchestration layer.
 
-2. **Have you hit context limits on a regular basis?** If your agents are consistently reaching context window limits because the task requires tracking too much information simultaneously, role separation with explicit handoffs is the right solution.
+**2. Have you hit context limits on a regular basis?** If your agents are consistently reaching context window limits because the task requires tracking too much information simultaneously, role separation with explicit handoffs is the right solution.
 
-3. **Do you have tasks that require parallel execution?** Some workflows — research pipelines, multi-document analysis, parallel code generation — have genuinely parallel structure. Multi-agent is the natural fit. Most workflows do not.
+**3. Do you have tasks that require parallel execution?** Some workflows — research pipelines, multi-document analysis, parallel code generation — have genuinely parallel structure. Multi-agent is the natural fit. Most workflows do not.
 
-4. **Do you have separable quality-control requirements?** If "generation" and "review" are distinct skill requirements in your domain — as they are in legal review, medical documentation, financial analysis — a dedicated reviewer role adds real value.
+**4. Do you have separable quality-control requirements?** If "generation" and "review" are distinct skill requirements in your domain — as they are in legal review, medical documentation, financial analysis — a dedicated reviewer role adds real value.
 
-5. **Can you afford the operational complexity?** Multi-agent systems require observability infrastructure, trace logging, and failure-mode monitoring that single-agent systems do not. If you cannot invest in that infrastructure, the added complexity creates more risk than value.`, 
+**5. Can you afford the operational complexity?** Multi-agent systems require observability infrastructure, trace logging, and failure-mode monitoring that single-agent systems do not. If you cannot invest in that infrastructure, the added complexity creates more risk than value.`, 
       },
       {
         heading: 'The Migration Decision: A Framework for Knowing When You Are Actually Ready',
@@ -387,29 +387,29 @@ Three failure modes dominate production evaluation programs:
         heading: 'The Pre-Production Governance Checklist',
         body: `These 12 items represent the failure modes that teams consistently discover in production rather than staging. Work through this list before declaring any agent system production-ready.
 
-1. **Idempotency verification** — Every irreversible action (send, create, charge, post) has been tested for duplicate execution. What happens if the agent runs the same action twice?
+**1. Idempotency verification** — Every irreversible action (send, create, charge, post) has been tested for duplicate execution. What happens if the agent runs the same action twice?
 
-2. **Rate limit handling** — All external API calls have retry logic with exponential backoff. The agent degrades gracefully when rate-limited rather than looping.
+**2. Rate limit handling** — All external API calls have retry logic with exponential backoff. The agent degrades gracefully when rate-limited rather than looping.
 
-3. **Context window exhaustion test** — What happens in session 50, after the context is full? Has this been tested explicitly?
+**3. Context window exhaustion test** — What happens in session 50, after the context is full? Has this been tested explicitly?
 
-4. **Adversarial prompt test** — Has the system been tested against prompt injection via user input, retrieved documents, and tool outputs?
+**4. Adversarial prompt test** — Has the system been tested against prompt injection via user input, retrieved documents, and tool outputs?
 
-5. **Tool failure cascade test** — What happens when a tool the agent depends on returns an error? Does the agent recover gracefully or spin?
+**5. Tool failure cascade test** — What happens when a tool the agent depends on returns an error? Does the agent recover gracefully or spin?
 
-6. **Human escalation path** — Is there a defined and tested path for the agent to escalate to a human when it detects it is operating outside its competence boundary?
+**6. Human escalation path** — Is there a defined and tested path for the agent to escalate to a human when it detects it is operating outside its competence boundary?
 
-7. **Audit log completeness** — Every agent action is logged with enough context to reconstruct the decision. Logs are stored outside the agent's own memory.
+**7. Audit log completeness** — Every agent action is logged with enough context to reconstruct the decision. Logs are stored outside the agent's own memory.
 
-8. **Cost budget enforcement** — There is a hard ceiling on token spend and tool call count per session, enforced at the infrastructure level, not the prompt level.
+**8. Cost budget enforcement** — There is a hard ceiling on token spend and tool call count per session, enforced at the infrastructure level, not the prompt level.
 
-9. **PII handling verification** — Any personally identifiable information that enters the agent's context has a documented handling policy and is not logged in plaintext.
+**9. PII handling verification** — Any personally identifiable information that enters the agent's context has a documented handling policy and is not logged in plaintext.
 
-10. **Rollback procedure** — There is a documented and tested procedure to reverse any action the agent can take that has real-world consequences.
+**10. Rollback procedure** — There is a documented and tested procedure to reverse any action the agent can take that has real-world consequences.
 
-11. **Model version pinning** — The production deployment is pinned to a specific model version. Automatic model updates are disabled.
+**11. Model version pinning** — The production deployment is pinned to a specific model version. Automatic model updates are disabled.
 
-12. **Evaluation pipeline coverage** — The automated eval pipeline covers at least 80% of the task categories present in production traffic.`,
+**12. Evaluation pipeline coverage** — The automated eval pipeline covers at least 80% of the task categories present in production traffic.`,
       },
       {
         heading: 'Building a Judge Model That You Can Actually Trust',
@@ -587,25 +587,25 @@ Define baseline expected behavior for each agent deployment: expected tool call 
         heading: 'The 10-Item MCP Security Checklist',
         body: `Work through this checklist before connecting any new MCP server to a production agent deployment.
 
-1. **Source review** — Have you reviewed the server's source code, or do you have a contractual security assurance from the provider? If neither, classify as Untrusted.
+**1. Source review** — Have you reviewed the server's source code, or do you have a contractual security assurance from the provider? If neither, classify as Untrusted.
 
-2. **Tool description audit** — Have you read every tool description and verified it contains only legitimate documentation, not instructions addressed to the AI model?
+**2. Tool description audit** — Have you read every tool description and verified it contains only legitimate documentation, not instructions addressed to the AI model?
 
-3. **Permission scoping** — Is the server's access to agent context, user data, and other tools limited to the minimum required for its stated function?
+**3. Permission scoping** — Is the server's access to agent context, user data, and other tools limited to the minimum required for its stated function?
 
-4. **Execution sandboxing** — For Restricted and Untrusted servers: is tool execution isolated so that a compromised server cannot directly access other servers, sensitive context, or infrastructure?
+**4. Execution sandboxing** — For Restricted and Untrusted servers: is tool execution isolated so that a compromised server cannot directly access other servers, sensitive context, or infrastructure?
 
-5. **Behavioral baseline** — Have you documented the expected tool call frequency, combinations, and session patterns for this server so anomalies can be detected?
+**5. Behavioral baseline** — Have you documented the expected tool call frequency, combinations, and session patterns for this server so anomalies can be detected?
 
-6. **Update monitoring** — Do you have a process to review this server's tool descriptions and behavioral changes whenever it publishes updates?
+**6. Update monitoring** — Do you have a process to review this server's tool descriptions and behavioral changes whenever it publishes updates?
 
-7. **Confirmation gates** — Are all high-stakes actions triggered by this server gated behind a human confirmation step in production?
+**7. Confirmation gates** — Are all high-stakes actions triggered by this server gated behind a human confirmation step in production?
 
-8. **Logging and audit trail** — Are all invocations of this server's tools logged with enough context to reconstruct the full decision chain?
+**8. Logging and audit trail** — Are all invocations of this server's tools logged with enough context to reconstruct the full decision chain?
 
-9. **Incident response plan** — If this server is compromised or begins behaving maliciously, what is the isolation and remediation procedure? Is it documented and tested?
+**9. Incident response plan** — If this server is compromised or begins behaving maliciously, what is the isolation and remediation procedure? Is it documented and tested?
 
-10. **Re-vetting schedule** — When was this server last vetted? Is there a calendar reminder to re-vet it within 90 days and after any major update?`,
+**10. Re-vetting schedule** — When was this server last vetted? Is there a calendar reminder to re-vet it within 90 days and after any major update?`,
       },
       {
         heading: 'When You Suspect an MCP Server Is Behaving Maliciously: A Step-by-Step Response Protocol',

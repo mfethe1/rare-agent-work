@@ -84,20 +84,26 @@ function renderInlineBold(text: string, accentClass: string): React.ReactNode {
 
 /**
  * Render a paragraph from an excerpt body with rich visual hierarchy.
- * Handles: numbered lists, **bold** lead-ins on their own line (callout boxes),
- * plain paragraphs, and phase/step headers that start with a bold phrase.
+ * Handles:
+ *   - **N. Title** — desc  → numbered callout with accent bar + number badge
+ *   - N. plain text        → numbered callout with badge
+ *   - **bold**             → standalone section sub-header
+ *   - **Bold term** text   → lead-bold callout with left accent bar
+ *   - plain paragraph      → prose with inline bold support
  */
 function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorClass: string; borderClass: string }) {
   const paragraphs = body.split('\n\n').filter(p => p.trim().length > 0);
 
   return (
-    <div className="space-y-4 text-sm leading-7 text-slate-300">
+    <div className="space-y-3 text-sm leading-7 text-slate-300">
       {paragraphs.map((para, i) => {
         const trimmed = para.trim();
 
-        // Numbered list item: starts with digit + dot, e.g. "1. **Bold** text" or "1. plain text"
-        // Must check this BEFORE leadBoldMatch since "1. **text**" would otherwise match leadBoldMatch
-        const numberedMatch = trimmed.match(/^(\d+\.)(\s+)(.+)$/s);
+        // Numbered list item: starts with digit + dot (no bold lead)
+        // e.g. "1. plain text" or "1. text with **bold** inside"
+        // Must check BEFORE leadBoldMatch since "1. **text**" would otherwise match leadBoldMatch.
+        // Use anchored single-line match (no s flag needed — items are single paragraphs).
+        const numberedMatch = trimmed.match(/^(\d+\.)(\s+)(.+)$/);
         if (numberedMatch) {
           const num = numberedMatch[1];
           const rest = numberedMatch[3];
@@ -109,7 +115,7 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
           );
         }
 
-        // Standalone bold line — a paragraph that is ONLY bold text, used as section subheader
+        // Standalone bold line — a paragraph that is ONLY bold text, used as section sub-header
         // e.g. "**Phase 1: Detection**"
         const standaloneBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*\s*$/);
         if (standaloneBoldMatch) {
@@ -120,16 +126,35 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
           );
         }
 
-        // Paragraph that STARTS with **Bold term** followed by more content on the same line
-        // Render as callout with left accent bar — e.g. "**Zapier** is the right choice..."
-        // Only match single-line lead bold (no newlines in the rest of content after the bold term)
+        // Paragraph that STARTS with **Bold term** — possibly a numbered checklist item
+        // e.g. "**1. Source review** — Have you reviewed..." or "**Zapier** is the right choice..."
+        // leadBoldMatch[1] = bold term (may include number), leadBoldMatch[2] = rest of content
         const leadBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*(.+)$/s);
         if (leadBoldMatch) {
+          const boldTerm = leadBoldMatch[1];
+          const rest = leadBoldMatch[2];
+          // Detect if bold term starts with a number (e.g. "1. Source review" or "12. Eval coverage")
+          const numericLead = boldTerm.match(/^(\d+)\.\s+(.+)$/);
+          if (numericLead) {
+            // Numbered checklist item — render with a prominent number badge + label
+            return (
+              <div key={i} className={`flex gap-3 rounded-xl border ${borderClass} bg-black/20 px-4 py-3.5`}>
+                <span className={`shrink-0 rounded-md border ${borderClass} bg-black/40 px-1.5 py-0.5 font-mono text-[10px] font-black leading-none mt-0.5 ${colorClass}`}>
+                  {numericLead[1]}
+                </span>
+                <span>
+                  <strong className="font-semibold text-white">{numericLead[2]}</strong>
+                  {renderInlineBold(rest, colorClass)}
+                </span>
+              </div>
+            );
+          }
+          // Non-numbered lead-bold: render as left accent bar callout
           return (
             <div key={i} className={`border-l-2 ${borderClass} pl-4`}>
               <p>
-                <strong className="font-semibold text-white">{leadBoldMatch[1]}</strong>
-                {renderInlineBold(leadBoldMatch[2], colorClass)}
+                <strong className="font-semibold text-white">{boldTerm}</strong>
+                {renderInlineBold(rest, colorClass)}
               </p>
             </div>
           );

@@ -652,6 +652,8 @@ export default function Home() {
               <Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link>
               <Link href="/docs" className="hover:text-white transition-colors">API</Link>
               <Link href="/about" className="hover:text-white transition-colors">About</Link>
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
               <a href="mailto:hello@rareagent.work" className="hover:text-white transition-colors">hello@rareagent.work</a>
             </nav>
           </div>

@@ -41,13 +41,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       siteName: 'Rare Agent Work',
       type: 'article',
       locale: 'en_US',
-      images: ['/og-image.png'],
     },
     twitter: {
       card: 'summary_large_image' as const,
       title: `${report.title} — ${report.price}`,
       description: report.subtitle,
-      images: ['/og-image.png'],
     },
   };
 }

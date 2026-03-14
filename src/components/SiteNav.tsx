@@ -17,6 +17,7 @@ export interface SiteNavProps {
 const NAV_LINKS = [
   { label: 'Reports', href: '/reports' },
   { label: 'News', href: '/news' },
+  { label: 'Pricing', href: '/pricing' },
   { label: 'Consulting', href: '/assessment' },
   { label: 'API', href: '/docs' },
 ] as const;

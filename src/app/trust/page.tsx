@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
+import SiteNav from '@/components/SiteNav';
 import { trustControlBullets } from '@/lib/site-copy';
 
 export const metadata: Metadata = {
@@ -54,6 +55,7 @@ const surfaceRows = [
 export default function TrustPage() {
   return (
     <div className="min-h-screen bg-[#07111f] text-slate-100">
+      <SiteNav primaryCta={{ label: 'Browse Reports', href: '/reports' }} />
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: 'https://rareagent.work' },

@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { getAllReports } from '@/lib/reports';
+import SiteNav from '@/components/SiteNav';
 
 export const metadata = {
   title: '404 — Page Not Found',
@@ -20,49 +20,7 @@ export default function NotFound() {
       </div>
 
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between gap-4">
-            <Link href="/" className="flex items-center gap-3 group flex-shrink-0">
-              <div className="relative h-8 w-8 overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-[0_0_20px_rgba(34,211,238,0.12)] transition-all group-hover:shadow-[0_0_28px_rgba(34,211,238,0.22)]">
-                <Image
-                  src="/logo-medallion.jpg"
-                  alt="Rare Agent Work"
-                  fill
-                  className="object-cover"
-                  sizes="32px"
-                  priority
-                />
-              </div>
-              <span className="text-sm font-bold tracking-tight text-white whitespace-nowrap">
-                Rare Agent Work
-              </span>
-            </Link>
-            <div className="hidden items-center gap-1 md:flex">
-              {[
-                { label: 'Reports', href: '/reports' },
-                { label: 'News', href: '/news' },
-                { label: 'Consulting', href: '/assessment' },
-                { label: 'API', href: '/docs' },
-              ].map(({ label, href }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="rounded-full px-3.5 py-1.5 text-sm font-medium text-slate-400 transition-colors hover:bg-white/[0.06] hover:text-white"
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-            <Link
-              href="/reports"
-              className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-4 py-2 text-sm font-bold text-slate-950 shadow-[0_6px_24px_rgba(34,211,238,0.18)] transition-all hover:-translate-y-px hover:bg-cyan-300"
-            >
-              Browse Reports
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <SiteNav primaryCta={{ label: 'Browse Reports', href: '/reports' }} />
 
       <main className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:py-24">
         {/* 404 Hero */}

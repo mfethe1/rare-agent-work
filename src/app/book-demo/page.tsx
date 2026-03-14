@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
+import SiteNav from "@/components/SiteNav";
 
 export const metadata: Metadata = {
   title: "Book a Strategy Call",
@@ -10,28 +10,7 @@ export const metadata: Metadata = {
 export default function BookDemoPage() {
   return (
     <div className="min-h-screen bg-[#050816] font-sans text-slate-100 selection:bg-cyan-400 selection:text-slate-950 flex flex-col">
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/80 backdrop-blur-xl">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between gap-4">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-[0_0_30px_rgba(34,211,238,0.18)]">
-                <Image src="/logo-medallion.jpg" alt="Rare Agent Work logo" fill className="object-cover" sizes="40px" priority />
-              </div>
-              <div>
-                <span className="block text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/90">Rare Agent</span>
-                <span className="block text-base font-bold tracking-tight text-white">Work</span>
-              </div>
-            </Link>
-
-            <div className="flex items-center gap-2 sm:gap-3">
-              <Link href="/news" className="text-xs text-slate-400 transition-colors hover:text-white sm:text-sm">News Feed</Link>
-              <Link href="/reports" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Reports</Link>
-              <Link href="/about" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">About</Link>
-              <Link href="/assessment" className="hidden text-xs text-slate-400 transition-colors hover:text-white sm:block sm:text-sm">Assessment</Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <SiteNav primaryCta={{ label: 'Get an Assessment', href: '/assessment' }} />
 
       <main className="flex-1 mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">

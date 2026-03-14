@@ -30,6 +30,34 @@ export default async function ProtectedReportHtmlPage({ params }: { params: Prom
     redirect(`/auth/login?redirect=/reports/${slug}/html`);
   }
 
+  // --- Purchase / subscription gate ---
+  // Subscribers (starter or pro tier) get access to all reports.
+  // One-time buyers must have a matching row in report_purchases.
+  const { data: profile } = await supabase
+    .from('users')
+    .select('tier')
+    .eq('id', user.id)
+    .single();
+
+  const tier = profile?.tier as string | null | undefined;
+  const hasSubscription = tier === 'starter' || tier === 'pro';
+
+  if (!hasSubscription) {
+    // Check for a one-time purchase record keyed by email + report slug.
+    const email = user.email ?? '';
+    const { data: purchase } = await supabase
+      .from('report_purchases')
+      .select('id')
+      .eq('customer_email', email)
+      .eq('report_slug', slug)
+      .maybeSingle();
+
+    if (!purchase) {
+      // No valid purchase — redirect to the preview page with a paywall flag.
+      redirect(`/reports/${slug}?access=required`);
+    }
+  }
+
   const c = colorMap[report.color] ?? colorMap.blue;
   const relatedReports = getAllReports().filter((r) => r.slug !== report.slug).slice(0, 2);
 

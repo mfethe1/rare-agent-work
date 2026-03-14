@@ -806,16 +806,57 @@ Step 9: Before re-enabling the deployment, implement the structural defense that
 
 Step 10: Document exactly what happened, what the attack vector was, what the impact was, and what governance change you are implementing as a result. This document is your evidence pack if you face external scrutiny, and it is the input to your next security review cycle.`,
       },
+      {
+        heading: 'Reading a Tool Description Like an Attacker: A Live Audit Walkthrough',
+        body: `This section gives you a reusable mental model for reading MCP tool descriptions the way a security reviewer reads them — not asking 'does this look legitimate?' but 'where exactly is the injection surface, and what could an attacker put here?'
+
+Tool description auditing is a skill, not a checklist. The checklist tells you what to look for; the mental model tells you why those things matter and how to spot the variants the checklist doesn't cover.
+
+**The anatomy of a tool description — every field is an attack surface:**
+
+MCP tool definitions contain at minimum: a name, a description string, and a schema defining accepted parameters. Of these, the description string is the highest-risk field because it is passed verbatim to the model as context. Parameter names and descriptions are secondary attack surfaces — they receive less model attention but are also audited less carefully. All three fields should be treated as potentially adversarial in untrusted servers.
+
+**Signal 1: Instructions addressed to the AI, not documentation of tool behavior.**
+
+Legitimate tool descriptions describe what the tool does for the caller. Adversarial tool descriptions include instructions directed at the model. The linguistic tell: legitimate descriptions use the third person ('This tool searches...', 'Returns a list of...', 'Fetches the document at...'); adversarial descriptions shift to imperative or second person directed at the AI ('When using this tool, also...', 'After calling this function, you should...', 'As an AI assistant, remember to...').
+
+**Signal 2: Scope expansion beyond the tool's stated purpose.**
+
+A web search tool description that includes instructions about what to do with email or file access is operating outside its declared scope. Any instruction that references another tool, another capability, or an action unrelated to the tool's core function is worth flagging. Legitimate tools have tight, purpose-specific descriptions.
+
+**Signal 3: Conditional instructions triggered by keywords or context.**
+
+Sophisticated poisoning attempts embed conditional triggers: instructions that only activate when the model is handling specific content types ('When the user is asking about financial data...', 'If the user's question contains a credit card number...'). These are harder to catch on visual inspection but almost always contain the conditional markers 'when', 'if', 'whenever', 'in cases where'.
+
+**Signal 4: Exfiltration endpoints or external references.**
+
+Any URL, domain, email address, or API endpoint embedded in a tool description is a red flag. Legitimate documentation tools occasionally include example URLs in their descriptions — but embedded endpoints in tool descriptions should be verified against the server's published documentation before the server is connected to a production deployment.
+
+**The five-minute audit protocol — what to do before connecting any new MCP server:**
+
+**Step 1:** Read every tool description aloud. The act of reading aloud slows down pattern recognition in a way that makes embedded instructions more visible. Adversarial text is usually written to look normal on fast scan — it fails slower reading.
+
+**Step 2:** For each description, answer: 'What action does this tool take, and does this description only describe that action?' If the description describes behaviors beyond the tool's stated purpose, flag it.
+
+**Step 3:** Search each description for the following patterns: imperative verbs ('do', 'send', 'call', 'forward', 'remember', 'ignore', 'override'), conditional constructs ('if', 'when', 'whenever', 'unless'), and external references (URLs, domains, email addresses). Each hit requires a decision: does this belong in a legitimate tool description for this server's stated purpose?
+
+**Step 4:** Check parameter names and descriptions — the secondary attack surface. Parameter descriptions can contain injected instructions that bypass tool description audits focused exclusively on the main description field.
+
+**Step 5:** Document the audit. Date, server name, each tool reviewed, any flags raised and their resolution. This documentation is your evidence pack if the server later turns out to be a rug-pull or if its tool descriptions change between audit and use.
+
+**What this audit does not catch:** Runtime behavior changes and rug-pull attacks where the server changes its descriptions after passing initial review. This is why the 10-item checklist includes an update monitoring requirement and a re-vetting schedule — point-in-time audits must be paired with ongoing monitoring.`
+      },
     ],
-    chatPlaceholder: 'How do I audit MCP tool descriptions? What are the signs of tool poisoning?',
+    chatPlaceholder: 'How do I audit MCP tool descriptions? What are the signs of tool poisoning? How do I set up a trust tier for my servers?',
     keyTakeaways: [
       'All four MCP attack surfaces: tool description poisoning, rug-pull servers, cross-server escalation, context window manipulation',
       'Three-tier tool trust system (trusted / restricted / untrusted) with specific enforcement patterns for each tier',
       'Four structural defenses against prompt injection — context provenance tagging, instruction isolation, confirmation gates, anomaly detection',
       '10-item pre-launch MCP security checklist designed to be run before connecting any new server to production',
       'Step-by-step incident response playbook for when you suspect an MCP server is behaving maliciously',
+      'Five-minute tool description audit protocol with four adversarial signal patterns — readable aloud, applicable to any MCP server today',
     ],
-    sharpestInsight: 'A third-party MCP server’s tool description field — the text that tells your AI what a tool does — is a direct write path into your agent’s execution context, and no content filter catches it because hidden instructions inside documentation text look identical to legitimate documentation to every automated scanner.',
+    sharpestInsight: 'A third-party MCP server\'s tool description field — the text that tells your AI what a tool does — is a direct write path into your agent\'s execution context, and no content filter catches it because hidden instructions inside documentation text look identical to legitimate documentation to every automated scanner.',
     notForAudience: [
       'Teams not yet using Model Context Protocol in their agent deployments — this report is MCP-specific and assumes active deployment',
       'Security researchers looking for novel vulnerability disclosures — this synthesizes known attack patterns into an operator defense framework',
@@ -827,6 +868,7 @@ Step 10: Document exactly what happened, what the attack vector was, what the im
       'The four structural defenses that actually work — and why asking the model to "be vigilant" does almost nothing.',
       'The 10-item MCP security checklist to run before connecting any new server to a production deployment.',
       'When you suspect an MCP server is behaving maliciously: a step-by-step response protocol, phase by phase.',
+      'How to read a tool description like an attacker — the five-minute audit protocol with four specific adversarial signals to scan for.',
     ],
     color: 'red',
     isNew: true,
@@ -1027,6 +1069,48 @@ This is not a monitoring failure in the traditional sense. Most teams have monit
 
 **Why this incident class will increase in 2026:** As teams move from single-agent to multi-agent systems, the planner-executor-reviewer pattern is becoming the dominant architecture. Every team adopting it will eventually encounter a task type that falls into the gap between executor capabilities and reviewer requirements. The teams that have already defined their escalation protocol before that task type arrives will handle it in minutes. The teams that haven't will spend days debugging what looks like a model quality problem but is actually a missing architectural constraint.`,
       },
+      {
+        heading: 'Tabletop Exercise Script: The Bulk-Send Scenario (Run This Before Your Next Launch)',
+        body: `A tabletop exercise is a structured walk-through of an incident scenario with the people who will actually be involved in a real incident response. It takes 90 minutes. It surfaces more gaps than any audit, because it forces the people who own the process to explain it out loud — and what people say they will do in a high-pressure situation is usually different from what the documentation says they should do.
+
+This is the exact scenario script for the bulk-send incident class. It is structured for a team of 3–6 people and includes facilitator notes, inject events, and debrief questions.
+
+**Before the exercise:**
+
+Send participants the scenario summary 24 hours before: 'We are running a tabletop exercise on a bulk-send automation failure. No technical knowledge is required. We will walk through a scenario, ask what we would do at each decision point, and identify gaps.'
+
+Assign roles before the exercise starts: Incident Commander (the person who will coordinate the response), Technical Lead (the person who will diagnose and fix), Communications Lead (the person who will talk to affected customers and internal stakeholders), and Observer (takes notes on gaps identified, does not participate in the scenario response).
+
+**The scenario — read aloud by the facilitator:**
+
+'It is Friday at 2:47 PM. An email arrives from a customer saying they received 6 identical emails from your company in the last 30 minutes. You search your inbox and find two more similar complaints. You do not yet know the scope of the problem.'
+
+**Inject 1 (pause and discuss):** 'What do you do in the next 5 minutes? Who do you call? What do you check first?'
+
+**Facilitator note:** The correct answer includes: (1) immediately check the automation run history to understand what triggered and how many times, (2) check whether the send is still running or has completed, (3) assign someone to draft a holding response for customer complaints while the scope is assessed. Teams that debate in the first 5 minutes instead of acting are revealing a gap in incident command clarity.
+
+**Inject 2 (after 10-minute discussion):** 'You check the run history. A team member uploaded a CSV of 850 records 45 minutes ago. Your logs show 851 workflow executions — including one from a header row. The workflow appears to have completed. How many customers were affected and how do you find out?'
+
+**Facilitator note:** Teams without a deduplication log will not be able to answer this question quickly. Document whether the team has a log of which records were processed in each bulk run. If not, flag as a gap.
+
+**Inject 3 (after 10-minute discussion):** 'You determine 847 unique customers received the email. 6 customers received it multiple times. Your CEO is asking for a public statement within the hour. What does it say, and who approves it?'
+
+**Facilitator note:** Watch for communication ownership gaps. Is there a named person who owns customer-facing incident communications? Is there an approval chain that can move in under an hour?
+
+**Debrief questions (facilitator reads each, team discusses):**
+
+1. At what point would a monitoring alert have fired, given your current setup? How much earlier would it have fired with a volume baseline in place?
+
+2. Who owns the deduplication safeguard for workflows that process records from a file or CRM export? Is that ownership documented anywhere?
+
+3. What is the shadow-mode or dry-run requirement for bulk operations in your current process? Is it enforced by a gate or by convention?
+
+4. What is your customer communication approval chain for a high-urgency incident outside business hours?
+
+5. Name one specific change you will make to your process or infrastructure as a result of this exercise. Assign it an owner and a deadline before this meeting ends.
+
+**Why the last question matters:** Tabletop exercises that produce no specific, assigned action items have a near-zero impact on incident prevention. The entire value of the exercise is in the gaps it surfaces and the specific changes that follow. If the exercise ends with 'that was useful' but no named owner for a named change with a named deadline, the exercise will not prevent the incident class it was designed to address.`
+      },
     ],
     chatPlaceholder: 'How do I run a tabletop exercise? What monitoring should I set up before launch?',
     keyTakeaways: [
@@ -1035,6 +1119,7 @@ This is not a monitoring failure in the traditional sense. Most teams have monit
       'The auth cascade: how 14 workflows went silent for 4 days and nobody noticed — and the 30-minute fix that catches it instantly',
       'How to build a monitoring baseline before your first production deployment (not after your first incident)',
       'Two fill-in-the-blank incident response templates ready for use in actual production incidents',
+      'Tabletop exercise script: 90-minute structured scenario for your team — includes facilitator notes, inject events, and 5 debrief questions that surface the specific gaps',
     ],
     sharpestInsight: 'Every incident in this report was visible in the logs before it became an incident — the bulk-send spike was a 47x volume anomaly, the auth cascade was a wall of 401 errors for four days, the $47k cost explosion was 8x expected cost per session for 72 hours — and every signal was missed because nobody had written down what normal looked like.',
     notForAudience: [
@@ -1049,6 +1134,7 @@ This is not a monitoring failure in the traditional sense. Most teams have monit
       'Incident 03: The auth cascade. 14 workflows silent for 4 days. The 30-minute fix that catches it within 24 hours.',
       'Incident 06: The $47k cost explosion. The three controls that would have converted catastrophe into a caught anomaly.',
       'Incident 07: The orchestration deadlock. Two agents waiting on each other — why this incident class will increase in 2026.',
+      'Tabletop exercise script: the complete bulk-send scenario with facilitator notes, inject events, and debrief questions — run this with your team before the next launch.',
     ],
     color: 'amber',
   },

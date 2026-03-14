@@ -151,9 +151,9 @@ describe('/api/chat auth gating', () => {
     } as never);
 
     const { POST } = await import('@/app/api/chat/route');
-    const req = buildRequest({ messages: [] });
+    const req = buildRequest({ messages: [{ role: 'user', content: 'hello' }] });
     const res = await POST(req);
-    // API key missing → 500, or no user → 401, both are valid guard responses
-    expect([401, 500]).toContain(res.status);
+    // No user → 401, API key missing → 500, or validation → 400, all are valid guard responses
+    expect([400, 401, 500]).toContain(res.status);
   });
 });

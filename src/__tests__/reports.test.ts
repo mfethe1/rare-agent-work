@@ -51,9 +51,9 @@ describe('getAllReports()', () => {
     expect(all.length).toBeGreaterThan(0);
   });
 
-  it('returns exactly 3 reports', () => {
+  it('returns exactly 4 reports', () => {
     const all = getAllReports();
-    expect(all).toHaveLength(3);
+    expect(all).toHaveLength(4);
   });
 
   it('returns all known report slugs', () => {
@@ -61,6 +61,7 @@ describe('getAllReports()', () => {
     expect(slugs).toContain('agent-setup-60');
     expect(slugs).toContain('single-to-multi-agent');
     expect(slugs).toContain('empirical-agent-architecture');
+    expect(slugs).toContain('mcp-security');
   });
 
   it('does not include any "(HTML)" text in titles', () => {
@@ -83,6 +84,7 @@ describe('planKey mapping', () => {
     expect(reports['agent-setup-60'].planKey).toBe('report_60');
     expect(reports['single-to-multi-agent'].planKey).toBe('report_multi');
     expect(reports['empirical-agent-architecture'].planKey).toBe('report_empirical');
+    expect(reports['mcp-security'].planKey).toBe('report_mcp');
   });
 
   it('each report has deliverables with icon and title', () => {

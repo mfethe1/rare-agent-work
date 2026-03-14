@@ -99,6 +99,12 @@ export async function GET() {
           price: '$299',
           planKey: 'report_empirical',
         },
+        {
+          slug: 'mcp-security',
+          title: 'MCP Security: Protecting Agents from Tool Poisoning',
+          price: '$149',
+          planKey: 'report_mcp',
+        },
       ],
     },
   };

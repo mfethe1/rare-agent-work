@@ -1,3 +1,4 @@
+import React from 'react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getReport, getAllReports } from '@/lib/reports';
@@ -56,6 +57,27 @@ function formatDate(raw: string): string {
     return raw;
   }
 }
+
+/**
+ * Render a text string with inline **bold** markdown support.
+ * Handles: **bold text**, and passes through plain text unchanged.
+ * Used in excerpt section rendering.
+ */
+function renderInlineBold(text: string, accentClass: string): React.ReactNode {
+  // Split on **...** markers
+  const parts = text.split(/\*\*(.*?)\*\*/g);
+  if (parts.length === 1) return text;
+  return (
+    <>
+      {parts.map((part, j) =>
+        j % 2 === 1
+          ? <strong key={j} className={`font-semibold text-white`}>{part}</strong>
+          : part,
+      )}
+    </>
+  );
+}
+
 
 const colorMap: Record<string, {
   border: string;
@@ -320,25 +342,23 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               </p>
             </div>
           </div>
-          <div className="space-y-8">
+          <div className="space-y-10">
             {report.excerpt.map((section) => (
               <div key={section.heading} className={`rounded-2xl border ${c.border} bg-white/[0.02] p-6 sm:p-8`}>
                 <h3 className={`mb-5 text-lg font-bold ${c.text}`}>{section.heading}</h3>
                 <div className="space-y-4 text-sm leading-7 text-slate-300">
                   {section.body.split('\n\n').map((para, i) => {
-                    if (para.startsWith('**') && para.includes('**')) {
-                      const parts = para.split(/\*\*(.*?)\*\*/g);
+                    // Detect numbered list item: starts with digit + dot
+                    const numberedMatch = para.match(/^(\d+\.\s+)(.*)/s);
+                    if (numberedMatch) {
                       return (
-                        <p key={i}>
-                          {parts.map((part, j) =>
-                            j % 2 === 1
-                              ? <strong key={j} className="font-semibold text-white">{part}</strong>
-                              : part,
-                          )}
+                        <p key={i} className="pl-1">
+                          <span className={`font-mono text-xs font-bold ${c.text} mr-2`}>{numberedMatch[1].trim()}</span>
+                          {renderInlineBold(numberedMatch[2], c.text)}
                         </p>
                       );
                     }
-                    return <p key={i}>{para}</p>;
+                    return <p key={i}>{renderInlineBold(para, c.text)}</p>;
                   })}
                 </div>
               </div>

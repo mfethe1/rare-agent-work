@@ -9,6 +9,7 @@ function getPriceId(planKey: string): string | null {
     report_60: process.env.STRIPE_PRICE_ID_REPORT_60,
     report_multi: process.env.STRIPE_PRICE_ID_REPORT_MULTI,
     report_empirical: process.env.STRIPE_PRICE_ID_REPORT_EMPIRICAL,
+    report_mcp: process.env.STRIPE_PRICE_ID_REPORT_MCP,
     newsletter: process.env.STRIPE_PRICE_ID_NEWSLETTER,
     starter: process.env.STRIPE_PRICE_ID_STARTER,
     pro: process.env.STRIPE_PRICE_ID_PRO,
@@ -37,6 +38,13 @@ const PLANS = {
     name: "Agent Architecture Empirical Research",
     slug: "empirical-agent-architecture",
     mode: "payment" as const,
+    tier: null,
+  },
+  report_mcp: {
+    amount: 14900,
+    name: 'MCP Security: Protecting Agents from Tool Poisoning',
+    slug: 'mcp-security',
+    mode: 'payment' as const,
     tier: null,
   },
   // Subscriptions

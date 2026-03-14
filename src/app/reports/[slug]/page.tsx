@@ -267,7 +267,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
       <div className="print:hidden">
         <SiteNav
           variant="darker"
-          primaryCta={{ label: `Buy — ${report.price}`, href: '#guide' }}
+          primaryCta={{ label: `Get access — ${report.price}`, href: '#guide' }}
         />
       </div>
 
@@ -346,13 +346,13 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               <div className="mt-7 space-y-3">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <BuyButton
-                    label={`Buy this report — ${report.price}`}
+                    label={`Get full access — ${report.price}`}
                     plan={report.planKey}
                     className={`inline-flex w-full items-center justify-center gap-2 rounded-full ${c.btnHero} px-8 py-4 text-base font-bold text-white transition-all sm:w-auto`}
                   />
                   <div className="flex flex-col gap-0.5">
                     <p className="text-xs text-slate-400">✓ One-time purchase · Instant access · No subscription</p>
-                    <p className="text-xs text-slate-500">Preview every section below before paying</p>
+                    <p className="text-xs text-slate-500">Every locked section below opens immediately after checkout</p>
                   </div>
                 </div>
                 {/* Purchase confidence strip */}
@@ -579,11 +579,11 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                             {report.excerpt.length - 2} more section{report.excerpt.length - 2 !== 1 ? 's' : ''} in this report
                           </p>
                           <p className="mt-0.5 text-xs text-slate-400">
-                            The preview shows the writing quality. The full report delivers the complete playbook.
+                            The preview shows the depth. The full report is the tool you implement from.
                           </p>
                         </div>
                         <BuyButton
-                          label={`Buy — ${report.price}`}
+                          label={`Get full access — ${report.price}`}
                           plan={report.planKey}
                           className={`inline-flex shrink-0 items-center justify-center rounded-full ${c.btnHero} px-6 py-2.5 text-sm font-bold text-white transition-all`}
                         />
@@ -602,14 +602,15 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
         <section className="mb-10">
           <div className={`rounded-2xl border ${c.border} bg-gradient-to-br ${c.surface} p-7 text-center`}
             style={{ boxShadow: `0 0 60px ${c.glow}` }}>
-            <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${c.text}`}>You&apos;ve read the preview</p>
-            <h2 className="mt-2 text-2xl font-bold text-white">The remaining sections go significantly deeper.</h2>
+            <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${c.text}`}>You&apos;ve seen the writing quality and depth</p>
+            <h2 className="mt-2 text-2xl font-bold text-white">The remaining {report.excerpt.length - 2} section{report.excerpt.length - 2 !== 1 ? 's' : ''} contain the implementation detail.</h2>
             <p className="mx-auto mt-2 max-w-lg text-sm text-slate-400">
-              One-time purchase. Full report delivered immediately — no subscription, no expiry.
+              The preview is the argument. The full report is the tool.
+              One-time purchase — delivered immediately, no subscription, no expiry.
             </p>
             <div className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <BuyButton
-                label={`Buy — ${report.price}`}
+                label={`Get full access — ${report.price}`}
                 plan={report.planKey}
                 className={`inline-flex items-center justify-center rounded-full ${c.btnHero} px-8 py-4 text-base font-bold text-white transition-all`}
               />

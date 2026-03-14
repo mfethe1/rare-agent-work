@@ -11,28 +11,28 @@ const incidentCards = [
   {
     icon: '💣',
     title: 'The bulk-send incident',
-    detail: '847 customers got the same email. CSV imported. No deduplication key. No volume cap. Automation ran exactly as designed.',
+    detail: '847 customers got the same email. CSV imported. No deduplication key. No volume cap. The automation ran exactly as designed — and that was the problem.',
     report: 'agent-setup-60',
     reportLabel: 'Agent Setup in 60 Minutes',
   },
   {
     icon: '🔒',
     title: 'Auth cascade, 4 days silent',
-    detail: 'Employee left. Service account deleted. 14 workflows failed. Error alerts sent to the deleted email. Nobody knew for 4 days.',
+    detail: 'Employee left. Service account deleted. 14 workflows failed silently. Error alerts routed to the deleted inbox. Engineering found out from a customer — four days later.',
     report: 'agent-setup-60',
     reportLabel: 'Agent Setup in 60 Minutes',
   },
   {
     icon: '💸',
     title: '$47k in 72 hours',
-    detail: 'One config variable wrong on prod deploy. GPT-4o instead of mini. No per-session cost ceiling. No daily spend alert.',
+    detail: 'One config variable wrong on prod deploy. GPT-4o instead of mini. No per-session cost ceiling. No daily spend alert. The bill arrived before anyone noticed.',
     report: 'empirical-agent-architecture',
     reportLabel: 'Empirical Architecture',
   },
   {
     icon: '🧹',
     title: 'MCP tool poisoning',
-    detail: "Third-party MCP server's tool description contained hidden instructions addressed to the model. Content filters didn't catch it.",
+    detail: "Third-party MCP server's tool description contained hidden instructions addressed to the model. Content filters didn't catch it. The agent followed them anyway.",
     report: 'empirical-agent-architecture',
     reportLabel: 'Empirical Architecture',
   },
@@ -85,6 +85,20 @@ export default function Home() {
 
         {/* ── HERO ────────────────────────────────────────────────── */}
         <section className="text-center">
+          {/* Social proof bar — first thing visible, before any product claim */}
+          <div className="mb-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {[
+              { n: '3', label: 'operator reports' },
+              { n: '3', label: 'production failure classes documented' },
+              { n: '100%', label: 'preview before purchase' },
+            ].map((stat) => (
+              <div key={stat.label} className="flex items-baseline gap-1.5">
+                <span className="text-lg font-black text-cyan-300">{stat.n}</span>
+                <span className="text-xs text-slate-400">{stat.label}</span>
+              </div>
+            ))}
+          </div>
+
           {/* ICP qualifier — the reader immediately knows if this is for them */}
           <div className="inline-flex items-center gap-2.5 rounded-full border border-cyan-300/25 bg-white/[0.05] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90 shadow-[0_0_24px_rgba(34,211,238,0.07)]">
             <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
@@ -100,9 +114,9 @@ export default function Home() {
 
           {/* Sharp value prop — specific problem, specific deliverable */}
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-            Implementation playbooks for the failure modes vendor docs skip: auth cascade,
-            deduplication, memory architecture, evaluation governance. Every report fully
-            previewable before purchase.
+            Playbooks for the failure modes vendor docs skip—auth cascade, deduplication,
+            memory architecture, evaluation governance. Read the full preview before
+            spending a dollar. Find the exact failure mode you&apos;re hitting.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -110,7 +124,7 @@ export default function Home() {
               href="/reports"
               className="inline-flex w-full items-center justify-center rounded-full bg-cyan-400 px-8 py-4 text-base font-bold text-slate-950 shadow-[0_16px_48px_rgba(34,211,238,0.25)] transition-all hover:-translate-y-0.5 hover:bg-cyan-300 sm:w-auto"
             >
-              Read the free previews →
+              Find your failure mode →
             </Link>
             <Link
               href="/assessment"
@@ -136,17 +150,17 @@ export default function Home() {
                 {
                   role: 'Engineering leads',
                   signal: '✓',
-                  detail: "You've shipped a working agent and are seeing silent failures, cost spikes, or multi-agent coordination fall apart. You need specific architecture guidance, not tutorials.",
+                  detail: "You've shipped a working agent. Now it's failing silently at 3am, spitting duplicate emails, or looping endlessly in a workflow that passed staging. You need a post-demo playbook, not an intro tutorial.",
                 },
                 {
                   role: 'CTOs & architects',
                   signal: '✓',
-                  detail: "You're making framework selection, evaluation protocol, or governance decisions. You want defensible, cited analysis you can put in front of a team — not vendor marketing.",
+                  detail: "You're making decisions: framework selection, evaluation protocol, governance structure. You need cited, defensible analysis you can put in front of a board or procurement team. Not vendor marketing with a different font.",
                 },
                 {
                   role: 'Technical operators',
                   signal: '✓',
-                  detail: "You run the AI deployment, not just the model. You care about approval gates, rollback procedures, observability, and the 72-hour window after a workflow goes live.",
+                  detail: "You own the deployment, not just the model. Approval gates, rollback procedures, cost ceilings, the 72-hour window after go-live. Your job is keeping the thing alive after the demo ends.",
                 },
               ].map((item) => (
                 <div key={item.role} className="rounded-xl border border-white/10 bg-black/20 p-5">
@@ -229,14 +243,14 @@ export default function Home() {
         {/* ── FAILURE MODES — urgency before solution ─────────────── */}
         <section className="mt-16">
           <div className="mb-6 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
-              The failure classes that hit production teams hardest — documented in the live reports
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-rose-400/80">
+              Real production failures — not hypotheticals
             </p>
             <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
-              These incidents happen to almost every team.
+              These are the incidents that shut down automation programs.
             </h2>
             <p className="mt-2 text-sm text-slate-400">
-              Click any card to read the report that covers it in depth.
+              Each failure class is documented in full in the playbook that covers it.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -249,7 +263,7 @@ export default function Home() {
                 <div className="mb-3 text-2xl">{fm.icon}</div>
                 <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">{fm.title}</h3>
                 <p className="mt-2 text-xs leading-5 text-slate-400">{fm.detail}</p>
-                <p className="mt-3 text-[10px] font-semibold text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <p className="mt-3 text-[10px] font-semibold text-cyan-400/70 group-hover:text-cyan-400 transition-colors">
                   Covered in: {fm.reportLabel} →
                 </p>
               </Link>
@@ -344,11 +358,13 @@ export default function Home() {
                     ))}
                   </div>
 
-                  {/* Sharpest insight — the ONE finding given away free */}
+                  {/* Sharpest insight — show FIRST complete sentence, never clip mid-thought */}
                   {report.sharpestInsight && (
                     <div className="mt-4 rounded-xl border border-white/8 bg-black/20 p-3">
-                      <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-600 mb-1.5">Key finding</p>
-                      <p className="text-[11px] leading-5 text-slate-300 line-clamp-3 italic">&ldquo;{report.sharpestInsight}&rdquo;</p>
+                      <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-slate-500 mb-1.5">Free finding</p>
+                      <p className="text-[11px] leading-5 text-slate-200 italic">
+                        &ldquo;{report.sharpestInsight.split(/\.\s+/)[0]}.&rdquo;
+                      </p>
                     </div>
                   )}
 
@@ -358,7 +374,7 @@ export default function Home() {
                       href={`/reports/${report.slug}`}
                       className={`inline-flex w-full items-center justify-center gap-2 rounded-full border ${accent.previewBtn} bg-transparent px-4 py-3 text-sm font-bold transition-all`}
                     >
-                      Read free preview →
+                      Read the free preview →
                     </Link>
                     {/* Buy is secondary — shown but not primary */}
                     <BuyButton
@@ -531,13 +547,14 @@ export default function Home() {
 
         {/* ── FINAL CTA ───────────────────────────────────────────── */}
         <section className="mt-16 rounded-[2rem] border border-cyan-400/20 bg-gradient-to-br from-cyan-500/10 via-sky-600/5 to-fuchsia-600/8 p-10 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Ready to start?</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">No commitment to read</p>
           <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-bold text-white md:text-4xl">
-            Read the preview. Then decide.
+            Read the full preview. Then decide.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base leading-8 text-slate-400">
-            Every report ships with full methodology, sample sections, citations, action steps, and
-            explicit risks before you spend a dollar. Or bring a live problem for a human review.
+            Every report: full methodology, sample sections, citations, action steps, and
+            explicit risks — all free before you buy. If you already know you have a production
+            problem, skip the preview and bring it directly for a human review.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
@@ -550,9 +567,10 @@ export default function Home() {
               href="/assessment"
               className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/[0.06] px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10"
             >
-              Start an Assessment
+              Bring a live problem
             </Link>
           </div>
+          <p className="mt-4 text-xs text-slate-600">Human review response within 24 hours</p>
         </section>
 
       </main>

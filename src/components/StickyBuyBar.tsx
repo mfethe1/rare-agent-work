@@ -57,13 +57,13 @@ export default function StickyBuyBar({ title, price, planKey, color, sentinelId 
           <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-white">{title}</p>
-              <p className="text-xs text-slate-400">{price} · One-time · Instant access · No subscription</p>
+              <p className="text-xs text-slate-400">{price} one-time · Instant access · Yours forever</p>
             </div>
             <div className="flex shrink-0 items-center gap-3">
               <span className="hidden text-xs text-slate-500 sm:block">✓ Full preview included</span>
               <BuyButton
                 plan={planKey}
-                label={`Buy — ${price}`}
+                label={`Get full access — ${price}`}
                 className={`inline-flex items-center justify-center rounded-full ${btn} px-6 py-2.5 text-sm font-bold text-white transition-all shadow-lg`}
               />
             </div>

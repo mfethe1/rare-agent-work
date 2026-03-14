@@ -1,131 +1,95 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import BuyButton from '@/components/BuyButton';
+
 import { WebsiteJsonLd } from '@/components/JsonLd';
 import { getAllReports } from '@/lib/reports';
-import { operatorProofStats, startHereRoutes, trustControlBullets } from '@/lib/site-copy';
 
-const liveNowItems = [
+const trustSignals = [
+  { icon: '🔍', label: 'Full preview before purchase', detail: 'Read methodology, citations, risks, and sample content before spending a dollar.' },
+  { icon: '📎', label: 'Cited sources on every report', detail: 'Every recommendation traces to a verifiable source, not the author\'s opinion.' },
+  { icon: '⚡', label: 'One-time purchase, yours permanently', detail: 'No subscription required. Buy once, download, use forever.' },
+  { icon: '🛡️', label: 'Human review on consulting intake', detail: 'Every consulting request is read by a human before any next step is proposed.' },
+];
+
+const howItWorks = [
   {
-    title: 'Live News Desk',
-    description: 'Operator-grade AI agent news with context, freshness, and sharp filtering for real builders.',
-    href: '/news',
-    status: 'Live now',
+    step: '01',
+    title: 'Read the preview for free',
+    body: 'Every report ships with a full preview: executive summary, sample sections, citations, action steps, and explicit risks. Enough to judge fit before you buy.',
   },
   {
-    title: 'Implementation Reports',
-    description: 'Playbooks and reference material for teams shipping serious agent systems.',
-    href: '/reports',
-    status: 'Live now',
+    step: '02',
+    title: 'Buy once, use immediately',
+    body: 'One-time purchase. No subscription required. The full report unlocks instantly with access to the AI implementation guide powered by Claude.',
   },
   {
-    title: 'Subscriptions',
-    description: 'Newsletter and operator access tiers for continuous intelligence and deeper support.',
-    href: '/pricing',
-    status: 'Live now',
+    step: '03',
+    title: 'Bring hard problems to consulting',
+    body: 'When the report isn\'t enough — messy architecture, political blockers, live incidents — use the assessment path for direct human review.',
   },
+];
+
+const consultingServices = [
   {
-    title: 'Consulting + Assessment',
-    description: 'Direct strategy, architecture review, implementation rescue, and scoped decision support.',
+    name: 'Operator Review',
+    time: '48–72 hrs',
+    description: 'Short diagnostic for stack fit, failure modes, and next actions when a team needs an outside read fast.',
     href: '/assessment',
-    status: 'Live now',
   },
   {
-    title: 'Trusted Agent Network',
-    description: 'Curated network surface for high-trust specialist matching — selective, not marketplace-style.',
-    href: '/network',
-    status: 'In flight',
-  },
-];
-
-const capabilityRows = [
-  {
-    capability: 'Operator intelligence',
-    includes: 'Live news, filtering, synthesis, and operator summaries',
-    bestFor: 'Teams tracking fast-moving agent changes',
-    mode: 'Live now',
+    name: 'Implementation Rescue',
+    time: 'Scoped engagement',
+    description: 'For brittle workflows, orchestration drift, weak memory, or rollout stalls that need direct intervention.',
+    href: '/assessment',
   },
   {
-    capability: 'Implementation playbooks',
-    includes: 'Deep reports, architecture guidance, and delivery patterns',
-    bestFor: 'Builders choosing what to ship next',
-    mode: 'Live now',
+    name: 'Architecture Review',
+    time: 'Strategy call',
+    description: 'For teams aligning architecture, governance, vendor selection, and rollout sequencing across stakeholders.',
+    href: '/book-demo',
   },
-  {
-    capability: 'Curated expert matching',
-    includes: 'Human-reviewed intake and selective routing',
-    bestFor: 'High-trust work needing the right specialist',
-    mode: 'Beta',
-  },
-  {
-    capability: 'Workflow design',
-    includes: 'Scoping, systems design, and implementation rescue',
-    bestFor: 'Teams with real blockers and delivery pressure',
-    mode: 'Live now',
-  },
-  {
-    capability: 'Trust + risk review',
-    includes: 'Human review, scoped engagement, and execution boundaries',
-    bestFor: 'Sensitive or politically risky deployments',
-    mode: 'Live now',
-  },
-];
-
-const proofItems = [
-  'Every public report includes citations, freshness timestamps, explicit risks, and preview content before purchase.',
-  'The public API already exposes agent-readable news, report metadata, NL query, OpenAPI, RSS, and discovery manifests.',
-  'Submit Work, consulting, and network surfaces state their trust boundaries instead of implying hidden automation.',
-];
-
-const submitSteps = [
-  'Share the request type, constraints, urgency, and the work you need help shipping.',
-  'A human reviews fit, trust boundaries, and whether the problem belongs in this beta.',
-  'You get a curated next step: scoped guidance, specialist match, or direct consulting path.',
-  'Any later execution remains brokered and human-approved — never automatic.',
 ];
 
 export default function Home() {
-  const reports = getAllReports().slice(0, 4);
+  const reports = getAllReports();
 
   return (
     <div className="min-h-screen bg-[#050816] font-sans text-slate-100 selection:bg-cyan-400 selection:text-slate-950">
       <WebsiteJsonLd />
 
+      {/* Background ambient glow */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute left-1/2 top-[-18rem] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-cyan-500/18 blur-3xl" />
-        <div className="absolute right-[-8rem] top-[24rem] h-[22rem] w-[22rem] rounded-full bg-fuchsia-500/15 blur-3xl" />
-        <div className="absolute bottom-[-10rem] left-[-5rem] h-[26rem] w-[26rem] rounded-full bg-emerald-500/10 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_34%),linear-gradient(180deg,rgba(5,8,22,0.96),rgba(3,6,18,1))]" />
+        <div className="absolute left-1/2 top-[-18rem] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-cyan-500/15 blur-3xl" />
+        <div className="absolute right-[-8rem] top-[30rem] h-[22rem] w-[22rem] rounded-full bg-fuchsia-500/12 blur-3xl" />
+        <div className="absolute bottom-[-10rem] left-[-5rem] h-[26rem] w-[26rem] rounded-full bg-emerald-500/8 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_34%),linear-gradient(180deg,rgba(5,8,22,0.97),rgba(3,6,18,1))]" />
       </div>
 
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/80 backdrop-blur-xl">
+      {/* ── Navigation ─────────────────────────────────────────────── */}
+      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
             <Link href="/" className="flex items-center gap-3 flex-shrink-0">
-              <div className="relative h-10 w-10 overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-[0_0_30px_rgba(34,211,238,0.18)]">
-                <Image src="/logo-medallion.jpg" alt="Rare Agent Work logo" fill className="object-cover" sizes="40px" priority />
+              <div className="relative h-9 w-9 overflow-hidden rounded-xl border border-white/15 bg-white/5 shadow-[0_0_24px_rgba(34,211,238,0.15)]">
+                <Image src="/logo-medallion.jpg" alt="Rare Agent Work logo" fill className="object-cover" sizes="36px" priority />
               </div>
-              <div>
-                <span className="block text-sm font-semibold uppercase tracking-[0.28em] text-cyan-300/90">Rare Agent</span>
-                <span className="block text-base font-bold tracking-tight text-white">Work</span>
-              </div>
+              <span className="text-sm font-bold tracking-tight text-white">Rare Agent Work</span>
             </Link>
 
-            <div className="hidden items-center gap-6 md:flex">
+            <div className="hidden items-center gap-7 md:flex">
               <Link href="/reports" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Reports</Link>
               <Link href="/news" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">News</Link>
               <Link href="/assessment" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Consulting</Link>
-              <Link href="/docs" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">Docs</Link>
+              <Link href="/docs" className="text-sm font-medium text-slate-300 transition-colors hover:text-white">API Docs</Link>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
-              <Link href="/reports" className="hidden text-sm font-medium text-slate-300 transition-colors hover:text-white sm:block md:hidden">Reports</Link>
-              <Link href="/news" className="text-sm font-medium text-slate-300 transition-colors hover:text-white sm:hidden">News</Link>
               <Link
                 href="/reports"
-                className="rounded-full border border-cyan-300/40 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20"
+                className="rounded-full border border-cyan-300/35 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-200 transition-all hover:border-cyan-200 hover:bg-cyan-400/20"
               >
-                View Reports
+                Browse Reports
               </Link>
               <Link
                 href="/assessment"
@@ -138,327 +102,352 @@ export default function Home() {
         </div>
       </nav>
 
-      <main className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div>
-            <div className="inline-flex items-center gap-3 rounded-full border border-cyan-300/20 bg-white/5 px-4 py-2 text-sm text-cyan-200 shadow-[0_0_30px_rgba(34,211,238,0.08)]">
-              <span className="h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(103,232,249,0.9)]" />
-              For engineering teams shipping production AI agents
-            </div>
+      <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
 
-            <h1 className="mt-8 max-w-4xl text-5xl font-black tracking-tight text-white md:text-7xl">
-              Research, consulting, and APIs for teams building serious agent systems.
-            </h1>
-
-            <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-300 md:text-xl">
-              Operator-grade reports, a live AI news desk, and direct consulting paths — without the generic AI content noise.
-              Buy a concrete playbook, bring a hard implementation problem, or integrate the public API into your stack.
-            </p>
-
-            <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-              <Link href="/reports" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 shadow-[0_16px_50px_rgba(34,211,238,0.28)] transition-transform hover:-translate-y-0.5 hover:bg-cyan-300">
-                Browse Reports
-              </Link>
-              <Link href="/assessment" className="inline-flex items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-400/10 px-7 py-4 text-base font-semibold text-cyan-100 transition-colors hover:bg-cyan-400/20">
-                Talk to a Consultant
-              </Link>
-              <Link href="/news" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10">
-                Live News →
-              </Link>
-            </div>
+        {/* ── Hero ───────────────────────────────────────────────────── */}
+        <section className="text-center">
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-cyan-300/25 bg-white/[0.05] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90 shadow-[0_0_24px_rgba(34,211,238,0.07)]">
+            <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
+            For engineering teams shipping production AI agents
           </div>
 
-          <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm shadow-[0_20px_70px_rgba(5,8,22,0.45)]">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-400">What you get</p>
-            <div className="mt-5 grid gap-4">
-              <div className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Implementation reports</p>
-                <h2 className="mt-2 text-3xl font-semibold text-white">{reports.length} playbooks</h2>
-                <p className="mt-2 text-sm leading-7 text-slate-300">Full preview before purchase. Cited sources, explicit risks, and action steps — not blog posts.</p>
-              </div>
-              <div className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Live consulting path</p>
-                <h2 className="mt-2 text-3xl font-semibold text-white">Human-reviewed</h2>
-                <p className="mt-2 text-sm leading-7 text-slate-300">Architecture review, implementation rescue, and strategy calls. No automated intake theater.</p>
-              </div>
-              <div className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Public API surfaces</p>
-                <h2 className="mt-2 text-3xl font-semibold text-white">5 endpoints</h2>
-                <p className="mt-2 text-sm leading-7 text-slate-300">OpenAPI-documented news, reports, models, NL query, and discovery manifests for agent integration.</p>
-              </div>
+          <h1 className="mx-auto mt-7 max-w-5xl text-5xl font-black tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.25rem] lg:leading-[1.06]">
+            Stop guessing.<br className="hidden sm:block" />
+            <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent"> Ship agents that actually work.</span>
+          </h1>
+
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
+            Operator-grade implementation playbooks for teams building real agent systems.
+            Full preview before purchase. Cited sources. No generic AI content.
+          </p>
+
+          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              href="/reports"
+              className="inline-flex w-full items-center justify-center rounded-full bg-cyan-400 px-8 py-4 text-base font-bold text-slate-950 shadow-[0_16px_48px_rgba(34,211,238,0.25)] transition-all hover:-translate-y-0.5 hover:bg-cyan-300 sm:w-auto"
+            >
+              Browse Reports — Free Preview →
+            </Link>
+            <Link
+              href="/assessment"
+              className="inline-flex w-full items-center justify-center rounded-full border border-white/20 bg-white/[0.06] px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+            >
+              Talk to a Consultant
+            </Link>
+          </div>
+
+          <p className="mt-4 text-sm text-slate-500">
+            Preview every report for free · One-time purchase · No subscription required
+          </p>
+        </section>
+
+        {/* ── Trust signals row ──────────────────────────────────────── */}
+        <section className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {trustSignals.map((signal) => (
+            <div
+              key={signal.label}
+              className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm"
+            >
+              <span className="text-2xl">{signal.icon}</span>
+              <p className="mt-3 text-sm font-semibold text-white">{signal.label}</p>
+              <p className="mt-1.5 text-xs leading-6 text-slate-400">{signal.detail}</p>
             </div>
+          ))}
+        </section>
+
+        {/* ── Reports ────────────────────────────────────────────────── */}
+        <section className="mt-20">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Implementation reports</p>
+              <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
+                Pick the playbook that matches your problem.
+              </h2>
+              <p className="mt-3 max-w-2xl text-base text-slate-400">
+                Every report ships with a full free preview — methodology, citations, risks, and sample sections — before you spend a dollar.
+              </p>
+            </div>
+            <Link href="/reports" className="hidden shrink-0 text-sm font-semibold text-cyan-300 hover:text-cyan-200 sm:inline-flex">
+              All reports →
+            </Link>
+          </div>
+
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {reports.map((report) => {
+              const accentMap: Record<string, string> = {
+                blue: 'border-blue-500/30 hover:border-blue-400/50',
+                green: 'border-green-500/30 hover:border-green-400/50',
+                purple: 'border-purple-500/30 hover:border-purple-400/50',
+                red: 'border-red-500/30 hover:border-red-400/50',
+              };
+              const badgeMap: Record<string, string> = {
+                blue: 'text-blue-300 bg-blue-900/30 border border-blue-500/25',
+                green: 'text-green-300 bg-green-900/30 border border-green-500/25',
+                purple: 'text-purple-300 bg-purple-900/30 border border-purple-500/25',
+                red: 'text-red-300 bg-red-900/30 border border-red-500/25',
+              };
+              const btnMap: Record<string, string> = {
+                blue: 'bg-blue-600 hover:bg-blue-500 text-white',
+                green: 'bg-green-600 hover:bg-green-500 text-white',
+                purple: 'bg-purple-600 hover:bg-purple-500 text-white',
+                red: 'bg-red-600 hover:bg-red-500 text-white',
+              };
+              const accent = accentMap[report.color] ?? accentMap.blue;
+              const badge = badgeMap[report.color] ?? badgeMap.blue;
+              const btn = btnMap[report.color] ?? btnMap.blue;
+
+              return (
+                <article
+                  key={report.slug}
+                  className={`group relative flex flex-col rounded-2xl border bg-white/[0.035] p-6 backdrop-blur-sm transition-all ${accent}`}
+                >
+                  {report.isNew && (
+                    <span className="absolute right-4 top-4 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
+                  )}
+                  <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-bold ${badge}`}>
+                    {report.price}
+                  </span>
+                  <h3 className="mt-4 text-lg font-bold leading-snug text-white">{report.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{report.subtitle}</p>
+                  <p className="mt-3 text-xs text-slate-500">
+                    Best for: {report.bestFor.slice(0, 2).join(' · ')}
+                  </p>
+                  <div className="mt-auto pt-6 flex flex-col gap-2">
+                    <Link
+                      href={`/reports/${report.slug}`}
+                      className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                    >
+                      Read free preview →
+                    </Link>
+                    <BuyButton
+                      plan={report.planKey}
+                      label={`Buy — ${report.price}`}
+                      className={`inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${btn}`}
+                    />
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
-        <section className="mt-14 rounded-[2rem] border border-cyan-300/20 bg-cyan-400/[0.06] p-8">
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        {/* ── How it works ───────────────────────────────────────────── */}
+        <section className="mt-20 rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 backdrop-blur-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">How it works</p>
+          <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
+            No risk. Full transparency before you pay.
+          </h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {howItWorks.map((item) => (
+              <div key={item.step} className="flex gap-5">
+                <span className="mt-0.5 shrink-0 text-3xl font-black text-cyan-300/40">{item.step}</span>
+                <div>
+                  <h3 className="text-base font-bold text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-slate-400">{item.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── Newsletter CTA ─────────────────────────────────────────── */}
+        <section className="mt-12 rounded-[2rem] border border-fuchsia-400/25 bg-fuchsia-500/[0.07] p-6 sm:p-8">
+          <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Start here</p>
-              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Choose the right first click.</h2>
-              <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
-                The site has multiple surfaces because it serves different jobs. This section removes the guesswork.
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Newsletter — $10/mo</p>
+              <h2 className="mt-2 text-xl font-bold text-white">Operator-grade AI signal, weekly.</h2>
+              <p className="mt-1.5 text-sm text-slate-400">
+                Curated AI agent news, platform changes, and implementation notes — without the noise.
               </p>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {startHereRoutes.map((item) => (
-                <Link key={item.href} href={item.href} className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5 transition-colors hover:border-cyan-300/40">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">{item.badge}</p>
-                  <h3 className="mt-2 text-lg font-semibold text-white">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-slate-300">{item.description}</p>
-                  <span className="mt-4 inline-flex text-sm font-semibold text-cyan-300">Open route →</span>
+            <BuyButton
+              plan="newsletter"
+              label="Subscribe — $10/mo"
+              className="shrink-0 inline-flex rounded-full bg-fuchsia-400 px-6 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-fuchsia-300"
+            />
+          </div>
+        </section>
+
+        {/* ── Consulting ─────────────────────────────────────────────── */}
+        <section className="mt-20">
+          <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Human consulting</p>
+              <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
+                When the report isn&apos;t enough.
+              </h2>
+              <p className="mt-4 text-base leading-8 text-slate-400">
+                Architecture review, implementation rescue, and strategy calls for teams with real blockers.
+                Every intake is reviewed by a human — no automated routing, no anonymous intake theater.
+              </p>
+              <div className="mt-6 space-y-3">
+                {[
+                  'No credential intake in public forms.',
+                  'Human review before any scoped next step.',
+                  'No autonomous execution against client systems.',
+                  'Scoped engagement with explicit boundaries.',
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3 text-sm text-slate-300">
+                    <span className="mt-0.5 text-cyan-400">✓</span>
+                    {item}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/assessment" className="inline-flex rounded-full bg-cyan-400 px-6 py-3 text-sm font-bold text-slate-950 hover:bg-cyan-300">
+                  Start an Assessment
+                </Link>
+                <Link href="/book-demo" className="inline-flex rounded-full border border-white/20 bg-white/[0.06] px-6 py-3 text-sm font-semibold text-white hover:bg-white/10">
+                  Book a Strategy Call
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              {consultingServices.map((service) => (
+                <Link
+                  key={service.name}
+                  href={service.href}
+                  className="group rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:border-cyan-300/30 hover:bg-white/[0.05]"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-base font-bold text-white">{service.name}</h3>
+                    <span className="shrink-0 rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-400">
+                      {service.time}
+                    </span>
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{service.description}</p>
+                  <span className="mt-3 inline-flex text-xs font-semibold text-cyan-400 group-hover:text-cyan-300">
+                    Open this path →
+                  </span>
                 </Link>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="mt-20">
-          <div className="mb-10 flex items-end justify-between gap-6">
+        {/* ── API / Docs strip ───────────────────────────────────────── */}
+        <section className="mt-20 rounded-[2rem] border border-white/10 bg-white/[0.02] p-7 backdrop-blur-sm">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">What’s live now</p>
-              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Every surface is live and available now.</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">For builders and agents</p>
+              <h2 className="mt-2 text-2xl font-bold text-white">Machine-readable by design.</h2>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                Public API (news, reports, models), OpenAPI 3.1 spec, agent discovery card, RSS, and llms.txt — all open, no auth required.
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-3">
+              <Link href="/docs" className="inline-flex rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/15">
+                Open Docs
+              </Link>
+              <Link href="/api/v1/openapi.json" className="inline-flex rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white">
+                OpenAPI →
+              </Link>
             </div>
           </div>
-          <div className="grid gap-6 lg:grid-cols-5">
-            {liveNowItems.map((item) => (
-              <article key={item.title} className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">{item.status}</p>
-                <h3 className="mt-3 text-xl font-bold text-white">{item.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-300">{item.description}</p>
-                <Link href={item.href} className="mt-5 inline-flex text-sm font-semibold text-cyan-300 hover:text-cyan-200">Open this surface →</Link>
-              </article>
-            ))}
-          </div>
         </section>
 
-        <section className="mt-20 rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Agentic layer capability table</p>
-          <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">What exists now vs what’s entering beta</h2>
-          <div className="mt-8 overflow-hidden rounded-[1.5rem] border border-white/10">
-            <table className="min-w-full divide-y divide-white/10 text-left text-sm">
-              <thead className="bg-white/[0.04] text-slate-300">
-                <tr>
-                  <th className="px-4 py-3 font-semibold">Capability</th>
-                  <th className="px-4 py-3 font-semibold">What it includes</th>
-                  <th className="px-4 py-3 font-semibold">Best for</th>
-                  <th className="px-4 py-3 font-semibold">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/10">
-                {capabilityRows.map((row) => (
-                  <tr key={row.capability} className="bg-black/10">
-                    <td className="px-4 py-4 font-semibold text-white">{row.capability}</td>
-                    <td className="px-4 py-4 text-slate-300">{row.includes}</td>
-                    <td className="px-4 py-4 text-slate-300">{row.bestFor}</td>
-                    <td className="px-4 py-4 text-cyan-300">{row.mode}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="mt-20 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">How it works</p>
-            <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Transparent process. Visible methodology. No black boxes.</h2>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300">
-              Research, consulting, and API surfaces built for operators who need to trust what they&apos;re buying.
-              Citations are visible before purchase. Every consulting intake is human-reviewed. No opaque automation.
-            </p>
-          </div>
-          <div className="grid gap-4">
-            {proofItems.map((item, index) => (
-              <div key={item} className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Proof {index + 1}</p>
-                <p className="mt-2 text-sm leading-7 text-slate-200">{item}</p>
+        {/* ── Live news strip ────────────────────────────────────────── */}
+        <section className="mt-8 rounded-[2rem] border border-emerald-400/20 bg-emerald-500/[0.05] p-7">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300">Live news desk</p>
               </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-20 grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Trust controls</p>
-            <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Visible process beats vague trust language.</h2>
-            <div className="mt-6 grid gap-3">
-              {trustControlBullets.map((item) => (
-                <div key={item} className="rounded-2xl border border-white/10 bg-black/20 px-4 py-4 text-sm text-slate-200">
-                  {item}
-                </div>
-              ))}
+              <h2 className="mt-2 text-2xl font-bold text-white">Operator-grade AI news, updated daily.</h2>
+              <p className="mt-2 text-sm leading-7 text-slate-400">
+                Curated and filtered for teams building production agent systems. No hype. No tutorials.
+              </p>
             </div>
-          </div>
-          <div className="rounded-[2rem] border border-white/10 bg-[#07111f]/80 p-8">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">For buyers with real stakes</p>
-            <div className="mt-4 space-y-4 text-sm leading-7 text-slate-300">
-              <p>Research buyers can start with previews and one-time reports.</p>
-              <p>Consultants can use reports and docs as a working evidence pack for proposals and delivery alignment.</p>
-              <p>Enterprise teams can start with an assessment or submit-work intake when governance and ownership are part of the problem.</p>
-            </div>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/pricing" className="inline-flex rounded-full bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Compare plans</Link>
-              <Link href="/docs" className="inline-flex rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white hover:bg-white/10">Open docs</Link>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-20 grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-start">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">How submit work works</p>
-            <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">A curated, human-reviewed intake — not a marketplace.</h2>
-            <p className="mt-4 text-base leading-8 text-slate-300">
-              Submit Work is for architecture review, implementation rescue, and curated specialist matching.
-              Every request is reviewed by a human before any next step is proposed.
-            </p>
-            <Link href="/submit-work" className="mt-6 inline-flex rounded-full bg-cyan-400 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-300">
-              Open /submit-work
+            <Link
+              href="/news"
+              className="shrink-0 inline-flex rounded-full border border-emerald-400/30 bg-emerald-500/10 px-6 py-3 text-sm font-semibold text-emerald-200 transition-all hover:bg-emerald-500/15"
+            >
+              Read today&apos;s feed →
             </Link>
           </div>
-          <div className="grid gap-4">
-            {submitSteps.map((step, index) => (
-              <div key={step} className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Step {index + 1}</p>
-                <p className="mt-2 text-sm leading-7 text-slate-200">{step}</p>
-              </div>
-            ))}
-          </div>
         </section>
 
-        <section className="mt-20 rounded-[2rem] border border-cyan-400/20 bg-gradient-to-r from-cyan-500/10 via-sky-500/5 to-fuchsia-500/10 p-8 backdrop-blur-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Trust + security</p>
-          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {[
-              'Human review before any external side effects',
-              'No credential intake and no autonomous execution against client systems',
-              'Discovery now, brokered execution later',
-              'Selective matching, scoped work, and explicit trust boundaries',
-            ].map((item) => (
-              <div key={item} className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/70 p-5 text-sm leading-7 text-slate-200">{item}</div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-20 grid gap-6 lg:grid-cols-3">
-          <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Trust scaffolding</p>
-            <h2 className="mt-3 text-2xl font-bold text-white">See how the research is produced.</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-300">If you want to know who this is for, what standards the research follows, and how freshness is handled, start with the trust pages.</p>
+        {/* ── Trust / about ──────────────────────────────────────────── */}
+        <section className="mt-20 grid gap-6 lg:grid-cols-2">
+          <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">About the research</p>
+            <h2 className="mt-3 text-xl font-bold text-white">Who is behind this and how the research is produced.</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-400">
+              Rare Agent Work is opinionated by design — written by Michael Fethe for operators who need to know what actually breaks in production, not what vendor marketing says.
+            </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/about" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">About</Link>
-              <Link href="/methodology" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Methodology</Link>
+              <Link href="/about" className="inline-flex rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300">About</Link>
+              <Link href="/methodology" className="inline-flex rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Methodology</Link>
             </div>
           </article>
 
-          <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">For agents + builders</p>
-            <h2 className="mt-3 text-2xl font-bold text-white">Use the machine-readable layer.</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-300">Rare Agent Work also exposes public APIs, OpenAPI, agent metadata, and llms.txt surfaces for agent-native use cases.</p>
+          <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Enterprise &amp; teams</p>
+            <h2 className="mt-3 text-xl font-bold text-white">Procurement-friendly access for teams sharing reports.</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-400">
+              If you need shared report access, a governance walkthrough, or a scoped architecture review with multiple stakeholders, use the team lane.
+            </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/docs" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Open docs</Link>
-              <Link href="/api/v1/openapi.json" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">OpenAPI</Link>
-            </div>
-          </article>
-
-          <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">For teams</p>
-            <h2 className="mt-3 text-2xl font-bold text-white">Need team or enterprise access?</h2>
-            <p className="mt-3 text-sm leading-7 text-slate-300">If you need procurement-friendly access, shared report usage, or a scoped architecture review, use the team lane instead of a solo checkout flow.</p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/enterprise" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Team access</Link>
-              <Link href="/assessment" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Request assessment</Link>
+              <Link href="/enterprise" className="inline-flex rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Team access</Link>
+              <Link href="/assessment" className="inline-flex rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Request assessment</Link>
             </div>
           </article>
         </section>
 
-        <section className="mt-20">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Pricing + engagement</p>
-          <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Choose the right depth of engagement.</h2>
-          <div className="mt-8 grid gap-6 lg:grid-cols-3">
-            <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Free</span>
-              <p className="mt-1 text-3xl font-bold text-white">$0</p>
-              <p className="mt-3 text-sm leading-7 text-slate-300">Browse live news, report previews, and get a feel for the operator layer.</p>
-              <Link href="/news" className="mt-5 inline-flex rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/15">Start free</Link>
-            </div>
-            <div className="rounded-[1.75rem] border border-fuchsia-400/30 bg-fuchsia-500/10 p-7 backdrop-blur-sm">
-              <span className="text-xs font-semibold uppercase tracking-wider text-fuchsia-200">Newsletter</span>
-              <p className="mt-1 text-3xl font-bold text-white">$10/mo</p>
-              <p className="mt-3 text-sm leading-7 text-slate-200">Signal, summaries, and operator context without the noise.</p>
-              <BuyButton plan="newsletter" label="Subscribe — $10/mo" className="mt-5 inline-flex rounded-full bg-fuchsia-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-fuchsia-300" />
-            </div>
-            <div className="rounded-[1.75rem] border border-cyan-400/30 bg-cyan-500/10 p-7 backdrop-blur-sm">
-              <span className="text-xs font-semibold uppercase tracking-wider text-cyan-200">Engage</span>
-              <p className="mt-1 text-3xl font-bold text-white">Scoped</p>
-              <p className="mt-3 text-sm leading-7 text-slate-200">Assessment, strategy calls, and curated specialist matching for high-trust implementation work.</p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Link href="/assessment" className="inline-flex rounded-full bg-cyan-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Open assessment</Link>
-                <Link href="/submit-work" className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10">Submit work</Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-20">
-          <div className="flex items-end justify-between gap-6">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Reference layer</p>
-              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Reports still anchor the durable knowledge layer.</h2>
-            </div>
-            <Link href="/reports" className="hidden text-sm font-semibold text-cyan-300 hover:text-cyan-200 sm:inline-flex">Browse all reports →</Link>
-          </div>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {reports.map((report) => (
-              <article key={report.slug} className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-1">
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{report.priceLabel}</p>
-                  {report.isNew && <span className="inline-block rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>}
-                </div>
-                <h3 className="mt-2 text-xl font-bold text-white">{report.title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-300">{report.subtitle}</p>
-                <div className="mt-5 flex flex-wrap gap-3">
-                  <Link href={`/reports/${report.slug}`} className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Read preview</Link>
-                  <BuyButton plan={report.planKey} label={`Buy — ${report.price}`} className="inline-flex rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300" />
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-20 rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center backdrop-blur-sm">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Get started today</p>
-          <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">Bring a real problem. Get a concrete next step within 24 hours.</h2>
-          <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-slate-300">
-            Every engagement starts with a human review. Start with a strategy call if you want to talk it through first.
+        {/* ── Final CTA ──────────────────────────────────────────────── */}
+        <section className="mt-20 rounded-[2rem] border border-cyan-400/20 bg-gradient-to-br from-cyan-500/10 via-sky-600/5 to-fuchsia-600/8 p-10 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Ready to start?</p>
+          <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-bold text-white md:text-4xl">
+            A concrete next step in under 24 hours.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-base leading-8 text-slate-400">
+            Browse a report with a full free preview, or bring a hard implementation problem for a human review.
           </p>
-          <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-            <Link href="/assessment" className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-7 py-4 text-base font-semibold text-slate-950 hover:bg-cyan-300">
+          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link
+              href="/reports"
+              className="inline-flex items-center justify-center rounded-full bg-cyan-400 px-8 py-4 text-base font-bold text-slate-950 shadow-[0_12px_40px_rgba(34,211,238,0.2)] transition-all hover:-translate-y-0.5 hover:bg-cyan-300"
+            >
+              Browse Reports
+            </Link>
+            <Link
+              href="/assessment"
+              className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/[0.06] px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10"
+            >
               Start an Assessment
             </Link>
-            <Link href="/book-demo" className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-7 py-4 text-base font-semibold text-white hover:bg-white/10">
-              Book a Strategy Call
-            </Link>
           </div>
         </section>
+
       </main>
 
-      <footer className="border-t border-white/10 py-10 text-center text-sm text-slate-400">
-        <p className="mb-3">© {new Date().getFullYear()} Rare Agent Work. High-trust agent intelligence, consulting, and curated implementation support.</p>
-        <div className="mb-3 flex flex-wrap justify-center gap-3 sm:gap-4">
-          <Link href="/submit-work" className="transition-colors hover:text-white">Submit Work</Link>
-          <span className="text-white/20">·</span>
-          <Link href="/news" className="transition-colors hover:text-white">News</Link>
-          <span className="text-white/20">·</span>
-          <Link href="/reports" className="transition-colors hover:text-white">Reports</Link>
-          <span className="text-white/20">·</span>
-          <Link href="/network" className="transition-colors hover:text-white">Network</Link>
-        </div>
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
-          <Link href="/pricing" className="transition-colors hover:text-white">Pricing</Link>
-          <span className="text-white/20">·</span>
-          <Link href="/assessment" className="transition-colors hover:text-white">Assessment</Link>
-          <span className="text-white/20">·</span>
-          <a href="mailto:hello@rareagent.work" className="transition-colors hover:text-white">hello@rareagent.work</a>
+      {/* ── Footer ─────────────────────────────────────────────────── */}
+      <footer className="mt-16 border-t border-white/10 py-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <Link href="/" className="flex items-center gap-2.5">
+                <div className="relative h-8 w-8 overflow-hidden rounded-lg border border-white/15">
+                  <Image src="/logo-medallion.jpg" alt="Rare Agent Work" fill className="object-cover" sizes="32px" />
+                </div>
+                <span className="text-sm font-bold text-white">Rare Agent Work</span>
+              </Link>
+              <p className="mt-2 text-xs text-slate-500">
+                © {new Date().getFullYear()} Rare Agent Work. Operator-grade AI agent research and consulting.
+              </p>
+            </div>
+            <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">
+              <Link href="/reports" className="hover:text-white">Reports</Link>
+              <Link href="/news" className="hover:text-white">News</Link>
+              <Link href="/assessment" className="hover:text-white">Consulting</Link>
+              <Link href="/pricing" className="hover:text-white">Pricing</Link>
+              <Link href="/docs" className="hover:text-white">Docs</Link>
+              <Link href="/about" className="hover:text-white">About</Link>
+              <a href="mailto:hello@rareagent.work" className="hover:text-white">hello@rareagent.work</a>
+            </nav>
+          </div>
         </div>
       </footer>
     </div>

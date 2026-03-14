@@ -1,26 +1,18 @@
 import Link from "next/link";
+import BuyButton from "@/components/BuyButton";
 import { getAllReports } from "@/lib/reports";
-import { startHereRoutes } from "@/lib/site-copy";
-import AuthorSignal from '@/components/AuthorSignal';
-
-const colorMap: Record<
-  string,
-  {
-    badge: string;
-    border: string;
-    button: string;
-  }
-> = {
-  blue: { badge: "text-blue-400 bg-blue-900/40 border-blue-500/30", border: "border-blue-500/30", button: "bg-blue-600 hover:bg-blue-700" },
-  green: { badge: "text-green-400 bg-green-900/40 border-green-500/30", border: "border-green-500/30", button: "bg-green-600 hover:bg-green-700" },
-  purple: { badge: "text-purple-400 bg-purple-900/40 border-purple-500/30", border: "border-purple-500/30", button: "bg-purple-600 hover:bg-purple-700" },
-  red: { badge: "text-red-400 bg-red-900/40 border-red-500/30", border: "border-red-500/30", button: "bg-red-600 hover:bg-red-700" },
-};
 
 export const metadata = {
-  title: "Reports | Rare Agent Work",
+  title: "Implementation Reports | Rare Agent Work",
   description:
-    "Browse operator-grade AI reports: practical implementation playbooks, architecture decisions, and decision frameworks.",
+    "Operator-grade AI agent implementation playbooks. Full preview before purchase — methodology, citations, risks, and sample content included.",
+};
+
+const colorAccent: Record<string, { border: string; badge: string; btn: string; step: string }> = {
+  blue:   { border: "border-blue-500/30 hover:border-blue-400/50",   badge: "text-blue-300 bg-blue-900/30 border border-blue-500/25",   btn: "bg-blue-600 hover:bg-blue-500 text-white",   step: "text-blue-300" },
+  green:  { border: "border-green-500/30 hover:border-green-400/50", badge: "text-green-300 bg-green-900/30 border border-green-500/25", btn: "bg-green-600 hover:bg-green-500 text-white", step: "text-green-300" },
+  purple: { border: "border-purple-500/30 hover:border-purple-400/50", badge: "text-purple-300 bg-purple-900/30 border border-purple-500/25", btn: "bg-purple-600 hover:bg-purple-500 text-white", step: "text-purple-300" },
+  red:    { border: "border-red-500/30 hover:border-red-400/50",     badge: "text-red-300 bg-red-900/30 border border-red-500/25",     btn: "bg-red-600 hover:bg-red-500 text-white",     step: "text-red-300" },
 };
 
 export default function ReportsPage() {
@@ -28,115 +20,174 @@ export default function ReportsPage() {
 
   return (
     <div className="min-h-screen bg-[#050816] text-white">
-      <nav className="border-b border-white/10 bg-black/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-          <Link href="/" className="text-lg font-bold text-white">
-            Rare Agent Work
+      {/* Nav */}
+      <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#050816]/85 backdrop-blur-xl">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
+          <Link href="/" className="text-base font-bold text-white hover:text-slate-200 transition-colors">
+            ← Rare Agent Work
           </Link>
           <div className="flex items-center gap-4 text-sm">
-            <Link href="/news" className="text-gray-300 hover:text-white">
-              News Feed
-            </Link>
-            <Link href="/docs" className="text-gray-300 hover:text-white">
-              Docs
-            </Link>
-            <Link href="/enterprise" className="text-gray-300 hover:text-white">
-              Enterprise
-            </Link>
-            <Link href="/assessment" className="text-gray-300 hover:text-white">
-              Assessment
-            </Link>
-            <Link href="/pricing" className="text-cyan-300 hover:text-cyan-200">
-              Pricing
+            <Link href="/news" className="hidden text-slate-400 hover:text-white sm:block">News</Link>
+            <Link href="/assessment" className="hidden text-slate-400 hover:text-white sm:block">Consulting</Link>
+            <Link href="/pricing" className="hidden text-cyan-300 hover:text-cyan-200 sm:block">Pricing</Link>
+            <Link
+              href="/assessment"
+              className="rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300"
+            >
+              Work With Us
             </Link>
           </div>
         </div>
       </nav>
 
-      <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
-        <header className="mb-10">
-          <h1 className="text-3xl font-semibold text-white sm:text-4xl">Operator Reports</h1>
-          <p className="mt-3 max-w-2xl text-slate-300">
-            A curated catalog of the reports used by operators implementing serious agent systems.
-            Every preview includes methodology, source citations, risks, and action steps before you buy.
+      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
+
+        {/* Header */}
+        <header className="mb-2">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Implementation reports</p>
+          <h1 className="mt-2 text-4xl font-black text-white sm:text-5xl">
+            Pick the playbook that matches your problem.
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">
+            Every report includes a full free preview — methodology, citations, sample sections, risks, and action steps — before you spend a dollar.
+            One-time purchase. Yours permanently.
           </p>
         </header>
 
-        <section className="mb-10 grid gap-4 lg:grid-cols-4">
-          {startHereRoutes.map((item) => (
-            <Link key={item.href} href={item.href} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-colors hover:border-cyan-300/40">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">{item.badge}</p>
-              <h2 className="mt-2 text-lg font-semibold text-white">{item.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-300">{item.description}</p>
-            </Link>
+        {/* Trust bar */}
+        <div className="mt-8 flex flex-wrap gap-3">
+          {["Full preview before purchase", "Cited sources on every claim", "One-time purchase — no subscription", "Instant access after checkout"].map((item) => (
+            <span key={item} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-400">
+              <span className="text-cyan-400">✓</span> {item}
+            </span>
           ))}
-        </section>
+        </div>
 
-        <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
+        {/* Report grid */}
+        <section className="mt-10 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {reports.map((report) => {
-            const c = colorMap[report.color] || colorMap.blue;
-
+            const c = colorAccent[report.color] ?? colorAccent.blue;
             return (
               <article
                 key={report.slug}
-                className={`rounded-2xl border ${c.border} bg-white/5 p-5 transition-colors hover:border-white/30`}
+                className={`group relative flex flex-col rounded-2xl border bg-white/[0.035] p-6 backdrop-blur-sm transition-all ${c.border}`}
               >
-                <div className="mb-3 flex items-center gap-2">
-                  {report.isNew && (
-                    <span className="inline-block rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
-                  )}
-                  <p className="text-xs text-slate-500">Updated {report.updatedAt}</p>
+                {report.isNew && (
+                  <span className="absolute right-4 top-4 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                    New
+                  </span>
+                )}
+
+                {/* Price + freshness */}
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`inline-flex rounded-full px-3 py-1 text-xs font-bold ${c.badge}`}>
+                    {report.price}
+                  </span>
+                  <span className="text-[10px] text-slate-500">Updated {report.updatedAt}</span>
                 </div>
-                <p className={`inline-block rounded-full border px-3 py-1 text-xs font-semibold ${c.badge}`}>
-                  {report.price}
+
+                {/* Title + subtitle */}
+                <h2 className="mt-4 text-lg font-bold leading-snug text-white">{report.title}</h2>
+                <p className="mt-2 text-sm leading-6 text-slate-400">{report.subtitle}</p>
+
+                {/* Best for */}
+                <p className="mt-3 text-xs text-slate-500">
+                  {report.bestFor.slice(0, 2).join(" · ")}
                 </p>
-                <h2 className="mt-3 text-lg font-semibold text-white">{report.title}</h2>
-                <p className="mt-2 text-sm text-slate-300">{report.subtitle}</p>
-                <p className="mt-3 text-xs uppercase tracking-[0.18em] text-slate-400">Best for</p>
-                <p className="mt-2 text-sm text-slate-300">{report.bestFor.join(' • ')}</p>
-                <div className="mt-6">
+
+                {/* Proof points */}
+                <ul className="mt-4 space-y-1.5">
+                  {report.proofPoints.slice(0, 2).map((pt) => (
+                    <li key={pt} className="flex items-start gap-2 text-xs leading-5 text-slate-400">
+                      <span className={`mt-0.5 shrink-0 text-[10px] ${c.step}`}>●</span>
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Actions */}
+                <div className="mt-auto flex flex-col gap-2 pt-6">
                   <Link
                     href={`/reports/${report.slug}`}
-                    className={`inline-flex rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors ${c.button}`}
+                    className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                   >
-                    Open preview →
+                    Read free preview →
                   </Link>
+                  <BuyButton
+                    plan={report.planKey}
+                    label={`Buy — ${report.price}`}
+                    className={`inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${c.btn}`}
+                  />
                 </div>
               </article>
             );
           })}
         </section>
 
-        <div className="mt-12">
-          <AuthorSignal />
-        </div>
+        {/* Consulting upsell */}
+        <section className="mt-16 grid gap-6 lg:grid-cols-2">
+          <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/[0.06] p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">When a report isn&apos;t enough</p>
+            <h2 className="mt-2 text-2xl font-bold text-white">Bring a hard problem directly.</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-400">
+              Architecture review, implementation rescue, and strategy calls for teams with real blockers.
+              Every intake is reviewed by a human before any next step is proposed.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                href="/assessment"
+                className="inline-flex rounded-full bg-cyan-400 px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-cyan-300"
+              >
+                Start an Assessment
+              </Link>
+              <Link
+                href="/book-demo"
+                className="inline-flex rounded-full border border-white/15 bg-white/[0.06] px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+              >
+                Book a Strategy Call
+              </Link>
+            </div>
+          </div>
 
-        <section className="mt-12 rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-2xl font-semibold text-white">Need the full catalog, bundles, or a buyer path?</h2>
-          <p className="mt-2 text-slate-300">
-            Compare one-time reports, Operator Access, consultant-friendly bundles, and enterprise working sessions from the pricing page.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link
-              href="/pricing"
-              className="inline-flex rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition-colors hover:bg-cyan-400"
-            >
-              Compare plans
-            </Link>
-            <Link
-              href="/reports/choose"
-              className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              Help me choose a report
-            </Link>
-            <Link
-              href="/enterprise"
-              className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-            >
-              Team / enterprise access
-            </Link>
+          <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Bundles &amp; team access</p>
+            <h2 className="mt-2 text-2xl font-bold text-white">Need the full catalog or team access?</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-400">
+              Compare Operator Access ($49/mo) for the full report catalog, or use the enterprise path for procurement-friendly team access.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                href="/pricing"
+                className="inline-flex rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/15"
+              >
+                Compare plans
+              </Link>
+              <Link
+                href="/enterprise"
+                className="inline-flex rounded-full border border-white/15 bg-white/[0.04] px-5 py-2.5 text-sm font-semibold text-slate-300 hover:bg-white/10"
+              >
+                Team / Enterprise
+              </Link>
+            </div>
           </div>
         </section>
+
+        {/* About */}
+        <section className="mt-12 rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Who is behind this</p>
+              <p className="mt-1 text-sm leading-7 text-slate-400">
+                Rare Agent Work is written by Michael Fethe — operator-first, opinionated research for teams that need to know what actually breaks in production.
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-wrap gap-3">
+              <Link href="/about" className="text-sm font-semibold text-cyan-300 hover:text-cyan-200">About →</Link>
+              <Link href="/methodology" className="text-sm font-semibold text-slate-400 hover:text-white">Methodology →</Link>
+            </div>
+          </div>
+        </section>
+
       </main>
     </div>
   );

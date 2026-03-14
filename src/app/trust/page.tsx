@@ -4,7 +4,7 @@ import { BreadcrumbJsonLd } from '@/components/JsonLd';
 import { trustControlBullets } from '@/lib/site-copy';
 
 export const metadata: Metadata = {
-  title: 'Trust Controls | Rare Agent Work',
+  title: 'Trust Controls',
   description:
     'Process visibility for Rare Agent Work intake flows, consulting paths, network matching, and public agent-facing surfaces.',
   alternates: {

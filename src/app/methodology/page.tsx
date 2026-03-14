@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'Methodology | Rare Agent Work',
+  title: 'Research Methodology',
   description: 'How Rare Agent Work evaluates sources, updates reports, thinks about freshness, and distinguishes synthesis from implementation judgment.',
 };
 

@@ -5,7 +5,7 @@ import { consultingPackages } from "@/lib/site-copy";
 import SiteNav from "@/components/SiteNav";
 
 export const metadata = {
-  title: "Pricing | Rare Agent Work",
+  title: "Pricing",
   description: "Three-tier access model: free browsing, one-time reports, or subscription plans for operators.",
 };
 

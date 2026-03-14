@@ -12,19 +12,31 @@ const options = [
     title: 'I need to launch my first real workflow',
     fit: 'Best for founders, operators, and non-technical teams that need a practical first win without overbuilding.',
     href: '/reports/agent-setup-60',
-    cta: 'Start with Agent Setup in 60 Minutes',
+    cta: 'Start with Agent Setup in 60 Minutes — $29',
   },
   {
     title: 'I already have one agent and coordination is becoming the real problem',
     fit: 'Best for engineering teams adding roles, memory, orchestration, and multi-agent structure.',
     href: '/reports/single-to-multi-agent',
-    cta: 'Start with From Single Agent to Multi-Agent',
+    cta: 'Start with From Single Agent to Multi-Agent — $79',
+  },
+  {
+    title: 'I am connecting agents to MCP servers or external tools',
+    fit: 'Best for security-conscious operators and platform engineers who need a threat model and enforcement architecture before connecting to third-party tools.',
+    href: '/reports/mcp-security',
+    cta: 'Start with MCP Security — $149',
+  },
+  {
+    title: 'I had a production incident or want to prevent the next one',
+    fit: 'Best for engineering leads and platform teams who want to learn from 8 documented production failures before they happen — with root cause trees and prevention checklists.',
+    href: '/reports/agent-incident-postmortems',
+    cta: 'Start with Production Agent Incidents — $149',
   },
   {
     title: 'I need evaluation, governance, and defensible standards',
     fit: 'Best for technical leaders, architects, and teams making production decisions that need to survive scrutiny.',
     href: '/reports/empirical-agent-architecture',
-    cta: 'Start with the Empirical Research Edition',
+    cta: 'Start with the Empirical Research Edition — $299',
   },
 ];
 

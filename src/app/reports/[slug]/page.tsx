@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!report) return {};
   const url = `https://rareagent.work/reports/${slug}`;
   return {
-    title: `${report.title} — ${report.price} | Rare Agent Work`,
+    title: `${report.title} — ${report.price}`,
     description: `${report.subtitle}. ${report.valueprop}`,
     keywords: [
       report.title,

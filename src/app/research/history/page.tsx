@@ -3,7 +3,7 @@ import Link from 'next/link';
 import reportHistory from '../../../../public/research/report-history.json';
 
 export const metadata: Metadata = {
-  title: 'Report Archive — Version History | Rare Agent Work',
+  title: 'Report Archive — Version History',
   description:
     'Browse every version of our operator-grade AI research reports. Subscribers get full access to all historical versions and rolling updates.',
   alternates: {

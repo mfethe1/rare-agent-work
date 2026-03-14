@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Book a Demo | Rare Agent Work",
+  title: "Book a Strategy Call",
   description: "Schedule a high-ticket B2B consultation and demo of operator-grade AI agent systems.",
 };
 

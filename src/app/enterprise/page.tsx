@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
 
 export const metadata: Metadata = {
-  title: 'Enterprise & Team Access | Rare Agent Work',
+  title: 'Enterprise & Team Access',
   description: 'Team-friendly access for operator reports, architecture guidance, and scoped enterprise engagements.',
 };
 

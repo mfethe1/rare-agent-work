@@ -4,7 +4,7 @@ import { getAllReports } from "@/lib/reports";
 import SiteNav from "@/components/SiteNav";
 
 export const metadata = {
-  title: "Implementation Reports | Rare Agent Work",
+  title: "Implementation Reports",
   description:
     "Operator-grade AI agent implementation playbooks. Full free preview before purchase — methodology, citations, risks, and sample content included.",
 };
@@ -196,10 +196,10 @@ export default function ReportsPage() {
               Match your current problem to the right report before you read
               the preview.
             </p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 {
-                  signal: "First workflow, not sure where to start",
+                  signal: "First workflow — not sure where to start",
                   report: "Agent Setup in 60 Minutes",
                   slug: "agent-setup-60",
                   price: "$29",
@@ -207,7 +207,7 @@ export default function ReportsPage() {
                 },
                 {
                   signal:
-                    "Single agent is working, need to scale to multiple agents",
+                    "Single agent is working, need to scale to a coordinated team",
                   report: "From Single Agent to Multi-Agent",
                   slug: "single-to-multi-agent",
                   price: "$79",
@@ -220,6 +220,14 @@ export default function ReportsPage() {
                   slug: "mcp-security",
                   price: "$149",
                   color: "text-red-400",
+                },
+                {
+                  signal:
+                    "Had a production incident — need to understand why and prevent the next one",
+                  report: "Production Agent Incidents: Real Post-Mortems",
+                  slug: "agent-incident-postmortems",
+                  price: "$149",
+                  color: "text-amber-400",
                 },
                 {
                   signal:
@@ -240,7 +248,7 @@ export default function ReportsPage() {
                   </p>
                   <div className="mt-auto border-t border-white/8 pt-2">
                     <p className={`text-[11px] font-bold ${item.color}`}>
-                      → {item.report}
+                      \u2192 {item.report}
                     </p>
                     <p className="text-[10px] text-slate-500">{item.price}</p>
                   </div>

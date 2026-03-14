@@ -9,24 +9,24 @@ import BuyButton from '@/components/BuyButton';
 // Specific, named failure modes — real credibility signals
 const failureModes = [
   {
-    icon: '💀',
-    title: 'Auth drift at 3am',
-    detail: 'OAuth token expired. Nobody set a reminder. Workflow stopped silently. Monday morning triage.',
+    icon: '💣',
+    title: 'The bulk-send incident',
+    detail: '847 customers got the same email. CSV imported. No deduplication key. No volume cap. Automation ran as designed.',
+  },
+  {
+    icon: '🔒',
+    title: 'Auth cascade, 4 days silent',
+    detail: 'Employee left. Service account deleted. 14 workflows failed. Error notifications sent to the deleted email. Nobody knew.',
   },
   {
     icon: '💸',
-    title: 'The bulk-import incident',
-    detail: '500 customers got the same email. CSV imported 500 rows. No deduplication key. Automation "worked."',
+    title: '$47k in 72 hours',
+    detail: 'One config variable not updated on prod deploy. GPT-4o instead of mini. No per-session cost ceiling. No daily alert.',
   },
   {
-    icon: '🔁',
-    title: 'Memory reset on session 2',
-    detail: 'Agent works perfectly in the demo. By session 4 it has forgotten everything. No L2 summarization layer.',
-  },
-  {
-    icon: '🛠️',
+    icon: '🧹',
     title: 'MCP tool poisoning',
-    detail: "Third-party MCP server's description field contained instructions addressed to the model, not documentation for the tool.",
+    detail: "Third-party MCP server's tool description contained instructions addressed to the model. Content filters didn't catch it.",
   },
 ];
 
@@ -107,7 +107,7 @@ export default function Home() {
         <section className="text-center">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-cyan-300/25 bg-white/[0.05] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90 shadow-[0_0_24px_rgba(34,211,238,0.07)]">
             <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
-            Implementation research for production AI teams
+            Production-incident research for AI agent teams
           </div>
 
           <h1 className="mx-auto mt-7 max-w-5xl text-5xl font-black tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5rem] lg:leading-[1.06]">
@@ -116,8 +116,8 @@ export default function Home() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-            Practitioner-written reports on auth drift, memory failures, MCP security, and multi-agent coordination.
-            Every claim cited. Every preview free before you spend a dollar.
+            5 operator reports covering MCP security, multi-agent orchestration, evaluation governance, and real post-mortems.
+            Every claim cited. Full preview free before you spend a dollar.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -125,13 +125,13 @@ export default function Home() {
               href="/reports"
               className="inline-flex w-full items-center justify-center rounded-full bg-cyan-400 px-8 py-4 text-base font-bold text-slate-950 shadow-[0_16px_48px_rgba(34,211,238,0.25)] transition-all hover:-translate-y-0.5 hover:bg-cyan-300 sm:w-auto"
             >
-              Read the Free Previews →
+              Browse Reports →
             </Link>
             <Link
               href="/assessment"
               className="inline-flex w-full items-center justify-center rounded-full border border-white/20 bg-white/[0.06] px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
             >
-              Talk to a Human
+              Get an Expert Review
             </Link>
           </div>
 
@@ -147,9 +147,9 @@ export default function Home() {
               <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Why operators trust this</p>
               <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:justify-end">
                 {[
-                  { stat: '100%', label: 'previews free before purchase' },
-                  { stat: '28+', label: 'failure modes documented' },
-                  { stat: '5', label: 'reports with full citations' },
+                  { stat: '5', label: 'reports with full previews and citations' },
+                  { stat: '8', label: 'post-mortem incidents documented' },
+                  { stat: '100%', label: 'free preview before purchase' },
                   { stat: 'Human', label: 'review on every consulting intake' },
                   { stat: 'Zero', label: 'vendor-sponsored content' },
                 ].map((item) => (
@@ -167,11 +167,11 @@ export default function Home() {
         {/* ── The failure modes this solves ─────────────────────────── */}
         <section className="mt-16">
           <div className="mb-6 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">What these reports are actually about</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">8 post-mortems. Every failure class documented in detail.</p>
             <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
-              Four incidents that happen to almost every team.
+              These incidents happen to almost every team.
             </h2>
-            <p className="mt-2 text-sm text-slate-400">Not hypotheticals. These are the specific production failures documented in these reports.</p>
+            <p className="mt-2 text-sm text-slate-400">Real cases, exact timelines, five-layer root cause. Buy the report before your team has the same incident.</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {failureModes.map((fm) => (
@@ -201,7 +201,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {reports.map((report) => {
               const accentMap: Record<string, { card: string; price: string; cta: string; btn: string }> = {
                 blue: {
@@ -325,8 +325,8 @@ export default function Home() {
                 {/* Specific claim strip */}
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   {[
-                    { stat: '4', label: 'implementation reports', sub: 'With full previews, citations, and failure-mode coverage' },
-                    { stat: '28+', label: 'documented failure modes', sub: 'Auth, memory, volume, approval gates, MCP security' },
+                    { stat: '5', label: 'implementation reports', sub: 'Full previews, citations, and post-mortem depth on every topic' },
+                    { stat: '8', label: 'post-mortems documented', sub: 'Bulk send, auth cascade, cost explosion, MCP poisoning, orchestration deadlock' },
                     { stat: '100%', label: 'human-reviewed intakes', sub: 'Every consulting request read before any next step' },
                   ].map((item) => (
                     <div key={item.label} className="rounded-xl border border-white/10 bg-black/20 p-4">

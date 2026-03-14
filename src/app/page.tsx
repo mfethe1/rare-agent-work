@@ -140,6 +140,30 @@ export default function Home() {
           </p>
         </section>
 
+        {/* ── Trust strip ─────────────────────────────────────────── */}
+        <section className="mt-10">
+          <div className="rounded-2xl border border-white/8 bg-white/[0.02] px-6 py-5">
+            <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-between">
+              <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Why operators trust this</p>
+              <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:justify-end">
+                {[
+                  { stat: '100%', label: 'previews free before purchase' },
+                  { stat: '28+', label: 'failure modes documented' },
+                  { stat: '5', label: 'reports with full citations' },
+                  { stat: 'Human', label: 'review on every consulting intake' },
+                  { stat: 'Zero', label: 'vendor-sponsored content' },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-baseline gap-1.5">
+                    <span className="text-sm font-black text-cyan-300">{item.stat}</span>
+                    <span className="text-xs text-slate-500">{item.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+
         {/* ── The failure modes this solves ─────────────────────────── */}
         <section className="mt-16">
           <div className="mb-6 text-center">
@@ -179,31 +203,36 @@ export default function Home() {
 
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {reports.map((report) => {
-              const accentMap: Record<string, { card: string; price: string; cta: string }> = {
+              const accentMap: Record<string, { card: string; price: string; cta: string; btn: string }> = {
                 blue: {
                   card: 'border-blue-500/25 hover:border-blue-400/50',
                   price: 'text-blue-300 bg-blue-900/30 border border-blue-500/25',
                   cta: 'hover:border-blue-400/40 hover:text-blue-200',
+                  btn: 'bg-blue-500 hover:bg-blue-400 text-white shadow-[0_8px_24px_rgba(59,130,246,0.25)]',
                 },
                 green: {
                   card: 'border-green-500/25 hover:border-green-400/50',
                   price: 'text-green-300 bg-green-900/30 border border-green-500/25',
                   cta: 'hover:border-green-400/40 hover:text-green-200',
+                  btn: 'bg-green-500 hover:bg-green-400 text-white shadow-[0_8px_24px_rgba(34,197,94,0.25)]',
                 },
                 purple: {
                   card: 'border-purple-500/25 hover:border-purple-400/50',
                   price: 'text-purple-300 bg-purple-900/30 border border-purple-500/25',
                   cta: 'hover:border-purple-400/40 hover:text-purple-200',
+                  btn: 'bg-purple-500 hover:bg-purple-400 text-white shadow-[0_8px_24px_rgba(168,85,247,0.25)]',
                 },
                 red: {
                   card: 'border-red-500/25 hover:border-red-400/50',
                   price: 'text-red-300 bg-red-900/30 border border-red-500/25',
                   cta: 'hover:border-red-400/40 hover:text-red-200',
+                  btn: 'bg-red-500 hover:bg-red-400 text-white shadow-[0_8px_24px_rgba(239,68,68,0.25)]',
                 },
                 amber: {
                   card: 'border-amber-500/25 hover:border-amber-400/50',
                   price: 'text-amber-300 bg-amber-900/30 border border-amber-500/25',
                   cta: 'hover:border-amber-400/40 hover:text-amber-200',
+                  btn: 'bg-amber-500 hover:bg-amber-400 text-white shadow-[0_8px_24px_rgba(245,158,11,0.25)]',
                 },
               };
               const accent = accentMap[report.color] ?? accentMap.blue;
@@ -239,18 +268,17 @@ export default function Home() {
                   </div>
 
                   <div className="mt-auto space-y-2 pt-5">
-                    <Link
-                      href={`/reports/${report.slug}`}
-                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition-all ${accent.cta}`}
-                    >
-                      <span>Read free preview</span>
-                      <span className="text-slate-500">→</span>
-                    </Link>
                     <BuyButton
                       plan={report.planKey}
                       label={`Buy — ${report.price}`}
-                      className={`inline-flex w-full items-center justify-center rounded-full bg-white/[0.04] border border-white/8 px-4 py-2 text-xs font-semibold text-slate-400 transition-all hover:text-white hover:bg-white/[0.08] hover:border-white/15`}
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full ${accent.btn ?? 'bg-cyan-400 hover:bg-cyan-300 text-slate-950'} px-4 py-3 text-sm font-bold transition-all`}
                     />
+                    <Link
+                      href={`/reports/${report.slug}`}
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-xs font-medium text-slate-400 transition-all hover:text-white hover:bg-white/[0.08] hover:border-white/20`}
+                    >
+                      <span>Read free preview →</span>
+                    </Link>
                   </div>
                 </article>
               );

@@ -6,10 +6,10 @@ import { WebsiteJsonLd } from '@/components/JsonLd';
 import { getAllReports } from '@/lib/reports';
 
 const trustSignals = [
-  { icon: '🔍', label: 'Full preview before purchase', detail: 'Read methodology, citations, risks, and sample content before spending a dollar.' },
-  { icon: '📎', label: 'Cited sources on every report', detail: 'Every recommendation traces to a verifiable source, not the author\'s opinion.' },
-  { icon: '⚡', label: 'One-time purchase, yours permanently', detail: 'No subscription required. Buy once, download, use forever.' },
-  { icon: '🛡️', label: 'Human review on consulting intake', detail: 'Every consulting request is read by a human before any next step is proposed.' },
+  { icon: '🔍', label: 'Full preview before purchase', detail: 'Read methodology, citations, risks, and real sample content before committing a dollar. No teaser-wall gatekeeping.' },
+  { icon: '📎', label: 'Every claim is cited', detail: 'Recommendations trace to specific, verifiable sources — not the author\'s intuition or vendor marketing.' },
+  { icon: '⚡', label: 'Buy once, own it permanently', detail: 'One-time purchase. No subscription required for the report. The full document is yours from the moment of checkout.' },
+  { icon: '🛡️', label: 'Human review on every intake', detail: 'Consulting requests are read by a human before any next step. No automated routing, no opaque triage.' },
 ];
 
 const howItWorks = [
@@ -112,13 +112,13 @@ export default function Home() {
           </div>
 
           <h1 className="mx-auto mt-7 max-w-5xl text-5xl font-black tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5.25rem] lg:leading-[1.06]">
-            Stop guessing.<br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent"> Ship agents that actually work.</span>
+            Most agent systems break in the same ways.
+            <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent"> Here&apos;s the playbook.</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-            Operator-grade implementation playbooks for teams building real agent systems.
-            Full preview before purchase. Cited sources. No generic AI content.
+            Operator-grade implementation reports, consulting, and a live news desk for teams building real agent systems.
+            Written by practitioners. Cited. Previewed in full before you spend a dollar.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -132,12 +132,12 @@ export default function Home() {
               href="/assessment"
               className="inline-flex w-full items-center justify-center rounded-full border border-white/20 bg-white/[0.06] px-8 py-4 text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
             >
-              Talk to a Consultant
+              Book a Consulting Call
             </Link>
           </div>
 
           <p className="mt-4 text-sm text-slate-500">
-            Preview every report for free · One-time purchase · No subscription required
+            Read the full preview for free · Buy once, keep forever · No subscription required
           </p>
         </section>
 

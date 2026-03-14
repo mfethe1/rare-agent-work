@@ -324,14 +324,15 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
             ))}
           </div>
           <div className={`mt-8 border ${c.border} rounded-2xl p-6 bg-gray-900/30 text-center`}>
-            <p className="text-gray-300 mb-3">This preview is enough to judge fit. Buy this report once, or step up to the full library if you will use more than one.</p>
+            <p className="text-gray-300 mb-4">This preview is enough to judge fit. Buy this report once, or step up to the full library if you will use more than one.</p>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <BuyButton label={`Buy this report — ${report.price}`} plan={report.planKey} className={`${c.btn} text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors`} />
-              <Link href="/pricing" className="inline-flex rounded-lg border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+              <BuyButton label={`Buy this report — ${report.price}`} plan={report.planKey} className={`${c.btn} text-white px-8 py-4 rounded-lg font-bold text-base transition-colors shadow-lg`} />
+              <Link href="/pricing" className="inline-flex rounded-lg border border-white/15 bg-white/5 px-6 py-4 text-sm font-semibold text-white transition-colors hover:bg-white/10">
                 Compare bundles and Operator Access
               </Link>
             </div>
             <p className="mt-4 text-xs text-slate-500">Best for: {report.bestFor.join(' • ')}</p>
+            <p className="mt-2 text-xs text-slate-600">One-time purchase. Instant delivery. No subscription required.</p>
           </div>
         </section>
 

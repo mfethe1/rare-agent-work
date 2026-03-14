@@ -1,5 +1,5 @@
 export const operatorProofStats = [
-  { label: 'Public reports', value: '3', detail: 'Previewable, cited, and purchasable now' },
+  { label: 'Public reports', value: '4', detail: 'Previewable, cited, and purchasable now' },
   { label: 'Public API routes', value: '4', detail: 'News, reports, models, and NL query' },
   { label: 'Trust-gated service paths', value: '3', detail: 'Assessment, network, and submit-work intake' },
   { label: 'Machine-readable surfaces', value: '5', detail: 'OpenAPI, agent card, manifest, RSS, llms.txt' },

@@ -14,6 +14,7 @@ const colorMap: Record<
   blue: { badge: "text-blue-400 bg-blue-900/40 border-blue-500/30", border: "border-blue-500/30", button: "bg-blue-600 hover:bg-blue-700" },
   green: { badge: "text-green-400 bg-green-900/40 border-green-500/30", border: "border-green-500/30", button: "bg-green-600 hover:bg-green-700" },
   purple: { badge: "text-purple-400 bg-purple-900/40 border-purple-500/30", border: "border-purple-500/30", button: "bg-purple-600 hover:bg-purple-700" },
+  red: { badge: "text-red-400 bg-red-900/40 border-red-500/30", border: "border-red-500/30", button: "bg-red-600 hover:bg-red-700" },
 };
 
 export const metadata = {
@@ -71,7 +72,7 @@ export default function ReportsPage() {
           ))}
         </section>
 
-        <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
           {reports.map((report) => {
             const c = colorMap[report.color] || colorMap.blue;
 
@@ -80,6 +81,12 @@ export default function ReportsPage() {
                 key={report.slug}
                 className={`rounded-2xl border ${c.border} bg-white/5 p-5 transition-colors hover:border-white/30`}
               >
+                <div className="mb-3 flex items-center gap-2">
+                  {report.isNew && (
+                    <span className="inline-block rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
+                  )}
+                  <p className="text-xs text-slate-500">Updated {report.updatedAt}</p>
+                </div>
                 <p className={`inline-block rounded-full border px-3 py-1 text-xs font-semibold ${c.badge}`}>
                   {report.price}
                 </p>
@@ -92,7 +99,7 @@ export default function ReportsPage() {
                     href={`/reports/${report.slug}`}
                     className={`inline-flex rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors ${c.button}`}
                   >
-                    Open preview
+                    Open preview →
                   </Link>
                 </div>
               </article>

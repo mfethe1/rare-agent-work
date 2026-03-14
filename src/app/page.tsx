@@ -85,7 +85,7 @@ const submitSteps = [
 ];
 
 export default function Home() {
-  const reports = getAllReports().slice(0, 3);
+  const reports = getAllReports().slice(0, 4);
 
   return (
     <div className="min-h-screen bg-[#050816] font-sans text-slate-100 selection:bg-cyan-400 selection:text-slate-950">
@@ -173,7 +173,7 @@ export default function Home() {
             <div className="mt-5 grid gap-4">
               <div className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-300">Implementation reports</p>
-                <h2 className="mt-2 text-3xl font-semibold text-white">3 playbooks</h2>
+                <h2 className="mt-2 text-3xl font-semibold text-white">{reports.length} playbooks</h2>
                 <p className="mt-2 text-sm leading-7 text-slate-300">Full preview before purchase. Cited sources, explicit risks, and action steps — not blog posts.</p>
               </div>
               <div className="rounded-[1.25rem] border border-white/10 bg-[#07111f]/80 p-5">
@@ -407,11 +407,14 @@ export default function Home() {
             </div>
             <Link href="/reports" className="hidden text-sm font-semibold text-cyan-300 hover:text-cyan-200 sm:inline-flex">Browse all reports →</Link>
           </div>
-          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {reports.map((report) => (
               <article key={report.slug} className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{report.priceLabel}</p>
-                <h3 className="mt-3 text-xl font-bold text-white">{report.title}</h3>
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">{report.priceLabel}</p>
+                  {report.isNew && <span className="inline-block rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>}
+                </div>
+                <h3 className="mt-2 text-xl font-bold text-white">{report.title}</h3>
                 <p className="mt-3 text-sm leading-7 text-slate-300">{report.subtitle}</p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   <Link href={`/reports/${report.slug}`} className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Read preview</Link>

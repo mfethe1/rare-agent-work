@@ -78,6 +78,60 @@ function renderInlineBold(text: string, accentClass: string): React.ReactNode {
   );
 }
 
+/**
+ * Render a paragraph from an excerpt body with rich visual hierarchy.
+ * Handles: numbered lists, **bold** lead-ins on their own line (callout boxes),
+ * plain paragraphs, and phase/step headers that start with a bold phrase.
+ */
+function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorClass: string; borderClass: string }) {
+  const paragraphs = body.split('\n\n').filter(p => p.trim().length > 0);
+
+  return (
+    <div className="space-y-4 text-sm leading-7 text-slate-300">
+      {paragraphs.map((para, i) => {
+        const trimmed = para.trim();
+
+        // Numbered list item: starts with digit + dot (e.g. "1. **Bold** text")
+        const numberedMatch = trimmed.match(/^(\d+\.\s+)(.*)/s);
+        if (numberedMatch) {
+          return (
+            <div key={i} className={`flex gap-3 rounded-xl border ${borderClass} bg-black/20 px-4 py-3`}>
+              <span className={`shrink-0 font-mono text-xs font-black mt-0.5 ${colorClass}`}>{numberedMatch[1].trim()}</span>
+              <span>{renderInlineBold(numberedMatch[2], colorClass)}</span>
+            </div>
+          );
+        }
+
+        // Standalone bold line (e.g. "**Phase 1: Detection**") — render as section subheader
+        const standaloneBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*\s*$/);
+        if (standaloneBoldMatch) {
+          return (
+            <p key={i} className={`mt-3 text-xs font-bold uppercase tracking-[0.18em] ${colorClass}`}>
+              {standaloneBoldMatch[1]}
+            </p>
+          );
+        }
+
+        // Paragraph that starts with **Bold term** — render as callout with left accent
+        const leadBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*(.*)$/s);
+        if (leadBoldMatch) {
+          return (
+            <div key={i} className={`border-l-2 ${borderClass} pl-4`}>
+              <p>
+                <strong className="font-semibold text-white">{leadBoldMatch[1]}</strong>
+                {renderInlineBold(leadBoldMatch[2], colorClass)}
+              </p>
+            </div>
+          );
+        }
+
+        // Plain paragraph
+        return <p key={i}>{renderInlineBold(trimmed, colorClass)}</p>;
+      })}
+    </div>
+  );
+}
+
 
 const colorMap: Record<string, {
   border: string;
@@ -334,33 +388,64 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
 
         {/* ── Sample content (the preview that sells) ──────────────── */}
         <section className="mb-10">
-          <div className="mb-6 flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-            <div>
-              <h2 className="text-xl font-bold text-white">Sample Content</h2>
-              <p className="mt-1 text-sm text-slate-400">
-                This is real content from the report — not a teaser. Read it to judge fit before buying.
+          {/* Section navigator / TOC */}
+          {report.excerpt.length >= 3 && (
+            <div className="mb-8 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+              <div className="mb-3 flex items-center justify-between">
+                <h2 className="text-xl font-bold text-white">Sample Content</h2>
+                <span className={`rounded-full border ${c.border} px-3 py-1 text-xs font-semibold ${c.text}`}>
+                  {report.excerpt.length} sections · real content, not a teaser
+                </span>
+              </div>
+              <p className="mb-4 text-sm text-slate-400">
+                This is real content from the report — read it to judge fit before buying.
               </p>
+              <nav className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {report.excerpt.map((section, idx) => (
+                  <a
+                    key={section.heading}
+                    href={`#excerpt-${idx}`}
+                    className={`flex items-center gap-2.5 rounded-xl border border-white/8 bg-black/20 px-3 py-2.5 text-xs font-medium text-slate-300 transition-all hover:border-white/20 hover:text-white`}
+                  >
+                    <span className={`shrink-0 font-mono text-[10px] font-black ${c.text}`}>{String(idx + 1).padStart(2, '0')}</span>
+                    <span className="line-clamp-2 leading-5">{section.heading}</span>
+                  </a>
+                ))}
+              </nav>
             </div>
-          </div>
+          )}
+          {report.excerpt.length < 3 && (
+            <div className="mb-6 flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+              <div>
+                <h2 className="text-xl font-bold text-white">Sample Content</h2>
+                <p className="mt-1 text-sm text-slate-400">
+                  This is real content from the report — not a teaser. Read it to judge fit before buying.
+                </p>
+              </div>
+            </div>
+          )}
           <div className="space-y-10">
-            {report.excerpt.map((section) => (
-              <div key={section.heading} className={`rounded-2xl border ${c.border} bg-white/[0.02] p-6 sm:p-8`}>
-                <h3 className={`mb-5 text-lg font-bold ${c.text}`}>{section.heading}</h3>
-                <div className="space-y-4 text-sm leading-7 text-slate-300">
-                  {section.body.split('\n\n').map((para, i) => {
-                    // Detect numbered list item: starts with digit + dot
-                    const numberedMatch = para.match(/^(\d+\.\s+)(.*)/s);
-                    if (numberedMatch) {
-                      return (
-                        <p key={i} className="pl-1">
-                          <span className={`font-mono text-xs font-bold ${c.text} mr-2`}>{numberedMatch[1].trim()}</span>
-                          {renderInlineBold(numberedMatch[2], c.text)}
-                        </p>
-                      );
-                    }
-                    return <p key={i}>{renderInlineBold(para, c.text)}</p>;
-                  })}
+            {report.excerpt.map((section, idx) => (
+              <div
+                id={`excerpt-${idx}`}
+                key={section.heading}
+                className={`scroll-mt-20 rounded-2xl border ${c.border} bg-white/[0.02] p-6 sm:p-8`}
+              >
+                <div className="mb-5 flex items-start gap-3">
+                  <span className={`shrink-0 rounded-lg border ${c.border} bg-black/30 px-2.5 py-1 font-mono text-xs font-black ${c.text}`}>
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className={`text-lg font-bold leading-snug text-white`}>{section.heading}</h3>
                 </div>
+                <ExcerptBody body={section.body} colorClass={c.text} borderClass={c.border} />
+                {/* Inline micro-CTA after last excerpt section */}
+                {idx === report.excerpt.length - 1 && (
+                  <div className="mt-6 rounded-xl border border-white/10 bg-black/20 px-5 py-4">
+                    <p className="text-xs text-slate-400">
+                      <span className="font-semibold text-white">This is the preview.</span> The full report includes the complete version of all sections above plus the deliverables package.
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>

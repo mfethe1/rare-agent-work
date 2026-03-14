@@ -256,7 +256,42 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Featured new report banner */}
+          {(() => {
+            const featured = reports.find((r) => r.isNew);
+            if (!featured) return null;
+            const featuredAccentMap: Record<string, { border: string; badge: string; text: string; bg: string }> = {
+              blue:   { border: 'border-blue-500/40',   badge: 'text-blue-200 bg-blue-900/40 border-blue-500/30',   text: 'text-blue-300',   bg: 'bg-blue-500/[0.06]' },
+              green:  { border: 'border-green-500/40',  badge: 'text-green-200 bg-green-900/40 border-green-500/30',  text: 'text-green-300',  bg: 'bg-green-500/[0.06]' },
+              purple: { border: 'border-purple-500/40', badge: 'text-purple-200 bg-purple-900/40 border-purple-500/30', text: 'text-purple-300', bg: 'bg-purple-500/[0.06]' },
+              red:    { border: 'border-red-500/40',    badge: 'text-red-200 bg-red-900/40 border-red-500/30',    text: 'text-red-300',    bg: 'bg-red-500/[0.07]' },
+            };
+            const fa = featuredAccentMap[featured.color] ?? featuredAccentMap.red;
+            return (
+              <div className={`mt-8 rounded-2xl border ${fa.border} ${fa.bg} p-5 sm:p-6`}>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-start gap-4">
+                    <span className="mt-0.5 shrink-0 rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                      New
+                    </span>
+                    <div>
+                      <p className={`text-xs font-semibold uppercase tracking-[0.2em] ${fa.text}`}>Just published · {featured.price}</p>
+                      <h3 className="mt-1 text-lg font-bold text-white">{featured.title}</h3>
+                      <p className="mt-1 max-w-lg text-sm text-slate-400">{featured.valueprop}</p>
+                    </div>
+                  </div>
+                  <Link
+                    href={`/reports/${featured.slug}`}
+                    className="shrink-0 inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-white/15"
+                  >
+                    Read free preview →
+                  </Link>
+                </div>
+              </div>
+            );
+          })()}
+
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {reports.map((report) => {
               const accentMap: Record<string, string> = {
                 blue: 'border-blue-500/30 hover:border-blue-400/50',
@@ -308,7 +343,7 @@ export default function Home() {
 
           {/* Inline reassurance */}
           <p className="mt-4 text-center text-xs text-slate-500">
-            Buy buttons are on the report pages — after you&apos;ve read the preview and decided it&apos;s worth it.
+            Buy buttons are on the report pages — after you’ve read the preview and decided it’s worth it.
           </p>
         </section>
 

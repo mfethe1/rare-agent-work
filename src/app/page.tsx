@@ -200,6 +200,11 @@ export default function Home() {
                   price: 'text-red-300 bg-red-900/30 border border-red-500/25',
                   cta: 'hover:border-red-400/40 hover:text-red-200',
                 },
+                amber: {
+                  card: 'border-amber-500/25 hover:border-amber-400/50',
+                  price: 'text-amber-300 bg-amber-900/30 border border-amber-500/25',
+                  cta: 'hover:border-amber-400/40 hover:text-amber-200',
+                },
               };
               const accent = accentMap[report.color] ?? accentMap.blue;
 

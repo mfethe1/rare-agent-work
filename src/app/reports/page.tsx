@@ -14,6 +14,7 @@ const colorAccent: Record<string, { border: string; badge: string; btn: string; 
   green:  { border: "border-green-500/30 hover:border-green-400/50", badge: "text-green-200 bg-green-900/40 border border-green-500/30", btn: "bg-green-600 hover:bg-green-500 text-white", text: "text-green-400", glow: "rgba(34,197,94,0.08)"  },
   purple: { border: "border-purple-500/30 hover:border-purple-400/50", badge: "text-purple-200 bg-purple-900/40 border border-purple-500/30", btn: "bg-purple-600 hover:bg-purple-500 text-white", text: "text-purple-400", glow: "rgba(168,85,247,0.08)" },
   red:    { border: "border-red-500/30 hover:border-red-400/50",     badge: "text-red-200 bg-red-900/40 border border-red-500/30",     btn: "bg-red-600 hover:bg-red-500 text-white",     text: "text-red-400",   glow: "rgba(239,68,68,0.08)"   },
+  amber:  { border: "border-amber-500/30 hover:border-amber-400/50",   badge: "text-amber-200 bg-amber-900/40 border border-amber-500/30",   btn: "bg-amber-600 hover:bg-amber-500 text-white",   text: "text-amber-400",  glow: "rgba(245,158,11,0.08)"  },
 };
 
 function formatDate(raw: string): string {

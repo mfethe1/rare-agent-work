@@ -70,7 +70,7 @@ export const agentCard: AgentCard = {
     organization: 'Rare Agent Work',
     url: siteUrl,
   },
-  version: '0.1.0',
+  version: '0.2.0',
   documentation_url: `${siteUrl}/api/v1/openapi.json`,
   capabilities: {
     streaming: false,
@@ -130,10 +130,11 @@ export const agentCard: AgentCard = {
       name: 'Inspect report catalog',
       description:
         'Discover report metadata, pricing, deliverables, and preview sections for Rare Agent Work research products.',
-      tags: ['reports', 'catalog', 'research', 'pricing'],
+      tags: ['reports', 'catalog', 'research', 'pricing', 'security', 'incidents'],
       examples: [
-        'What reports are available on agent architecture?',
-        'Compare the deliverables for the three paid reports.',
+        'What reports are available on agent architecture or MCP security?',
+        'What does the incident post-mortems report cover?',
+        'Compare the deliverables for the five available reports.',
       ],
       input_modes: ['application/json'],
       output_modes: ['application/json'],

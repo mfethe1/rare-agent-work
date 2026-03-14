@@ -95,18 +95,22 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
       {paragraphs.map((para, i) => {
         const trimmed = para.trim();
 
-        // Numbered list item: starts with digit + dot (e.g. "1. **Bold** text")
-        const numberedMatch = trimmed.match(/^(\d+\.\s+)(.*)/s);
+        // Numbered list item: starts with digit + dot, e.g. "1. **Bold** text" or "1. plain text"
+        // Must check this BEFORE leadBoldMatch since "1. **text**" would otherwise match leadBoldMatch
+        const numberedMatch = trimmed.match(/^(\d+\.)(\s+)(.+)$/s);
         if (numberedMatch) {
+          const num = numberedMatch[1];
+          const rest = numberedMatch[3];
           return (
             <div key={i} className={`flex gap-3 rounded-xl border ${borderClass} bg-black/20 px-4 py-3`}>
-              <span className={`shrink-0 font-mono text-xs font-black mt-0.5 ${colorClass}`}>{numberedMatch[1].trim()}</span>
-              <span>{renderInlineBold(numberedMatch[2], colorClass)}</span>
+              <span className={`shrink-0 font-mono text-xs font-black mt-0.5 ${colorClass}`}>{num}</span>
+              <span>{renderInlineBold(rest, colorClass)}</span>
             </div>
           );
         }
 
-        // Standalone bold line (e.g. "**Phase 1: Detection**") — render as section subheader
+        // Standalone bold line — a paragraph that is ONLY bold text, used as section subheader
+        // e.g. "**Phase 1: Detection**"
         const standaloneBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*\s*$/);
         if (standaloneBoldMatch) {
           return (
@@ -116,8 +120,10 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
           );
         }
 
-        // Paragraph that starts with **Bold term** — render as callout with left accent
-        const leadBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*(.*)$/s);
+        // Paragraph that STARTS with **Bold term** followed by more content on the same line
+        // Render as callout with left accent bar — e.g. "**Zapier** is the right choice..."
+        // Only match single-line lead bold (no newlines in the rest of content after the bold term)
+        const leadBoldMatch = trimmed.match(/^\*\*([^*]+)\*\*(.+)$/s);
         if (leadBoldMatch) {
           return (
             <div key={i} className={`border-l-2 ${borderClass} pl-4`}>
@@ -129,7 +135,7 @@ function ExcerptBody({ body, colorClass, borderClass }: { body: string; colorCla
           );
         }
 
-        // Plain paragraph
+        // Plain paragraph — apply inline bold rendering for any **text** within it
         return <p key={i}>{renderInlineBold(trimmed, colorClass)}</p>;
       })}
     </div>
@@ -186,6 +192,16 @@ const colorMap: Record<string, {
     surface: 'from-red-950/50 via-slate-950/80 to-slate-950',
     glow: 'rgba(239,68,68,0.10)',
     dot: 'bg-red-400',
+  },
+  amber: {
+    border: 'border-amber-500/30',
+    text: 'text-amber-400',
+    badge: 'bg-amber-900/50 border-amber-500/40 text-amber-200',
+    btn: 'bg-amber-600 hover:bg-amber-500 text-white',
+    btnHero: 'bg-amber-500 hover:bg-amber-400 shadow-[0_12px_40px_rgba(245,158,11,0.3)]',
+    surface: 'from-amber-950/50 via-slate-950/80 to-slate-950',
+    glow: 'rgba(245,158,11,0.10)',
+    dot: 'bg-amber-400',
   },
 };
 

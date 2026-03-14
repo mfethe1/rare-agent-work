@@ -25,13 +25,20 @@ URL: https://rareagent.work/reports/single-to-multi-agent
 Production-grade evaluation, reproducibility, and governance. Evaluation protocol template, LLM-as-judge calibration, 12-item pre-production governance checklist.
 URL: https://rareagent.work/reports/empirical-agent-architecture
 
+### MCP Security: Protecting Agents from Tool Poisoning ($149 one-time)
+The definitive operator guide to Model Context Protocol threats and defenses. All four MCP attack surfaces (tool poisoning, rug pull servers, cross-server escalation, context window manipulation), tool trust classification system, 10-item MCP security checklist, prompt injection defense patterns.
+URL: https://rareagent.work/reports/mcp-security
+
+### Production Agent Incidents: Real Post-Mortems ($149 one-time)
+8 documented production failures with root cause trees, blast radius assessments, and the governance changes that actually fixed them. Covers bulk send, auth cascade, memory loop, cost explosion, MCP poisoning, prompt injection via retrieval, orchestration deadlock, and rollback failure. Includes five-layer root cause framework, incident response templates, and monitoring baseline setup guide.
+URL: https://rareagent.work/reports/agent-incident-postmortems
 ## Three-Tier Access Model
 
 ### Free Access ($0)
 Browse live news feed, read all report previews, ask limited AI questions (10/day), access model leaderboard, review trust controls and docs.
 
 ### One-Time Reports ($29–$299)
-Buy individual reports with lifetime access. No subscription required.
+Buy individual reports with lifetime access. No subscription required. Reports range from $29 (beginner operator playbooks) to $299 (enterprise architecture + governance frameworks).
 
 ### Subscription Plans
 - **Newsletter** ($10/mo): Weekly premium newsletter, hot-news alerts, side-panel AI context, operator summaries

@@ -12,6 +12,8 @@ const colorMap: Record<string, { border: string; text: string; badge: string; su
   blue:   { border: 'border-blue-500/30',   text: 'text-blue-400',   badge: 'bg-blue-900/50 border-blue-500/40 text-blue-300',   surface: 'from-blue-950/70 to-slate-950' },
   green:  { border: 'border-green-500/30',  text: 'text-green-400',  badge: 'bg-green-900/50 border-green-500/40 text-green-300',  surface: 'from-green-950/60 to-slate-950' },
   purple: { border: 'border-purple-500/30', text: 'text-purple-400', badge: 'bg-purple-900/50 border-purple-500/40 text-purple-300', surface: 'from-purple-950/60 to-slate-950' },
+  red:    { border: 'border-red-500/30',    text: 'text-red-400',    badge: 'bg-red-900/50 border-red-500/40 text-red-300',    surface: 'from-red-950/60 to-slate-950' },
+  amber:  { border: 'border-amber-500/30',  text: 'text-amber-400',  badge: 'bg-amber-900/50 border-amber-500/40 text-amber-300',  surface: 'from-amber-950/60 to-slate-950' },
 };
 
 export default async function ProtectedReportHtmlPage({ params }: { params: Promise<{ slug: string }> }) {

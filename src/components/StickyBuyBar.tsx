@@ -8,6 +8,8 @@ interface StickyBuyBarProps {
   price: string;
   planKey: string;
   color: string;
+  /** Optional external sentinel element ID to observe instead of internal sentinel. */
+  sentinelId?: string;
 }
 
 const btnMap: Record<string, string> = {
@@ -17,25 +19,33 @@ const btnMap: Record<string, string> = {
   red: "bg-red-500 hover:bg-red-400",
 };
 
-export default function StickyBuyBar({ title, price, planKey, color }: StickyBuyBarProps) {
+export default function StickyBuyBar({ title, price, planKey, color, sentinelId }: StickyBuyBarProps) {
   const [visible, setVisible] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const internalSentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // If an external sentinel ID is provided, observe that element.
+    // Otherwise, fall back to internal sentinel.
+    const target = sentinelId
+      ? document.getElementById(sentinelId)
+      : internalSentinelRef.current;
+
+    if (!target) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(!entry.isIntersecting),
       { threshold: 0 }
     );
-    if (sentinelRef.current) observer.observe(sentinelRef.current);
+    observer.observe(target);
     return () => observer.disconnect();
-  }, []);
+  }, [sentinelId]);
 
   const btn = btnMap[color] ?? btnMap.blue;
 
   return (
     <>
-      {/* Sentinel placed right after the hero buy button */}
-      <div ref={sentinelRef} className="sticky-buy-sentinel" />
+      {/* Internal sentinel — only used if no sentinelId is provided */}
+      {!sentinelId && <div ref={internalSentinelRef} className="sticky-buy-sentinel-internal" />}
 
       {/* Sticky bar */}
       <div
@@ -47,9 +57,10 @@ export default function StickyBuyBar({ title, price, planKey, color }: StickyBuy
           <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold text-white">{title}</p>
-              <p className="text-xs text-slate-400">{price} · One-time purchase · Instant access</p>
+              <p className="text-xs text-slate-400">{price} · One-time · Instant access · No subscription</p>
             </div>
-            <div className="shrink-0">
+            <div className="flex shrink-0 items-center gap-3">
+              <span className="hidden text-xs text-slate-500 sm:block">✓ Full preview included</span>
               <BuyButton
                 plan={planKey}
                 label={`Buy — ${price}`}

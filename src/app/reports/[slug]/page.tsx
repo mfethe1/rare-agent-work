@@ -223,6 +223,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
         price={report.price}
         planKey={report.planKey}
         color={report.color}
+        sentinelId="hero-buy-sentinel"
       />
 
       {/* ── Nav ───────────────────────────────────────────────── */}
@@ -289,37 +290,57 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               </div>
 
               {/* Primary CTA block — the sentinel for StickyBuyBar lives right below this */}
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <BuyButton
-                  label={`Buy this report — ${report.price}`}
-                  plan={report.planKey}
-                  className={`inline-flex w-full items-center justify-center rounded-full ${c.btnHero} px-8 py-4 text-base font-bold text-white transition-all sm:w-auto`}
-                />
-                <div className="flex flex-col gap-0.5">
-                  <p className="text-xs text-slate-400">✓ One-time purchase · Instant access · No subscription</p>
-                  <p className="text-xs text-slate-500">Preview every section below before paying</p>
+              <div className="mt-7 space-y-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <BuyButton
+                    label={`Buy this report — ${report.price}`}
+                    plan={report.planKey}
+                    className={`inline-flex w-full items-center justify-center gap-2 rounded-full ${c.btnHero} px-8 py-4 text-base font-bold text-white transition-all sm:w-auto`}
+                  />
+                  <div className="flex flex-col gap-0.5">
+                    <p className="text-xs text-slate-400">✓ One-time purchase · Instant access · No subscription</p>
+                    <p className="text-xs text-slate-500">Preview every section below before paying</p>
+                  </div>
+                </div>
+                {/* Purchase confidence strip */}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                  <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
+                    <svg className="h-3 w-3 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
+                    Full report delivered immediately
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
+                    <svg className="h-3 w-3 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
+                    AI implementation guide included
+                  </span>
+                  <span className="inline-flex items-center gap-1 text-[11px] text-slate-500">
+                    <svg className="h-3 w-3 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" /></svg>
+                    Yours forever — no expiry
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Trust bar */}
-            <div className="border-t border-white/8 bg-black/20 px-6 py-3 sm:px-8">
-              <div className="flex flex-wrap gap-x-5 gap-y-1.5">
+            {/* Trust bar — strengthened with social proof */}
+            <div className="border-t border-white/8 bg-black/20 px-6 py-3.5 sm:px-8">
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
                 {[
-                  '✓ Full preview before purchase',
-                  '✓ Cited sources',
-                  `✓ Updated ${formattedDate}`,
-                  '✓ Human-authored',
+                  { label: 'Full preview before purchase', icon: '✓' },
+                  { label: 'Cited sources', icon: '✓' },
+                  { label: `Updated ${formattedDate}`, icon: '✓' },
+                  { label: 'Human-authored', icon: '✓' },
+                  { label: 'Secure Stripe checkout', icon: '🔒' },
                 ].map((item) => (
-                  <span key={item} className="text-xs text-slate-400">{item}</span>
+                  <span key={item.label} className="text-[11px] font-medium text-slate-400">
+                    <span className="mr-1 text-emerald-400">{item.icon}</span>{item.label}
+                  </span>
                 ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Sentinel: sticky bar appears after this point */}
-        <div className="sticky-buy-sentinel" />
+        {/* Sentinel: sticky bar watches this element — placed after hero CTA */}
+        <div id="hero-buy-sentinel" />
 
         {/* ── Implications / Action steps / Risks ──────────────────── */}
         <section className="mb-10 grid gap-5 sm:grid-cols-3">
@@ -435,6 +456,22 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                     <p className="text-xs text-slate-400">
                       <span className="font-semibold text-white">This is the preview.</span> The full report includes the complete version of all sections above plus the deliverables package.
                     </p>
+                  </div>
+                )}
+                {/* Inline buy CTA after section 2 (idx=1) — catches readers convinced mid-read */}
+                {idx === 1 && report.excerpt.length > 2 && (
+                  <div className={`mt-6 flex flex-col gap-3 rounded-2xl border ${c.border} bg-black/30 p-5 sm:flex-row sm:items-center sm:justify-between`}>
+                    <div>
+                      <p className={`text-xs font-bold uppercase tracking-wider ${c.text}`}>Convinced? Buy now.</p>
+                      <p className="mt-0.5 text-xs text-slate-400">
+                        {report.excerpt.length - 2} more preview sections below · Full report unlocks instantly after purchase.
+                      </p>
+                    </div>
+                    <BuyButton
+                      label={`Buy — ${report.price}`}
+                      plan={report.planKey}
+                      className={`inline-flex shrink-0 items-center justify-center rounded-full ${c.btnHero} px-6 py-2.5 text-sm font-bold text-white transition-all`}
+                    />
                   </div>
                 )}
               </div>

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { WebsiteJsonLd } from '@/components/JsonLd';
 import { getAllReports } from '@/lib/reports';
 import SiteNav from '@/components/SiteNav';
+import BuyButton from '@/components/BuyButton';
 
 // Specific, named failure modes — real credibility signals
 const failureModes = [
@@ -232,7 +233,7 @@ export default function Home() {
                     <p className="mt-0.5 text-xs text-slate-300">{report.readingTime}</p>
                   </div>
 
-                  <div className="mt-auto pt-5">
+                  <div className="mt-auto space-y-2 pt-5">
                     <Link
                       href={`/reports/${report.slug}`}
                       className={`inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2.5 text-sm font-semibold text-white transition-all ${accent.cta}`}
@@ -240,7 +241,11 @@ export default function Home() {
                       <span>Read free preview</span>
                       <span className="text-slate-500">→</span>
                     </Link>
-                    <p className="mt-2 text-center text-[10px] text-slate-600">Preview includes methodology, citations, and sample content</p>
+                    <BuyButton
+                      plan={report.planKey}
+                      label={`Buy — ${report.price}`}
+                      className={`inline-flex w-full items-center justify-center rounded-full bg-white/[0.04] border border-white/8 px-4 py-2 text-xs font-semibold text-slate-400 transition-all hover:text-white hover:bg-white/[0.08] hover:border-white/15`}
+                    />
                   </div>
                 </article>
               );
@@ -248,7 +253,7 @@ export default function Home() {
           </div>
 
           <p className="mt-4 text-center text-xs text-slate-500">
-            Buy buttons appear after the free preview — once you've decided it's worth it.
+            Preview includes methodology, citations, and sample sections. Buy directly or read the preview first.
           </p>
         </section>
 

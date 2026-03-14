@@ -4,7 +4,7 @@ import { getAllReports } from "@/lib/reports";
 import SiteNav from "@/components/SiteNav";
 
 export const metadata = {
-  title: "Implementation Reports | Rare Agent Work",
+  title: "Implementation Reports",
   description:
     "Operator-grade AI agent implementation playbooks. Full free preview before purchase — methodology, citations, risks, and sample content included.",
 };
@@ -145,7 +145,7 @@ export default function ReportsPage() {
             {[
               { stat: "100%", label: "free preview before purchase" },
               { stat: reports.length.toString(), label: "reports with cited sources" },
-              { stat: "4", label: "production failure modes documented in depth" },
+              { stat: "8+", label: "production failure classes documented in depth" },
               { stat: "Zero", label: "vendor-sponsored content" },
             ].map((item) => (
               <div key={item.label} className="flex items-baseline gap-1.5">
@@ -196,6 +196,33 @@ export default function ReportsPage() {
           );
         })()}
 
+
+        {/* ── Quick-path matcher — self-select to the right report —──────────────── */}
+        <section className="mb-10">
+          <div className="rounded-2xl border border-white/8 bg-white/[0.015] px-6 py-5 sm:px-8">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 text-center">Not sure where to start?</p>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                { situation: "First agent deployment, worried about failure modes", report: "agent-setup-60", label: "Agent Setup in 60 Minutes", price: "$29", color: "blue" },
+                { situation: "Single agent working, need to add memory, roles, or parallel execution", report: "single-to-multi-agent", label: "Single to Multi-Agent", price: "$79", color: "green" },
+                { situation: "Building a formal eval protocol or presenting to procurement", report: "empirical-agent-architecture", label: "Empirical Architecture", price: "$299", color: "purple" },
+                { situation: "Connecting agents to MCP servers and need a security posture", report: "mcp-security", label: "MCP Security", price: "$149", color: "red" },
+                { situation: "Something already broke in production and need to learn from it", report: "agent-incident-postmortems", label: "Production Post-Mortems", price: "$149", color: "amber" },
+                { situation: "Unsure — need all of the above", report: null, label: "Operator Access", price: "$49/mo", color: "blue" },
+              ].map((item) => {
+                const borderMap: Record<string, string> = { blue: "border-blue-500/20 hover:border-blue-400/40", green: "border-green-500/20 hover:border-green-400/40", purple: "border-purple-500/20 hover:border-purple-400/40", red: "border-red-500/20 hover:border-red-400/40", amber: "border-amber-500/20 hover:border-amber-400/40" };
+                const textMap: Record<string, string> = { blue: "text-blue-300", green: "text-green-300", purple: "text-purple-300", red: "text-red-300", amber: "text-amber-300" };
+                const href = item.report ? `/reports/${item.report}` : "/pricing";
+                return (
+                  <a key={item.situation} href={href} className={`flex flex-col gap-2 rounded-xl border ${borderMap[item.color] ?? "border-white/10"} bg-black/20 p-4 transition-all hover:bg-black/30`}>
+                    <p className="text-xs leading-5 text-slate-300">&#8220;{item.situation}&#8221;</p>
+                    <p className={`mt-auto text-xs font-bold ${textMap[item.color] ?? "text-slate-300"}`}>{item.label} — {item.price} →</p>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </section>
         {/* ── Report cards — primary conversion surface ──────────────── */}
         <section className="mb-12">
           <div className="space-y-6">
@@ -306,7 +333,7 @@ export default function ReportsPage() {
                       {[
                         { label: `${report.deliverables.length} deliverables`, icon: "📦" },
                         { label: `${report.citations.length} cited sources`, icon: "🔗" },
-                        { label: `${report.excerpt.length} preview sections free`, icon: "👁" },
+                        { label: `2 free sections · ${Math.max(0, report.excerpt.length - 2)} locked`, icon: "" },
                         { label: `Best for: ${report.bestFor.slice(0, 2).join(" · ")}`, icon: "" },
                       ].map((item) => (
                         <span key={item.label} className="text-[11px] text-slate-500">

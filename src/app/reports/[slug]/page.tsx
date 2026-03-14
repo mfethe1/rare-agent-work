@@ -592,7 +592,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                         })()}
                       </p>
                       <BuyButton
-                        label={`Unlock all ${report.excerpt.length - 2} locked sections — ${report.price}`}
+                        label={`Get full access — ${report.price}`}
                         plan={report.planKey}
                         className={`inline-flex shrink-0 items-center justify-center rounded-full ${c.btnHero} px-6 py-2.5 text-sm font-bold text-white transition-all`}
                       />

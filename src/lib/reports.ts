@@ -615,6 +615,8 @@ The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certificat
       'Judge model bias taxonomy: four systematic biases that corrupt your eval pipeline, with exact rubric corrections for each.',
       'Statistical validity: the minimum detectable effect at n=25, 50, 100, 200, 500 — and why most architectural decisions are being made from noise.',
       'Red team protocol: 3-day adversarial exercise design covering 8 attack surfaces, including indirect injection via retrieved content.',
+      'The real cost architecture: per-session token budget controls, tool call compounding, and why a model routing layer cuts per-session costs 40-60% versus uniform frontier model use.',
+      'How enterprise procurement actually evaluates agent systems: the three gates most teams fail -- reproducibility audit, incident record, and governance control evidence -- and the exact pack that moves fastest.',
     ],
     color: 'purple',
   },

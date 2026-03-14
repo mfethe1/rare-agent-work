@@ -4,7 +4,7 @@ import { getAllReports } from "@/lib/reports";
 import SiteNav from "@/components/SiteNav";
 
 export const metadata = {
-  title: "Implementation Reports",
+  title: "Implementation Reports | Rare Agent Work",
   description:
     "Operator-grade AI agent implementation playbooks. Full free preview before purchase — methodology, citations, risks, and sample content included.",
 };
@@ -15,56 +15,68 @@ const colorAccent: Record<
     border: string;
     badge: string;
     btn: string;
+    btnOutline: string;
     text: string;
     glow: string;
     surface: string;
-    tableBorder: string;
+    insightBorder: string;
+    insightBg: string;
   }
 > = {
   blue: {
-    border: "border-blue-500/30 hover:border-blue-400/50",
+    border: "border-blue-500/30",
     badge: "text-blue-200 bg-blue-900/40 border border-blue-500/30",
-    btn: "bg-blue-600 hover:bg-blue-500 text-white",
+    btn: "bg-blue-600 hover:bg-blue-500 text-white shadow-[0_8px_24px_rgba(59,130,246,0.2)]",
+    btnOutline: "border-blue-500/30 text-blue-300 hover:bg-blue-900/30",
     text: "text-blue-400",
-    glow: "rgba(59,130,246,0.08)",
-    surface: "from-blue-950/30 to-slate-950/80",
-    tableBorder: "border-blue-500/20",
+    glow: "rgba(59,130,246,0.06)",
+    surface: "from-blue-950/20 to-transparent",
+    insightBorder: "border-l-blue-500/60",
+    insightBg: "bg-blue-950/30",
   },
   green: {
-    border: "border-green-500/30 hover:border-green-400/50",
+    border: "border-green-500/30",
     badge: "text-green-200 bg-green-900/40 border border-green-500/30",
-    btn: "bg-green-600 hover:bg-green-500 text-white",
+    btn: "bg-green-600 hover:bg-green-500 text-white shadow-[0_8px_24px_rgba(34,197,94,0.2)]",
+    btnOutline: "border-green-500/30 text-green-300 hover:bg-green-900/30",
     text: "text-green-400",
-    glow: "rgba(34,197,94,0.08)",
-    surface: "from-green-950/30 to-slate-950/80",
-    tableBorder: "border-green-500/20",
+    glow: "rgba(34,197,94,0.06)",
+    surface: "from-green-950/20 to-transparent",
+    insightBorder: "border-l-green-500/60",
+    insightBg: "bg-green-950/30",
   },
   purple: {
-    border: "border-purple-500/30 hover:border-purple-400/50",
+    border: "border-purple-500/30",
     badge: "text-purple-200 bg-purple-900/40 border border-purple-500/30",
-    btn: "bg-purple-600 hover:bg-purple-500 text-white",
+    btn: "bg-purple-600 hover:bg-purple-500 text-white shadow-[0_8px_24px_rgba(168,85,247,0.2)]",
+    btnOutline: "border-purple-500/30 text-purple-300 hover:bg-purple-900/30",
     text: "text-purple-400",
-    glow: "rgba(168,85,247,0.08)",
-    surface: "from-purple-950/30 to-slate-950/80",
-    tableBorder: "border-purple-500/20",
+    glow: "rgba(168,85,247,0.06)",
+    surface: "from-purple-950/20 to-transparent",
+    insightBorder: "border-l-purple-500/60",
+    insightBg: "bg-purple-950/30",
   },
   red: {
-    border: "border-red-500/30 hover:border-red-400/50",
+    border: "border-red-500/30",
     badge: "text-red-200 bg-red-900/40 border border-red-500/30",
-    btn: "bg-red-600 hover:bg-red-500 text-white",
+    btn: "bg-red-600 hover:bg-red-500 text-white shadow-[0_8px_24px_rgba(239,68,68,0.2)]",
+    btnOutline: "border-red-500/30 text-red-300 hover:bg-red-900/30",
     text: "text-red-400",
-    glow: "rgba(239,68,68,0.08)",
-    surface: "from-red-950/30 to-slate-950/80",
-    tableBorder: "border-red-500/20",
+    glow: "rgba(239,68,68,0.06)",
+    surface: "from-red-950/20 to-transparent",
+    insightBorder: "border-l-red-500/60",
+    insightBg: "bg-red-950/30",
   },
   amber: {
-    border: "border-amber-500/30 hover:border-amber-400/50",
+    border: "border-amber-500/30",
     badge: "text-amber-200 bg-amber-900/40 border border-amber-500/30",
-    btn: "bg-amber-600 hover:bg-amber-500 text-white",
+    btn: "bg-amber-600 hover:bg-amber-500 text-white shadow-[0_8px_24px_rgba(245,158,11,0.2)]",
+    btnOutline: "border-amber-500/30 text-amber-300 hover:bg-amber-900/30",
     text: "text-amber-400",
-    glow: "rgba(245,158,11,0.08)",
-    surface: "from-amber-950/30 to-slate-950/80",
-    tableBorder: "border-amber-500/20",
+    glow: "rgba(245,158,11,0.06)",
+    surface: "from-amber-950/20 to-transparent",
+    insightBorder: "border-l-amber-500/60",
+    insightBg: "bg-amber-950/30",
   },
 };
 
@@ -108,34 +120,38 @@ export default function ReportsPage() {
         primaryCta={{ label: "Browse Reports", href: "/reports" }}
       />
 
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:py-16">
+      <main className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:py-16">
 
-        {/* ── Header ────────────────────────────────────────────────── */}
-        <header className="mb-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">
-            Implementation Reports
-          </p>
-          <h1 className="mt-2 text-4xl font-black tracking-tight text-white sm:text-5xl">
-            Pick the playbook that matches your problem.
+        {/* ── HERO ───────────────────────────────────────────────────── */}
+        <header className="mb-10 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-white/[0.05] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90 mb-6">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(103,232,249,0.9)]" />
+            {reports.length} implementation reports · full preview free
+          </div>
+          <h1 className="mx-auto max-w-3xl text-4xl font-black tracking-tight text-white sm:text-5xl md:text-[3.25rem] md:leading-[1.1]">
+            The playbooks operators use when&nbsp;
+            <span className="bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent">
+              the demo breaks in production.
+            </span>
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-400">
-            Every report ships with a full free preview — methodology,
-            citations, sample sections, risks, and action steps. One-time
-            purchase. Yours permanently.
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-400 md:text-lg">
+            Each report covers a specific failure class in depth — root causes, exact prevention steps,
+            and decision frameworks derived from real production incidents.
+            Read the full preview before you spend a dollar.
           </p>
-          <div className="mt-5 flex flex-wrap gap-2">
+
+          {/* Trust strip */}
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             {[
-              "Full preview before purchase",
-              "Cited sources on every claim",
-              "One-time purchase · no subscription",
-              "Instant access after checkout",
+              { stat: "100%", label: "free preview before purchase" },
+              { stat: "5", label: "reports with cited sources" },
+              { stat: "8", label: "post-mortem incidents documented" },
+              { stat: "Zero", label: "vendor-sponsored content" },
             ].map((item) => (
-              <span
-                key={item}
-                className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-slate-400"
-              >
-                <span className="text-cyan-400">✓</span> {item}
-              </span>
+              <div key={item.label} className="flex items-baseline gap-1.5">
+                <span className="text-sm font-black text-cyan-300">{item.stat}</span>
+                <span className="text-xs text-slate-500">{item.label}</span>
+              </div>
             ))}
           </div>
         </header>
@@ -160,9 +176,6 @@ export default function ReportsPage() {
                     <p className="mt-1 text-sm text-slate-400">
                       {newestReport.valueprop}
                     </p>
-                    <p className="mt-1.5 text-xs text-slate-500">
-                      Updated {formatDate(newestReport.updatedAt)}
-                    </p>
                   </div>
                 </div>
                 <div className="flex shrink-0 flex-wrap items-center gap-3">
@@ -183,220 +196,124 @@ export default function ReportsPage() {
           );
         })()}
 
-        {/* ── Which report solves your problem? ────────────────────── */}
-        <section className="mb-10">
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
-              Decision guide
-            </p>
-            <h2 className="mt-2 text-xl font-bold text-white">
-              Not sure which to start with?
-            </h2>
-            <p className="mt-1 text-sm text-slate-400">
-              Match your current problem to the right report before you read
-              the preview.
-            </p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                {
-                  signal: "First workflow — not sure where to start",
-                  report: "Agent Setup in 60 Minutes",
-                  slug: "agent-setup-60",
-                  price: "$29",
-                  color: "text-blue-400",
-                },
-                {
-                  signal:
-                    "Single agent is working, need to scale to a coordinated team",
-                  report: "From Single Agent to Multi-Agent",
-                  slug: "single-to-multi-agent",
-                  price: "$79",
-                  color: "text-green-400",
-                },
-                {
-                  signal:
-                    "Connecting agents to MCP servers or external tools",
-                  report: "MCP Security: Protecting Agents from Tool Poisoning",
-                  slug: "mcp-security",
-                  price: "$149",
-                  color: "text-red-400",
-                },
-                {
-                  signal:
-                    "Had a production incident — need to understand why and prevent the next one",
-                  report: "Production Agent Incidents: Real Post-Mortems",
-                  slug: "agent-incident-postmortems",
-                  price: "$149",
-                  color: "text-amber-400",
-                },
-                {
-                  signal:
-                    "Need to evaluate, benchmark, or govern AI systems at scale",
-                  report: "Agent Architecture: Empirical Research Edition",
-                  slug: "empirical-agent-architecture",
-                  price: "$299",
-                  color: "text-purple-400",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.slug}
-                  href={`/reports/${item.slug}`}
-                  className="group flex flex-col gap-2 rounded-xl border border-white/8 bg-black/20 p-4 transition-all hover:border-white/20 hover:bg-black/30"
-                >
-                  <p className="text-xs leading-5 text-slate-400 italic">
-                    &ldquo;{item.signal}&rdquo;
-                  </p>
-                  <div className="mt-auto border-t border-white/8 pt-2">
-                    <p className={`text-[11px] font-bold ${item.color}`}>
-                      \u2192 {item.report}
-                    </p>
-                    <p className="text-[10px] text-slate-500">{item.price}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── Report cards (primary conversion surface) ─────────────── */}
-        <section className="mb-10">
-          <div className="mb-6 flex items-end justify-between gap-4">
-            <h2 className="text-2xl font-bold text-white">All Reports</h2>
-            <p className="text-xs text-slate-500">
-              {reports.length} reports · all with free previews
-            </p>
-          </div>
-
-          <div className="space-y-5">
+        {/* ── Report cards — primary conversion surface ──────────────── */}
+        <section className="mb-12">
+          <div className="space-y-6">
             {reports.map((report) => {
               const c = colorAccent[report.color] ?? colorAccent.blue;
               return (
                 <article
                   key={report.slug}
-                  className={`group relative overflow-hidden rounded-2xl border bg-white/[0.025] backdrop-blur-sm transition-all ${c.border}`}
-                  style={{ boxShadow: `0 0 40px ${c.glow}` }}
+                  className={`group relative overflow-hidden rounded-2xl border bg-white/[0.025] backdrop-blur-sm transition-all duration-200 hover:bg-white/[0.035] ${c.border}`}
+                  style={{ boxShadow: `0 0 60px ${c.glow}` }}
                 >
-                  <div className="grid gap-0 lg:grid-cols-[1fr_auto]">
-                    {/* Left: report content */}
-                    <div
-                      className={`bg-gradient-to-br ${c.surface} p-6 sm:p-7`}
-                    >
-                      {/* Header row */}
-                      <div className="mb-4 flex flex-wrap items-center gap-2">
-                        <span
-                          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-bold ${c.badge}`}
-                        >
-                          {report.price}
+                  {/* Top gradient accent strip */}
+                  <div className={`h-px w-full bg-gradient-to-r ${c.surface}`} />
+
+                  <div className="p-6 sm:p-7 lg:p-8">
+
+                    {/* ── Header row: price + meta ── */}
+                    <div className="mb-5 flex flex-wrap items-center gap-2.5">
+                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-bold ${c.badge}`}>
+                        {report.price}
+                      </span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                        {report.priceLabel}
+                      </span>
+                      {report.isNew && (
+                        <span className="rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                          New
                         </span>
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-                          {report.priceLabel}
-                        </span>
-                        {report.isNew && (
-                          <span className="rounded-full bg-red-500 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                            New
-                          </span>
-                        )}
-                        <span className="ml-auto text-[10px] text-slate-500">
-                          Updated {formatDate(report.updatedAt)} ·{" "}
-                          {report.readingTime}
-                        </span>
+                      )}
+                      <span className="ml-auto hidden text-[11px] text-slate-500 sm:inline">
+                        Updated {formatDate(report.updatedAt)} · {report.readingTime}
+                      </span>
+                    </div>
+
+                    {/* ── Title + value prop ── */}
+                    <h2 className="text-xl font-bold leading-snug text-white sm:text-2xl">
+                      {report.title}
+                    </h2>
+                    <p className={`mt-1 text-sm font-medium ${c.text}`}>
+                      {report.subtitle}
+                    </p>
+                    <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">
+                      {report.valueprop}
+                    </p>
+
+                    {/* ── Sharpest insight — free value, pulls the sale ── */}
+                    {report.sharpestInsight && (
+                      <div className={`mt-5 rounded-xl border-l-4 ${c.insightBorder} ${c.insightBg} p-4`}>
+                        <p className={`mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] ${c.text}`}>
+                          The finding you need to know — free
+                        </p>
+                        <p className="text-sm leading-6 text-slate-200 italic">
+                          &ldquo;{report.sharpestInsight}&rdquo;
+                        </p>
                       </div>
+                    )}
 
-                      {/* Title + value prop */}
-                      <h3 className="text-xl font-bold leading-snug text-white sm:text-2xl">
-                        {report.title}
-                      </h3>
-                      <p className={`mt-1.5 text-sm font-medium ${c.text}`}>
-                        {report.subtitle}
-                      </p>
-                      <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-400">
-                        {report.valueprop}
-                      </p>
+                    {/* ── Key takeaways + CTAs ── */}
+                    <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
 
-                      {/* Audience */}
-                      <p className="mt-3 text-[11px] text-slate-500">
-                        <span className="font-semibold text-slate-400">
-                          Best for:
-                        </span>{" "}
-                        {report.bestFor.join(" · ")}
-                      </p>
-
-                      {/* Key takeaways */}
-                      <div className="mt-5">
-                        <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+                      {/* Takeaways */}
+                      <div>
+                        <p className="mb-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
                           What you walk away with
                         </p>
-                        <ul className="space-y-2">
+                        <ul className="space-y-1.5">
                           {report.keyTakeaways.slice(0, 4).map((kt) => (
                             <li
                               key={kt}
                               className="flex items-start gap-2 text-xs leading-5 text-slate-300"
                             >
-                              <span
-                                className={`mt-0.5 shrink-0 text-[9px] font-black ${c.text}`}
-                              >
+                              <span className={`mt-0.5 shrink-0 text-[9px] font-black ${c.text}`}>
                                 ▸
                               </span>
                               {kt}
                             </li>
                           ))}
+                          {report.keyTakeaways.length > 4 && (
+                            <li className="flex items-start gap-2 text-xs leading-5 text-slate-600 italic">
+                              <span className="mt-0.5 shrink-0 text-[9px] font-black text-slate-700">▸</span>
+                              +{report.keyTakeaways.length - 4} more in the full report
+                            </li>
+                          )}
                         </ul>
                       </div>
-                    </div>
 
-                    {/* Right: CTA column */}
-                    <div className="flex flex-col items-stretch justify-between gap-4 border-t border-white/8 bg-black/30 p-6 lg:min-w-[220px] lg:border-l lg:border-t-0">
-                      {/* Deliverables count + reading time */}
-                      <div className="space-y-2">
-                        {[
-                          {
-                            label: `${report.deliverables.length} deliverables included`,
-                            icon: "📦",
-                          },
-                          {
-                            label: report.readingTime,
-                            icon: "⏱",
-                          },
-                          {
-                            label: `${report.citations.length} cited sources`,
-                            icon: "🔗",
-                          },
-                          {
-                            label: `${report.excerpt.length} preview sections free`,
-                            icon: "👁",
-                          },
-                        ].map((item) => (
-                          <div
-                            key={item.label}
-                            className="flex items-center gap-2 text-[11px] text-slate-400"
-                          >
-                            <span className="text-sm">{item.icon}</span>
-                            {item.label}
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Divider */}
-                      <div className="border-t border-white/8" />
-
-                      {/* Action buttons */}
-                      <div className="flex flex-col gap-2">
+                      {/* CTA block */}
+                      <div className="flex flex-col gap-2 lg:min-w-[200px]">
                         <BuyButton
                           plan={report.planKey}
                           label={`Buy — ${report.price}`}
-                          className={`inline-flex items-center justify-center rounded-full px-4 py-3 text-sm font-bold transition-colors ${c.btn}`}
+                          className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-bold transition-all ${c.btn}`}
                         />
                         <Link
                           href={`/reports/${report.slug}`}
-                          className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.05] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                          className={`inline-flex items-center justify-center rounded-full border px-5 py-2.5 text-sm font-semibold transition-all ${c.btnOutline} hover:bg-white/5`}
                         >
                           Read free preview →
                         </Link>
+                        <p className="text-center text-[10px] text-slate-600">
+                          One-time · instant access
+                        </p>
                       </div>
+                    </div>
 
-                      <p className="text-center text-[10px] text-slate-600">
-                        One-time · instant access · no subscription
-                      </p>
+                    {/* ── Deliverables + meta strip ── */}
+                    <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/8 pt-4">
+                      {[
+                        { label: `${report.deliverables.length} deliverables`, icon: "📦" },
+                        { label: `${report.citations.length} cited sources`, icon: "🔗" },
+                        { label: `${report.excerpt.length} preview sections free`, icon: "👁" },
+                        { label: `Best for: ${report.bestFor.slice(0, 2).join(" · ")}`, icon: "" },
+                      ].map((item) => (
+                        <span key={item.label} className="text-[11px] text-slate-500">
+                          {item.icon && <span className="mr-1">{item.icon}</span>}
+                          {item.label}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </article>
@@ -405,7 +322,7 @@ export default function ReportsPage() {
           </div>
         </section>
 
-        {/* ── Comparison table ───────────────────────────────────────── */}
+        {/* ── Comparison table ─────────────────────────────────────────── */}
         <section className="mb-10">
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
             <div className="border-b border-white/8 p-5 sm:p-6">
@@ -413,7 +330,7 @@ export default function ReportsPage() {
                 Side-by-side comparison
               </p>
               <h2 className="mt-2 text-xl font-bold text-white">
-                What each report covers
+                Pick the right report for your problem.
               </h2>
             </div>
 
@@ -434,7 +351,7 @@ export default function ReportsPage() {
                     <th className="w-36 px-4 py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                       Reading time
                     </th>
-                    <th className="w-40 px-6 py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <th className="w-44 px-6 py-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
                       Actions
                     </th>
                   </tr>
@@ -490,7 +407,7 @@ export default function ReportsPage() {
                             />
                             <Link
                               href={`/reports/${report.slug}`}
-                              className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:text-white hover:bg-white/[0.07]"
+                              className={`inline-flex items-center justify-center rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${c.btnOutline} hover:bg-white/5`}
                             >
                               Free preview →
                             </Link>
@@ -532,7 +449,7 @@ export default function ReportsPage() {
                       />
                       <Link
                         href={`/reports/${report.slug}`}
-                        className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs text-slate-400 transition-colors hover:text-white"
+                        className={`inline-flex items-center justify-center rounded-full border px-3 py-1.5 text-xs text-slate-400 transition-colors hover:text-white ${c.btnOutline}`}
                       >
                         Preview →
                       </Link>
@@ -544,7 +461,7 @@ export default function ReportsPage() {
           </div>
         </section>
 
-        {/* ── Operator Access upsell ────────────────────────────────── */}
+        {/* ── Operator Access upsell ──────────────────────────────────── */}
         <section className="mb-6">
           <div className="rounded-2xl border border-cyan-400/20 bg-gradient-to-br from-cyan-950/40 to-slate-950 p-6 sm:p-8">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
@@ -556,9 +473,9 @@ export default function ReportsPage() {
                   Full catalog + rolling updates.
                 </h2>
                 <p className="mt-2 max-w-lg text-sm leading-6 text-slate-400">
-                  All current and future reports updated as the space changes.
-                  Better economics if you&apos;ll use more than one report, or
-                  if you want new reports automatically included.
+                  All current and future reports, updated as the space changes.
+                  Better economics if you&apos;ll use more than one, or if you want new
+                  reports automatically included.
                 </p>
                 <div className="mt-4 grid gap-2 sm:grid-cols-2">
                   {[
@@ -582,7 +499,12 @@ export default function ReportsPage() {
                   <p className="text-2xl font-black text-white">$49</p>
                   <p className="text-xs text-slate-400">/month</p>
                   <p className="mt-1 text-[10px] text-slate-500">
-                    vs. ${reports.reduce((sum, r) => sum + (Number(r.price.replace(/[^0-9.]/g, "")) || 0), 0)} if bought individually
+                    vs. ${reports.reduce(
+                      (sum, r) =>
+                        sum + (Number(r.price.replace(/[^0-9.]/g, "")) || 0),
+                      0
+                    )}{" "}
+                    if bought individually
                   </p>
                 </div>
                 <Link
@@ -602,7 +524,7 @@ export default function ReportsPage() {
           </div>
         </section>
 
-        {/* ── Consulting upsell ─────────────────────────────────────── */}
+        {/* ── Consulting upsell ───────────────────────────────────────── */}
         <section className="mb-6 rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -634,7 +556,7 @@ export default function ReportsPage() {
           </div>
         </section>
 
-        {/* ── About strip ───────────────────────────────────────────── */}
+        {/* ── About strip ─────────────────────────────────────────────── */}
         <section className="rounded-2xl border border-white/8 bg-white/[0.015] p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-sm leading-6 text-slate-400">
@@ -661,6 +583,7 @@ export default function ReportsPage() {
             </div>
           </div>
         </section>
+
       </main>
     </div>
   );

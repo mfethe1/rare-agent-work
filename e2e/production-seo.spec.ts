@@ -8,7 +8,7 @@ test.describe('Production SEO & Discoverability checks', () => {
     
     // Check H1 is properly formatted
     const h1 = page.locator('h1');
-    await expect(h1).toContainText(/Rare Agent Work/i);
+    await expect(h1).toContainText(/Ship high-trust agent systems faster/i);
     
     // Check for the old typo/collision
     const pageText = await page.evaluate(() => document.body.innerText);

@@ -15,7 +15,7 @@ test.describe('News feed integrity', () => {
   test('mobile news page renders the live story count, not just a teaser slice', async ({ page, request }) => {
     await page.setViewportSize({ width: 390, height: 844 });
 
-    const apiResponse = await request.get('/api/v1/news?limit=20');
+    const apiResponse = await request.get('/api/v1/news');
     expect(apiResponse.status()).toBeLessThan(400);
     const apiJson = await apiResponse.json();
     const expectedVisibleStories = Math.min(apiJson.count, 10);

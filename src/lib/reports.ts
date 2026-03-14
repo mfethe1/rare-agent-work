@@ -743,34 +743,6 @@ Step 10: Document exactly what happened, what the attack vector was, what the im
     ],
     excerpt: [
       {
-        heading: 'Incident 01: The Bulk Send — How 847 Customers Got the Same Email',
-        body: `This incident class kills automation programs. Not because it is technically complex — it is not — but because it happens visibly, to real customers, and the immediate response is almost always to shut down the entire automation program rather than fix the specific failure.
-
-**What happened:** A marketing team member uploaded a CSV of 847 customer email addresses to trigger a "thank you" workflow. The CSV included a header row and 847 data rows. The workflow triggered on every row — including the header row itself.
-
-**Friday, 2:14 PM:** First 848 emails begin sending at approximately 200/min. The header row email address ("Email Address") received the message alongside every real customer.
-
-**Friday, 2:23 PM:** Send completes. 848 executions. No errors flagged. The workflow behaved exactly as it was configured to behave.
-
-**Friday, 2:47 PM:** First customer reply arrives: "Why did I receive 6 identical emails?" The customer appeared six times in the CRM export — duplicated entries nobody caught. The deduplication step was on the backlog. It never shipped.
-
-**The full blast radius:** 847 customers received the email. 6 customers received it multiple times. 1 non-customer received it (the header row). The automation program was suspended for three weeks while leadership debated whether to continue using it at all.`,
-      },
-      {
-        heading: 'Incident 01 (continued): Five-Layer Root Cause and What Actually Fixed It',
-        body: `**Trigger:** CSV import with 847 rows plus a header row that the trigger treated as a data row.
-
-**Proximate cause:** No deduplication key on the trigger. No row-count sanity check before execution began. No dry run against the actual file before the production send.
-
-**Contributing factors:** The workflow was built by one team member and reviewed by another who assumed deduplication was handled upstream in the CRM export. Neither verified. Timeline pressure to send before end-of-week meant skipping the planned 48-hour shadow mode.
-
-**Systemic gap:** No organizational standard requiring deduplication logic for any workflow that processes records from a file or CRM export. No pre-flight checklist including a row count review and a duplicate scan before triggering any bulk operation.
-
-**Governance failure:** The shadow-mode requirement existed as an informal norm with no enforcement mechanism. A team member under deadline pressure could skip it without triggering any review. There was no named owner for the automation governance standard.
-
-**What actually fixed it:** Not adding deduplication — that was already planned. What fixed it was a mandatory pre-flight gate: any workflow processing more than 10 records must complete a dry run review where the first 5 intended executions are shown to a human before the full run proceeds. This gate has blocked a recurrence of the bulk send incident class in every deployment since.`,
-      },
-      {
         heading: 'The Five-Layer Root Cause Framework',
         body: `Every post-mortem methodology has a version of "five whys" — keep asking why until you reach the root cause. That methodology is correct in principle and incomplete in practice for AI agent incidents, because the root cause of an AI agent failure is almost never a single causal chain. It is the intersection of a trigger condition, a missing technical control, a monitoring gap, and an organizational assumption that turned out to be wrong.
 
@@ -786,7 +758,55 @@ The framework used in this report separates incident analysis into five layers t
 
 **Layer 5: Governance Failure** — The oversight or policy failure that allowed the systemic gap to persist. No review process that would have caught the missing control. No accountability for the governance standard. No escalation path when a team member identified the risk and was overridden by schedule pressure.
 
-Teams that stop at Layer 2 fix the specific failure mode they just experienced. Teams that work through all five layers fix the class of failure mode — and prevent the three variants they haven't encountered yet.`,
+Teams that stop at Layer 2 fix the specific failure mode they just experienced. Teams that work through all five layers fix the class of failure mode — and prevent the three variants they haven't encountered yet.
+
+**What this means for your post-mortems:** Most teams declare an incident closed when the proximate cause is fixed and the system is back online. By this framework's standard, they have completed Layer 2 of a five-layer analysis. The systemic gap is still open. The governance failure is still unaddressed. When the next variant of the same incident class arrives — and it will — the team will be surprised. This report shows you what all five layers look like for eight different incident categories, so that when you run your own post-mortem, you know what layer you're actually on.`,
+      },
+      {
+        heading: 'The Precursor Signal Problem — Why Teams Miss Incidents That Were Visible in the Logs',
+        body: `The most consistent finding across all eight incident categories in this report is that the incident was visible before it became an incident — in signals that nobody was watching for, because nobody had established what normal looked like.
+
+This is not a monitoring failure in the traditional sense. Most teams have monitoring. The problem is the absence of a baseline: a documented expectation of what normal agent behavior looks like, against which anomalies become visible.
+
+**What a monitoring baseline looks like in practice:**
+
+**1. Session volume baseline:** The expected number of agent sessions per hour, by hour of day and day of week. When actual volume exceeds the expected range by more than 20%, it is worth checking. When it exceeds by 3x, it is an incident trigger. The bulk send incident (Incident 01) was preceded by a 47x volume spike that would have been immediately visible against a volume baseline.
+
+**2. Tool call frequency baseline:** The expected number of tool calls per session, by task type. A session using 3x the expected tool calls is either doing something unusual or experiencing a failure causing it to loop. The orchestration deadlock (Incident 07) produced 180+ tool calls per session against a baseline of 12–15 before producing any visible error output.
+
+**3. Cost per session baseline:** The expected token cost per session, by task type. Sessions costing 5x the expected amount are worth examining before the billing cycle surfaces them as a number rather than a behavior. The cost explosion (Incident 06) was running at approximately 8x expected cost per session for three days before detection.
+
+**4. Error rate and error pattern baseline:** The expected rate of errors by type. An unusual spike in 401 errors means credential problems — exactly the signal the auth cascade (Incident 03) would have produced if anyone had been watching for it.
+
+**The implementation requirement that most teams skip:** A baseline is only useful if it is written down before an incident. Teams that establish baselines post-incident build them under pressure, too specific to the incident that just happened, missing adjacent failure classes. The right time to build your monitoring baseline is during the 48 hours before your first production deployment — when you have the clearest picture of expected behavior and the motivation to think carefully about what normal should look like.
+
+**The baseline you can build today — in under two hours:** Document four numbers for each agent deployment you operate: (1) expected sessions per hour at peak, (2) expected tool calls per session by task type, (3) expected cost per session by task type, (4) expected error rate by error category. Write these numbers down. Set alerts at 3x each. This exercise takes two hours and transforms your monitoring from reactive to anticipatory. Every team in this report that had an incident without early detection had failed to do this one thing.`,
+      },
+      {
+        heading: 'Incident 01: The Bulk Send — 847 Customers, One CSV, Zero Deduplication',
+        body: `This incident class kills automation programs. Not because it is technically complex — it is not — but because it happens visibly, to real customers, and the immediate response is almost always to shut down the entire automation program rather than fix the specific failure.
+
+**What happened:** A marketing team member uploaded a CSV of 847 customer email addresses to trigger a "thank you" workflow. The CSV included a header row and 847 data rows. The workflow triggered on every row — including the header row itself.
+
+**Friday, 2:14 PM:** First 848 emails begin sending at approximately 200/min. The header row email address ("Email Address") received the message alongside every real customer.
+
+**Friday, 2:23 PM:** Send completes. 848 executions. No errors flagged. The workflow behaved exactly as it was configured to behave.
+
+**Friday, 2:47 PM:** First customer reply arrives: "Why did I receive 6 identical emails?" The customer appeared six times in the CRM export — duplicated entries nobody caught. The deduplication step was on the backlog. It never shipped.
+
+**The full blast radius:** 847 customers received the email. 6 customers received it multiple times. 1 non-customer received it (the header row). The automation program was suspended for three weeks while leadership debated whether to continue using it at all.
+
+**Trigger:** CSV import with 847 rows plus a header row that the trigger treated as a data row.
+
+**Proximate cause:** No deduplication key on the trigger. No row-count sanity check before execution began. No dry run against the actual file before the production send.
+
+**Contributing factors:** The workflow was built by one team member and reviewed by another who assumed deduplication was handled upstream in the CRM export. Neither verified. Timeline pressure to send before end-of-week meant skipping the planned 48-hour shadow mode.
+
+**Systemic gap:** No organizational standard requiring deduplication logic for any workflow that processes records from a file or CRM export. No pre-flight checklist including a row count review and a duplicate scan before triggering any bulk operation.
+
+**Governance failure:** The shadow-mode requirement existed as an informal norm with no enforcement mechanism. A team member under deadline pressure could skip it without triggering any review. There was no named owner for the automation governance standard.
+
+**What actually fixed it:** Not adding deduplication — that was already planned. What fixed it was a mandatory pre-flight gate: any workflow processing more than 10 records must complete a dry run review where the first 5 intended executions are shown to a human before the full run proceeds. This gate has blocked a recurrence of the bulk send incident class in every deployment since.`,
       },
       {
         heading: 'Incident 03: The Auth Cascade — 14 Workflows Down, 4 Days Silent',
@@ -802,9 +822,7 @@ Teams that stop at Layer 2 fix the specific failure mode they just experienced. 
 
 **Trigger:** Employee offboarding plus service account deletion.
 
-**Proximate cause:** Workflows used hardcoded service account credentials rather than role-based access credentials that survive individual account changes.
-
-**Contributing factors:** No audit of workflow dependencies before the service account was deleted. Error notifications routed to the account owner's email rather than a durable team alias. No monitoring that checked whether scheduled workflows had actually run.
+**Proximate cause:** Workflows used hardcoded service account credentials rather than role-based access credentials that survive individual account changes. Error notifications routed to the account owner's email rather than a durable team alias. No monitoring that checked whether scheduled workflows had actually run.
 
 **Systemic gap:** No credential dependency mapping for automation infrastructure. No standard for routing error notifications to a durable team address. No workflow execution monitoring independent of error notification.
 
@@ -832,7 +850,9 @@ Teams that stop at Layer 2 fix the specific failure mode they just experienced. 
 
 **Control 2: Per-session token budget enforced at the gateway layer, not the prompt layer.** Prompts can be overridden by the model; gateway limits cannot. Set the per-session limit at 3x your expected maximum session cost. Anything above that is either a runaway session or a configuration error.
 
-**Control 3: Pre-deployment configuration diff.** Before any production deployment, automatically compare production configuration against staging and require explicit sign-off on any differing value. This is a script, not a process — it takes 30 minutes to build and prevents a $47,000 incident.`,
+**Control 3: Pre-deployment configuration diff.** Before any production deployment, automatically compare production configuration against staging and require explicit sign-off on any differing value. This is a script, not a process — it takes 30 minutes to build and prevents a $47,000 incident.
+
+**The pattern this incident reveals:** Cost explosions almost always involve a configuration gap (wrong model, wrong parameters), a missing ceiling (no per-session budget), and a detection delay (no real-time alerting). All three are required for the incident to reach the numbers that cause organizational damage. Fixing any one of the three converts a catastrophic incident into a caught-and-corrected anomaly. Fixing all three means the incident class cannot reach organizational-damage scale even if the triggering configuration error still occurs.`,
       },
       {
         heading: 'Incident 07: The Orchestration Deadlock — Two Agents Waiting on Each Other',
@@ -850,29 +870,11 @@ Teams that stop at Layer 2 fix the specific failure mode they just experienced. 
 
 **Proximate cause:** No loop detection on the planner-executor-reviewer handoff. The reviewer could reject indefinitely without an escalation path. The executor had no mechanism to report that the reviewer's requirements exceeded its capabilities.
 
-**Contributing factors:** Revision loop testing was done with simple tasks. The multi-document synthesis task type was not in the test suite. The reviewer's evaluation criteria were not scoped to the executor's tool access — the reviewer could request capabilities the executor didn't have.
-
 **Systemic gap:** No maximum revision count per task. No reviewer-to-escalation path when a task cannot be completed within defined tool boundaries. No test coverage for tasks near the boundary of executor capability.
 
-**What fixed it:** Three changes. First: a hard maximum of 3 revision cycles per task, after which the task escalates to a human. Second: the reviewer was explicitly scoped to evaluate quality within the executor's defined tool access — if a quality improvement requires a capability the executor doesn't have, that is an escalation, not a revision request. Third: all executor capability boundaries were documented and added to the test suite as explicit boundary condition tests.`,
-      },
-      {
-        heading: 'The Precursor Signal Problem — Why Teams Miss Incidents That Were Visible in the Logs',
-        body: `The most consistent finding across all eight incident categories in this report is that the incident was visible before it became an incident — in signals that nobody was watching for, because nobody had established what normal looked like.
+**What fixed it:** Three changes. First: a hard maximum of 3 revision cycles per task, after which the task escalates to a human. Second: the reviewer was explicitly scoped to evaluate quality within the executor's defined tool access — if a quality improvement requires a capability the executor doesn't have, that is an escalation, not a revision request. Third: all executor capability boundaries were documented and added to the test suite as explicit boundary condition tests.
 
-This is not a monitoring failure in the traditional sense. Most teams have monitoring. The problem is the absence of a baseline: a documented expectation of what normal agent behavior looks like, against which anomalies become visible.
-
-**What a monitoring baseline looks like in practice:**
-
-**1. Session volume baseline:** The expected number of agent sessions per hour, by hour of day and day of week. When actual volume exceeds the expected range by more than 20%, it is worth checking. When it exceeds by 3x, it is an incident trigger. The bulk send incident (Incident 01) was preceded by a 47x volume spike that would have been immediately visible against a volume baseline.
-
-**2. Tool call frequency baseline:** The expected number of tool calls per session, by task type. A session using 3x the expected tool calls is either doing something unusual or experiencing a failure causing it to loop. The orchestration deadlock (Incident 07) produced 180+ tool calls per session against a baseline of 12–15 before producing any visible error output.
-
-**3. Cost per session baseline:** The expected token cost per session, by task type. Sessions costing 5x the expected amount are worth examining before the billing cycle surfaces them as a number rather than a behavior. The cost explosion (Incident 06) was running at approximately 8x expected cost per session for three days before detection.
-
-**4. Error rate and error pattern baseline:** The expected rate of errors by type. An unusual spike in 401 errors means credential problems — exactly the signal the auth cascade (Incident 03) would have produced if anyone had been watching for it.
-
-**The implementation requirement that most teams skip:** A baseline is only useful if it is written down before an incident. Teams that establish baselines post-incident build them under pressure, too specific to the incident that just happened, missing adjacent failure classes. The right time to build your monitoring baseline is during the 48 hours before your first production deployment — when you have the clearest picture of expected behavior and the motivation to think carefully about what normal should look like.`,
+**Why this incident class will increase in 2026:** As teams move from single-agent to multi-agent systems, the planner-executor-reviewer pattern is becoming the dominant architecture. Every team adopting it will eventually encounter a task type that falls into the gap between executor capabilities and reviewer requirements. The teams that have already defined their escalation protocol before that task type arrives will handle it in minutes. The teams that haven't will spend days debugging what looks like a model quality problem but is actually a missing architectural constraint.`,
       },
     ],
     chatPlaceholder: 'How do I run a tabletop exercise? What monitoring should I set up before launch?',

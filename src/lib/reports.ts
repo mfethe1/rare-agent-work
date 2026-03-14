@@ -40,6 +40,23 @@ export interface Report {
    * Think: the 4 things a buyer would tell a colleague after reading this report.
    */
   keyTakeaways: string[];
+  /**
+   * The single most surprising, counterintuitive, or actionable finding from this report.
+   * Given away FREE in the preview — designed to make a buyer think 'I didn't know that.'
+   * Must be a specific insight, not a meta-description. 1-3 sentences max.
+   */
+  sharpestInsight: string;
+  /**
+   * 2-3 specific audience profiles who should NOT buy this report.
+   * Honest disqualification builds trust and sharpens conversion for the right buyer.
+   */
+  notForAudience: string[];
+  /**
+   * 1-line teaser per excerpt section.
+   * Shown in the locked section header to create desire without revealing content.
+   * Array index matches excerpt array index.
+   */
+  excerptHooks?: string[];
 }
 
 export const reports: Record<string, Report> = {
@@ -186,6 +203,19 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
       'The week-one failure mode nobody warns you about: deduplication key, volume cap, and test/prod separation',
       'Weekly optimization checklist so the workflow that works on Friday still works in month three',
     ],
+    sharpestInsight: 'Teams that test with production data have approximately 100% rate of at least one accidental production action during development. The fix takes 10 minutes: create a dedicated test trigger source — a separate spreadsheet, a separate CRM view, a dedicated test inbox — and never cross the streams.',
+    notForAudience: [
+      'Teams already running 10+ workflows in production who need advanced orchestration design',
+      'Developers who want to write code — this report covers no-code and low-code platforms only',
+      'Anyone looking for a platform review written after hands-on usage — this is synthesis from operator documentation and community evidence, not personal testing',
+    ],
+    excerptHooks: [
+      'The platform decision matrix vendors won\'t give you — Zapier vs Make vs n8n vs Relevance AI with honest verdicts on where each breaks.',
+      'The 60-minute implementation protocol broken into 4 phases, with the question every builder must answer at each node.',
+      'Four approval gate patterns and which one to use when — the wrong gate creates either dangerous gaps or friction that teams bypass entirely.',
+      'Why maintenance overhead is typically underestimated by 3–10x — and the weekly 10-minute ritual that prevents most first-month incidents.',
+      'The week-one failure mode nobody warns you about: the exact scenario that sends duplicate emails to 800 customers.',
+    ],
     color: 'blue',
   },
 
@@ -327,6 +357,19 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
       'Planner-executor-reviewer loop with exact handoff protocol and structured message schema',
       'Migration readiness framework: 5 questions that tell you whether you are actually ready to operate a multi-agent system',
       'The five things that must be true before you add parallel execution (it should be last, not first)',
+    ],
+    sharpestInsight: 'Most teams ask whether to build a multi-agent system. The right question is whether they can operate one. Before you add coordination complexity, you need observability on your current single-agent system, a documented failure mode inventory, and at least one person who can read the framework logs under pressure at 2am. If you can\'t check all three, you will spend more time debugging the orchestration layer than the multi-agent system saves.',
+    notForAudience: [
+      'Teams that haven\'t shipped a working single-agent system yet — multi-agent architecture is not a shortcut to your first working product',
+      'Non-technical operators who want a no-code path — this report requires comfort with frameworks and infrastructure concepts',
+      'Teams looking for a recommendation of which LLM to use — this is about orchestration architecture, not model selection',
+    ],
+    excerptHooks: [
+      'Production verdicts on CrewAI, LangGraph, AutoGen, and Swarm — what each framework does wrong after the demo phase ends.',
+      'The L1/L2/L3 memory architecture that explains why your agent works in session 1 and breaks by session 4.',
+      'Planner-executor-reviewer: the exact handoff protocol and why unstructured handoffs are the #1 source of coordination failures.',
+      'The migration trigger checklist — 5 questions that tell you if you\'re actually ready to operate a multi-agent system.',
+      'Why parallel execution should always come last in your multi-agent migration, not first.',
     ],
     color: 'green',
   },
@@ -479,6 +522,19 @@ The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certificat
       'Cost architecture with three mandatory controls: per-session gateway budget, tool call rate limiting, daily cost alerts',
       'How enterprise procurement teams actually evaluate agent systems in 2026 — and the three gates most vendors miss',
       'Reproducibility reporting standard that produces evidence procurement needs without re-running evaluations from scratch',
+    ],
+    sharpestInsight: 'Enterprise procurement committees almost universally care first about liability, control, and reversibility — not accuracy metrics. Teams that lead with "our agent achieves 94% on benchmark X" fail procurement reviews. Teams that lead with "here is what can go wrong, the blast radius, and the controls that contain it" move through procurement 3x faster. The sequence matters: lead with failure modes, then controls, then evidence, then capabilities.',
+    notForAudience: [
+      'Individual developers or small startups where the buyer and builder are the same person — the governance and procurement content is enterprise-specific',
+      'Teams using agent systems purely for internal tooling with no external user exposure or compliance requirements',
+      'Anyone looking for model benchmarking guidance — this report covers evaluation methodology, not which model to choose',
+    ],
+    excerptHooks: [
+      'Why most agent evaluations are unreliable: three failure modes that make 94% on your benchmark mean 71% in production.',
+      'The 12-item pre-production governance checklist designed to produce evidence procurement actually asks for.',
+      'LLM-as-judge calibration: the exact 5-step procedure and why below 0.75 correlation means your eval pipeline is misleading you.',
+      'Cost architecture nobody talks about: why tool call costs typically exceed LLM costs 2–3x at production scale.',
+      'The three procurement gates most vendors miss — and the presentation sequence that converts enterprise deals.',
     ],
     color: 'purple',
   },
@@ -676,6 +732,19 @@ Step 10: Document exactly what happened, what the attack vector was, what the im
       'Four structural defenses against prompt injection — context provenance tagging, instruction isolation, confirmation gates, anomaly detection',
       '10-item pre-launch MCP security checklist designed to be run before connecting any new server to production',
       'Step-by-step incident response playbook for when you suspect an MCP server is behaving maliciously',
+    ],
+    sharpestInsight: 'Connecting an agent to an unvetted third-party MCP server is the functional equivalent of executing untrusted code on your infrastructure. A poisoned tool description looks exactly like legitimate documentation to content filters and automated scanners — the attack is invisible to every defense that relies on detecting malicious content. The only defenses that work are structural: context provenance tagging, instruction isolation, and confirmation gates that interrupt the attack chain before it reaches any consequential action.',
+    notForAudience: [
+      'Teams not yet using Model Context Protocol in their agent deployments — this report is MCP-specific and assumes active deployment',
+      'Security researchers looking for novel vulnerability disclosures — this synthesizes known attack patterns into an operator defense framework',
+      'Teams building MCP servers (as opposed to consuming them) — the report is written from the consumer/operator perspective',
+    ],
+    excerptHooks: [
+      'The four MCP attack surfaces — including how a low-trust search server becomes a launch pad for an email exfiltration attack.',
+      'The three-tier tool trust system: trusted / restricted / untrusted, with exact enforcement patterns for each tier.',
+      'The four structural defenses that actually work — and why asking the model to "be vigilant" does almost nothing.',
+      'The 10-item MCP security checklist to run before connecting any new server to a production deployment.',
+      'When you suspect an MCP server is behaving maliciously: a step-by-step response protocol, phase by phase.',
     ],
     color: 'red',
     isNew: false,
@@ -884,6 +953,20 @@ This is not a monitoring failure in the traditional sense. Most teams have monit
       'The auth cascade: how 14 workflows went silent for 4 days and nobody noticed — and the 30-minute fix that catches it instantly',
       'How to build a monitoring baseline before your first production deployment (not after your first incident)',
       'Two fill-in-the-blank incident response templates ready for use in actual production incidents',
+    ],
+    sharpestInsight: 'The most consistent finding across all 8 incident categories: the incident was visible in the logs before it became an incident. The bulk-send spike was a 47x volume anomaly. The auth cascade was a wall of 401 errors. The cost explosion was 8x expected cost per session for three days. Every signal was there. Nobody was watching because nobody had written down what normal looked like. A monitoring baseline takes two hours to build and converts a reactive operation into an anticipatory one.',
+    notForAudience: [
+      'Teams that haven\'t deployed an agent to production yet — the incidents require production context to be actionable',
+      'Teams looking for a general AI safety or AI ethics framework — this is an operational incident intelligence report, not a policy document',
+      'Managers seeking a vendor-agnostic platform comparison — the incident patterns are framework-agnostic but not platform-selection guidance',
+    ],
+    excerptHooks: [
+      'The five-layer root cause framework: why stopping at Layer 2 (proximate cause) guarantees you\'ll have the same incident again.',
+      'The precursor signal problem: why every incident in this report was visible in the logs before it became an incident.',
+      'Incident 01: The bulk-send. 847 customers, one CSV, zero deduplication. Minute-by-minute reconstruction.',
+      'Incident 03: The auth cascade. 14 workflows silent for 4 days. The 30-minute fix that catches it within 24 hours.',
+      'Incident 06: The $47k cost explosion. The three controls that would have converted catastrophe into a caught anomaly.',
+      'Incident 07: The orchestration deadlock. Two agents waiting on each other — why this incident class will increase in 2026.',
     ],
     color: 'amber',
   },

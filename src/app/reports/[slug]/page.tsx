@@ -324,13 +324,23 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               <p className={`mt-3 text-xl font-medium ${c.text}`}>{report.subtitle}</p>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">{report.valueprop}</p>
 
-              {/* Executive summary */}
-              <div className="mt-6 rounded-xl border border-white/10 bg-black/25 p-5">
+              {/* === SHARPEST INSIGHT === free insight callout that makes the sale */}
+              {report.sharpestInsight && (
+                <div className={`mt-6 rounded-xl border-l-4 ${c.border} bg-black/30 p-5`}>
+                  <p className={`mb-2 text-[10px] font-bold uppercase tracking-[0.22em] ${c.text}`}>
+                    The finding you need to know — free
+                  </p>
+                  <p className="text-sm leading-7 text-slate-200 italic">&ldquo;{report.sharpestInsight}&rdquo;</p>
+                </div>
+              )}
+
+              {/* === EXECUTIVE SUMMARY === */}
+              <div className="mt-5 rounded-xl border border-white/10 bg-black/25 p-5">
                 <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">Executive Summary</p>
                 <p className="text-sm leading-7 text-slate-200">{report.executiveSummary}</p>
               </div>
 
-              {/* Key takeaways — show top 3 in hero as teaser; full list below */}
+              {/* === WHAT YOU WALK AWAY WITH === concise key takeaways */}
               <div className="mt-5 rounded-xl border border-white/10 bg-black/20 p-5">
                 <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">What you walk away with</p>
                 <ul className="space-y-2">
@@ -348,7 +358,6 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                   )}
                 </ul>
               </div>
-
               {/* Primary CTA block — the sentinel for StickyBuyBar lives right below this */}
               <div className="mt-7 space-y-3">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -441,6 +450,29 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           </div>
         </section>
 
+        {/* ── WHO THIS IS NOT FOR ────────────────────────────────── */}
+        {report.notForAudience && report.notForAudience.length > 0 && (
+          <section className="mb-10">
+            <div className="rounded-2xl border border-white/8 bg-white/[0.015] p-6">
+              <div className="mb-4 flex items-center gap-2.5">
+                <span className="text-base">✋</span>
+                <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-slate-400">Who this report is NOT for</h2>
+              </div>
+              <ul className="space-y-2.5">
+                {report.notForAudience.map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm leading-6 text-slate-500">
+                    <span className="mt-0.5 shrink-0 text-slate-600">✕</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-4 text-xs text-slate-600 italic">
+                Honest disqualification. If none of the above matches you, this report was written for you.
+              </p>
+            </div>
+          </section>
+        )}
+
         {/* ── What's inside ──────────────────────────────────────────── */}
         <section className="mb-10">
           <div className="mb-5 flex items-center justify-between gap-4">
@@ -472,18 +504,27 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               <p className="mb-4 text-sm text-slate-400">
                 Sections 1–2 are fully unlocked. The rest unlock after purchase.
               </p>
-              <nav className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                {report.excerpt.map((section, idx) => (
-                  <a
-                    key={section.heading}
-                    href={`#excerpt-${idx}`}
-                    className={`flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-xs font-medium transition-all ${ idx < 2 ? `border-white/8 bg-black/20 text-slate-300 hover:border-white/20 hover:text-white` : `border-white/5 bg-black/10 text-slate-600` }`}
-                  >
-                    <span className={`shrink-0 font-mono text-[10px] font-black ${ idx < 2 ? c.text : 'text-slate-700' }`}>{String(idx + 1).padStart(2, '0')}</span>
-                    <span className="line-clamp-2 leading-5">{section.heading}</span>
-                    {idx >= 2 && <span className="ml-auto shrink-0 text-[9px] text-slate-700">🔒</span>}
-                  </a>
-                ))}
+              <nav className="grid gap-2 sm:grid-cols-2">
+                {report.excerpt.map((section, idx) => {
+                  const isLockedNav = idx >= 2;
+                  const hook = report.excerptHooks?.[idx];
+                  return (
+                    <a
+                      key={section.heading}
+                      href={`#excerpt-${idx}`}
+                      className={`flex flex-col gap-1 rounded-xl border px-3 py-3 text-xs font-medium transition-all ${ !isLockedNav ? `border-white/8 bg-black/20 text-slate-300 hover:border-white/20 hover:text-white` : `border-white/5 bg-black/10 text-slate-600 hover:border-white/10 hover:text-slate-500` }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className={`shrink-0 font-mono text-[10px] font-black ${ !isLockedNav ? c.text : 'text-slate-700' }`}>{String(idx + 1).padStart(2, '0')}</span>
+                        <span className="line-clamp-1 leading-5">{section.heading}</span>
+                        {isLockedNav && <span className="ml-auto shrink-0 text-[9px] text-slate-700">🔒</span>}
+                      </div>
+                      {isLockedNav && hook && (
+                        <p className="line-clamp-2 text-[10px] leading-4 text-slate-700 italic">{hook}</p>
+                      )}
+                    </a>
+                  );
+                })}
               </nav>
             </div>
           )}
@@ -500,23 +541,37 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           <div className="space-y-10">
             {report.excerpt.map((section, idx) => {
               const isLocked = idx >= 2;
-              // For locked sections: only render the first 2 paragraphs as a teaser
-              const teaserBody = isLocked
-                ? section.body.split('\n\n').slice(0, 2).join('\n\n')
-                : section.body;
               return (
               <div
                 id={`excerpt-${idx}`}
                 key={section.heading}
-                className={`scroll-mt-20 rounded-2xl border ${ isLocked ? 'border-white/6 opacity-90' : c.border } bg-white/[0.02] ${ isLocked ? 'overflow-hidden' : 'p-6 sm:p-8' }`}
+                className={`scroll-mt-20 rounded-2xl border ${ isLocked ? 'border-white/8 opacity-80' : c.border } bg-white/[0.02] ${ isLocked ? '' : 'p-6 sm:p-8' }`}
               >
                 {/* Locked section header banner */}
                 {isLocked && (
-                  <div className={`border-b border-white/6 bg-black/30 px-6 py-3 flex items-center gap-3`}>
-                    <span className="text-slate-600">🔒</span>
-                    <span className={`font-mono text-[10px] font-black text-slate-700`}>{String(idx + 1).padStart(2, '0')}</span>
-                    <h3 className="text-sm font-semibold text-slate-500">{section.heading}</h3>
-                    <span className="ml-auto rounded-full border border-white/8 bg-black/20 px-2 py-0.5 text-[10px] font-semibold text-slate-600">Paid</span>
+                  <div className="p-6">
+                    <div className="mb-4 flex items-start gap-3">
+                      <span className={`shrink-0 rounded-lg border border-white/8 bg-black/40 px-2.5 py-1 font-mono text-xs font-black text-slate-600`}>
+                        {String(idx + 1).padStart(2, '0')}
+                      </span>
+                      <div>
+                        <h3 className="text-base font-bold leading-snug text-slate-400">{section.heading}</h3>
+                        {/* Hook: 1-line teaser that creates desire */}
+                        {report.excerptHooks && report.excerptHooks[idx] && (
+                          <p className={`mt-2 text-sm leading-6 ${c.text} opacity-80`}>
+                            {report.excerptHooks[idx]}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <p className="text-xs text-slate-600">This section unlocks with purchase.</p>
+                      <BuyButton
+                        label={`Unlock — ${report.price}`}
+                        plan={report.planKey}
+                        className={`inline-flex shrink-0 items-center justify-center rounded-full ${c.btnHero} px-5 py-2 text-xs font-bold text-white transition-all`}
+                      />
+                    </div>
                   </div>
                 )}
                 {/* Open section header */}
@@ -528,7 +583,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                     <h3 className="text-lg font-bold leading-snug text-white">{section.heading}</h3>
                   </div>
                 )}
-                {/* Content: full for open sections, teaser+blur+CTA for locked */}
+                {/* Content: full for open sections, hook+CTA for locked */}
                 {!isLocked && (
                   <>
                     <ExcerptBody body={section.body} colorClass={c.text} borderClass={c.border} />
@@ -551,28 +606,6 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                       </div>
                     )}
                   </>
-                )}
-                {isLocked && (
-                  <div className="relative">
-                    {/* Teaser content — blurred */}
-                    <div className="pointer-events-none select-none px-6 pt-5 pb-2">
-                      <div className="opacity-40 blur-[3px]">
-                        <ExcerptBody body={teaserBody} colorClass={c.text} borderClass={c.border} />
-                      </div>
-                    </div>
-                    {/* Gradient overlay */}
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#020617] to-transparent" />
-                    {/* Locked CTA */}
-                    <div className="relative flex flex-col items-center gap-3 px-6 pb-6 pt-2 text-center">
-                      <p className="text-xs text-slate-500">This section is part of the full report.</p>
-                      <BuyButton
-                        label={`Unlock all sections — ${report.price}`}
-                        plan={report.planKey}
-                        className={`inline-flex items-center justify-center rounded-full ${c.btnHero} px-7 py-3 text-sm font-bold text-white transition-all`}
-                      />
-                      <p className="text-[10px] text-slate-600">One-time purchase · instant access · no subscription</p>
-                    </div>
-                  </div>
                 )}
               </div>
               );

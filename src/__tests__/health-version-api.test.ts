@@ -112,7 +112,7 @@ describe('/api/version', () => {
     
     expect(data.offers.reports).toHaveProperty('options');
     expect(Array.isArray(data.offers.reports.options)).toBe(true);
-    expect(data.offers.reports.options.length).toBe(4);
+    expect(data.offers.reports.options.length).toBe(5);
     
     // Verify first report
     const report60 = data.offers.reports.options.find((r: any) => r.planKey === 'report_60');

@@ -105,6 +105,12 @@ export async function GET() {
           price: '$149',
           planKey: 'report_mcp',
         },
+        {
+          slug: 'agent-incident-postmortems',
+          title: 'Production Agent Incidents: Real Post-Mortems',
+          price: '$149',
+          planKey: 'report_incidents',
+        },
       ],
     },
   };

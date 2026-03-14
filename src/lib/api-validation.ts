@@ -59,16 +59,16 @@ export const submitWorkSchema = z.object({
   links: trimmedString(2000).optional().default('Not provided'),
   website: trimmedString(500).optional().default(''),
   confirmsNoCredentials: z.literal(true, {
-    errorMap: () => ({ message: 'All trust confirmations are required' }),
+    message: 'All trust confirmations are required',
   }),
   confirmsHumanReview: z.literal(true, {
-    errorMap: () => ({ message: 'All trust confirmations are required' }),
+    message: 'All trust confirmations are required',
   }),
   confirmsNoAutoExecution: z.literal(true, {
-    errorMap: () => ({ message: 'All trust confirmations are required' }),
+    message: 'All trust confirmations are required',
   }),
   agreesRetention: z.literal(true, {
-    errorMap: () => ({ message: 'All trust confirmations are required' }),
+    message: 'All trust confirmations are required',
   }),
 });
 

@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { z } from 'zod';
+import { validateRequest } from '@/lib/api-validation';
+
+const voteSchema = z.object({
+  articleId: z.string().trim().min(1, 'articleId required').max(128),
+});
 
 export async function POST(request: NextRequest) {
-  const { articleId } = await request.json();
+  const parsed = await validateRequest(request, voteSchema);
+  if (!parsed.success) return parsed.response;
 
-  if (!articleId) {
-    return NextResponse.json({ error: 'articleId required' }, { status: 400 });
-  }
+  const { articleId } = parsed.data;
 
   const cookieStore = await cookies();
 

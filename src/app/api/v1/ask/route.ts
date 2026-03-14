@@ -196,17 +196,11 @@ function keywordFallback(
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const query = body.query || body.q;
-    const prev = body.prev || body.previous || '';
+    const parsed = await validateRequest(request, askSchema);
+    if (!parsed.success) return parsed.response;
 
-    if (!query || typeof query !== 'string') {
-      return NextResponse.json({ error: 'query is required' }, { status: 400 });
-    }
-
-    if (query.length > 500) {
-      return NextResponse.json({ error: 'query too long (max 500 characters)' }, { status: 400 });
-    }
+    const query = (parsed.data.query || parsed.data.q)!;
+    const prev = parsed.data.prev || parsed.data.previous || '';
 
     const { answer, results } = await processQuery(query, prev);
 
@@ -227,8 +221,10 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Internal error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: sanitizeError(err, 'provider', 'POST /api/v1/ask') },
+      { status: 500 },
+    );
   }
 }
 

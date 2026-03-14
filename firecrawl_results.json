@@ -1,0 +1,50 @@
+[
+  {
+    "title": "NVIDIA Releases Nemotron 3 Super (120B Open Model)",
+    "description": "NVIDIA officially released Nemotron 3 Super, a 120B parameter Mixture-of-Experts (MoE) hybrid Mamba-Transformer model.",
+    "url": "https://dataconomy.com/2026/03/12/nvidia-launches-120b-parameter-nemotron-3-super-open-model/",
+    "source": "Dataconomy",
+    "category": "Model Releases",
+    "approved": true
+  },
+  {
+    "title": "Anthropic Blacklisted by Trump Administration over 'Supply Chain Risk'",
+    "description": "The Trump administration designated Anthropic as a 'supply chain risk,' effectively blacklisting the company from government contracts.",
+    "url": "https://www.cnbc.com/2026/03/09/anthropic-trump-claude-ai-supply-chain-risk.html",
+    "source": "CNBC",
+    "category": "Industry News",
+    "approved": true
+  },
+  {
+    "title": "Meta's 'Avocado' AI Model Delayed Due to Performance Issues",
+    "description": "Meta's next-generation foundational model, code-named 'Avocado,' has been delayed until at least May due to failing internal benchmarks.",
+    "url": "https://m.economictimes.com/tech/artificial-intelligence/meta-pushes-ai-model-avocado-rollout-to-may-or-later-nyt-reports/articleshow/129533656.cms",
+    "source": "Economic Times",
+    "category": "Industry News",
+    "approved": true
+  },
+  {
+    "title": "DeepSeek V4 Multimodal Release Announced for Next Week",
+    "description": "Chinese AI lab DeepSeek is set to release V4 next week. The new model is natively multimodal, supporting image and video generation.",
+    "url": "https://www.ft.com/content/e3366881-0622-40a7-9c34-a0d82e3d573e",
+    "source": "Financial Times",
+    "category": "Model Releases",
+    "approved": true
+  },
+  {
+    "title": "Hacker News Launch: Spine Swarm for Visual Agent Collaboration",
+    "description": "Spine Swarm launched on Hacker News, introducing a platform where multiple AI agents collaborate on a visual canvas.",
+    "url": "https://news.ycombinator.com/item?id=47364116",
+    "source": "Hacker News",
+    "category": "Tool Releases",
+    "approved": true
+  },
+  {
+    "title": "ArXiv Research: Increased Agent Intelligence Can Harm Collective Outcomes",
+    "description": "A new paper uses multi-agent simulations to show that as individual agents become more capable, they may engage in behaviors that lead to systemic collapse.",
+    "url": "https://arxiv.org/list/cs.AI/recent",
+    "source": "ArXiv",
+    "category": "Research",
+    "approved": true
+  }
+]

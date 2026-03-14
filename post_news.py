@@ -1,80 +1,73 @@
-import os
+import urllib.request
 import json
-import requests
-from datetime import datetime, timezone
+import os
 
-INGEST_API_KEY = "605c8a47566758cac839012a84c1d651a9d31cddf3a75902"
-URL = "https://rareagent.work/api/news/ingest"
+api_url = "https://rareagent.work/api/news/ingest"
+api_key = "605c8a47566758cac839012a84c1d651a9d31cddf3a75902"
 
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {api_key}"
+}
+
+# Trending AI agent tools from fallback
 items = [
     {
-        "title": "Luma launches creative AI agents powered by its new 'Unified Intelligence' models",
-        "url": "https://techcrunch.com/2026/03/05/exclusive-luma-launches-creative-ai-agents-powered-by-its-new-unified-intelligence-models/",
-        "source": "TechCrunch",
-        "date_published": datetime.now(timezone.utc).isoformat(),
-        "summary": "Luma introduced Luma Agents, powered by its new Unified Intelligence models, designed to coordinate multiple AI systems and generate end-to-end creative work across text, images, video and audio.",
-        "categories": ["agent-frameworks", "tools", "generative-ai"],
-        "is_approved": True,
-        "status": "published"
+        "title": "NVIDIA Launches NemoClaw for Enterprise AI Agents",
+        "url": "https://aiagentstore.ai/ai-agent-news/this-week",
+        "description": "NVIDIA unveiled NemoClaw, an open-source platform that lets companies build and deploy AI agents for workflow automation working on any hardware.",
+        "source": "AI Agent Store",
+        "category": "Framework Updates",
+        "approved": True
     },
     {
-        "title": "AWS Bedrock AgentCore Policy and OpenClaw on Amazon Lightsail",
-        "url": "https://aws.amazon.com/blogs/aws/aws-weekly-roundup-amazon-connect-health-bedrock-agentcore-policy-gameday-europe-and-more-march-9-2026/",
-        "source": "AWS",
-        "date_published": datetime.now(timezone.utc).isoformat(),
-        "summary": "AWS Bedrock AgentCore Policy is generally available. Also introducing OpenClaw on Amazon Lightsail to run autonomous private AI agents with sandboxed sessions.",
-        "categories": ["agent-frameworks", "tools", "aws"],
-        "is_approved": True,
-        "status": "published"
+        "title": "Alibaba Introduces 'page-agent': A JavaScript GUI Agent",
+        "url": "https://aitoolly.com/ai-news",
+        "description": "Alibaba has unveiled 'page-agent,' a new JavaScript-based GUI agent designed to enable natural language control over web page interfaces.",
+        "source": "AIToolly",
+        "category": "Tool Releases",
+        "approved": True
     },
     {
-        "title": "AutoResearch: Karpathy's Autonomous AI Agent Framework",
-        "url": "https://www.originxai.com/blog/autonomous-ai-agents-karpathy-autoresearch/",
-        "source": "OriginX AI",
-        "date_published": datetime.now(timezone.utc).isoformat(),
-        "summary": "AutoResearch is an open-source AI agent framework released March 6, 2026 that autonomously runs ML experiments, modifying training scripts and iterating indefinitely.",
-        "categories": ["agent-frameworks", "research", "ml"],
-        "is_approved": True,
-        "status": "published"
+        "title": "NousResearch Unveils 'Hermes Agent'",
+        "url": "https://aitoolly.com/ai-news",
+        "description": "NousResearch has introduced 'Hermes Agent,' an innovative AI agent project designed as an agent that grows with you.",
+        "source": "AIToolly",
+        "category": "Tool Releases",
+        "approved": True
     },
     {
-        "title": "Nvidia Planning to Launch Open-Source AI Agent Platform",
-        "url": "https://www.wired.com/story/nvidia-planning-ai-agent-platform-launch-open-source/",
-        "source": "WIRED",
-        "date_published": datetime.now(timezone.utc).isoformat(),
-        "summary": "Ahead of its annual developer conference, Nvidia is readying a new approach to software that embraces AI agents similar to OpenClaw.",
-        "categories": ["agent-frameworks", "tools", "nvidia"],
-        "is_approved": True,
-        "status": "published"
+        "title": "Superpowers: An Effective Agent Skill Framework",
+        "url": "https://aitoolly.com/ai-news",
+        "description": "Superpowers is presented as a comprehensive software development workflow specifically designed for coding agents built upon composable skills.",
+        "source": "AIToolly",
+        "category": "Framework Updates",
+        "approved": True
     },
     {
-        "title": "OpenAI Releases Codex Security Agent",
-        "url": "https://releasebot.io/updates/openai",
-        "source": "OpenAI",
-        "date_published": datetime.now(timezone.utc).isoformat(),
-        "summary": "OpenAI unveils Codex Security, an application security agent rolling out in research preview to help security teams find and patch vulnerabilities.",
-        "categories": ["tools", "security", "agent-frameworks"],
-        "is_approved": True,
-        "status": "published"
+        "title": "ByteDance Unveils DeerFlow 2.0",
+        "url": "https://aitoolly.com/ai-news",
+        "description": "ByteDance released DeerFlow 2.0, an open-source SuperAgent harness for research, coding, and creation leveraging sandboxes, memories, and subagents.",
+        "source": "AIToolly",
+        "category": "Framework Updates",
+        "approved": True
     }
 ]
 
-def main():
-    headers = {
-        "Authorization": f"Bearer {INGEST_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    
-    # Send individually as list might not be supported, or send as a whole list if API expects it
-    for item in items:
-        # Assuming the API takes single items or batch depending on structure, usually bulk ingest takes an array
-        pass
+# Read Firecrawl results if they exist
+try:
+    with open("firecrawl_results.json", "r") as f:
+        fc_res = json.load(f)
+        for item in fc_res:
+            item["approved"] = True
+            items.append(item)
+except Exception as e:
+    print("No firecrawl results or error:", e)
 
-    # Try sending as a list first
-    print(f"Sending {len(items)} web search news items...")
-    response = requests.post(URL, json={"items": items}, headers=headers)
-    print(f"Status Code: {response.status_code}")
-    print(response.text)
-
-if __name__ == "__main__":
-    main()
+req = urllib.request.Request(api_url, data=json.dumps({"items": items}).encode("utf-8"), headers=headers, method="POST")
+try:
+    with urllib.request.urlopen(req) as response:
+        print(f"Posted {len(items)} items: {response.status}")
+        print(response.read().decode())
+except Exception as e:
+    print(f"Failed to post: {e}")

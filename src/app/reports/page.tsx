@@ -203,12 +203,12 @@ export default function ReportsPage() {
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500 text-center">Not sure where to start?</p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { situation: "First agent deployment, worried about failure modes", report: "agent-setup-60", label: "Agent Setup in 60 Minutes", price: "$29", color: "blue" },
+                { situation: "First agent deployment, worried about failure modes in week one", report: "agent-setup-60", label: "Agent Setup in 60 Minutes", price: "$29", color: "blue" },
                 { situation: "Single agent working, need to add memory, roles, or parallel execution", report: "single-to-multi-agent", label: "Single to Multi-Agent", price: "$79", color: "green" },
                 { situation: "Building a formal eval protocol or presenting to procurement", report: "empirical-agent-architecture", label: "Empirical Architecture", price: "$299", color: "purple" },
-                { situation: "Connecting agents to MCP servers and need a security posture", report: "mcp-security", label: "MCP Security", price: "$149", color: "red" },
-                { situation: "Something already broke in production and need to learn from it", report: "agent-incident-postmortems", label: "Production Post-Mortems", price: "$149", color: "amber" },
-                { situation: "Unsure — need all of the above", report: null, label: "Operator Access", price: "$49/mo", color: "blue" },
+                { situation: "Something broke in production and I need to understand why auth, deduplication, and cost controls failed", report: "agent-setup-60", label: "Agent Setup in 60 Minutes", price: "$29", color: "blue" },
+                { situation: "Scaling to multi-agent and need to avoid orchestration deadlocks and memory failures", report: "single-to-multi-agent", label: "Single to Multi-Agent", price: "$79", color: "green" },
+                { situation: "Unsure — need all of the above", report: null, label: "Operator Access", price: "$49/mo", color: "purple" },
               ].map((item) => {
                 const borderMap: Record<string, string> = { blue: "border-blue-500/20 hover:border-blue-400/40", green: "border-green-500/20 hover:border-green-400/40", purple: "border-purple-500/20 hover:border-purple-400/40", red: "border-red-500/20 hover:border-red-400/40", amber: "border-amber-500/20 hover:border-amber-400/40" };
                 const textMap: Record<string, string> = { blue: "text-blue-300", green: "text-green-300", purple: "text-purple-300", red: "text-red-300", amber: "text-amber-300" };

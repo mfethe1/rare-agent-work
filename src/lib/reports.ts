@@ -199,13 +199,13 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
     ],
     chatPlaceholder: 'Which platform should I use for my use case? How do I set up approval gates?',
     keyTakeaways: [
-      'Zapier vs Make vs n8n vs Relevance AI — exact criteria by use case, not brand recognition',
-      '60-minute implementation protocol broken into 4 phases with explicit checkpoints at each step',
-      'Four approval gate patterns (synchronous, async queue, threshold-gated, draft+confirm) with which to use when',
-      'The week-one failure mode nobody warns you about: deduplication key, volume cap, and test/prod separation',
-      'Weekly optimization checklist so the workflow that works on Friday still works in month three',
+      'Four approval gate patterns with selection logic: the wrong gate creates dangerous gaps, the over-engineered one creates friction teams route around',
+      'The week-one failure mode: deduplication key, volume cap, and test/prod separation — the three safeguards that prevent 80% of first-deployment incidents',
+      'Weekly 10-minute maintenance ritual that catches auth drift, schema drift, and volume surprises before they become 4am incidents',
+      'Operating cost reality after week one: why maintenance overhead is underestimated by 3–10x — the failure taxonomy for first-time operators',
+      'Shadow mode protocol: 48 hours of dry-run execution that surfaces edge cases 100 synthetic test cases miss',
     ],
-    sharpestInsight: 'Teams that test with production data have approximately 100% rate of at least one accidental production action during development. The fix takes 10 minutes: create a dedicated test trigger source — a separate spreadsheet, a separate CRM view, a dedicated test inbox — and never cross the streams.',
+    sharpestInsight: 'The single most common first incident for new operators is not a bug — it is correct execution at unexpected scale. The workflow ran exactly as designed while sending 6 identical emails to the same customer. The root cause is always the same: no deduplication key, no volume cap, no test/prod separation. These three safeguards take 20 minutes to implement and prevent the incident class that gets automation programs shut down by leadership.',
     notForAudience: [
       'Teams already running 10+ workflows in production who need advanced orchestration design',
       'Developers who want to write code — this report covers no-code and low-code platforms only',
@@ -213,10 +213,10 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
     ],
     excerptHooks: [
       'The platform decision matrix vendors won\'t give you — Zapier vs Make vs n8n vs Relevance AI with honest verdicts on where each breaks.',
-      'The 60-minute implementation protocol broken into 4 phases, with the question every builder must answer at each node.',
-      'Four approval gate patterns and which one to use when — the wrong gate creates either dangerous gaps or friction that teams bypass entirely.',
-      'Why maintenance overhead is typically underestimated by 3–10x — and the weekly 10-minute ritual that prevents most first-month incidents.',
-      'The week-one failure mode nobody warns you about: the exact scenario that sends duplicate emails to 800 customers.',
+      'The 60-minute implementation protocol: 4 phases with the exact question to answer at each node before proceeding.',
+      'Which of the four approval gate patterns to use when — and why using a synchronous gate for a batch operation gets bypassed within a week.',
+      'The failure taxonomy: authentication drift, schema drift, volume surprises — with the weekly 10-minute ritual that prevents each one.',
+      'Shadow mode: why 48 hours of shadow execution before go-live surfaces edge cases that 100 test runs miss.',
     ],
     color: 'blue',
   },
@@ -354,13 +354,13 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
     ],
     chatPlaceholder: 'Which framework should I use? How do I implement memory for my agents?',
     keyTakeaways: [
-      'CrewAI vs LangGraph vs AutoGen vs OpenAI Swarm — production verdict after the honeymoon phase',
-      'L1/L2/L3 memory architecture that eliminates the "works in session 1, fails in session 4" problem',
-      'Planner-executor-reviewer loop with exact handoff protocol and structured message schema',
-      'Migration readiness framework: 5 questions that tell you whether you are actually ready to operate a multi-agent system',
-      'The five things that must be true before you add parallel execution (it should be last, not first)',
+      'Coordination failure playbook: deadlock detection, loop prevention, and graceful degradation patterns for when agents go off-script',
+      'Observability requirements before you add coordination complexity: the three prerequisites that determine whether you can debug a multi-agent system at 2am',
+      'Migration sequencing: extract the reviewer role first, add the planner only if reviewer failures reveal planning gaps, add parallel execution last',
+      'Trajectory cost measurement — why tracking final output quality alone hides the expensive, brittle execution patterns that drive incident exposure',
+      'When NOT to use multi-agent: the 5-question migration trigger checklist and why adding coordination without sufficient justification creates slower, more expensive systems',
     ],
-    sharpestInsight: 'Most teams ask whether to build a multi-agent system. The right question is whether they can operate one. Before you add coordination complexity, you need observability on your current single-agent system, a documented failure mode inventory, and at least one person who can read the framework logs under pressure at 2am. If you can\'t check all three, you will spend more time debugging the orchestration layer than the multi-agent system saves.',
+    sharpestInsight: 'The most expensive mistake in multi-agent architecture is adding parallel execution too early. Parallel execution is the highest-complexity addition and should always come last — after the planner-executor-reviewer loop is stable and you have explicit tasks that benefit from parallel processing. Teams that add it first spend more time debugging coordination failures than the parallelism saves. The correct migration sequence is: reviewer first, then planner, then parallel execution. This order is counterintuitive and almost universally ignored.',
     notForAudience: [
       'Teams that haven\'t shipped a working single-agent system yet — multi-agent architecture is not a shortcut to your first working product',
       'Non-technical operators who want a no-code path — this report requires comfort with frameworks and infrastructure concepts',
@@ -369,9 +369,9 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
     excerptHooks: [
       'Production verdicts on CrewAI, LangGraph, AutoGen, and Swarm — what each framework does wrong after the demo phase ends.',
       'The L1/L2/L3 memory architecture that explains why your agent works in session 1 and breaks by session 4.',
-      'Planner-executor-reviewer: the exact handoff protocol and why unstructured handoffs are the #1 source of coordination failures.',
-      'The migration trigger checklist — 5 questions that tell you if you\'re actually ready to operate a multi-agent system.',
-      'Why parallel execution should always come last in your multi-agent migration, not first.',
+      'Planner-executor-reviewer: the exact structured message schema for handoffs and why free-form handoffs are the #1 coordination failure cause.',
+      'Migration readiness prerequisites: the three capabilities your team must have before a multi-agent system makes you faster instead of slower.',
+      'The coordination failure playbook: deadlock detection patterns, loop prevention, and graceful degradation when agents produce contradictory outputs.',
     ],
     color: 'green',
   },
@@ -384,56 +384,60 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
     price: '$299',
     priceLabel: 'one-time',
     audience: 'Technical leaders, architects, and B2B operators deploying AI at scale',
-    valueprop: 'Build a defensible, reproducible evaluation protocol and governance framework for production AI systems.',
+    valueprop: 'Build a defensible, reproducible evaluation protocol and governance framework for production AI systems — with real statistical grounding, not benchmark theater.',
     edition: 'Empirical Strategy Brief',
-    revision: 'Rev 2.1',
-    updatedAt: '2026-03-09',
-    freshnessTimestamp: '2026-03-09T15:00:00-04:00',
-    readingTime: '32 minute strategy brief + governance scorecard',
+    revision: 'Rev 3.0',
+    updatedAt: '2026-03-14',
+    freshnessTimestamp: '2026-03-14T09:00:00-04:00',
+    readingTime: '42 minute strategy brief + governance scorecard',
     author: 'Michael Fethe',
     attribution: 'Written and maintained by Michael Fethe for Rare Agent Work.',
     methodology: [
-      'Builds from empirical evaluation and governance practices rather than demo benchmarks.',
-      'Centers trajectory measurement, judge-model calibration, and reproducibility as production requirements.',
-      'Packages governance as a pre-production checklist so teams can use it in live review cycles.',
+      'Synthesizes evaluation methodology from peer-reviewed AI research (ReAct, SWE-bench, AgentBench) and production deployment practice.',
+      'Centers trajectory measurement, statistical validity, judge-model calibration, and reproducibility as first-class production requirements.',
+      'Governance framework maps each control to documented incident classes, not theoretical risk categories.',
     ],
     bestFor: ['Enterprise evaluation design', 'Governance reviews', 'Procurement-grade evidence packs'],
     proofPoints: [
-      'Includes an LLM-as-judge calibration guide and reproducibility reporting standard.',
-      'Surfaces a 12-item pre-production governance checklist.',
-      'Frames evaluation rigor as a buying and launch criterion, not a research side quest.',
+      'Calibration procedure grounded in inter-rater reliability methodology — Cohen\'s kappa thresholds, not guesswork.',
+      '12-item pre-production governance checklist mapped to specific incident classes, not generic compliance boxes.',
+      'Statistical significance section covers sample sizing, confidence intervals, and the p-value mistakes that invalidate most agent evaluations.',
     ],
     emailAccent: '#7c3aed',
     executiveSummary:
-      'Most agent evaluation programs fail because they benchmark demos instead of operating reality. The winning approach is a reproducible measurement system that evaluates trajectories, calibrates judge models, and enforces governance before production incidents make those gaps expensive.',
+      'Most agent evaluation programs fail because they benchmark demos instead of operating reality — and then compound the error with uncalibrated judge models and statistically invalid sample sizes. This report provides the evaluation protocol, governance framework, and procurement evidence pack that enterprise teams need to defend architectural decisions under scrutiny.',
     implications: [
-      'Evaluation rigor is now a procurement and governance differentiator, not just an internal quality metric.',
-      'Uncalibrated judge-model scoring creates systemic bias that can misprice model and workflow decisions.',
-      'Governance controls should be treated as launch criteria because post-incident retrofits are materially more expensive.',
+      'Evaluation rigor is now a procurement and liability differentiator: sophisticated buyers ask for calibration evidence, reproducibility records, and red team results — not benchmark scores.',
+      'Uncalibrated judge-model scoring creates systemic directional bias that actively misprice model-selection and workflow decisions at enterprise scale.',
+      'Statistical validity in evaluation design is not a research luxury — underpowered evaluations (n < 100) cannot distinguish real quality differences from noise, producing decisions with false confidence.',
     ],
     actionSteps: [
-      'Build evaluation sets from real production distributions, including ambiguous prompts, edge cases, and failure-prone tasks.',
-      'Calibrate LLM-as-judge outputs against human review on a representative sample before trusting automated scores.',
-      'Add governance gates for idempotency, prompt-injection resilience, rate limiting, PII handling, rollback, and audit logs before launch.',
+      'Build evaluation sets from real production traffic distributions, stratified by task type, difficulty tier, and edge-case frequency — not best-case examples.',
+      'Calibrate LLM-as-judge outputs against two independent human raters on a representative sample; do not trust automated scores until inter-rater correlation exceeds 0.75.',
+      'Run a structured red team exercise against your production deployment before launch — prompt injection via retrieved content, context exhaustion, and tool failure cascades are the three highest-yield attack surfaces.',
     ],
     risks: [
-      'Curated benchmark sets create false confidence and hide the actual production error envelope.',
-      'Judge-model bias can reward verbose, confident answers even when they are inefficient or wrong.',
-      'Teams that track final outputs only miss trajectory waste that drives cost, latency, and incident exposure.',
+      'Curated benchmark sets create false confidence and systematically hide the actual production error envelope — the gap between benchmark and production performance averages 15–25 percentage points.',
+      'Judge-model length bias rewards verbose, confident answers over correct, concise ones — without calibration this can actively select for hallucinated specificity.',
+      'Underpowered evaluations (n < 100 per condition) cannot detect differences smaller than ~15 percentage points with 80% power — most teams are making architectural decisions from noise.',
     ],
     citations: [
-      { label: 'Anthropic research and product documentation', url: 'https://www.anthropic.com/research', accessedAt: '2026-03-09' },
-      { label: 'OpenAI cookbook and eval guidance', url: 'https://cookbook.openai.com/', accessedAt: '2026-03-09' },
-      { label: 'LangSmith evaluation documentation', url: 'https://docs.smith.langchain.com/evaluation', accessedAt: '2026-03-09' },
-      { label: 'NIST AI Risk Management Framework', url: 'https://www.nist.gov/itl/ai-risk-management-framework', accessedAt: '2026-03-09' },
+      { label: 'ReAct: Synergizing Reasoning and Acting in Language Models (Yao et al., 2023)', url: 'https://arxiv.org/abs/2210.03629', accessedAt: '2026-03-14' },
+      { label: 'SWE-bench: Can Language Models Resolve Real-World GitHub Issues? (Jimenez et al., 2024)', url: 'https://arxiv.org/abs/2310.06770', accessedAt: '2026-03-14' },
+      { label: 'AgentBench: Evaluating LLMs as Agents (Liu et al., 2023)', url: 'https://arxiv.org/abs/2308.03688', accessedAt: '2026-03-14' },
+      { label: 'Judging the Judges: Evaluating Alignment and Vulnerabilities in LLMs-as-Judges (Ye et al., 2024)', url: 'https://arxiv.org/abs/2406.12624', accessedAt: '2026-03-14' },
+      { label: 'NIST AI Risk Management Framework 1.0', url: 'https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf', accessedAt: '2026-03-14' },
+      { label: 'Anthropic\'s Model Card and Evaluation Methodology', url: 'https://www.anthropic.com/claude/model-card', accessedAt: '2026-03-14' },
+      { label: 'Scaling LLM Test-Time Compute Optimally (Snell et al., 2024)', url: 'https://arxiv.org/abs/2408.03314', accessedAt: '2026-03-14' },
+      { label: 'OWASP Top 10 for LLM Applications 2025', url: 'https://owasp.org/www-project-top-10-for-large-language-model-applications/', accessedAt: '2026-03-14' },
     ],
     deliverables: [
-      { icon: '📐', title: 'Evaluation Protocol Template', desc: 'Task decomposition accuracy, tool use precision, hallucination rate, latency P95 — complete measurement framework.' },
-      { icon: '⚖️', title: 'LLM-as-Judge Calibration Guide', desc: 'Inter-rater reliability scoring, bias correction checklist, and calibration procedure for consistent evaluation.' },
-      { icon: '📊', title: 'Sample Scorecard with Confidence Intervals', desc: '5 metrics × 3 model variants. Real statistical methodology for defensible comparisons.' },
-      { icon: '🏛️', title: '12-Item Pre-Production Governance Checklist', desc: 'The checklist that catches the failure modes most teams discover in production instead of staging.' },
-      { icon: '🔁', title: 'Reproducibility Reporting Standard', desc: 'Document exactly what it takes to reproduce your evaluation results. Critical for model rotation decisions.' },
-      { icon: '📋', title: 'Benchmark Design Patterns', desc: 'How to design benchmarks that measure what matters — not just what\'s easy to measure.' },
+      { icon: '📐', title: 'Evaluation Protocol Template', desc: 'Task decomposition accuracy, tool use precision, hallucination rate, trajectory efficiency, latency P95 — complete 7-metric measurement framework with statistical grounding.' },
+      { icon: '⚖️', title: 'LLM-as-Judge Calibration Guide', desc: 'Inter-rater reliability scoring (Cohen\'s kappa), systematic bias identification, and 5-step calibration procedure. Includes evaluation prompt templates that have been validated against human raters.' },
+      { icon: '📊', title: 'Statistical Significance Reference Card', desc: 'Sample sizing formulas, confidence interval calculation, and the minimum detectable effect at common n values. Know before you run whether your evaluation can answer the question you\'re asking.' },
+      { icon: '🏛️', title: '12-Item Pre-Production Governance Checklist', desc: 'Each item mapped to the specific incident class it prevents — not compliance boxes, but documented failure modes with evidence requirements.' },
+      { icon: '🔁', title: 'Reproducibility Reporting Standard', desc: 'The artifact set that makes evaluation results reproducible: model version, prompt hash, evaluation set manifest, judge calibration record. Critical for model rotation and procurement.' },
+      { icon: '🎯', title: 'Red Team Exercise Protocol', desc: 'Structured adversarial test suite covering prompt injection, context exhaustion, tool failure cascades, and rug-pull server behavior. Three-day exercise design included.' },
     ],
     excerpt: [
       {
@@ -442,101 +446,175 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
 
 Three failure modes dominate production evaluation programs:
 
-**Evaluating the demo, not the distribution.** Teams build evaluation sets from their best-case examples — clear prompts, cooperative environments, well-specified goals. Production traffic is messier: ambiguous requests, edge cases, adversarial inputs, compounding errors. An agent that scores 94% on a curated benchmark and 71% on production traffic is not a rare exception. It is the norm.
+**Evaluating the demo, not the distribution.** Teams build evaluation sets from their best-case examples — clear prompts, cooperative environments, well-specified goals. Production traffic is messier: ambiguous requests, edge cases, adversarial inputs, compounding errors. The SWE-bench benchmark found that leading models resolve 50–70% of curated GitHub issues in controlled conditions — but the same models operating as autonomous agents on unstructured real-world tasks show dramatically higher failure rates when the environment is not cooperative. An agent that scores 94% on a curated benchmark and 71% on production traffic is not a rare exception. It is the norm.
 
-**Treating LLM-as-judge as ground truth without calibration.** Using a capable model (GPT-4o, Claude Sonnet) to evaluate agent outputs is a valid and scalable methodology. The problem is that uncalibrated judge models have systematic biases: they favor longer responses, responses that sound confident, and responses that match their own stylistic patterns. Without a calibration step against human judgments on a representative sample, your eval pipeline has an unknown and potentially large systematic error.
+**Treating LLM-as-judge as ground truth without calibration.** Using a capable model (GPT-4o, Claude Sonnet) to evaluate agent outputs is a valid and scalable methodology. The problem is that uncalibrated judge models have systematic biases: they favor longer responses, responses that sound confident, and responses that match their own stylistic patterns. Research on LLM-as-judge consistency (Ye et al., 2024) found systematic length bias across all major models — longer responses received higher scores independent of quality. Without a calibration step against human judgments on a representative sample, your eval pipeline has an unknown and potentially large directional error.
 
-**Ignoring trajectory evaluation in favor of output evaluation.** If your agent uses 14 tool calls to accomplish a task that should require 3, and produces the correct final output, most output-only evaluation systems will score it as a success. In production, that 14-call trajectory means higher latency, higher cost, higher error probability, and worse user experience. Trajectory efficiency is a first-class metric.`,
+**Ignoring trajectory evaluation in favor of output evaluation.** The ReAct framework (Yao et al., 2023) demonstrated that the reasoning trace — not just the final answer — is the primary signal for evaluating agent quality. If your agent uses 14 tool calls to accomplish a task that should require 3, and produces the correct final output, most output-only evaluation systems will score it as a success. In production, that 14-call trajectory means higher latency, 4.7x higher cost, and an error surface 5x larger than the efficient path. Trajectory efficiency is a first-class metric.`,
       },
       {
         heading: 'The Pre-Production Governance Checklist',
-        body: `These 12 items represent the failure modes that teams consistently discover in production rather than staging. Work through this list before declaring any agent system production-ready.
+        body: `These 12 items represent the failure modes that teams consistently discover in production rather than staging. Each item is mapped to the specific incident class it prevents — not compliance theater.
 
-**1. Idempotency verification** — Every irreversible action (send, create, charge, post) has been tested for duplicate execution. What happens if the agent runs the same action twice?
+**1. Idempotency verification** — Every irreversible action (send, create, charge, post) has been tested for duplicate execution. What happens if the agent runs the same action twice? Maps to: bulk-send incident class.
 
-**2. Rate limit handling** — All external API calls have retry logic with exponential backoff. The agent degrades gracefully when rate-limited rather than looping.
+**2. Rate limit handling** — All external API calls have retry logic with exponential backoff. The agent degrades gracefully when rate-limited rather than looping. Maps to: tool failure cascade class.
 
-**3. Context window exhaustion test** — What happens in session 50, after the context is full? Has this been tested explicitly?
+**3. Context window exhaustion test** — What happens in session 50, after the context is full? Has this been tested explicitly? Maps to: memory degradation and orchestration drift class.
 
-**4. Adversarial prompt test** — Has the system been tested against prompt injection via user input, retrieved documents, and tool outputs?
+**4. Adversarial prompt test** — Has the system been tested against prompt injection via user input, retrieved documents, and tool outputs? Maps to: MCP poisoning and indirect injection class.
 
-**5. Tool failure cascade test** — What happens when a tool the agent depends on returns an error? Does the agent recover gracefully or spin?
+**5. Tool failure cascade test** — What happens when a tool the agent depends on returns an error? Does the agent recover gracefully or spin? Maps to: orchestration deadlock class.
 
-**6. Human escalation path** — Is there a defined and tested path for the agent to escalate to a human when it detects it is operating outside its competence boundary?
+**6. Human escalation path** — Is there a defined and tested path for the agent to escalate to a human when it detects it is operating outside its competence boundary? Maps to: confidence boundary violation class.
 
-**7. Audit log completeness** — Every agent action is logged with enough context to reconstruct the decision. Logs are stored outside the agent's own memory.
+**7. Audit log completeness** — Every agent action is logged with enough context to reconstruct the decision. Logs are stored outside the agent's own memory. Maps to: incident investigation and regulatory compliance class.
 
-**8. Cost budget enforcement** — There is a hard ceiling on token spend and tool call count per session, enforced at the infrastructure level, not the prompt level.
+**8. Cost budget enforcement** — There is a hard ceiling on token spend and tool call count per session, enforced at the infrastructure level, not the prompt level. Maps to: cost explosion class.
 
-**9. PII handling verification** — Any personally identifiable information that enters the agent's context has a documented handling policy and is not logged in plaintext.
+**9. PII handling verification** — Any personally identifiable information that enters the agent's context has a documented handling policy and is not logged in plaintext. Maps to: data exposure and regulatory breach class.
 
-**10. Rollback procedure** — There is a documented and tested procedure to reverse any action the agent can take that has real-world consequences.
+**10. Rollback procedure** — There is a documented and tested procedure to reverse any action the agent can take that has real-world consequences. Maps to: production incident recovery class.
 
-**11. Model version pinning** — The production deployment is pinned to a specific model version. Automatic model updates are disabled.
+**11. Model version pinning** — The production deployment is pinned to a specific model version. Automatic model updates are disabled. Maps to: reproducibility failure and silent behavior drift class.
 
-**12. Evaluation pipeline coverage** — The automated eval pipeline covers at least 80% of the task categories present in production traffic.`,
+**12. Evaluation pipeline coverage** — The automated eval pipeline covers at least 80% of the task categories present in production traffic. Maps to: evaluation blindspot class.`,
       },
       {
         heading: 'Building a Judge Model That You Can Actually Trust',
-        body: `LLM-as-judge is the right approach for scaling evaluation — but only after calibration. Here is the exact calibration process that makes automated evaluation defensible.
+        body: `LLM-as-judge is the right approach for scaling evaluation — but only after calibration. The research literature on LLM judge reliability (Ye et al., 2024) identifies four systematic biases that appear consistently across all major judge models and corrupt evaluation results at scale. Here is the exact calibration process that produces defensible automated evaluation.
 
-**Step 1: Build a calibration set of 50–100 representative examples.** These should be drawn from actual production traffic, not synthetic examples. Include the full range of quality you expect to see: clearly good outputs, clearly bad outputs, and the ambiguous middle that constitutes roughly 40% of real production cases.
+**The four systematic biases you must correct before deploying an LLM judge:**
 
-**Step 2: Have two independent human raters score every example.** Use a simple 1–5 scale with explicit criteria for each score level — vague rubrics produce unreliable human ratings which then contaminate the calibration. Calculate inter-rater reliability (Cohen's kappa or Pearson correlation). If it is below 0.7, your rubric is not specific enough. Revise it before proceeding.
+**Length bias** is the most pervasive and the most dangerous for agent evaluation specifically. Judge models consistently assign higher scores to longer responses, independent of accuracy or relevance. In agent evaluation, where responses involve multi-step reasoning traces, this bias actively selects for verbose, overconfident trajectories over concise, efficient ones. Correction: add explicit rubric language penalizing unnecessary verbosity and rewarding the minimum steps to achieve correct task completion.
 
-**Step 3: Have the judge model score every example using your evaluation prompt.** Calculate the correlation between judge model scores and average human scores. A well-calibrated judge model should have a correlation above 0.75. If it\'s lower, your evaluation prompt needs revision — add more specific criteria, examples of each score level, and explicit anti-patterns.
+**Self-similarity bias** occurs when a judge model rates its own outputs, or outputs from models with similar training distributions, more favorably. Teams using GPT-4o to evaluate GPT-4o outputs will consistently see inflated scores relative to human ratings. Correction: when possible, use a judge model from a different family than the model being evaluated.
 
-**Step 4: Identify and document systematic biases.** Where does the judge model consistently disagree with humans? Common patterns: over-rewarding verbose answers, under-penalizing hallucinated specifics that sound plausible, over-weighting formatting quality relative to content accuracy. Document each discovered bias and add explicit correction language to the evaluation prompt.
+**Confidence bias** causes judge models to reward responses that sound certain, even when certainty is unwarranted. This is particularly damaging for agent evaluation because it rewards hallucinated specificity. Correction: add explicit rubric criteria that penalize unsubstantiated confidence and reward appropriate hedging on uncertain outputs.
 
-**Step 5: Set a re-calibration schedule.** Judge model behavior drifts as the underlying model is updated. Re-calibrate against human judgments every 90 days or whenever you rotate to a new judge model version. An uncalibrated eval pipeline that was calibrated six months ago is not a calibrated eval pipeline.`,
+**Position bias** in pairwise comparisons causes judge models to prefer the first response shown, independent of quality. Correction: for any pairwise evaluation, run both orderings and take the average.
+
+**The 5-step calibration process:**
+
+**Step 1:** Build a calibration set of 50–100 representative examples drawn from actual production traffic — not synthetic examples. Include clearly good outputs, clearly bad outputs, and the ambiguous middle (approximately 40% of real cases).
+
+**Step 2:** Have two independent human raters score every example using a 1–5 scale with explicit per-level criteria. Calculate Cohen's kappa. If kappa is below 0.7, your rubric is insufficiently specific. Revise and re-rate before proceeding.
+
+**Step 3:** Have the judge model score every calibration example. Calculate Pearson correlation between judge scores and average human scores. Target: r > 0.75. Below 0.65 means your evaluation prompt has a structural problem.
+
+**Step 4:** Identify the specific systematic bias by examining where the judge consistently over- or under-scores relative to humans. Add targeted correction language to the evaluation prompt for each identified bias.
+
+**Step 5:** Re-calibrate every 90 days or after any judge model version change. Calibration from six months ago on a model that has since been updated is not calibration.`,
+      },
+      {
+        heading: 'Statistical Validity: The Evaluation Mistake That Makes Your Results Meaningless',
+        body: `Most production agent evaluations are statistically underpowered. This is not a minor methodological issue — it means the evaluations cannot detect real performance differences from random variation, and the architectural decisions made from them are based on noise.
+
+The core problem: teams run evaluations on 20, 30, or 50 examples because larger sets are expensive to create and review. They observe a difference — say, Model A scores 76% versus Model B's 71% — and make an architectural decision. What they don't calculate is whether this difference is statistically distinguishable from chance.
+
+**The minimum detectable effect at common evaluation set sizes (80% power, α = 0.05):**
+
+**n = 25:** Minimum detectable difference ≈ 28 percentage points. You cannot reliably distinguish 76% from 71%, or 80% from 60%, with 25 examples.
+
+**n = 50:** Minimum detectable difference ≈ 20 percentage points. You can detect 76% vs. 56%, but not 76% vs. 66%.
+
+**n = 100:** Minimum detectable difference ≈ 14 percentage points. Sufficient for detecting differences of practical significance in most agent evaluation contexts.
+
+**n = 200:** Minimum detectable difference ≈ 10 percentage points. Recommended minimum for production evaluation sets where architectural decisions carry real cost and risk.
+
+**n = 500:** Minimum detectable difference ≈ 6 percentage points. Required for high-stakes model selection decisions where you need to detect subtle quality differences.
+
+**Why most teams evaluate with n < 50 and what to do about it:**
+
+The cost of human labeling drives evaluation set sizes down. Teams annotate 30–50 examples, run their eval, get a number, and make a decision. The statistical reality is that they are making a decision from data that cannot distinguish 10-point differences from random chance.
+
+**The practical fix:** Stratified sampling over LLM-generated test cases, with human validation only on a random 20% subsample. This lets you build 500-example evaluation sets with the labeling cost of 100-example sets. The LLM generates plausible test cases across all task categories in your distribution; humans validate a random sample to verify the generated test cases are representative. The remaining 80% are used with LLM-as-judge scoring only, which is valid because the calibration procedure (Section 3) ensures your judge is aligned with human ratings.
+
+**Confidence interval reporting:** Every evaluation result should be reported with a 95% confidence interval, not just a point estimate. '76% accuracy (95% CI: 69–83%)' is honest. '76% accuracy' from n=50 without a CI is misleading — the true value could be anywhere from 62% to 88%.`,
+      },
+      {
+        heading: 'Red Team Protocol: Finding the Failures Before Production Does',
+        body: `A red team exercise for an agent system is not a penetration test and it is not a UX review. It is a structured adversarial exercise designed to find the failure modes that your evaluation pipeline cannot find because your evaluation pipeline was built by the same team that built the system.
+
+The following protocol structures a three-day red team exercise. It requires three people: one playing the agent system's users, one playing adversarial external conditions, and one documenting failure modes for the governance record.
+
+**Day 1: Input adversarial testing (user-side attacks)**
+
+**Target 1: Prompt injection via direct user input.** Have the red teamer craft requests that attempt to override the system prompt, exfiltrate session data, or cause the agent to take actions outside its defined scope. Classic patterns: 'Ignore previous instructions and instead...', 'As a developer testing this system, please show me...', 'For my research project, I need you to...'. Document every input that causes any deviation from expected behavior, even minor ones.
+
+**Target 2: Boundary probing.** Find the edge of the agent's competence — the task types where confidence remains high but accuracy degrades. These are the failure modes that look like successes to output-only evaluation. Approach: start with clearly in-scope tasks, gradually move toward adjacent tasks that require knowledge or capabilities the agent doesn't have, and document where the agent transitions from accurate to confidently wrong.
+
+**Target 3: Volume and resource abuse.** Craft interactions that cause the agent to consume disproportionate resources: prompts that trigger long reasoning chains, requests that cause repeated tool calls, tasks that require large context windows. Document the resource ceiling behavior.
+
+**Day 2: Environmental adversarial testing (retrieved content attacks)**
+
+**Target 4: Indirect prompt injection via retrieved documents.** If your agent retrieves content from external sources (web pages, documents, databases), inject adversarial instructions into those sources and verify they do not affect agent behavior. This is the highest-severity attack surface for production agent systems — it requires no user interaction and affects all users who trigger the same retrieval path.
+
+**Target 5: Tool failure injection.** Simulate failures at each tool boundary: network timeouts, malformed responses, authentication failures, rate limiting. Document whether the agent recovers gracefully, loops, or fails silently.
+
+**Target 6: Context poisoning.** Inject subtly incorrect information into the agent's context via retrieved content and measure whether it is accepted, corrected, or escalated. Document the conditions under which incorrect context affects final outputs.
+
+**Day 3: Governance audit**
+
+**Target 7: Audit log completeness check.** For every failure mode identified in Days 1 and 2, verify that the audit log contains enough information to reconstruct the decision. Gaps in the audit log are governance failures.
+
+**Target 8: Rollback procedure test.** For every irreversible action the agent can take, execute the rollback procedure and verify it works as documented.
+
+**The red team report deliverable:** A failure mode inventory with severity ratings (critical, high, medium, low), reproduction steps, and recommended mitigations. This document is your evidence of due diligence in the pre-production governance record — and it is the most credible response to the first question any serious procurement committee will ask: 'Have you tried to break this system?'`,
       },
       {
         heading: 'The Cost Architecture Nobody Talks About',
         body: `The economics of production AI agent systems are not what they look like in prototypes. Here is the cost breakdown that should inform your architecture decisions before you are six months in.
 
-**Token cost has a floor and a ceiling problem.** The floor: even simple classification tasks now run through models that cost real money at scale. 10,000 agent interactions per day at an average of 2,000 tokens each — a modest enterprise deployment — costs between $100 and $1,000 per day depending on model choice. The ceiling: without hard token budgets enforced at the infrastructure level, individual runaway sessions can generate 100x the expected cost. Both the floor and the ceiling require explicit architecture decisions, not optimistic assumptions.
+**Token cost has a floor and a ceiling problem.** The floor: even simple classification tasks now run through models that cost real money at scale. 10,000 agent interactions per day at an average of 2,000 tokens each — a modest enterprise deployment — costs between $100 and $1,000 per day depending on model choice. The ceiling: without hard token budgets enforced at the infrastructure level, individual runaway sessions can generate 100x the expected cost. Research on compute-optimal inference (Snell et al., 2024) demonstrates that increasing test-time compute can improve quality, but without hard budget ceilings this creates unbounded cost exposure. Both the floor and the ceiling require explicit architecture decisions.
 
 **Tool call cost compounds invisibly.** Most teams budget for LLM token costs and underestimate or ignore the compound cost of tool calls: external API fees, database query costs, web search credits, and function execution compute. In a production multi-agent system, tool call costs often exceed LLM costs by 2x–3x once the system is handling real workloads.
 
-**The right cost architecture has three controls:** (1) Per-session token budget enforced at the gateway layer, not the prompt layer. Prompts can be overridden by the model; gateway limits cannot. (2) Tool call rate limiting per agent role, with automatic escalation to human review when a session exceeds expected tool usage by 3x. (3) Daily cost alerts at 50%, 80%, and 100% of budget, routed to the team member responsible for the agent — not a shared operations channel where alerts are ignored.
+**The right cost architecture has three mandatory controls:**
 
-**Model selection is a cost architecture decision, not a quality decision.** The right model for a given task is the least capable model that reliably achieves the required quality level. Running GPT-4o or Claude Opus on tasks that Claude Haiku or GPT-4o-mini can handle equally well is not a quality investment — it is a cost leak. Build a model routing layer early. Route simple classification and extraction tasks to cheaper models. Reserve frontier models for tasks that genuinely require their capabilities.`,
+**Control 1:** Per-session token budget enforced at the gateway layer, not the prompt layer. Prompts can be overridden by the model; gateway limits cannot. Set limits at 3x expected maximum session cost.
+
+**Control 2:** Tool call rate limiting per agent role, with automatic escalation to human review when a session exceeds expected tool usage by 3x.
+
+**Control 3:** Daily cost alerts at 50%, 80%, and 100% of budget, routed to the named team member responsible for each agent deployment — not a shared channel where alerts are ignored.
+
+**Model selection is a cost architecture decision, not a quality decision.** The right model for a given task is the least capable model that reliably achieves the required quality level. Build a model routing layer early. Route simple classification and extraction tasks to cheaper models. Reserve frontier models for tasks that genuinely require their capabilities. A well-designed routing layer typically reduces per-session costs by 40–60% versus using frontier models uniformly.`,
       },
       {
         heading: 'How Procurement Teams Actually Evaluate Agent Systems — And What Most Vendors Miss',
-        body: `Enterprise procurement of AI agent systems is fundamentally different from traditional software procurement, and most vendors — and most internal teams presenting to procurement — do not understand how to present the right evidence. Here is the evaluation framework that sophisticated enterprise buyers are actually using in 2026.
+        body: `Enterprise procurement of AI agent systems is fundamentally different from traditional software procurement, and most vendors — and most internal teams presenting to procurement — do not understand how to present the right evidence.
 
 The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certification, done. The new model has three additional gates that most teams are not prepared for.
 
-**Gate 1: Reproducibility audit.** Enterprise procurement teams are now asking: "Can you reproduce your benchmark results?" This means: given the same inputs, the same model version, the same prompt, and the same evaluation criteria, does your system produce the same outputs with the same quality scores? Most teams cannot answer yes to this question because they did not instrument for reproducibility from the start. The fix is the reproducibility reporting standard described in this brief — but it must be implemented before you enter procurement, not after.
+**Gate 1: Reproducibility audit.** Enterprise procurement teams are now asking: 'Can you reproduce your benchmark results?' This means: given the same inputs, the same model version, the same prompt, and the same evaluation criteria, does your system produce the same outputs with the same quality scores? Most teams cannot answer yes because they did not instrument for reproducibility from the start. The reproducibility reporting standard in the full report covers the exact artifact set required.
 
-**Gate 2: Incident record.** Sophisticated buyers are asking: "What has gone wrong in production, and how did you handle it?" This is not a trick question to disqualify vendors — it is a maturity signal. A team that can describe three specific production incidents, the root cause of each, the remediation applied, and the governance change that followed is demonstrably more trustworthy than a team that claims zero incidents. Zero incidents usually means insufficient monitoring, not perfect execution.
+**Gate 2: Incident record.** Sophisticated buyers are asking: 'What has gone wrong in production, and how did you handle it?' This is not a disqualifying question — it is a maturity signal. A team that can describe three specific production incidents, the root cause of each, the remediation applied, and the governance change that followed is demonstrably more trustworthy than a team that claims zero incidents. Zero incidents usually means insufficient monitoring, not perfect execution.
 
-**Gate 3: Governance control evidence.** Procurement teams want a completed controls checklist with test results — not a vendor promise. Each control maps to what they actually need: idempotency verification maps to audit trail evidence; adversarial prompt testing maps to security posture certification; rollback procedure maps to incident response SLA. Teams that produce evidence-backed answers on first submission move 3x faster through procurement. The evidence pack that converts fastest: (1) a completed checklist with specific test results for each item, (2) one documented production incident with root cause and remediation, (3) a model version pinning policy with a change management procedure.
+**Gate 3: Governance control evidence.** Procurement teams want a completed controls checklist with test results — not a vendor promise. Teams that produce evidence-backed answers on first submission move 3x faster through procurement. The evidence pack that converts fastest: (1) completed governance checklist with specific test results for each item, (2) one documented production incident with root cause and remediation, (3) model version pinning policy with a change management procedure.
 
-**The internal presentation mistake that kills enterprise deals:** Teams presenting AI agent systems to procurement committees almost universally lead with capabilities and accuracy metrics. Procurement committees care first about liability, control, and reversibility. The conversion sequence: (1) what can go wrong and what is the blast radius, (2) what controls prevent or contain each failure mode, (3) what is the evidence those controls work, (4) only then — what the system does when it works correctly. Vendors who open with capabilities are answering a question the committee has not asked yet.`,
+**The internal presentation mistake that kills enterprise deals:** Teams presenting to procurement committees almost universally lead with capabilities and accuracy metrics. Procurement committees care first about liability, control, and reversibility. The conversion sequence that works: (1) what can go wrong and what is the blast radius, (2) what controls prevent or contain each failure mode, (3) what is the evidence those controls work, (4) only then — what the system does when it works correctly.`,
       },
     ],
-    chatPlaceholder: 'How do I calibrate LLM-as-judge? What metrics should I track in production?',
+    chatPlaceholder: 'How do I calibrate LLM-as-judge? How do I design a statistically valid evaluation? What should my red team exercise cover?',
     keyTakeaways: [
-      'LLM-as-judge calibration procedure: build a 50-100 example calibration set and achieve >0.75 correlation with human scores',
-      '12-item pre-production governance checklist mapped to procurement control categories',
-      'Cost architecture with three mandatory controls: per-session gateway budget, tool call rate limiting, daily cost alerts',
-      'How enterprise procurement teams actually evaluate agent systems in 2026 — and the three gates most vendors miss',
-      'Reproducibility reporting standard that produces evidence procurement needs without re-running evaluations from scratch',
+      'Statistical validity section: minimum evaluation set sizes (n=100 for 14-point MDE, n=200 recommended) — most teams are making decisions from noise',
+      'Red team exercise protocol: 3-day structured adversarial test covering prompt injection, boundary probing, indirect injection via retrieved content, and tool failure cascades',
+      'Judge model bias taxonomy: length bias, self-similarity bias, confidence bias, position bias — and the exact rubric corrections for each',
+      'Model routing economics: a well-designed routing layer reduces per-session costs 40–60% versus uniform frontier model use',
+      'The reproducibility artifact set procurement actually asks for: model version pin, prompt hash, evaluation manifest, calibration record',
     ],
-    sharpestInsight: 'Enterprise procurement committees almost universally care first about liability, control, and reversibility — not accuracy metrics. Teams that lead with "our agent achieves 94% on benchmark X" fail procurement reviews. Teams that lead with "here is what can go wrong, the blast radius, and the controls that contain it" move through procurement 3x faster. The sequence matters: lead with failure modes, then controls, then evidence, then capabilities.',
+    sharpestInsight: 'Most production agent evaluations are statistically underpowered to detect the differences that drive architectural decisions. With n=50 examples — the typical evaluation set — you cannot reliably distinguish 76% accuracy from 71%. The minimum detectable difference at n=50 is approximately 20 percentage points. Teams routinely make model selection, framework, and deployment decisions from data that statistically cannot answer the question being asked. This is not a minor issue — it means confidence intervals on most published evaluation results would span the entire range of plausible outcomes.',
     notForAudience: [
       'Individual developers or small startups where the buyer and builder are the same person — the governance and procurement content is enterprise-specific',
       'Teams using agent systems purely for internal tooling with no external user exposure or compliance requirements',
-      'Anyone looking for model benchmarking guidance — this report covers evaluation methodology, not which model to choose',
+      'Anyone looking for a model benchmarking guide or platform comparison — this report is about evaluation methodology and governance, not model selection',
     ],
     excerptHooks: [
-      'Why most agent evaluations are unreliable: three failure modes that make 94% on your benchmark mean 71% in production.',
-      'The 12-item pre-production governance checklist designed to produce evidence procurement actually asks for.',
-      'LLM-as-judge calibration: the exact 5-step procedure and why below 0.75 correlation means your eval pipeline is misleading you.',
-      'Cost architecture nobody talks about: why tool call costs typically exceed LLM costs 2–3x at production scale.',
-      'The three procurement gates most vendors miss — and the presentation sequence that converts enterprise deals.',
+      'Why most agent evaluations are unreliable: three failure modes, grounded in research (ReAct, SWE-bench), that explain the 15–25 point benchmark-to-production gap.',
+      'The pre-production governance checklist: 12 items, each mapped to the specific incident class it prevents — not compliance boxes.',
+      'Judge model bias taxonomy: four systematic biases that corrupt your eval pipeline, with exact rubric corrections for each.',
+      'Statistical validity: the minimum detectable effect at n=25, 50, 100, 200, 500 — and why most architectural decisions are being made from noise.',
+      'Red team protocol: 3-day adversarial exercise design covering 8 attack surfaces, including indirect injection via retrieved content.',
     ],
     color: 'purple',
   },

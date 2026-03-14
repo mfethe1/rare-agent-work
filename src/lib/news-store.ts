@@ -61,7 +61,7 @@ export async function getAllNews(): Promise<NewsItem[]> {
 
 export async function getNewsByTag(tag: string): Promise<NewsItem[]> {
   const all = await getAllNews();
-  return all.filter((item) => item.tags.includes(tag));
+  return all.filter((item) => (item.tags || []).includes(tag));
 }
 
 export async function ingestNews(
@@ -134,7 +134,7 @@ export async function clickNews(id: string): Promise<boolean> {
 export function getAllTags(items: NewsItem[]): Array<{ tag: string; count: number }> {
   const tagMap = new Map<string, number>();
   for (const item of items) {
-    for (const tag of item.tags) {
+    for (const tag of (item.tags || [])) {
       tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
     }
   }

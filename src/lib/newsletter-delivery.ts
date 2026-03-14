@@ -83,8 +83,8 @@ function buildExecutiveSummary(items: NewsItem[], weekRange: string) {
 
 function buildImplications(items: NewsItem[]) {
   const modelReleaseCount = items.filter((item) => /model-release/i.test(item.category)).length;
-  const securityCount = items.filter((item) => /security|risk|safety/i.test(`${item.category} ${item.title} ${item.tags.join(' ')}`)).length;
-  const frameworkCount = items.filter((item) => /framework|tool-release|platform|open-source/i.test(`${item.category} ${item.title} ${item.tags.join(' ')}`)).length;
+  const securityCount = items.filter((item) => /security|risk|safety/i.test(`${item.category} ${item.title} ${(item.tags || []).join(' ')}`)).length;
+  const frameworkCount = items.filter((item) => /framework|tool-release|platform|open-source/i.test(`${item.category} ${item.title} ${(item.tags || []).join(' ')}`)).length;
 
   return [
     `Release velocity remains high (${modelReleaseCount} model-focused stories this week), so benchmark drift checks should be scheduled before teams change default models.`,
@@ -95,7 +95,7 @@ function buildImplications(items: NewsItem[]) {
 
 function buildActionSteps(items: NewsItem[]) {
   const topTags = items
-    .flatMap((item) => item.tags)
+    .flatMap((item) => item.tags || [])
     .reduce<Record<string, number>>((acc, tag) => {
       acc[tag] = (acc[tag] || 0) + 1;
       return acc;

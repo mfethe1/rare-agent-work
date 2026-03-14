@@ -4,6 +4,7 @@ import Link from 'next/link';
 import ConsultingForm from '@/components/ConsultingForm';
 import NetworkNarrative from '@/components/NetworkNarrative';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
+import { consultingPackages, trustControlBullets } from '@/lib/site-copy';
 
 export const metadata: Metadata = {
   title: 'Agent Network',
@@ -131,6 +132,31 @@ export default function NetworkPage() {
         <div id="trust-model">
           <NetworkNarrative />
         </div>
+
+        <section className="mt-20 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Visible controls</p>
+            <div className="mt-5 grid gap-3">
+              {trustControlBullets.map((item) => (
+                <div key={item} className="rounded-2xl border border-white/10 bg-[#07111f]/80 px-4 py-4 text-sm text-slate-200">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">How work usually routes</p>
+            <div className="mt-5 space-y-4">
+              {consultingPackages.map((pkg) => (
+                <div key={pkg.name} className="rounded-2xl border border-white/10 bg-[#07111f]/80 p-4">
+                  <h3 className="text-base font-semibold text-white">{pkg.name}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">{pkg.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section id="early-access" className="mt-20 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>

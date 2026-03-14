@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAllReports } from "@/lib/reports";
+import { startHereRoutes } from "@/lib/site-copy";
 
 const colorMap: Record<
   string,
@@ -52,8 +53,19 @@ export default function ReportsPage() {
           <h1 className="text-3xl font-semibold text-white sm:text-4xl">Operator Reports</h1>
           <p className="mt-3 max-w-2xl text-slate-300">
             A curated catalog of the reports used by operators implementing serious agent systems.
+            Every preview includes methodology, source citations, risks, and action steps before you buy.
           </p>
         </header>
+
+        <section className="mb-10 grid gap-4 lg:grid-cols-4">
+          {startHereRoutes.map((item) => (
+            <Link key={item.href} href={item.href} className="rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-colors hover:border-cyan-300/40">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">{item.badge}</p>
+              <h2 className="mt-2 text-lg font-semibold text-white">{item.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{item.description}</p>
+            </Link>
+          ))}
+        </section>
 
         <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {reports.map((report) => {
@@ -69,6 +81,8 @@ export default function ReportsPage() {
                 </p>
                 <h2 className="mt-3 text-lg font-semibold text-white">{report.title}</h2>
                 <p className="mt-2 text-sm text-slate-300">{report.subtitle}</p>
+                <p className="mt-3 text-xs uppercase tracking-[0.18em] text-slate-400">Best for</p>
+                <p className="mt-2 text-sm text-slate-300">{report.bestFor.join(' • ')}</p>
                 <div className="mt-6">
                   <Link
                     href={`/reports/${report.slug}`}
@@ -83,9 +97,9 @@ export default function ReportsPage() {
         </section>
 
         <section className="mt-12 rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h2 className="text-2xl font-semibold text-white">Need the full catalog + rolling updates?</h2>
+          <h2 className="text-2xl font-semibold text-white">Need the full catalog, bundles, or a buyer path?</h2>
           <p className="mt-2 text-slate-300">
-            Compare plan options, including Starter and Operator Access, from the pricing page.
+            Compare one-time reports, Operator Access, consultant-friendly bundles, and enterprise working sessions from the pricing page.
           </p>
           <div className="mt-5">
             <Link

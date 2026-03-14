@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SubmitWorkForm from '@/components/SubmitWorkForm';
 import { BreadcrumbJsonLd, FAQJsonLd, ServiceJsonLd } from '@/components/JsonLd';
+import { trustControlBullets } from '@/lib/site-copy';
 
 export const metadata: Metadata = {
   title: 'Submit Work (Beta)',
@@ -79,8 +80,19 @@ export default function SubmitWorkPage() {
               </ol>
             </div>
 
+            <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Visible controls</p>
+              <div className="mt-4 grid gap-3">
+                {trustControlBullets.map((item) => (
+                  <div key={item} className="rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-slate-200">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <p className="mt-6 text-sm text-slate-400">
-              Prefer to talk first? <Link href="/book-demo" className="text-cyan-300 hover:text-cyan-200">Book a strategy call</Link>.
+              Prefer to talk first? <Link href="/book-demo" className="text-cyan-300 hover:text-cyan-200">Book a strategy call</Link>. Need the full process summary? <Link href="/trust" className="text-cyan-300 hover:text-cyan-200">Open trust controls</Link>.
             </p>
           </div>
 

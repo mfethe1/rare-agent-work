@@ -179,13 +179,17 @@ export function ReportJsonLd({
   description,
   slug,
   price,
+  author = "Michael Fethe",
   datePublished = "2026-03-04",
+  dateModified,
 }: {
   title: string;
   description: string;
   slug: string;
   price: string;
+  author?: string;
   datePublished?: string;
+  dateModified?: string;
 }) {
   const priceNum = price.replace(/[^0-9.]/g, "");
   const data = [
@@ -212,8 +216,9 @@ export function ReportJsonLd({
       description,
       url: `${SITE_URL}/reports/${slug}`,
       datePublished,
+      dateModified: dateModified ?? datePublished,
       publisher: { "@id": `${SITE_URL}/#organization` },
-      author: { "@type": "Person", name: "Michael" },
+      author: { "@type": "Person", name: author },
     },
   ];
 

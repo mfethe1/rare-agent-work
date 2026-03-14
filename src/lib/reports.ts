@@ -18,6 +18,11 @@ export interface Report {
   updatedAt: string;
   freshnessTimestamp: string;
   readingTime: string;
+  author: string;
+  attribution: string;
+  methodology: string[];
+  bestFor: string[];
+  proofPoints: string[];
   emailAccent?: string;
   executiveSummary: string;
   implications: string[];
@@ -45,6 +50,19 @@ export const reports: Record<string, Report> = {
     updatedAt: '2026-03-09',
     freshnessTimestamp: '2026-03-09T15:00:00-04:00',
     readingTime: '18 minute brief + implementation worksheet',
+    author: 'Michael Fethe',
+    attribution: 'Written and maintained by Michael Fethe for Rare Agent Work.',
+    methodology: [
+      'Synthesizes current product documentation from the referenced workflow platforms.',
+      'Frames recommendations around approval gates, rollback planning, and operating cost instead of vendor marketing.',
+      'Uses operator-style decision matrices and failure-mode checklists to turn a short report into a usable implementation brief.',
+    ],
+    bestFor: ['First workflow launch', 'Low-code stack selection', 'Approval-gated automations'],
+    proofPoints: [
+      'Platform comparison across Zapier, Make, n8n, and Relevance AI.',
+      'Includes a 60-minute implementation sequence with approval checkpoints.',
+      'Adds concrete failure-mode and rollback guidance instead of generic automation advice.',
+    ],
     emailAccent: '#2563eb',
     executiveSummary:
       'Most first-time automation teams fail because they automate a vague process, pick the wrong platform, and skip human approval checkpoints. This brief fixes that by forcing scope lock, tool-fit discipline, and explicit rollback design before any workflow goes live.',
@@ -123,6 +141,19 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
     updatedAt: '2026-03-09',
     freshnessTimestamp: '2026-03-09T15:00:00-04:00',
     readingTime: '24 minute architecture brief + deployment blueprint',
+    author: 'Michael Fethe',
+    attribution: 'Written and maintained by Michael Fethe for Rare Agent Work.',
+    methodology: [
+      'Compares orchestration frameworks using production-shaping criteria: state control, memory architecture, and coordination overhead.',
+      'Uses role separation, memory layers, and trajectory efficiency as the primary design lens.',
+      'Optimizes for teams moving from a working single-agent system to a maintainable multi-agent architecture.',
+    ],
+    bestFor: ['Framework selection', 'Multi-agent migration', 'Memory architecture design'],
+    proofPoints: [
+      'Framework comparison spans CrewAI, LangGraph, AutoGen, and OpenAI Swarm.',
+      'Includes explicit L1/L2/L3 memory architecture guidance.',
+      'Pushes teams to evaluate trajectory cost and reliability, not just final output quality.',
+    ],
     emailAccent: '#16a34a',
     executiveSummary:
       'Teams should not jump to multi-agent architecture because it sounds advanced. They should do it when workload diversity, context volume, and review requirements justify explicit planner, executor, and reviewer roles backed by memory and observability.',
@@ -195,6 +226,19 @@ Insert your human-in-the-loop checkpoint for any action that is irreversible (se
     updatedAt: '2026-03-09',
     freshnessTimestamp: '2026-03-09T15:00:00-04:00',
     readingTime: '32 minute strategy brief + governance scorecard',
+    author: 'Michael Fethe',
+    attribution: 'Written and maintained by Michael Fethe for Rare Agent Work.',
+    methodology: [
+      'Builds from empirical evaluation and governance practices rather than demo benchmarks.',
+      'Centers trajectory measurement, judge-model calibration, and reproducibility as production requirements.',
+      'Packages governance as a pre-production checklist so teams can use it in live review cycles.',
+    ],
+    bestFor: ['Enterprise evaluation design', 'Governance reviews', 'Procurement-grade evidence packs'],
+    proofPoints: [
+      'Includes an LLM-as-judge calibration guide and reproducibility reporting standard.',
+      'Surfaces a 12-item pre-production governance checklist.',
+      'Frames evaluation rigor as a buying and launch criterion, not a research side quest.',
+    ],
     emailAccent: '#7c3aed',
     executiveSummary:
       'Most agent evaluation programs fail because they benchmark demos instead of operating reality. The winning approach is a reproducible measurement system that evaluates trajectories, calibrates judge models, and enforces governance before production incidents make those gaps expensive.',

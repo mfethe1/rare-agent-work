@@ -22,6 +22,10 @@ describe('A2A agent card', () => {
     expect(agentCard.capabilities.extended_agent_card).toBe(false);
     expect(agentCard.capabilities.extensions[0]?.description).toContain('discovery');
     expect(agentCard.capabilities.extensions[0]?.description).toContain('not implemented yet');
+    expect(agentCard.capabilities.extensions[0]?.params).toMatchObject({
+      trust_controls: 'https://rareagent.work/trust',
+      docs: 'https://rareagent.work/docs',
+    });
   });
 });
 
@@ -48,5 +52,7 @@ describe('well-known discovery routes', () => {
     expect(data.discovery.a2a_agent_card).toBe(agentCardPath);
     expect(data.discovery.legacy_agent_manifest).toBe(legacyAgentManifestPath);
     expect(data.protocols.a2a_agent_card).toBe(agentCardPath);
+    expect(data.protocols.trust_controls).toBe('/trust');
+    expect(data.protocols.docs).toBe('/docs');
   });
 });

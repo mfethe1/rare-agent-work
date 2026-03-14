@@ -58,7 +58,7 @@ export const legacyAgentManifestPath = '/.well-known/agent.json';
 export const agentCard: AgentCard = {
   name: 'Rare Agent Work',
   description:
-    'Read-only research and discovery agent for AI operators. Exposes curated agent news, report metadata, and a natural-language ask surface over Rare Agent Work content.',
+    'Read-only research and discovery agent for AI operators. Exposes curated agent news, report metadata, natural-language query, and trust/discovery metadata over Rare Agent Work content.',
   supported_interfaces: [
     {
       url: `${siteUrl}/api/v1/ask`,
@@ -86,6 +86,8 @@ export const agentCard: AgentCard = {
           openapi: `${siteUrl}/api/v1/openapi.json`,
           llms_txt: `${siteUrl}/llms.txt`,
           rss: `${siteUrl}/feed.xml`,
+          trust_controls: `${siteUrl}/trust`,
+          docs: `${siteUrl}/docs`,
         },
       },
     ],
@@ -99,7 +101,7 @@ export const agentCard: AgentCard = {
       id: 'ask-research-questions',
       name: 'Ask research questions',
       description:
-        'Answer natural-language questions about Rare Agent Work research, report previews, and current AI agent news using the public ask endpoint.',
+        'Answer natural-language questions about Rare Agent Work research, report previews, current AI agent news, and where to start on the site using the public ask endpoint.',
       tags: ['research', 'nlweb', 'qa', 'agents', 'news'],
       examples: [
         'Which Rare Agent Work report should I start with for multi-agent systems?',
@@ -202,6 +204,8 @@ export const legacyAgentManifest = {
     llms_txt: '/llms.txt',
     rss: '/feed.xml',
     sitemap: '/sitemap.xml',
+    trust_controls: '/trust',
+    docs: '/docs',
   },
   rate_limits: {
     requests_per_minute: 60,

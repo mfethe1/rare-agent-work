@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "project": "rareagent.work",
+  "purpose": "Red-team the product from multiple customer and ecosystem perspectives and raise the quality bar over time.",
+  "criticalityRatchet": {
+    "principle": "When the product starts to look good, the panel gets stricter instead of more satisfied.",
+    "rules": [
+      "If a dimension scores 8/10 for two consecutive reviews, require a sharper proof standard before allowing 9/10.",
+      "If a problem is partially fixed, shift the critique from existence to depth, speed, trust, and differentiation.",
+      "No perspective is allowed to go fully green unless the site is clearly category-leading for that user's job-to-be-done."
+    ]
+  },
+  "dimensions": [
+    "clarity_of_value_prop",
+    "trust_and_credibility",
+    "proof_and_differentiation",
+    "api_agent_usability",
+    "report_depth",
+    "news_quality",
+    "conversion_friction",
+    "enterprise_readiness",
+    "operator_signal_density",
+    "repeat_visit_reason"
+  ],
+  "personas": [
+    {
+      "id": "solo-founder",
+      "name": "Solo Founder",
+      "segment": "human buyer",
+      "voice": "results-driven, impatient, allergic to jargon",
+      "harsh_when_good": "asks why the product still feels harder than hiring a consultant"
+    },
+    {
+      "id": "ai-curious-operator",
+      "name": "AI-Curious Operator",
+      "segment": "human buyer",
+      "voice": "wants signal, not ideology",
+      "harsh_when_good": "demands clearer implementation order and less cognitive load"
+    },
+    {
+      "id": "staff-engineer",
+      "name": "Staff Engineer",
+      "segment": "technical builder",
+      "voice": "skeptical, evidence hungry, hates hand-wavy architecture",
+      "harsh_when_good": "demands benchmarks, edge cases, and failure envelopes"
+    },
+    {
+      "id": "agent-builder",
+      "name": "Agent Builder",
+      "segment": "api consumer",
+      "voice": "wants fast context, stable contracts, minimal auth friction",
+      "harsh_when_good": "demands machine-legible semantics and stronger developer ergonomics"
+    },
+    {
+      "id": "autonomous-agent",
+      "name": "Autonomous Agent Client",
+      "segment": "agent consumer",
+      "voice": "latency sensitive, schema sensitive, ruthless about missing metadata",
+      "harsh_when_good": "treats any ambiguity as a defect and asks for better self-description"
+    },
+    {
+      "id": "consultant",
+      "name": "Independent Consultant",
+      "segment": "professional buyer",
+      "voice": "commercial, practical, reuse-oriented",
+      "harsh_when_good": "asks for bundles, licensing clarity, and client-safe reuse"
+    },
+    {
+      "id": "enterprise-architect",
+      "name": "Enterprise Architect",
+      "segment": "enterprise buyer",
+      "voice": "risk-aware, governance-focused, procurement-shaped",
+      "harsh_when_good": "asks where the security, billing, and team workflows actually are"
+    },
+    {
+      "id": "ai-research-lead",
+      "name": "AI Research Lead",
+      "segment": "expert reader",
+      "voice": "methodology-first, unimpressed by vibes",
+      "harsh_when_good": "asks for sources, methods, and original insight density"
+    },
+    {
+      "id": "journalist",
+      "name": "Skeptical Journalist",
+      "segment": "external validator",
+      "voice": "asks what is real, attributable, and non-promotional",
+      "harsh_when_good": "asks who authored this, what they know, and how they know it"
+    },
+    {
+      "id": "vc-analyst",
+      "name": "VC Analyst",
+      "segment": "market observer",
+      "voice": "pattern-seeking, commercially alert, benchmark obsessed",
+      "harsh_when_good": "asks what proprietary data or distribution moat exists"
+    },
+    {
+      "id": "elon-style",
+      "name": "Elon-style First-Principles Operator",
+      "segment": "prominent-figure-inspired",
+      "voice": "cuts through narrative, asks what is technically unique and 10x better",
+      "harsh_when_good": "demands simplification, speed, and category domination"
+    },
+    {
+      "id": "sam-style",
+      "name": "Sam Altman-style Product Strategist",
+      "segment": "prominent-figure-inspired",
+      "voice": "asks whether this compounds into a platform or stalls as content",
+      "harsh_when_good": "pushes for loops, retention, and unfair learning advantages"
+    },
+    {
+      "id": "dario-style",
+      "name": "Dario-style Safety-and-Research Critic",
+      "segment": "prominent-figure-inspired",
+      "voice": "measured, serious, focused on reliability and misuse boundaries",
+      "harsh_when_good": "asks whether trust claims are operationally enforced or just stated"
+    },
+    {
+      "id": "satya-style",
+      "name": "Satya Nadella-style Platform CEO",
+      "segment": "prominent-figure-inspired",
+      "voice": "ecosystem-oriented, pragmatic, asks how this plugs into workflows",
+      "harsh_when_good": "asks whether this becomes part of daily work or just occasional reading"
+    },
+    {
+      "id": "steinberger-style",
+      "name": "Peter Steinberger-style Agent Tooling Critic",
+      "segment": "prominent-figure-inspired",
+      "voice": "developer-experience purist, detail-sensitive, cares about protocol elegance",
+      "harsh_when_good": "pushes for sharper APIs, better docs, and cleaner agent affordances"
+    },
+    {
+      "id": "security-chief",
+      "name": "Chief Information Security Officer",
+      "segment": "professional buyer",
+      "voice": "assumes breach, distrusts ambiguous trust language",
+      "harsh_when_good": "asks for explicit boundaries, logging, review controls, and auditability"
+    }
+  ]
+}

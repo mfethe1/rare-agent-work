@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import ConsultingForm from '@/components/ConsultingForm';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
+import { consultingPackages, trustControlBullets } from '@/lib/site-copy';
 
 export const metadata: Metadata = {
   title: 'Agentic System Assessment',
@@ -92,6 +93,15 @@ export default function AssessmentPage() {
                 Current stack, team size, tools, biggest failure modes, desired business outcome, budget range, and timeline.
               </p>
             </div>
+
+            <div className="rounded-2xl border border-gray-800 bg-gray-900/60 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">Trust controls</p>
+              <div className="mt-4 space-y-3 text-sm text-gray-300">
+                {trustControlBullets.map((item) => (
+                  <p key={item}>{item}</p>
+                ))}
+              </div>
+            </div>
           </aside>
 
           <section className="rounded-3xl border border-gray-800 bg-black/50 p-6 sm:p-8">
@@ -102,6 +112,16 @@ export default function AssessmentPage() {
               </p>
             </div>
             <ConsultingForm />
+
+            <div className="mt-8 grid gap-4 lg:grid-cols-3">
+              {consultingPackages.map((pkg) => (
+                <div key={pkg.name} className="rounded-2xl border border-gray-800 bg-gray-900/50 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-300">{pkg.price}</p>
+                  <h3 className="mt-2 text-base font-semibold text-white">{pkg.name}</h3>
+                  <p className="mt-2 text-sm leading-6 text-gray-400">{pkg.description}</p>
+                </div>
+              ))}
+            </div>
           </section>
         </div>
       </main>

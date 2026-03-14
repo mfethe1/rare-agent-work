@@ -68,6 +68,8 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
         description={report.subtitle}
         slug={report.slug}
         price={report.price}
+        author={report.author}
+        dateModified={report.updatedAt}
       />
       <BreadcrumbJsonLd
         items={[
@@ -146,11 +148,29 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
               <div className="rounded-3xl border border-white/10 bg-black/20 p-6">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Included in this package</p>
                 <ul className="mt-3 space-y-2 text-sm text-slate-200">
-                  <li>• Premium web report preview</li>
-                  <li>• Branded email review format</li>
-                  <li>• Citation and freshness block</li>
-                  <li>• Action steps + risk framing</li>
+                  <li>• Full preview with citations, freshness, and methodology</li>
+                  <li>• Action steps, risks, and proof points before purchase</li>
+                  <li>• Structured deliverables you can review against the price</li>
+                  <li>• Buy-one or subscribe path from the same page</li>
                 </ul>
+              </div>
+            </div>
+
+            <div className="mt-6 grid gap-4 lg:grid-cols-3">
+              <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Author</p>
+                <p className="mt-2 text-base font-semibold text-white">{report.author}</p>
+                <p className="mt-2 text-sm leading-6 text-slate-300">{report.attribution}</p>
+              </div>
+              <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Best for</p>
+                <p className="mt-2 text-sm leading-6 text-slate-200">{report.bestFor.join(' • ')}</p>
+              </div>
+              <div className="rounded-3xl border border-white/10 bg-black/20 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Buying path</p>
+                <p className="mt-2 text-sm leading-6 text-slate-200">
+                  Buy this report once, or use Operator Access if you want the full library and future updates.
+                </p>
               </div>
             </div>
 
@@ -243,6 +263,35 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           </div>
         </section>
 
+        <section className="mb-14 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
+            <h2 className="text-2xl font-bold text-white">Methodology and attribution</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-300">
+              This preview is explicit about who wrote it, what kind of evidence shaped it, and why the recommendations are framed the way they are.
+            </p>
+            <ul className="mt-5 space-y-3 text-sm leading-7 text-slate-300">
+              {report.methodology.map((item) => (
+                <li key={item} className="flex gap-3">
+                  <span className={`${c.text} mt-0.5`}>●</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
+            <h2 className="text-2xl font-bold text-white">Why this report earns attention</h2>
+            <div className="mt-5 grid gap-4">
+              {report.proofPoints.map((item, index) => (
+                <div key={item} className="rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Proof point {index + 1}</p>
+                  <p className="mt-2 text-sm leading-7 text-slate-200">{item}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="mb-14">
           <h2 className="text-2xl font-bold text-white mb-2">Sample Content</h2>
           <p className="text-gray-500 text-sm mb-6">A preview of the writing quality and depth you get in this report.</p>
@@ -269,10 +318,39 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
             ))}
           </div>
           <div className={`mt-8 border ${c.border} rounded-2xl p-6 bg-gray-900/30 text-center`}>
-            <p className="text-gray-300 mb-3">This is ~15% of the full report content.</p>
-            <a href="/reports" className={`inline-block ${c.btn} text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors`}>
-              Get the Full Report — {report.price}
-            </a>
+            <p className="text-gray-300 mb-3">This preview is enough to judge fit. Buy this report once, or step up to the full library if you will use more than one.</p>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <BuyButton label={`Buy this report — ${report.price}`} plan={report.planKey} className={`${c.btn} text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors`} />
+              <Link href="/pricing" className="inline-flex rounded-lg border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+                Compare bundles and Operator Access
+              </Link>
+            </div>
+            <p className="mt-4 text-xs text-slate-500">Best for: {report.bestFor.join(' • ')}</p>
+          </div>
+        </section>
+
+        <section className="mb-14 rounded-3xl border border-cyan-400/20 bg-cyan-400/10 p-6 sm:p-8">
+          <div className="grid gap-5 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Need more than a one-off report?</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-200">
+                Consultants use these reports as working artifacts. Enterprise teams often need the report plus a review session, governance walkthrough, or implementation rescue path.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Link href="/pricing" className="rounded-2xl border border-white/15 bg-[#07111f]/70 px-4 py-4 text-sm font-semibold text-white hover:border-cyan-300/40">
+                Compare pricing and bundles
+              </Link>
+              <Link href="/assessment" className="rounded-2xl border border-white/15 bg-[#07111f]/70 px-4 py-4 text-sm font-semibold text-white hover:border-cyan-300/40">
+                Request an operator review
+              </Link>
+              <Link href="/submit-work" className="rounded-2xl border border-white/15 bg-[#07111f]/70 px-4 py-4 text-sm font-semibold text-white hover:border-cyan-300/40">
+                Submit implementation work
+              </Link>
+              <Link href="/docs" className="rounded-2xl border border-white/15 bg-[#07111f]/70 px-4 py-4 text-sm font-semibold text-white hover:border-cyan-300/40">
+                Open public docs
+              </Link>
+            </div>
           </div>
         </section>
 

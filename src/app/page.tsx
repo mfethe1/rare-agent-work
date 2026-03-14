@@ -6,56 +6,35 @@ import { getAllReports } from '@/lib/reports';
 import SiteNav from '@/components/SiteNav';
 import BuyButton from '@/components/BuyButton';
 
-// Specific, named failure modes — real credibility signals
-const failureModes = [
+// Real production incidents — creates urgency and specificity before the product reveal
+const incidentCards = [
   {
     icon: '💣',
     title: 'The bulk-send incident',
     detail: '847 customers got the same email. CSV imported. No deduplication key. No volume cap. Automation ran as designed.',
+    report: 'agent-incident-postmortems',
   },
   {
     icon: '🔒',
     title: 'Auth cascade, 4 days silent',
     detail: 'Employee left. Service account deleted. 14 workflows failed. Error notifications sent to the deleted email. Nobody knew.',
+    report: 'agent-incident-postmortems',
   },
   {
     icon: '💸',
     title: '$47k in 72 hours',
     detail: 'One config variable not updated on prod deploy. GPT-4o instead of mini. No per-session cost ceiling. No daily alert.',
+    report: 'empirical-agent-architecture',
   },
   {
     icon: '🧹',
     title: 'MCP tool poisoning',
     detail: "Third-party MCP server's tool description contained instructions addressed to the model. Content filters didn't catch it.",
+    report: 'mcp-security',
   },
 ];
 
-// What this site explicitly is NOT — credibility through honest scope
-const notThis = [
-  'Not a vendor showcase. No sponsored content, no affiliate rankings.',
-  'Not a tutorial site. No "getting started with LangChain" basics.',
-  'Not a news aggregator. News is manually curated for operator relevance.',
-  'Not a marketplace. Consulting intake is reviewed and selective, not open-enrollment.',
-];
-
-const howItWorks = [
-  {
-    step: '01',
-    title: 'Read the full preview, free',
-    body: 'Every report ships with its executive summary, methodology, sample sections, action steps, citations, and explicit risks. If the preview doesn\'t justify the price, don\'t buy it.',
-  },
-  {
-    step: '02',
-    title: 'Buy once, keep forever',
-    body: 'One-time purchase. No subscription required. The full report unlocks instantly with access to the AI implementation guide powered by Claude.',
-  },
-  {
-    step: '03',
-    title: 'Bring hard problems to consulting',
-    body: 'When the report isn\'t enough — messy architecture, political blockers, live incidents — use the assessment path for direct human review.',
-  },
-];
-
+// Consulting services — presented after the report product is established
 const consultingServices = [
   {
     name: 'Operator Review',
@@ -65,7 +44,7 @@ const consultingServices = [
   },
   {
     name: 'Implementation Rescue',
-    time: 'Scoped engagement',
+    time: 'Scoped',
     description: 'For brittle workflows, orchestration drift, weak memory, or rollout stalls that need direct intervention.',
     href: '/assessment',
   },
@@ -85,7 +64,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#050816] font-sans text-slate-100 selection:bg-cyan-400 selection:text-slate-950">
       <WebsiteJsonLd />
 
-      {/* Background ambient glow */}
+      {/* Ambient background glows */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute left-1/2 top-[-18rem] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-cyan-500/15 blur-3xl" />
         <div className="absolute right-[-8rem] top-[30rem] h-[22rem] w-[22rem] rounded-full bg-fuchsia-500/12 blur-3xl" />
@@ -93,7 +72,6 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_34%),linear-gradient(180deg,rgba(5,8,22,0.97),rgba(3,6,18,1))]" />
       </div>
 
-      {/* ── Navigation ─────────────────────────────────────────────── */}
       <SiteNav
         newReport={newReport ? { title: newReport.title, slug: newReport.slug, price: newReport.price } : null}
         primaryCta={{ label: 'Browse Reports', href: '/reports' }}
@@ -101,22 +79,22 @@ export default function Home() {
 
       <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
 
-
-
-        {/* ── Hero ───────────────────────────────────────────────────── */}
+        {/* ── HERO ────────────────────────────────────────────────── */}
         <section className="text-center">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-cyan-300/25 bg-white/[0.05] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/90 shadow-[0_0_24px_rgba(34,211,238,0.07)]">
             <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.9)]" />
-            Production-incident research for AI agent teams
+            Operator-grade AI research for production teams
           </div>
 
           <h1 className="mx-auto mt-7 max-w-5xl text-5xl font-black tracking-tight text-white sm:text-6xl md:text-7xl lg:text-[5rem] lg:leading-[1.06]">
             Your agent works in the demo.
-            <span className="block mt-2 bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent">Here's why it breaks in production.</span>
+            <span className="block mt-2 bg-gradient-to-r from-cyan-300 via-sky-300 to-cyan-400 bg-clip-text text-transparent">
+              Here&apos;s why it breaks in production.
+            </span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300 md:text-xl">
-            5 operator reports covering MCP security, multi-agent orchestration, evaluation governance, and real post-mortems.
+            5 implementation reports covering the real failures — MCP security, multi-agent orchestration, evaluation governance, and production post-mortems.
             Every claim cited. Full preview free before you spend a dollar.
           </p>
 
@@ -140,11 +118,13 @@ export default function Home() {
           </p>
         </section>
 
-        {/* ── Trust strip ─────────────────────────────────────────── */}
+        {/* ── TRUST STRIP ─────────────────────────────────────────── */}
         <section className="mt-10">
           <div className="rounded-2xl border border-white/8 bg-white/[0.02] px-6 py-5">
             <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-between">
-              <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Why operators trust this</p>
+              <p className="shrink-0 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                Why operators trust this
+              </p>
               <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 sm:justify-end">
                 {[
                   { stat: '5', label: 'reports with full previews and citations' },
@@ -163,32 +143,44 @@ export default function Home() {
           </div>
         </section>
 
-
-        {/* ── The failure modes this solves ─────────────────────────── */}
+        {/* ── FAILURE MODES (urgency before solution) ─────────────── */}
         <section className="mt-16">
           <div className="mb-6 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">8 post-mortems. Every failure class documented in detail.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+              8 post-mortems. Every failure class documented in detail.
+            </p>
             <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
               These incidents happen to almost every team.
             </h2>
-            <p className="mt-2 text-sm text-slate-400">Real cases, exact timelines, five-layer root cause. Buy the report before your team has the same incident.</p>
+            <p className="mt-2 text-sm text-slate-400">
+              Real cases, exact timelines, five-layer root cause. Read the report before your team has the same incident.
+            </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {failureModes.map((fm) => (
-              <div key={fm.title} className="rounded-2xl border border-white/8 bg-white/[0.025] p-5">
+            {incidentCards.map((fm) => (
+              <Link
+                key={fm.title}
+                href={`/reports/${fm.report}`}
+                className="group rounded-2xl border border-white/8 bg-white/[0.025] p-5 transition-all hover:border-white/15 hover:bg-white/[0.04]"
+              >
                 <div className="mb-3 text-2xl">{fm.icon}</div>
-                <h3 className="text-sm font-bold text-white">{fm.title}</h3>
+                <h3 className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">{fm.title}</h3>
                 <p className="mt-2 text-xs leading-5 text-slate-400">{fm.detail}</p>
-              </div>
+                <p className="mt-3 text-[10px] font-semibold text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                  Read the report →
+                </p>
+              </Link>
             ))}
           </div>
         </section>
 
-        {/* ── Reports ────────────────────────────────────────────────── */}
+        {/* ── REPORTS (the product — given full prominence) ─────────── */}
         <section className="mt-16">
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Implementation reports</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">
+                Implementation reports
+              </p>
               <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
                 Pick the playbook that matches your problem.
               </h2>
@@ -203,35 +195,30 @@ export default function Home() {
 
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {reports.map((report) => {
-              const accentMap: Record<string, { card: string; price: string; cta: string; btn: string }> = {
+              const accentMap: Record<string, { card: string; price: string; btn: string }> = {
                 blue: {
                   card: 'border-blue-500/25 hover:border-blue-400/50',
                   price: 'text-blue-300 bg-blue-900/30 border border-blue-500/25',
-                  cta: 'hover:border-blue-400/40 hover:text-blue-200',
                   btn: 'bg-blue-500 hover:bg-blue-400 text-white shadow-[0_8px_24px_rgba(59,130,246,0.25)]',
                 },
                 green: {
                   card: 'border-green-500/25 hover:border-green-400/50',
                   price: 'text-green-300 bg-green-900/30 border border-green-500/25',
-                  cta: 'hover:border-green-400/40 hover:text-green-200',
                   btn: 'bg-green-500 hover:bg-green-400 text-white shadow-[0_8px_24px_rgba(34,197,94,0.25)]',
                 },
                 purple: {
                   card: 'border-purple-500/25 hover:border-purple-400/50',
                   price: 'text-purple-300 bg-purple-900/30 border border-purple-500/25',
-                  cta: 'hover:border-purple-400/40 hover:text-purple-200',
                   btn: 'bg-purple-500 hover:bg-purple-400 text-white shadow-[0_8px_24px_rgba(168,85,247,0.25)]',
                 },
                 red: {
                   card: 'border-red-500/25 hover:border-red-400/50',
                   price: 'text-red-300 bg-red-900/30 border border-red-500/25',
-                  cta: 'hover:border-red-400/40 hover:text-red-200',
                   btn: 'bg-red-500 hover:bg-red-400 text-white shadow-[0_8px_24px_rgba(239,68,68,0.25)]',
                 },
                 amber: {
                   card: 'border-amber-500/25 hover:border-amber-400/50',
                   price: 'text-amber-300 bg-amber-900/30 border border-amber-500/25',
-                  cta: 'hover:border-amber-400/40 hover:text-amber-200',
                   btn: 'bg-amber-500 hover:bg-amber-400 text-white shadow-[0_8px_24px_rgba(245,158,11,0.25)]',
                 },
               };
@@ -243,14 +230,18 @@ export default function Home() {
                   className={`group relative flex flex-col rounded-2xl border bg-white/[0.035] p-6 backdrop-blur-sm transition-all ${accent.card}`}
                 >
                   {report.isNew && (
-                    <span className="absolute right-4 top-4 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">New</span>
+                    <span className="absolute right-4 top-4 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                      New
+                    </span>
                   )}
 
                   <div className="flex items-center justify-between gap-2">
                     <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-bold ${accent.price}`}>
                       {report.price}
                     </span>
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">{report.priceLabel}</span>
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                      {report.priceLabel}
+                    </span>
                   </div>
 
                   <h3 className="mt-4 text-lg font-bold leading-snug text-white">{report.title}</h3>
@@ -258,9 +249,21 @@ export default function Home() {
 
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {report.bestFor.slice(0, 2).map((tag) => (
-                      <span key={tag} className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] text-slate-400">{tag}</span>
+                      <span key={tag} className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[10px] text-slate-400">
+                        {tag}
+                      </span>
                     ))}
                   </div>
+
+                  {/* Key takeaways — 2 bullets, the best teaser */}
+                  <ul className="mt-4 space-y-1.5">
+                    {report.keyTakeaways.slice(0, 2).map((kt) => (
+                      <li key={kt} className="flex items-start gap-2 text-xs leading-5 text-slate-400">
+                        <span className="mt-0.5 shrink-0 text-[8px] font-black text-slate-500">▸</span>
+                        {kt}
+                      </li>
+                    ))}
+                  </ul>
 
                   <div className="mt-4 rounded-xl border border-white/8 bg-black/20 px-3 py-2">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-slate-500">Reading time</p>
@@ -271,11 +274,11 @@ export default function Home() {
                     <BuyButton
                       plan={report.planKey}
                       label={`Buy — ${report.price}`}
-                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full ${accent.btn ?? 'bg-cyan-400 hover:bg-cyan-300 text-slate-950'} px-4 py-3 text-sm font-bold transition-all`}
+                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full ${accent.btn} px-4 py-3 text-sm font-bold transition-all`}
                     />
                     <Link
                       href={`/reports/${report.slug}`}
-                      className={`inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-xs font-medium text-slate-400 transition-all hover:text-white hover:bg-white/[0.08] hover:border-white/20`}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-xs font-medium text-slate-400 transition-all hover:text-white hover:bg-white/[0.08] hover:border-white/20"
                     >
                       <span>Read free preview →</span>
                     </Link>
@@ -290,11 +293,10 @@ export default function Home() {
           </p>
         </section>
 
-        {/* ── Author authority ─────────────────────────────────────── */}
+        {/* ── AUTHOR AUTHORITY ─────────────────────────────────────── */}
         <section className="mt-16">
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.025] p-8 sm:p-10 backdrop-blur-sm">
             <div className="grid gap-8 lg:grid-cols-[auto_1fr] lg:items-start lg:gap-12">
-              {/* Author identity */}
               <div className="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left lg:w-56">
                 <div className="relative h-20 w-20 overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-[0_0_32px_rgba(34,211,238,0.1)]">
                   <Image src="/logo-medallion.jpg" alt="Michael Fethe" fill className="object-cover" sizes="80px" />
@@ -312,17 +314,17 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* Substantive credibility */}
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">Why this research exists</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+                  Why this research exists
+                </p>
                 <p className="mt-3 text-base leading-8 text-slate-300">
                   The same failures kept appearing across teams shipping AI agents: auth tokens expiring silently at 3am, bulk CSV imports triggering duplicate sends to hundreds of customers, multi-agent systems that worked in staging and looped endlessly in production. The vendor documentation covered setup. Nobody covered the 72-hour window after go-live.
                 </p>
                 <p className="mt-4 text-base leading-8 text-slate-300">
-                  These reports exist for operators who are past "can I build it?" and are asking "why will this break, and how do I prevent that before it costs me?" The consulting work is for the cases where that question has a deadline or an architecture that's already in trouble.
+                  These reports exist for operators who are past &quot;can I build it?&quot; and are asking &quot;why will this break, and how do I prevent that before it costs me?&quot; The consulting work is for the cases where that question has a deadline or an architecture that&apos;s already in trouble.
                 </p>
 
-                {/* Specific claim strip */}
                 <div className="mt-6 grid gap-3 sm:grid-cols-3">
                   {[
                     { stat: '5', label: 'implementation reports', sub: 'Full previews, citations, and post-mortem depth on every topic' },
@@ -341,14 +343,30 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── How it works ───────────────────────────────────────────── */}
+        {/* ── HOW IT WORKS (report-purchase focused) ──────────────── */}
         <section className="mt-8 rounded-[2rem] border border-white/10 bg-white/[0.02] p-8 sm:p-10 backdrop-blur-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">How it works</p>
           <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
             No risk. You read before you pay.
           </h2>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {howItWorks.map((item) => (
+            {[
+              {
+                step: '01',
+                title: 'Read the full preview, free',
+                body: "Every report ships with its executive summary, methodology, sample sections, action steps, citations, and explicit risks. If the preview doesn't justify the price, don't buy it.",
+              },
+              {
+                step: '02',
+                title: 'Buy once, keep forever',
+                body: 'One-time purchase. No subscription required. The full report unlocks instantly along with the AI implementation guide powered by Claude.',
+              },
+              {
+                step: '03',
+                title: 'Ask the implementation guide',
+                body: 'Every report ships with a Claude-powered assistant trained on that report. Ask implementation questions, get platform-specific advice, and apply the research faster.',
+              },
+            ].map((item) => (
               <div key={item.step} className="flex gap-5">
                 <span className="mt-0.5 shrink-0 text-3xl font-black text-cyan-300/40">{item.step}</span>
                 <div>
@@ -360,49 +378,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── What this site is NOT ────────────────────────────────── */}
-        <section className="mt-8">
-          <div className="rounded-[2rem] border border-amber-400/15 bg-amber-500/[0.04] p-6 sm:p-8 backdrop-blur-sm">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:gap-10">
-              <div className="shrink-0">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-300">Honest scope</p>
-                <p className="mt-1.5 text-xl font-bold text-white">What this isn&apos;t.</p>
-                <p className="mt-2 max-w-xs text-sm leading-6 text-slate-400">
-                  Specificity about what we don&apos;t cover is more credible than claiming to cover everything.
-                </p>
-              </div>
-              <ul className="grid gap-3 sm:grid-cols-2 flex-1">
-                {notThis.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm leading-6 text-slate-300">
-                    <span className="mt-1 shrink-0 text-amber-400 font-bold">✗</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Newsletter CTA ─────────────────────────────────────────── */}
-        <section className="mt-8 rounded-[2rem] border border-fuchsia-400/25 bg-fuchsia-500/[0.07] p-6 sm:p-8">
-          <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Newsletter — $10/mo</p>
-              <h2 className="mt-2 text-xl font-bold text-white">The week's AI agent signal, without the noise.</h2>
-              <p className="mt-1.5 text-sm text-slate-400">
-                The same operator lens as the reports — applied to the week's AI news. No hype, no tutorials, no vendor announcements dressed up as research.
-              </p>
-            </div>
-            <Link
-              href="/pricing"
-              className="shrink-0 inline-flex rounded-full bg-fuchsia-400 px-6 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-fuchsia-300"
-            >
-              See what&apos;s included →
-            </Link>
-          </div>
-        </section>
-
-        {/* ── Consulting ─────────────────────────────────────────────── */}
+        {/* ── CONSULTING (premium upgrade, comes after product) ─────── */}
         <section className="mt-16">
           <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start">
             <div>
@@ -428,10 +404,10 @@ export default function Home() {
                 ))}
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/assessment" className="inline-flex rounded-full bg-cyan-400 px-6 py-3 text-sm font-bold text-slate-950 hover:bg-cyan-300">
+                <Link href="/assessment" className="inline-flex rounded-full bg-cyan-400 px-6 py-3 text-sm font-bold text-slate-950 hover:bg-cyan-300 transition-colors">
                   Start an Assessment
                 </Link>
-                <Link href="/book-demo" className="inline-flex rounded-full border border-white/20 bg-white/[0.06] px-6 py-3 text-sm font-semibold text-white hover:bg-white/10">
+                <Link href="/book-demo" className="inline-flex rounded-full border border-white/20 bg-white/[0.06] px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-colors">
                   Book a Strategy Call
                 </Link>
               </div>
@@ -451,7 +427,7 @@ export default function Home() {
                     </span>
                   </div>
                   <p className="mt-2 text-sm leading-6 text-slate-400">{service.description}</p>
-                  <span className="mt-3 inline-flex text-xs font-semibold text-cyan-400 group-hover:text-cyan-300">
+                  <span className="mt-3 inline-flex text-xs font-semibold text-cyan-400 group-hover:text-cyan-300 transition-colors">
                     Open this path →
                   </span>
                 </Link>
@@ -460,7 +436,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── API / Docs strip ───────────────────────────────────────── */}
+        {/* ── API / DOCS STRIP ────────────────────────────────────── */}
         <section className="mt-16 rounded-[2rem] border border-white/10 bg-white/[0.02] p-7 backdrop-blur-sm">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -471,17 +447,17 @@ export default function Home() {
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-3">
-              <Link href="/docs" className="inline-flex rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/15">
+              <Link href="/docs" className="inline-flex rounded-full bg-white/10 px-5 py-2.5 text-sm font-semibold text-white hover:bg-white/15 transition-colors">
                 Open Docs
               </Link>
-              <Link href="/api/v1/openapi.json" className="inline-flex rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white">
+              <Link href="/api/v1/openapi.json" className="inline-flex rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors">
                 OpenAPI →
               </Link>
             </div>
           </div>
         </section>
 
-        {/* ── Live news strip ────────────────────────────────────────── */}
+        {/* ── LIVE NEWS STRIP ─────────────────────────────────────── */}
         <section className="mt-8 rounded-[2rem] border border-emerald-400/20 bg-emerald-500/[0.05] p-7">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -503,7 +479,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Trust / about ──────────────────────────────────────────── */}
+        {/* ── TRUST / ABOUT (bottom of page) ──────────────────────── */}
         <section className="mt-16 grid gap-6 lg:grid-cols-2">
           <article className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-7">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">About the research</p>
@@ -512,8 +488,8 @@ export default function Home() {
               Rare Agent Work is opinionated by design — written by Michael Fethe for operators who need to know what actually breaks in production, not what vendor marketing says.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/about" className="inline-flex rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300">About</Link>
-              <Link href="/methodology" className="inline-flex rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Methodology</Link>
+              <Link href="/about" className="inline-flex rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300 transition-colors">About</Link>
+              <Link href="/methodology" className="inline-flex rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-colors">Methodology</Link>
             </div>
           </article>
 
@@ -524,13 +500,32 @@ export default function Home() {
               If you need shared report access, a governance walkthrough, or a scoped architecture review with multiple stakeholders, use the team lane.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <Link href="/enterprise" className="inline-flex rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300">Team access</Link>
-              <Link href="/assessment" className="inline-flex rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white hover:bg-white/10">Request assessment</Link>
+              <Link href="/enterprise" className="inline-flex rounded-full bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-cyan-300 transition-colors">Team access</Link>
+              <Link href="/assessment" className="inline-flex rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white hover:bg-white/10 transition-colors">Request assessment</Link>
             </div>
           </article>
         </section>
 
-        {/* ── Final CTA ──────────────────────────────────────────────── */}
+        {/* ── NEWSLETTER CTA ──────────────────────────────────────── */}
+        <section className="mt-8 rounded-[2rem] border border-fuchsia-400/25 bg-fuchsia-500/[0.07] p-6 sm:p-8">
+          <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-fuchsia-300">Newsletter — $10/mo</p>
+              <h2 className="mt-2 text-xl font-bold text-white">The week&apos;s AI agent signal, without the noise.</h2>
+              <p className="mt-1.5 text-sm text-slate-400">
+                The same operator lens as the reports — applied to the week&apos;s AI news. No hype, no tutorials, no vendor announcements dressed up as research.
+              </p>
+            </div>
+            <Link
+              href="/pricing"
+              className="shrink-0 inline-flex rounded-full bg-fuchsia-400 px-6 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-fuchsia-300"
+            >
+              See what&apos;s included →
+            </Link>
+          </div>
+        </section>
+
+        {/* ── FINAL CTA ───────────────────────────────────────────── */}
         <section className="mt-16 rounded-[2rem] border border-cyan-400/20 bg-gradient-to-br from-cyan-500/10 via-sky-600/5 to-fuchsia-600/8 p-10 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Ready to start?</p>
           <h2 className="mx-auto mt-3 max-w-2xl text-3xl font-bold text-white md:text-4xl">
@@ -557,7 +552,7 @@ export default function Home() {
 
       </main>
 
-      {/* ── Footer ─────────────────────────────────────────────────── */}
+      {/* ── FOOTER ──────────────────────────────────────────────────── */}
       <footer className="mt-16 border-t border-white/10 py-10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
@@ -573,13 +568,13 @@ export default function Home() {
               </p>
             </div>
             <nav className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-400">
-              <Link href="/reports" className="hover:text-white">Reports</Link>
-              <Link href="/news" className="hover:text-white">News</Link>
-              <Link href="/assessment" className="hover:text-white">Consulting</Link>
-              <Link href="/pricing" className="hover:text-white">Pricing</Link>
-              <Link href="/docs" className="hover:text-white">API</Link>
-              <Link href="/about" className="hover:text-white">About</Link>
-              <a href="mailto:hello@rareagent.work" className="hover:text-white">hello@rareagent.work</a>
+              <Link href="/reports" className="hover:text-white transition-colors">Reports</Link>
+              <Link href="/news" className="hover:text-white transition-colors">News</Link>
+              <Link href="/assessment" className="hover:text-white transition-colors">Consulting</Link>
+              <Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link>
+              <Link href="/docs" className="hover:text-white transition-colors">API</Link>
+              <Link href="/about" className="hover:text-white transition-colors">About</Link>
+              <a href="mailto:hello@rareagent.work" className="hover:text-white transition-colors">hello@rareagent.work</a>
             </nav>
           </div>
         </div>

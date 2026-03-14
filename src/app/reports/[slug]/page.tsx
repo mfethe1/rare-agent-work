@@ -330,16 +330,22 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                 <p className="text-sm leading-7 text-slate-200">{report.executiveSummary}</p>
               </div>
 
-              {/* Key takeaways — report-specific, replaces generic boilerplate */}
+              {/* Key takeaways — show top 3 in hero as teaser; full list below */}
               <div className="mt-5 rounded-xl border border-white/10 bg-black/20 p-5">
                 <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">What you walk away with</p>
                 <ul className="space-y-2">
-                  {report.keyTakeaways.map((kt) => (
+                  {report.keyTakeaways.slice(0, 3).map((kt) => (
                     <li key={kt} className="flex items-start gap-2.5 text-xs leading-5 text-slate-300">
                       <span className={`mt-0.5 shrink-0 text-[9px] font-black ${c.text}`}>▸</span>
                       {kt}
                     </li>
                   ))}
+                  {report.keyTakeaways.length > 3 && (
+                    <li className="flex items-start gap-2.5 text-xs leading-5 text-slate-500 italic">
+                      <span className="mt-0.5 shrink-0 text-[9px] font-black text-slate-600">▸</span>
+                      +{report.keyTakeaways.length - 3} more — visible after purchase
+                    </li>
+                  )}
                 </ul>
               </div>
 

@@ -4,9 +4,9 @@ import { getAllReports } from "@/lib/reports";
 import SiteNav from "@/components/SiteNav";
 
 export const metadata = {
-  title: "Implementation Reports",
+  title: 'AI Agent Implementation Playbooks',
   description:
-    "Operator-grade AI agent implementation playbooks. Full free preview before purchase — methodology, citations, risks, and sample content included.",
+    'Operator-grade AI agent playbooks covering MCP security, multi-agent orchestration, evaluation methodology, and production incident post-mortems. Full free preview before purchase — methodology, citations, risks, and sample content included.',
 };
 
 const colorAccent: Record<

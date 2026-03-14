@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
+import SiteNav from '@/components/SiteNav';
 
 export const metadata: Metadata = {
   title: 'Research Methodology',
@@ -36,8 +37,8 @@ const process = [
 export default function MethodologyPage() {
   return (
     <div className="min-h-screen bg-[#07111f] text-slate-100">
+      <SiteNav primaryCta={{ label: 'Browse Reports', href: '/reports' }} />
       <BreadcrumbJsonLd items={[{ name: 'Home', url: 'https://rareagent.work' }, { name: 'Methodology', url: 'https://rareagent.work/methodology' }]} />
-
       <main className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
         <section className="max-w-4xl">
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-cyan-300">Methodology</p>

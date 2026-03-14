@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BreadcrumbJsonLd } from '@/components/JsonLd';
 import { integrationPatterns, operatorProofStats, startHereRoutes } from '@/lib/site-copy';
+import SiteNav from '@/components/SiteNav';
 
 export const metadata: Metadata = {
   title: 'Start Here for Agentic Systems',
@@ -79,7 +80,7 @@ const principles = [
 
 export default function StartHerePage() {
   return (
-    <div className="min-h-screen bg-[#0d0d0d] text-gray-100">
+    <div className="min-h-screen bg-[#050816] text-gray-100">
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: 'https://rareagent.work' },
@@ -87,23 +88,9 @@ export default function StartHerePage() {
         ]}
       />
 
-      <nav className="sticky top-0 z-50 border-b border-gray-800 bg-[#0d0d0d]/90 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="text-lg font-bold tracking-tight text-orange-500">Rare Agent Work</Link>
-            <div className="hidden items-center gap-4 sm:flex">
-              <Link href="/start-here" className="text-sm font-medium text-white">Start Here</Link>
-              <Link href="/news" className="text-sm text-gray-400 hover:text-white">News Feed</Link>
-              <Link href="/docs" className="text-sm text-gray-400 hover:text-white">Docs</Link>
-              <Link href="/about" className="text-sm text-gray-400 hover:text-white">About</Link>
-              <Link href="/assessment" className="text-sm text-gray-400 hover:text-white">Assessment</Link>
-            </div>
-          </div>
-          <Link href="/assessment" className="rounded-md bg-orange-600 px-3 py-2 text-xs font-semibold text-white hover:bg-orange-700">
-            Get an assessment
-          </Link>
-        </div>
-      </nav>
+      <SiteNav
+        primaryCta={{ label: 'Start Assessment', href: '/assessment' }}
+      />
 
       <main className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
         <section className="max-w-4xl">

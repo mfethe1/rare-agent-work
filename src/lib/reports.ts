@@ -57,6 +57,12 @@ export interface Report {
    * Array index matches excerpt array index.
    */
   excerptHooks?: string[];
+  /**
+   * 3 specific yes/no questions. If a buyer answers YES to 2+, this report is exactly right.
+   * Shown just before the buy button. Honest self-qualification, not generic marketing.
+   * Must reference concrete situations, never abstract competencies.
+   */
+  readinessCheck?: string[];
 }
 
 export const reports: Record<string, Report> = {
@@ -218,6 +224,11 @@ The pattern that sustainable operators use: run every new workflow in a shadow m
       'The failure taxonomy: authentication drift, schema drift, volume surprises — with the weekly 10-minute ritual that prevents each one.',
       'Shadow mode: why 48 hours of shadow execution before go-live surfaces edge cases that 100 test runs miss.',
     ],
+    readinessCheck: [
+      'You are about to launch your first automated workflow and want to avoid the mistakes that kill automation programs in week one.',
+      'You have tried to build a workflow and hit a wall — wrong platform, no approval gates, or a confusing first incident.',
+      'You need to explain to a non-technical stakeholder why human-in-the-loop gates are not optional overhead.',
+    ],
     color: 'blue',
   },
 
@@ -372,6 +383,11 @@ Phase 3 (week 5+): Add parallel execution only after the planner-executor-review
       'Planner-executor-reviewer: the exact structured message schema for handoffs and why free-form handoffs are the #1 coordination failure cause.',
       'Migration readiness prerequisites: the three capabilities your team must have before a multi-agent system makes you faster instead of slower.',
       'The coordination failure playbook: deadlock detection patterns, loop prevention, and graceful degradation when agents produce contradictory outputs.',
+    ],
+    readinessCheck: [
+      'You have a working single-agent system and you are being asked to add more capability — parallel execution, specialized roles, or cross-workflow coordination.',
+      'Your single agent is hitting context limits, producing inconsistent results across sessions, or failing in ways that suggest memory architecture is the gap.',
+      'You need to make a defensible framework decision (CrewAI vs LangGraph vs AutoGen) with real production trade-offs, not a demo comparison.',
     ],
     color: 'green',
   },
@@ -617,6 +633,11 @@ The old model was: demonstrate a demo, provide uptime SLA, show SOC 2 certificat
       'Red team protocol: 3-day adversarial exercise design covering 8 attack surfaces, including indirect injection via retrieved content.',
       'The real cost architecture: per-session token budget controls, tool call compounding, and why a model routing layer cuts costs 40–60% versus uniform frontier model use.',
       'How enterprise procurement actually evaluates agent systems: the three gates most teams fail — reproducibility audit, incident record, and governance control evidence.',
+    ],
+    readinessCheck: [
+      'You are building or presenting an agent evaluation program and need to know if your results are statistically valid before a procurement review or board presentation.',
+      'Your team is using an LLM as a judge and you have never calibrated it against human raters — or you suspect your evaluation scores are inflated.',
+      'You have an agent going to production and need a defensible 12-item governance checklist with evidence requirements, not a generic compliance template.',
     ],
     color: 'purple',
   },
@@ -869,6 +890,11 @@ Any URL, domain, email address, or API endpoint embedded in a tool description i
       'The 10-item MCP security checklist to run before connecting any new server to a production deployment.',
       'When you suspect an MCP server is behaving maliciously: a step-by-step response protocol, phase by phase.',
       'How to read a tool description like an attacker — the five-minute audit protocol with four specific adversarial signals to scan for.',
+    ],
+    readinessCheck: [
+      'You are connecting agents to one or more MCP servers and have not formally assessed the security posture of those servers.',
+      'You need a tool trust classification system and a pre-launch security checklist you can actually run — not a theoretical threat model.',
+      'Your organization has had or is worried about prompt injection attacks, and you want a structural defense architecture rather than ad-hoc prompt hardening.',
     ],
     color: 'red',
     isNew: true,
@@ -1135,6 +1161,11 @@ Assign roles before the exercise starts: Incident Commander (the person who will
       'Incident 06: The $47k cost explosion. The three controls that would have converted catastrophe into a caught anomaly.',
       'Incident 07: The orchestration deadlock. Two agents waiting on each other — why this incident class will increase in 2026.',
       'Tabletop exercise script: the complete bulk-send scenario with facilitator notes, inject events, and debrief questions — run this with your team before the next launch.',
+    ],
+    readinessCheck: [
+      'You are about to launch an agent to production and want to run a tabletop exercise with your team before anything goes live.',
+      'You have had a production incident and need a five-layer root cause framework to close the actual systemic gap — not just the proximate fix.',
+      'You do not have a monitoring baseline (expected tool calls/session, expected cost/session, expected error rate) and need to build one before your next deployment.',
     ],
     color: 'amber',
   },

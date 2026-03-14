@@ -350,6 +350,22 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                   </div>
                 </div>
               )}
+              {/* === READINESS CHECK — 30-second self-qualification before the buy button === */}
+              {report.readinessCheck && report.readinessCheck.length > 0 && (
+                <div className="mt-5 rounded-xl border border-white/8 bg-black/20 px-5 py-4">
+                  <p className={`mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500`}>
+                    This report is right for you if any of these are true
+                  </p>
+                  <ul className="space-y-2">
+                    {report.readinessCheck.map((check, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5 text-xs leading-5 text-slate-300">
+                        <span className={`mt-0.5 shrink-0 text-emerald-400 font-bold`}>✓</span>
+                        {check}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               {/* Primary CTA block — the sentinel for StickyBuyBar lives right below this */}
               <div className="mt-7 space-y-3">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -588,13 +604,26 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                         </span>
                       </div>
                     </div>
-                    {/* Blurred prose ghost — confirms real content, creates desire */}
-                    <div className="px-6 py-4 relative overflow-hidden select-none" aria-hidden>
-                      <div className="rounded-lg border border-white/5 bg-black/20 p-4 overflow-hidden">
-                        <p className="text-xs leading-6 text-slate-500 blur-[3px] pointer-events-none">
-                          {section.body.slice(0, 320).replace(/\*\*/g, '')}...
+                    {/* Precision value preview — shows exactly what's inside without giving it away */}
+                    <div className="px-6 py-4">
+                      <div className="rounded-xl border border-white/8 bg-black/25 p-4">
+                        {/* Opening claim — first complete sentence only, no blur */}
+                        <p className="text-xs leading-6 text-slate-400 mb-3">
+                          {(() => {
+                            // Extract first complete sentence from body
+                            const clean = section.body.replace(/\*\*/g, '').replace(/\n/g, ' ').trim();
+                            const sentenceEnd = clean.search(/[.!?]\s/);
+                            return sentenceEnd > 0 && sentenceEnd < 280
+                              ? clean.slice(0, sentenceEnd + 1)
+                              : clean.slice(0, 200) + '…';
+                          })()}
                         </p>
-                        <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[#020617] to-transparent" />
+                        {/* Locked indicator */}
+                        <div className="flex items-center gap-2 pt-2 border-t border-white/8">
+                          <span className="text-[10px] text-slate-600">Full section</span>
+                          <span className="flex-1 h-px bg-white/5" />
+                          <span className={`text-[10px] font-bold ${c.text}`}>unlocks with purchase →</span>
+                        </div>
                       </div>
                     </div>
                     {/* CTA at bottom of locked section */}

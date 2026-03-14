@@ -4,6 +4,8 @@ import { getAllNews } from '@/lib/news-store';
 import { getAllReports } from '@/lib/reports';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { validateRequest, askSchema } from '@/lib/api-validation';
+import { sanitizeError } from '@/lib/api-errors';
 
 /**
  * NLWeb-compatible /ask endpoint

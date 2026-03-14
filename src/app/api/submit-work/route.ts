@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { submitWorkSchema, validateRequest } from '@/lib/api-validation';
 
 export const runtime = 'nodejs';
 
 const DESTINATION_EMAIL = 'Michael.fethe@protelynx.ai';
-const allowedRequestTypes = new Set([
-  'Architecture Review',
-  'Implementation Rescue',
-  'Curated Specialist Match',
-]);
 
 function escapeHtml(value: string) {
   return value
@@ -19,45 +15,18 @@ function escapeHtml(value: string) {
 }
 
 export async function POST(req: NextRequest) {
-  let body: Record<string, unknown>;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
-  }
+  const validation = await validateRequest(req, submitWorkSchema);
+  if (!validation.success) return validation.response;
 
-  const requestType = String(body.requestType || '').trim();
-  const name = String(body.name || '').trim();
-  const email = String(body.email || '').trim();
-  const company = String(body.company || '').trim() || 'Not provided';
-  const projectTitle = String(body.projectTitle || '').trim();
-  const currentState = String(body.currentState || '').trim();
-  const desiredOutcome = String(body.desiredOutcome || '').trim();
-  const constraints = String(body.constraints || '').trim() || 'Not provided';
-  const timeline = String(body.timeline || '').trim() || 'Not provided';
-  const budgetBand = String(body.budgetBand || '').trim() || 'Not provided';
-  const sensitivity = String(body.sensitivity || '').trim() || 'Not provided';
-  const links = String(body.links || '').trim() || 'Not provided';
-  const website = String(body.website || '').trim();
-  const confirmsNoCredentials = body.confirmsNoCredentials === true;
-  const confirmsHumanReview = body.confirmsHumanReview === true;
-  const confirmsNoAutoExecution = body.confirmsNoAutoExecution === true;
-  const agreesRetention = body.agreesRetention === true;
+  const {
+    requestType, name, email, company, projectTitle,
+    currentState, desiredOutcome, constraints, timeline,
+    budgetBand, sensitivity, links, website,
+  } = validation.data;
 
+  // Honeypot field — bots fill this in, humans don't
   if (website) {
     return NextResponse.json({ error: 'Spam detected.' }, { status: 400 });
-  }
-
-  if (!allowedRequestTypes.has(requestType)) {
-    return NextResponse.json({ error: 'Invalid request type.' }, { status: 400 });
-  }
-
-  if (!name || !email || !projectTitle || !currentState || !desiredOutcome) {
-    return NextResponse.json({ error: 'Request type, name, email, project title, current state, and desired outcome are required.' }, { status: 400 });
-  }
-
-  if (!confirmsNoCredentials || !confirmsHumanReview || !confirmsNoAutoExecution || !agreesRetention) {
-    return NextResponse.json({ error: 'All trust and consent confirmations are required.' }, { status: 400 });
   }
 
   const resendKey = process.env.RESEND_API_KEY;

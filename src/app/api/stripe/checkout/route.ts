@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { safeErrorBody } from "@/lib/api-errors";
+import { validateRequest, stripeCheckoutSchema } from "@/lib/api-validation";
 
 export const runtime = "nodejs";
 
@@ -97,19 +98,11 @@ export async function POST(req: NextRequest) {
     apiVersion: "2026-02-25.clover" as Stripe.LatestApiVersion,
   });
 
-  let body: { plan: string };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
-  }
+  const parsed = await validateRequest(req, stripeCheckoutSchema);
+  if (!parsed.success) return parsed.response;
 
-  const planKey = body.plan as PlanKey;
+  const planKey = parsed.data.plan;
   const plan = PLANS[planKey];
-
-  if (!plan) {
-    return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
-  }
 
   const baseUrl =
     process.env.NEXT_PUBLIC_BASE_URL ||

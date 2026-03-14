@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { consultingSchema, validateRequest } from '@/lib/api-validation';
 
 export const runtime = 'nodejs';
 
@@ -14,31 +15,10 @@ function escapeHtml(value: string) {
 }
 
 export async function POST(req: NextRequest) {
-  let body: {
-    name?: string;
-    email?: string;
-    company?: string;
-    useCase?: string;
-    budget?: string;
-    timeline?: string;
-  };
+  const validation = await validateRequest(req, consultingSchema);
+  if (!validation.success) return validation.response;
 
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
-  }
-
-  const name = body.name?.trim() || '';
-  const email = body.email?.trim() || '';
-  const company = body.company?.trim() || 'Not provided';
-  const useCase = body.useCase?.trim() || '';
-  const budget = body.budget?.trim() || 'Not provided';
-  const timeline = body.timeline?.trim() || 'Not provided';
-
-  if (!name || !email || !useCase) {
-    return NextResponse.json({ error: 'Name, email, and project details are required.' }, { status: 400 });
-  }
+  const { name, email, company, useCase, budget, timeline } = validation.data;
 
   const resendKey = process.env.RESEND_API_KEY;
   if (!resendKey) {

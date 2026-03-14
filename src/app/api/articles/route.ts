@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createServiceClient } from '@supabase/supabase-js';
 import { safeErrorBody } from '@/lib/api-errors';
+import { articleSchema, validateRequest } from '@/lib/api-validation';
 
 const MAX_AGE_DAYS = 14;
 
@@ -16,20 +17,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { url, title, summary, source, tags, published_at } = body;
+  const validation = await validateRequest(request, articleSchema);
+  if (!validation.success) return validation.response;
 
-  if (!url || !title) {
-    return NextResponse.json({ error: 'url and title are required' }, { status: 400 });
-  }
-
-  // HARD GATE: published_at is REQUIRED — no date = no ingest
-  if (!published_at) {
-    return NextResponse.json(
-      { error: 'published_at is required. We do not accept undated articles.' },
-      { status: 400 }
-    );
-  }
+  const { url, title, summary, source, tags, published_at } = validation.data;
 
   const pubDate = new Date(published_at);
   if (isNaN(pubDate.getTime())) {

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
 import { createClient as createSupabaseServerClient } from '@/lib/supabase/server';
 import { checkCostGate, calculateModelCost } from '@/lib/cost-gate';
+import { chatSchema, validateRequest } from '@/lib/api-validation';
 
 export const runtime = 'nodejs';
 
@@ -373,12 +374,11 @@ export async function POST(req: NextRequest) {
   const user = await getAuthenticatedUser();
   const db = getSupabaseAdmin();
 
-  let body: { messages: Array<{ role: string; content: string }>; reportSlug?: string; model?: string };
-  try {
-    body = await req.json();
-  } catch {
-    return new Response(JSON.stringify({ error: 'Invalid request.' }), { status: 400 });
-  }
+  // Validate request body: messages array (bounded size, valid roles, content length),
+  // model selection, and reportSlug
+  const validation = await validateRequest(req, chatSchema);
+  if (!validation.success) return validation.response;
+  const body = validation.data;
 
   const previewCookieUsed = req.cookies?.get?.('rareagent_preview_chat_used')?.value === '1';
   const previewEligible = !user && !!body.reportSlug && !previewCookieUsed;

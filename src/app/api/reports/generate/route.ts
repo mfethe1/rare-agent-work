@@ -9,6 +9,7 @@ import {
 } from '@/lib/research-pipeline';
 import { stripMarkdown, hasMarkdownArtifacts } from '@/lib/premium-content';
 import { sanitizeError } from '@/lib/api-errors';
+import { reportGenerateSchema, validateRequest } from '@/lib/api-validation';
 
 export const runtime = 'nodejs';
 export const maxDuration = 300; // 5 min max for report generation
@@ -165,15 +166,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  let body: { topic?: string; reportType?: string };
-  try {
-    body = await req.json();
-  } catch {
-    body = {};
-  }
+  const validation = await validateRequest(req, reportGenerateSchema);
+  if (!validation.success) return validation.response;
 
-  const topic = body.topic || 'AI agents multi-agent systems LLM production deployment';
-  const reportType = body.reportType || 'deep-intelligence';
+  const topic = validation.data.topic || 'AI agents multi-agent systems LLM production deployment';
+  const reportType = validation.data.reportType || 'deep-intelligence';
   const db = getDb();
 
   // Cost gate for system-level pipeline

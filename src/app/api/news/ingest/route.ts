@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ingestNews } from '@/lib/news-store';
+import { newsIngestSchema, validateRequest } from '@/lib/api-validation';
+import { sanitizeError } from '@/lib/api-errors';
 
 export async function POST(request: NextRequest) {
   const apiKey = process.env.INGEST_API_KEY;
@@ -13,15 +15,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const body = await request.json();
-    const items = Array.isArray(body) ? body : body.items;
-    if (!Array.isArray(items) || items.length === 0) {
-      return NextResponse.json({ error: 'No items provided' }, { status: 400 });
-    }
+    const validation = await validateRequest(request, newsIngestSchema);
+    if (!validation.success) return validation.response;
 
+    const items = Array.isArray(validation.data) ? validation.data : validation.data.items;
     const result = await ingestNews(items);
     return NextResponse.json({ ok: true, ...result });
   } catch (err) {
-    return NextResponse.json({ error: 'Invalid payload', details: String(err) }, { status: 400 });
+    // Never leak raw error details to the client
+    const safeMessage = sanitizeError(err, 'validation', 'POST /api/news/ingest');
+    return NextResponse.json({ error: safeMessage }, { status: 400 });
   }
 }

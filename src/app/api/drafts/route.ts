@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { safeErrorBody } from '@/lib/api-errors';
+import { validateRequest, draftCreateSchema, draftPatchSchema } from '@/lib/api-validation';
 
 function getAdmin() {
   return createClient(
@@ -30,12 +31,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const body = await request.json();
-  const { slug, title, content, version, changes_summary, created_by } = body;
+  const parsed = await validateRequest(request, draftCreateSchema);
+  if (!parsed.success) return parsed.response;
 
-  if (!slug || !title || !content) {
-    return NextResponse.json({ error: 'slug, title, content required' }, { status: 400 });
-  }
+  const { slug, title, content, version, changes_summary, created_by } = parsed.data;
 
   const supabase = getAdmin();
   const { data, error } = await supabase
@@ -44,9 +43,9 @@ export async function POST(request: NextRequest) {
       slug,
       title,
       content,
-      version: version || 'v1.0',
+      version,
       changes_summary: changes_summary || null,
-      created_by: created_by || 'agent',
+      created_by,
       status: 'pending',
     })
     .select()
@@ -85,12 +84,10 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: 'Owner access only' }, { status: 403 });
   }
 
-  const body = await request.json();
-  const { id, status, reviewer_notes } = body;
+  const parsed = await validateRequest(request, draftPatchSchema);
+  if (!parsed.success) return parsed.response;
 
-  if (!id || !['approved', 'rejected'].includes(status)) {
-    return NextResponse.json({ error: 'id and status (approved|rejected) required' }, { status: 400 });
-  }
+  const { id, status, reviewer_notes } = parsed.data;
 
   const supabase = getAdmin();
   const { data, error } = await supabase

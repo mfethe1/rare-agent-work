@@ -80,7 +80,7 @@ export const agentCard: AgentCard = {
   documentation_url: `${siteUrl}/api/v1/openapi.json`,
   capabilities: {
     streaming: false,
-    push_notifications: false,
+    push_notifications: true,
     extended_agent_card: true,
     extensions: [
       {
@@ -98,6 +98,25 @@ export const agentCard: AgentCard = {
           rss: `${siteUrl}/feed.xml`,
           trust_controls: `${siteUrl}/trust`,
           docs: `${siteUrl}/docs`,
+        },
+      },
+      {
+        uri: `${siteUrl}/extensions/a2a-webhooks/v1`,
+        description:
+          'Event-driven webhook subscriptions: agents subscribe to platform events (task lifecycle, content updates, agent network changes) and receive HMAC-signed HTTP callbacks.',
+        required: false,
+        params: {
+          subscriptions: `${siteUrl}/api/a2a/subscriptions`,
+          supported_events: [
+            'task.completed', 'task.failed', 'task.assigned',
+            'agent.registered', 'agent.deactivated',
+            'news.published', 'digest.published',
+            'capability.added',
+          ],
+          wildcard_patterns: ['task.*', 'agent.*', 'news.*', 'digest.*', 'capability.*', '*'],
+          signature_algorithm: 'HMAC-SHA256',
+          signature_header: 'X-Webhook-Signature',
+          retry_policy: { max_attempts: 6, backoff: 'exponential', delays: '30s,2m,10m,1h,6h' },
         },
       },
     ],
@@ -213,6 +232,21 @@ export const agentCard: AgentCard = {
       output_modes: ['application/json'],
       security_requirements: [],
     },
+    {
+      id: 'a2a-webhook-subscribe',
+      name: 'Subscribe to platform events',
+      description:
+        'Create webhook subscriptions to receive HMAC-signed push notifications for task lifecycle events, content updates, and agent network changes. Supports event patterns and wildcard subscriptions.',
+      tags: ['a2a', 'webhooks', 'events', 'push', 'subscription'],
+      examples: [
+        'Subscribe to all task.* events to track task completions and failures.',
+        'Get notified when new agents register with a specific capability.',
+        'Receive push notifications when news is published.',
+      ],
+      input_modes: ['application/json'],
+      output_modes: ['application/json'],
+      security_requirements: [{ agent_api_key: [] }],
+    },
   ],
   icon_url: `${siteUrl}/globe.svg`,
 };
@@ -273,6 +307,12 @@ export const legacyAgentManifest = {
       description: 'Submit structured tasks with typed intents.',
       endpoint: '/api/a2a/tasks',
       method: 'POST',
+      auth: 'Bearer agent_api_key',
+    },
+    a2a_webhooks: {
+      description: 'Event-driven webhook subscriptions for push notifications on task lifecycle, content, and agent events.',
+      endpoint: '/api/a2a/subscriptions',
+      methods: ['POST', 'GET', 'DELETE'],
       auth: 'Bearer agent_api_key',
     },
     a2a_capabilities: {

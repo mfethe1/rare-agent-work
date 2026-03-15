@@ -18,6 +18,11 @@ export async function GET() {
       submit_task: { method: 'POST', path: '/api/a2a/tasks', auth: 'Bearer <agent_api_key>' },
       task_status: { method: 'GET', path: '/api/a2a/tasks/:id', auth: 'Bearer <agent_api_key>' },
       capabilities: { method: 'GET', path: '/api/a2a/capabilities' },
+      webhooks: {
+        create: { method: 'POST', path: '/api/a2a/subscriptions', auth: 'Bearer <agent_api_key>' },
+        list: { method: 'GET', path: '/api/a2a/subscriptions', auth: 'Bearer <agent_api_key>' },
+        delete: { method: 'DELETE', path: '/api/a2a/subscriptions?id=<uuid>', auth: 'Bearer <agent_api_key>' },
+      },
     },
     supported_intents: intents.map((i) => ({
       intent: i.intent,

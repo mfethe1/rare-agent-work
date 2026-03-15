@@ -10,6 +10,7 @@ import {
   IntentNotFoundError,
 } from '@/lib/a2a';
 import type { TaskSubmitResponse } from '@/lib/a2a';
+import { emitEvent } from '@/lib/a2a/webhooks';
 
 /**
  * POST /api/a2a/tasks — Submit a task to the platform.
@@ -93,6 +94,15 @@ export async function POST(request: Request) {
           .update({ status: 'completed', result })
           .eq('id', task.id);
 
+        // Emit task.completed event (fire-and-forget)
+        emitEvent('task.completed', {
+          task_id: task.id,
+          intent,
+          sender_agent_id: agent.id,
+          priority,
+          correlation_id: correlation_id ?? null,
+        });
+
         const response: TaskSubmitResponse = {
           task_id: task.id,
           status: 'completed',
@@ -113,6 +123,15 @@ export async function POST(request: Request) {
 
         console.error('[A2A] Task execution failed:', task.id, execErr);
 
+        // Emit task.failed event (fire-and-forget)
+        emitEvent('task.failed', {
+          task_id: task.id,
+          intent,
+          sender_agent_id: agent.id,
+          error_code: errorPayload.code,
+          correlation_id: correlation_id ?? null,
+        });
+
         const response: TaskSubmitResponse = {
           task_id: task.id,
           status: 'failed',
@@ -124,7 +143,24 @@ export async function POST(request: Request) {
       }
     }
 
-    // For agent-targeted tasks, return submitted status (async processing)
+    // For agent-targeted tasks, emit task.assigned to the target agent
+    if (target_agent_id) {
+      emitEvent(
+        'task.assigned',
+        {
+          task_id: task.id,
+          intent,
+          sender_agent_id: agent.id,
+          target_agent_id,
+          priority,
+          input,
+          correlation_id: correlation_id ?? null,
+          status_url: statusUrl,
+        },
+        target_agent_id, // Only notify the target agent
+      );
+    }
+
     const response: TaskSubmitResponse = {
       task_id: task.id,
       status: 'accepted',

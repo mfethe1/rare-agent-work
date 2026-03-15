@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import { listPlatformIntents } from '@/lib/a2a';
 import { getServiceDb } from '@/lib/a2a';
+import { ALL_EVENT_TYPES, EVENT_DOMAINS } from '@/lib/a2a/webhooks';
 
 /**
  * GET /api/a2a/capabilities — Discover platform capabilities.
  *
- * Public endpoint (no auth required). Lists all supported task intents
- * and their input schemas so agents can self-configure.
+ * Public endpoint (no auth required). Lists all supported task intents,
+ * webhook event types, and their input schemas so agents can self-configure.
  */
 export async function GET() {
   const intents = listPlatformIntents();
@@ -26,6 +27,20 @@ export async function GET() {
     platform: 'rareagent.work',
     version: '1.0.0',
     intents,
+    webhooks: {
+      description: 'Subscribe to platform events and receive HMAC-signed HTTP callbacks.',
+      subscription_endpoint: '/api/a2a/subscriptions',
+      event_types: ALL_EVENT_TYPES,
+      wildcard_domains: EVENT_DOMAINS,
+      signature_algorithm: 'HMAC-SHA256',
+      signature_header: 'X-Webhook-Signature',
+      max_subscriptions_per_agent: 10,
+      retry_policy: {
+        max_attempts: 6,
+        backoff: 'exponential',
+        delays_seconds: [30, 120, 600, 3600, 21600],
+      },
+    },
     registered_agents: registeredAgents,
   }, {
     headers: {

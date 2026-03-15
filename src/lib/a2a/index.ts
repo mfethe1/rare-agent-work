@@ -336,6 +336,35 @@ export type {
   AuctionAwardInput,
 } from './auctions';
 
+// ── Delegation (Scoped Authorization) ──
+export {
+  createDelegation,
+  listDelegations,
+  checkAuthorization,
+  recordDelegatedSpend,
+  revokeDelegation,
+  queryDelegationAudit,
+  delegationCreateSchema,
+  delegationListSchema,
+  delegationCheckSchema,
+} from './delegation';
+export type {
+  AuthorizationResult,
+  DelegationStatus,
+  DelegatableAction,
+  AgentDelegation,
+  DelegationAuditEntry,
+  DelegationCreateRequest,
+  DelegationCreateResponse,
+  DelegationListResponse,
+  DelegationRevokeResponse,
+  DelegationCheckRequest,
+  DelegationCheckResponse,
+  DelegationCreateInput,
+  DelegationListInput,
+  DelegationCheckInput,
+} from './delegation';
+
 // ── Observability (Distributed Tracing & Metrics) ──
 export {
   generateTraceId,

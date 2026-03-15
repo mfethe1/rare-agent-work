@@ -65,6 +65,13 @@ export async function GET() {
         cancel: { method: 'POST', path: '/api/a2a/auctions/:id/cancel', auth: 'Bearer <agent_api_key>', description: 'Cancel an open auction and refund escrow' },
         withdraw: { method: 'POST', path: '/api/a2a/auctions/:id/withdraw', auth: 'Bearer <agent_api_key>', description: 'Withdraw your bid from an auction' },
       },
+      delegations: {
+        create: { method: 'POST', path: '/api/a2a/delegations', auth: 'Bearer <agent_api_key>', description: 'Grant scoped, time-bounded permissions to another agent' },
+        list: { method: 'GET', path: '/api/a2a/delegations', auth: 'Bearer <agent_api_key>', description: 'List delegations (as grantor or delegate)' },
+        revoke: { method: 'POST', path: '/api/a2a/delegations/:id/revoke', auth: 'Bearer <agent_api_key>', description: 'Revoke a delegation (cascades to sub-delegations)' },
+        check: { method: 'POST', path: '/api/a2a/delegations/check', auth: 'Bearer <agent_api_key>', description: 'Check if a delegated action is authorized' },
+        audit: { method: 'GET', path: '/api/a2a/delegations/audit', auth: 'Bearer <agent_api_key>', description: 'Query delegation authorization audit log' },
+      },
     },
     supported_intents: intents.map((i) => ({
       intent: i.intent,

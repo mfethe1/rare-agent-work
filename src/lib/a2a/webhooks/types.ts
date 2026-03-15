@@ -29,7 +29,9 @@ export type WebhookEventType =
   | 'news.published'
   | 'digest.published'
   // Capability changes
-  | 'capability.added';
+  | 'capability.added'
+  // Context store — emitted when agents persist shared knowledge
+  | 'context.stored';
 
 /** Wildcard patterns agents can subscribe to (e.g., "task.*"). */
 export type SubscriptionPattern = WebhookEventType | `${string}.*` | '*';
@@ -44,10 +46,11 @@ export const ALL_EVENT_TYPES: WebhookEventType[] = [
   'news.published',
   'digest.published',
   'capability.added',
+  'context.stored',
 ];
 
 /** Event domain prefixes that support wildcard subscriptions. */
-export const EVENT_DOMAINS = ['task', 'agent', 'news', 'digest', 'capability'] as const;
+export const EVENT_DOMAINS = ['task', 'agent', 'news', 'digest', 'capability', 'context'] as const;
 
 // ──────────────────────────────────────────────
 // Webhook Subscription

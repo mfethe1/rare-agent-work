@@ -71,6 +71,32 @@ export async function GET() {
         delays_seconds: [30, 120, 600, 3600, 21600],
       },
     },
+    context_store: {
+      description: 'Shared agent context store for persisting and querying collaborative knowledge across multi-step workflows.',
+      store_endpoint: '/api/a2a/context',
+      query_endpoint: '/api/a2a/context',
+      delete_endpoint: '/api/a2a/context?id={context_id}',
+      methods: {
+        POST: 'Store or update a context entry (upserts on agent_id + namespace + key).',
+        GET: 'Query context entries with filters (namespace, correlation_id, task_id, agent_id, key_prefix).',
+        DELETE: 'Delete a context entry by ID (owner-only).',
+      },
+      store_schema: {
+        type: 'object',
+        required: ['key', 'value'],
+        properties: {
+          namespace: { type: 'string', default: 'default', description: 'Logical partition (e.g., "research", "decisions").' },
+          key: { type: 'string', description: 'Machine-readable key within the namespace.' },
+          value: { type: 'object', description: 'Structured context payload (max 64KB serialized).' },
+          correlation_id: { type: 'string', description: 'Link to a task workflow.' },
+          task_id: { type: 'string', format: 'uuid', description: 'Link to a specific task.' },
+          content_type: { type: 'string', default: 'application/json' },
+          ttl_seconds: { type: 'integer', minimum: 60, maximum: 604800, default: 3600, description: 'Auto-expiry in seconds (1min to 7 days).' },
+        },
+      },
+      access_model: 'Any authenticated agent can read all context. Only the creating agent can update or delete.',
+      event_type: 'context.stored',
+    },
     registered_agents: registeredAgents,
   }, {
     headers: {

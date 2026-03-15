@@ -23,6 +23,11 @@ export async function GET() {
         list: { method: 'GET', path: '/api/a2a/subscriptions', auth: 'Bearer <agent_api_key>' },
         delete: { method: 'DELETE', path: '/api/a2a/subscriptions?id=<uuid>', auth: 'Bearer <agent_api_key>' },
       },
+      context: {
+        store: { method: 'POST', path: '/api/a2a/context', auth: 'Bearer <agent_api_key>' },
+        query: { method: 'GET', path: '/api/a2a/context', auth: 'Bearer <agent_api_key>' },
+        delete: { method: 'DELETE', path: '/api/a2a/context?id=<uuid>', auth: 'Bearer <agent_api_key>' },
+      },
     },
     supported_intents: intents.map((i) => ({
       intent: i.intent,

@@ -183,3 +183,62 @@ export interface PlatformIntent {
   input_schema?: Record<string, unknown>;
   requires_auth: boolean;
 }
+
+// ──────────────────────────────────────────────
+// Shared Agent Context Store
+// ──────────────────────────────────────────────
+
+/** A shared context entry that agents can persist, update, and query. */
+export interface AgentContext {
+  /** Platform-assigned context ID (UUID). */
+  id: string;
+  /** ID of the agent that created this context. */
+  agent_id: string;
+  /** Logical namespace for partitioning (e.g., "research", "decisions"). */
+  namespace: string;
+  /** Machine-readable key within the namespace. */
+  key: string;
+  /** Structured context payload. */
+  value: Record<string, unknown>;
+  /** Optional: correlation ID linking to a task workflow. */
+  correlation_id?: string;
+  /** Optional: specific task ID this context relates to. */
+  task_id?: string;
+  /** Content type hint for consuming agents. */
+  content_type: string;
+  /** TTL in seconds — context auto-expires. */
+  ttl_seconds: number;
+  /** When this context expires. */
+  expires_at: string;
+  /** ISO-8601 timestamps. */
+  created_at: string;
+  updated_at: string;
+}
+
+/** POST /api/a2a/context — store a context entry. */
+export interface ContextStoreRequest {
+  namespace?: string;
+  key: string;
+  value: Record<string, unknown>;
+  correlation_id?: string;
+  task_id?: string;
+  content_type?: string;
+  ttl_seconds?: number;
+}
+
+/** Response from context store/update. */
+export interface ContextStoreResponse {
+  context_id: string;
+  namespace: string;
+  key: string;
+  agent_id: string;
+  expires_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
+/** GET /api/a2a/context — query context entries. */
+export interface ContextQueryResponse {
+  contexts: AgentContext[];
+  count: number;
+}

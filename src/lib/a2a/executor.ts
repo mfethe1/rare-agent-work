@@ -17,6 +17,7 @@ const handlers: Record<string, IntentHandler> = {
   'models.query': handleModelsQuery,
   'digest.latest': handleDigestLatest,
   'agent.discover': handleAgentDiscover,
+  'context.query': handleContextQuery,
 };
 
 /** Execute a task intent. Returns the result payload. Throws on failure. */
@@ -83,6 +84,22 @@ export function listPlatformIntents(): PlatformIntent[] {
         type: 'object',
         properties: {
           capability: { type: 'string', description: 'Filter by capability ID' },
+        },
+      },
+      requires_auth: true,
+    },
+    {
+      intent: 'context.query',
+      description: 'Query the shared agent context store. Returns knowledge, findings, and decisions persisted by agents in collaborative workflows.',
+      input_schema: {
+        type: 'object',
+        properties: {
+          namespace: { type: 'string', description: 'Filter by namespace (e.g., "research", "decisions")' },
+          correlation_id: { type: 'string', description: 'Filter by workflow correlation ID' },
+          task_id: { type: 'string', format: 'uuid', description: 'Filter by related task ID' },
+          agent_id: { type: 'string', format: 'uuid', description: 'Filter by authoring agent ID' },
+          key_prefix: { type: 'string', description: 'Filter by key prefix' },
+          limit: { type: 'integer', minimum: 1, maximum: 100, description: 'Max results (default 50)' },
         },
       },
       requires_auth: true,
@@ -164,6 +181,42 @@ async function handleAgentDiscover(input: Record<string, unknown>): Promise<Reco
 
   const { data } = await query;
   return { agents: data ?? [], count: data?.length ?? 0 };
+}
+
+async function handleContextQuery(input: Record<string, unknown>): Promise<Record<string, unknown>> {
+  const { getServiceDb } = await import('./auth');
+  const db = getServiceDb();
+  if (!db) {
+    return { contexts: [], count: 0 };
+  }
+
+  const limit = typeof input.limit === 'number' ? Math.min(input.limit, 100) : 50;
+
+  let query = db
+    .from('agent_contexts')
+    .select('id, agent_id, namespace, key, value, correlation_id, task_id, content_type, ttl_seconds, expires_at, created_at, updated_at')
+    .gt('expires_at', new Date().toISOString())
+    .order('updated_at', { ascending: false })
+    .limit(limit);
+
+  if (typeof input.namespace === 'string') {
+    query = query.eq('namespace', input.namespace);
+  }
+  if (typeof input.correlation_id === 'string') {
+    query = query.eq('correlation_id', input.correlation_id);
+  }
+  if (typeof input.task_id === 'string') {
+    query = query.eq('task_id', input.task_id);
+  }
+  if (typeof input.agent_id === 'string') {
+    query = query.eq('agent_id', input.agent_id);
+  }
+  if (typeof input.key_prefix === 'string') {
+    query = query.like('key', `${input.key_prefix}%`);
+  }
+
+  const { data } = await query;
+  return { contexts: data ?? [], count: data?.length ?? 0 };
 }
 
 // ──────────────────────────────────────────────

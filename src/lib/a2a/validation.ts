@@ -81,3 +81,50 @@ export const VALID_STATUS_TRANSITIONS: Record<string, string[]> = {
   accepted: ['in_progress', 'completed', 'failed'],
   in_progress: ['completed', 'failed'],
 };
+
+// ──────────────────────────────────────────────
+// Context Store — POST /api/a2a/context
+// ──────────────────────────────────────────────
+
+export const contextStoreSchema = z.object({
+  /** Logical namespace for partitioning. */
+  namespace: trimmed(128).min(1).default('default'),
+  /** Machine-readable key within the namespace. */
+  key: trimmed(256).min(1, 'Context key is required'),
+  /** Structured context payload. */
+  value: z.record(z.string(), z.unknown()).refine(
+    (v) => JSON.stringify(v).length <= 65536,
+    { message: 'Context value must be under 64KB when serialized' },
+  ),
+  /** Optional: link to a task workflow. */
+  correlation_id: trimmed(256).optional(),
+  /** Optional: link to a specific task. */
+  task_id: z.string().uuid().optional(),
+  /** Content type hint. */
+  content_type: trimmed(128).default('application/json'),
+  /** TTL in seconds (1 minute to 7 days). */
+  ttl_seconds: z.number().int().min(60).max(604800).default(3600),
+});
+
+export type ContextStoreInput = z.infer<typeof contextStoreSchema>;
+
+// ──────────────────────────────────────────────
+// Context Query — GET /api/a2a/context
+// ──────────────────────────────────────────────
+
+export const contextQuerySchema = z.object({
+  /** Filter by namespace. */
+  namespace: trimmed(128).optional(),
+  /** Filter by correlation_id. */
+  correlation_id: trimmed(256).optional(),
+  /** Filter by task_id. */
+  task_id: z.string().uuid().optional(),
+  /** Filter by agent_id (defaults to all agents). */
+  agent_id: z.string().uuid().optional(),
+  /** Filter by key prefix. */
+  key_prefix: trimmed(256).optional(),
+  /** Max results (1-100). */
+  limit: z.number().int().min(1).max(100).default(50),
+});
+
+export type ContextQueryInput = z.infer<typeof contextQuerySchema>;

@@ -16,8 +16,20 @@ export type {
   TaskStatusResponse,
   CapabilitiesResponse,
   PlatformIntent,
+  AgentContext,
+  ContextStoreRequest,
+  ContextStoreResponse,
+  ContextQueryResponse,
 } from './types';
 
 export { authenticateAgent, generateAgentApiKey, getServiceDb } from './auth';
-export { agentRegisterSchema, taskSubmitSchema, taskUpdateSchema, VALID_STATUS_TRANSITIONS } from './validation';
+export {
+  agentRegisterSchema,
+  taskSubmitSchema,
+  taskUpdateSchema,
+  VALID_STATUS_TRANSITIONS,
+  contextStoreSchema,
+  contextQuerySchema,
+} from './validation';
+export type { ContextStoreInput, ContextQueryInput } from './validation';
 export { executeIntent, isIntentSupported, listPlatformIntents, IntentNotFoundError } from './executor';

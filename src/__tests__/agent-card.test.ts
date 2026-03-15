@@ -16,16 +16,18 @@ describe('A2A agent card', () => {
     expect(agentCard.skills.length).toBeGreaterThanOrEqual(3);
   });
 
-  it('describes a read-only discovery surface rather than unsupported execution', () => {
+  it('advertises A2A task protocol capabilities', () => {
     expect(agentCard.capabilities.streaming).toBe(false);
     expect(agentCard.capabilities.push_notifications).toBe(false);
-    expect(agentCard.capabilities.extended_agent_card).toBe(false);
-    expect(agentCard.capabilities.extensions[0]?.description).toContain('discovery');
-    expect(agentCard.capabilities.extensions[0]?.description).toContain('not implemented yet');
+    expect(agentCard.capabilities.extended_agent_card).toBe(true);
+    expect(agentCard.capabilities.extensions[0]?.description).toContain('A2A task protocol');
     expect(agentCard.capabilities.extensions[0]?.params).toMatchObject({
+      protocol_discovery: 'https://rareagent.work/api/a2a',
+      capabilities: 'https://rareagent.work/api/a2a/capabilities',
       trust_controls: 'https://rareagent.work/trust',
       docs: 'https://rareagent.work/docs',
     });
+    expect(agentCard.security_schemes).toHaveProperty('agent_api_key');
   });
 });
 

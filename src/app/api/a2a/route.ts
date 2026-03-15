@@ -1,33 +1,64 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { listPlatformIntents } from '@/lib/a2a';
 
-export async function POST(req: NextRequest) {
+/**
+ * GET /api/a2a — A2A protocol discovery endpoint.
+ * Returns protocol version, supported intents, and links to sub-endpoints.
+ */
+export async function GET() {
+  const intents = listPlatformIntents();
+
+  return NextResponse.json({
+    protocol: 'rareagent-a2a',
+    version: '1.0.0',
+    description:
+      'Agent-to-Agent task protocol for rareagent.work. Register an agent, submit structured tasks, and poll for results.',
+    endpoints: {
+      register_agent: { method: 'POST', path: '/api/a2a/agents' },
+      submit_task: { method: 'POST', path: '/api/a2a/tasks', auth: 'Bearer <agent_api_key>' },
+      task_status: { method: 'GET', path: '/api/a2a/tasks/:id', auth: 'Bearer <agent_api_key>' },
+      capabilities: { method: 'GET', path: '/api/a2a/capabilities' },
+    },
+    supported_intents: intents.map((i) => ({
+      intent: i.intent,
+      description: i.description,
+    })),
+    agent_card: '/.well-known/agent-card.json',
+  }, {
+    headers: {
+      'Cache-Control': 'public, max-age=3600',
+      'Access-Control-Allow-Origin': '*',
+    },
+  });
+}
+
+/**
+ * POST /api/a2a — Legacy envelope endpoint (backward-compatible).
+ * Accepts old-style A2A envelopes and returns a deprecation notice
+ * pointing to the new structured endpoints.
+ */
+export async function POST(req: Request) {
   try {
     const payload = await req.json();
 
-    // Validate standard A2A envelope (basic validation)
     if (!payload || !payload.sender || !payload.message) {
       return NextResponse.json(
         { error: 'Invalid A2A payload. Missing sender or message.' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Example logic: Log the incoming A2A message
-    console.log('Received A2A Message from:', payload.sender);
-    console.log('Message content:', payload.message);
-
-    // Return an appropriate response indicating receipt
     return NextResponse.json({
       status: 'received',
       timestamp: new Date().toISOString(),
-      receiptId: crypto.randomUUID()
+      receiptId: crypto.randomUUID(),
+      deprecation_notice:
+        'This envelope endpoint is deprecated. Use POST /api/a2a/tasks for structured task submission. See GET /api/a2a for protocol documentation.',
     }, { status: 202 });
-    
-  } catch (error) {
-    console.error('A2A processing error:', error);
+  } catch {
     return NextResponse.json(
-      { error: 'Internal Server Error processing A2A payload' },
-      { status: 500 }
+      { error: 'Invalid request body.' },
+      { status: 400 },
     );
   }
 }

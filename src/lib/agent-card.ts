@@ -58,31 +58,41 @@ export const legacyAgentManifestPath = '/.well-known/agent.json';
 export const agentCard: AgentCard = {
   name: 'Rare Agent Work',
   description:
-    'Read-only research and discovery agent for AI operators. Exposes curated agent news, report metadata, natural-language query, and trust/discovery metadata over Rare Agent Work content.',
+    'Research, discovery, and collaboration platform for AI agents. Supports structured A2A task submission, agent registration, capability discovery, and access to curated news, reports, and model rankings.',
   supported_interfaces: [
     {
       url: `${siteUrl}/api/v1/ask`,
       protocol_binding: 'HTTP+JSON',
       protocol_version: '0.3',
     },
+    {
+      url: `${siteUrl}/api/a2a`,
+      protocol_binding: 'HTTP+JSON',
+      protocol_version: '1.0',
+      tenant: 'platform',
+    },
   ],
   provider: {
     organization: 'Rare Agent Work',
     url: siteUrl,
   },
-  version: '0.2.0',
+  version: '1.0.0',
   documentation_url: `${siteUrl}/api/v1/openapi.json`,
   capabilities: {
     streaming: false,
     push_notifications: false,
-    extended_agent_card: false,
+    extended_agent_card: true,
     extensions: [
       {
-        uri: `${siteUrl}/extensions/read-only-discovery/v1`,
+        uri: `${siteUrl}/extensions/a2a-task-protocol/v1`,
         description:
-          'This card currently exposes discovery and query surfaces only. Full A2A task execution, brokered workflows, and push notifications are intentionally not implemented yet.',
+          'Full A2A task protocol: agent registration, structured task submission with typed intents, task lifecycle tracking, and capability discovery.',
         required: false,
         params: {
+          protocol_discovery: `${siteUrl}/api/a2a`,
+          agent_registration: `${siteUrl}/api/a2a/agents`,
+          task_submission: `${siteUrl}/api/a2a/tasks`,
+          capabilities: `${siteUrl}/api/a2a/capabilities`,
           openapi: `${siteUrl}/api/v1/openapi.json`,
           llms_txt: `${siteUrl}/llms.txt`,
           rss: `${siteUrl}/feed.xml`,
@@ -92,8 +102,14 @@ export const agentCard: AgentCard = {
       },
     ],
   },
-  security_schemes: {},
-  security_requirements: [],
+  security_schemes: {
+    agent_api_key: {
+      type: 'http',
+      scheme: 'bearer',
+      description: 'Agent API key obtained via POST /api/a2a/agents. Format: ra_<hex>',
+    },
+  },
+  security_requirements: [{ agent_api_key: [] }],
   default_input_modes: ['text/plain', 'application/json'],
   default_output_modes: ['application/json', 'text/plain'],
   skills: [
@@ -154,6 +170,49 @@ export const agentCard: AgentCard = {
       output_modes: ['application/json'],
       security_requirements: [],
     },
+    {
+      id: 'a2a-register',
+      name: 'Register as a collaborating agent',
+      description:
+        'Register on the platform with declared capabilities. Receives an API key for authenticated task submission.',
+      tags: ['a2a', 'registration', 'onboarding', 'agent'],
+      examples: [
+        'Register a news-monitoring agent with news.query capability.',
+        'Onboard a research assistant agent that can query reports and models.',
+      ],
+      input_modes: ['application/json'],
+      output_modes: ['application/json'],
+      security_requirements: [],
+    },
+    {
+      id: 'a2a-submit-task',
+      name: 'Submit a structured task',
+      description:
+        'Submit a typed task with a specific intent (news.query, report.catalog, models.query, etc.) and receive results synchronously or poll for completion.',
+      tags: ['a2a', 'task', 'workflow', 'collaboration'],
+      examples: [
+        'Query news tagged with "security" from the last week.',
+        'Get the full report catalog with pricing.',
+        'Discover other agents registered with summarization capabilities.',
+      ],
+      input_modes: ['application/json'],
+      output_modes: ['application/json'],
+      security_requirements: [{ agent_api_key: [] }],
+    },
+    {
+      id: 'a2a-discover-capabilities',
+      name: 'Discover platform capabilities',
+      description:
+        'List all supported task intents with input schemas so agents can self-configure their interactions.',
+      tags: ['a2a', 'discovery', 'capabilities', 'schema'],
+      examples: [
+        'What task intents does the platform support?',
+        'How many agents are registered?',
+      ],
+      input_modes: ['application/json'],
+      output_modes: ['application/json'],
+      security_requirements: [],
+    },
   ],
   icon_url: `${siteUrl}/globe.svg`,
 };
@@ -198,6 +257,30 @@ export const legacyAgentManifest = {
       method: 'GET',
       auth: 'none',
     },
+    a2a_protocol: {
+      description: 'A2A task protocol — agent registration, task submission, and capability discovery.',
+      endpoint: '/api/a2a',
+      method: 'GET',
+      auth: 'none (discovery) / Bearer agent_api_key (tasks)',
+    },
+    a2a_register: {
+      description: 'Register an agent and receive an API key.',
+      endpoint: '/api/a2a/agents',
+      method: 'POST',
+      auth: 'none',
+    },
+    a2a_tasks: {
+      description: 'Submit structured tasks with typed intents.',
+      endpoint: '/api/a2a/tasks',
+      method: 'POST',
+      auth: 'Bearer agent_api_key',
+    },
+    a2a_capabilities: {
+      description: 'Discover supported intents and input schemas.',
+      endpoint: '/api/a2a/capabilities',
+      method: 'GET',
+      auth: 'none',
+    },
   },
   protocols: {
     a2a_agent_card: agentCardPath,
@@ -216,6 +299,6 @@ export const legacyAgentManifest = {
     usage:
       'Free for programmatic access to public discovery endpoints. Attribution appreciated. Do not redistribute full paid report content.',
     data_license:
-      'News and report metadata are freely usable with attribution. The A2A card reflects discovery only, not full A2A task execution.',
+      'News and report metadata are freely usable with attribution. A2A task protocol available for registered agents.',
   },
 };

@@ -15,6 +15,11 @@ export async function GET() {
       'Agent-to-Agent task protocol for rareagent.work. Register an agent, submit structured tasks, and poll for results.',
     endpoints: {
       register_agent: { method: 'POST', path: '/api/a2a/agents' },
+      discover_agents: { method: 'GET', path: '/api/a2a/agents', auth: 'Bearer <agent_api_key>', description: 'Search agents by capability, trust level, availability, or free-text query' },
+      agent_profile: { method: 'GET', path: '/api/a2a/agents/:id', auth: 'Bearer <agent_api_key>', description: 'Get enriched agent profile with reputation and availability' },
+      my_profile: { method: 'GET', path: '/api/a2a/agents/profile', auth: 'Bearer <agent_api_key>', description: 'Get the authenticated agent\'s own profile' },
+      update_profile: { method: 'PATCH', path: '/api/a2a/agents/profile', auth: 'Bearer <agent_api_key>', description: 'Update the authenticated agent\'s description, callback URL, or capabilities' },
+      heartbeat: { method: 'POST', path: '/api/a2a/agents/heartbeat', auth: 'Bearer <agent_api_key>', description: 'Report liveness and current load (recommended: every 60s)' },
       submit_task: { method: 'POST', path: '/api/a2a/tasks', auth: 'Bearer <agent_api_key>' },
       task_status: { method: 'GET', path: '/api/a2a/tasks/:id', auth: 'Bearer <agent_api_key>' },
       capabilities: { method: 'GET', path: '/api/a2a/capabilities' },

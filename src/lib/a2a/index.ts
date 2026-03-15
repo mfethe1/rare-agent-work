@@ -148,6 +148,34 @@ export {
   contractTerminateSchema,
   DEFAULT_SLA,
 } from './contracts';
+// ── Discovery (Agent Search & Health) ──
+export {
+  searchAgents,
+  getAgentProfile,
+  recordHeartbeat,
+  updateAgentProfile,
+  computeAvailability,
+} from './discovery';
+export type {
+  AgentAvailability,
+  AgentHeartbeat,
+  AgentHeartbeatRecord,
+  AgentProfile,
+  AgentSearchParams,
+  AgentSearchResult,
+  AgentProfileUpdate,
+} from './discovery';
+export {
+  agentSearchSchema,
+  agentHeartbeatSchema,
+  agentProfileUpdateSchema,
+} from './validation';
+export type {
+  AgentSearchInput,
+  AgentHeartbeatInput,
+  AgentProfileUpdateInput,
+} from './validation';
+
 export type {
   ServiceSLA,
   ServiceContract,

@@ -164,3 +164,67 @@ export const taskFeedbackSchema = z.object({
 });
 
 export type TaskFeedbackInput = z.infer<typeof taskFeedbackSchema>;
+
+// ──────────────────────────────────────────────
+// Agent Discovery — GET /api/a2a/agents
+// ──────────────────────────────────────────────
+
+export const agentSearchSchema = z.object({
+  /** Free-text search across agent name and description. */
+  query: trimmed(200).optional(),
+  /** Filter by capability ID (exact or domain-prefix match). */
+  capability: trimmed(128).optional(),
+  /** Filter by trust level(s). */
+  trust_levels: z.array(z.enum(['untrusted', 'verified', 'partner'])).optional(),
+  /** Filter by availability status(es). */
+  availability: z.array(z.enum(['online', 'busy', 'idle', 'offline'])).optional(),
+  /** Only return active agents (default: true). */
+  active_only: z.boolean().default(true),
+  /** Sort field. */
+  sort_by: z.enum(['reputation', 'last_seen', 'name', 'created']).default('last_seen'),
+  /** Sort direction. */
+  sort_order: z.enum(['asc', 'desc']).default('desc'),
+  /** Pagination offset. */
+  offset: z.number().int().min(0).default(0),
+  /** Max results (1-100). */
+  limit: z.number().int().min(1).max(100).default(20),
+});
+
+export type AgentSearchInput = z.infer<typeof agentSearchSchema>;
+
+// ──────────────────────────────────────────────
+// Agent Heartbeat — POST /api/a2a/agents/heartbeat
+// ──────────────────────────────────────────────
+
+export const agentHeartbeatSchema = z.object({
+  /** Current load factor (0.0 = idle, 1.0 = at capacity). */
+  load: z.number().min(0).max(1),
+  /** Number of tasks currently being processed. */
+  active_tasks: z.number().int().min(0).max(10000),
+  /** Maximum concurrent tasks this agent can handle. */
+  max_concurrent_tasks: z.number().int().min(1).max(10000),
+  /** Optional free-form status message. */
+  status_message: trimmed(500).optional(),
+  /** Agent software version. */
+  version: trimmed(64).optional(),
+});
+
+export type AgentHeartbeatInput = z.infer<typeof agentHeartbeatSchema>;
+
+// ──────────────────────────────────────────────
+// Agent Profile Update — PATCH /api/a2a/agents/profile
+// ──────────────────────────────────────────────
+
+export const agentProfileUpdateSchema = z.object({
+  /** Updated description. */
+  description: trimmed(1000).min(1).optional(),
+  /** Updated callback URL (null to clear). */
+  callback_url: z.union([z.string().url().max(2000), z.null()]).optional(),
+  /** Updated capabilities list. */
+  capabilities: z.array(capabilitySchema).min(1).max(50).optional(),
+}).refine(
+  (data) => data.description !== undefined || data.callback_url !== undefined || data.capabilities !== undefined,
+  { message: 'At least one field must be provided for update.' },
+);
+
+export type AgentProfileUpdateInput = z.infer<typeof agentProfileUpdateSchema>;

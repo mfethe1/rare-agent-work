@@ -5,8 +5,86 @@ import {
   agentRegisterSchema,
   generateAgentApiKey,
   getServiceDb,
+  authenticateAgent,
 } from '@/lib/a2a';
-import type { AgentRegisterResponse } from '@/lib/a2a';
+import { agentSearchSchema } from '@/lib/a2a/validation';
+import { searchAgents } from '@/lib/a2a/discovery';
+import type { AgentRegisterResponse, AgentTrustLevel } from '@/lib/a2a';
+import type { AgentAvailability } from '@/lib/a2a/discovery';
+
+/**
+ * GET /api/a2a/agents — Search and discover registered agents.
+ *
+ * Supports filtering by capability, trust level, availability, and free-text search.
+ * Returns enriched profiles with reputation, availability, and contract data.
+ * Requires authentication.
+ *
+ * Query parameters:
+ *   query, capability, trust_levels (comma-separated), availability (comma-separated),
+ *   active_only, sort_by, sort_order, offset, limit
+ */
+export async function GET(request: Request) {
+  const agent = await authenticateAgent(request);
+  if (!agent) {
+    return NextResponse.json(
+      { error: 'Authentication required. Provide a valid Bearer token.' },
+      { status: 401 },
+    );
+  }
+
+  try {
+    const url = new URL(request.url);
+    const rawParams: Record<string, unknown> = {};
+
+    // Parse query params
+    const q = url.searchParams.get('query');
+    if (q) rawParams.query = q;
+
+    const cap = url.searchParams.get('capability');
+    if (cap) rawParams.capability = cap;
+
+    const tl = url.searchParams.get('trust_levels');
+    if (tl) rawParams.trust_levels = tl.split(',').filter(Boolean) as AgentTrustLevel[];
+
+    const av = url.searchParams.get('availability');
+    if (av) rawParams.availability = av.split(',').filter(Boolean) as AgentAvailability[];
+
+    const activeOnly = url.searchParams.get('active_only');
+    if (activeOnly !== null) rawParams.active_only = activeOnly !== 'false';
+
+    const sortBy = url.searchParams.get('sort_by');
+    if (sortBy) rawParams.sort_by = sortBy;
+
+    const sortOrder = url.searchParams.get('sort_order');
+    if (sortOrder) rawParams.sort_order = sortOrder;
+
+    const offset = url.searchParams.get('offset');
+    if (offset) rawParams.offset = parseInt(offset, 10);
+
+    const limit = url.searchParams.get('limit');
+    if (limit) rawParams.limit = parseInt(limit, 10);
+
+    // Validate
+    const parsed = agentSearchSchema.safeParse(rawParams);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Invalid search parameters.', details: parsed.error.flatten().fieldErrors },
+        { status: 400 },
+      );
+    }
+
+    const result = await searchAgents(parsed.data);
+
+    return NextResponse.json(result, {
+      headers: { 'Cache-Control': 'private, max-age=10' },
+    });
+  } catch (err) {
+    return NextResponse.json(
+      safeErrorBody(err, 'db', 'GET /api/a2a/agents'),
+      { status: 500 },
+    );
+  }
+}
 
 /**
  * POST /api/a2a/agents — Register a new agent on the platform.

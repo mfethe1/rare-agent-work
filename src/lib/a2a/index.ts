@@ -132,3 +132,40 @@ export type {
   MessageSendInput,
   MessageListInput,
 } from './channels';
+
+// ── Contracts (Agent Service Agreements) ──
+export {
+  proposeContract,
+  negotiateContract,
+  checkCompliance,
+  listContracts,
+  getContractDetail,
+  terminateContract,
+  findActiveContract,
+  contractProposeSchema,
+  contractNegotiateSchema,
+  contractListSchema,
+  contractTerminateSchema,
+  DEFAULT_SLA,
+} from './contracts';
+export type {
+  ServiceSLA,
+  ServiceContract,
+  ContractStatus,
+  ContractPricing,
+  PricingModel,
+  ContractCompliance,
+  SLAViolation,
+  NegotiationEntry,
+  NegotiationAction,
+  ContractProposeRequest,
+  ContractProposeResponse,
+  ContractNegotiateRequest,
+  ContractNegotiateResponse,
+  ContractListResponse,
+  ContractDetailResponse,
+  ContractProposeInput,
+  ContractNegotiateInput,
+  ContractListInput,
+  ContractTerminateInput,
+} from './contracts';

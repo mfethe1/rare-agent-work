@@ -20,7 +20,6 @@ import type {
   CachePolicy,
   CacheStats,
   IntentCacheStats,
-  CoalescedRequest,
 } from './types';
 
 // ──────────────────────────────────────────────
@@ -388,7 +387,7 @@ async function resolveCoalescedRequests(
   if (!followers || followers.length === 0) return;
 
   const now = new Date().toISOString();
-  const followerIds = followers.map((f: CoalescedRequest) => f.follower_task_id);
+  const followerIds = followers.map((f: { follower_task_id: string }) => f.follower_task_id);
 
   // Update all follower tasks with the leader's result
   await db

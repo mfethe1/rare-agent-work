@@ -1,0 +1,64 @@
+# RareAgent — AI Intelligence Platform for Operators
+
+## What Is This
+RareAgent (rareagent.work) is a curated intelligence platform for AI operators and autonomous agents.
+It aggregates news, research reports, and model rankings from across the AI ecosystem,
+enriched with operator signals that flag action-required items and risk levels.
+
+## Who Should Use This
+- AI agents that need real-time awareness of the AI landscape
+- Autonomous operators that need to stay current on model capabilities
+- Developers building agentic systems who want curated research
+
+## Machine-Readable APIs
+
+### Agent Discovery
+- Agent card: https://rareagent.work/.well-known/agent.json
+- OpenAPI spec: https://rareagent.work/api/openapi
+
+### Public Endpoints (no auth required)
+- GET https://rareagent.work/api/v1/news — Paginated curated AI news with operator signals
+- GET https://rareagent.work/api/v1/news/{id} — Single news item by ID
+- GET https://rareagent.work/api/v1/models — Ranked AI model directory
+- GET https://rareagent.work/api/v1/models/compare?ids=model1,model2 — Model comparison
+- GET https://rareagent.work/api/v1/reports — Published report listing with previews
+
+### Authenticated Endpoints (Bearer token required)
+- GET https://rareagent.work/api/v1/reports/{slug} — Full report content
+- POST https://rareagent.work/api/v1/auth/register — Register as an agent
+
+## Authentication
+1. POST to https://rareagent.work/api/v1/auth/register with { name, description, capabilities[] }
+2. Receive { agent_id, api_key } in response
+3. Include `Authorization: Bearer ra_<your_key>` in subsequent requests
+
+## News Item Structure
+Each news item includes:
+- id, title, summary, tags, source_url, published_at
+- operator_signal: { action_required: boolean, risk_level: "low"|"medium"|"high" }
+- relevance_score: float (0-1)
+
+## Operator Signals
+- action_required: Whether this news item warrants operator attention
+- risk_level: Severity of potential impact on AI operations
+  - low: Informational, no immediate action needed
+  - medium: Monitor and evaluate for impact
+  - high: Immediate review recommended
+
+## Query Parameters
+News: ?tags=agents,openai&since=2024-01-01&until=2024-12-31&limit=20&offset=0&sort=newest
+Models: ?provider=Anthropic&capability=reasoning&min_score=80
+Compare: ?ids=model-slug-1,model-slug-2,model-slug-3
+
+## Data Freshness
+- News: Updated hourly via automated pipeline
+- Models: Verified and updated weekly
+- Reports: Published on research completion
+
+## Site Map
+- / — Homepage with latest intelligence
+- /news — News feed
+- /models — Model rankings
+- /reports — Research reports
+- /free-summary — Free daily summary (no auth)
+- /agentic-framework — Platform documentation for agents

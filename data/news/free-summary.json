@@ -1,19 +1,61 @@
 {
-  "updated_at": "2026-03-07T04:38:07.260Z",
+  "updated_at": "2026-03-11T18:14:16.175Z",
   "items": [
     {
-      "id": "news-2026-03-06-model-release",
-      "title": "New frontier model release improves coding evals",
-      "why_it_matters": "A major model provider released an update with stronger coding and tool-use performance.",
-      "source_url": "https://example.com/model-release",
-      "published_at": "2026-03-06T18:00:00Z"
+      "id": "reddit:1rr1h42",
+      "title": "Output format issues for Vicuna models",
+      "why_it_matters": "Hi! I was using the [huggingface\\_api](https://github.com/lm-sys/FastChat/blob/main/fastchat/serve/huggingface_api.py) for inference on `lmsys/vicuna-7b-v1.5` The **ASSISTANT's** output looks like (with the special characters \"▁\" and additional spaces): &gt;USER: Hello! Who are …",
+      "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rr1h42/output_format_issues_for_vicuna_models/",
+      "published_at": "2026-03-11T18:11:04.000Z"
     },
     {
-      "id": "news-2026-03-04-agent-benchmark",
-      "title": "Agent benchmark methodology update published",
-      "why_it_matters": "A new benchmark revision emphasizes retrieval quality and real-world task completion.",
-      "source_url": "https://example.com/agent-benchmark",
-      "published_at": "2026-03-04T15:00:00Z"
+      "id": "hn:47339093",
+      "title": "Show HN: AgentClick – Human-in-the-loop review UI for AI coding agents",
+      "why_it_matters": "Show HN: AgentClick – Human-in-the-loop review UI for AI coding agents",
+      "source_url": "https://github.com/agentlayer-io/AgentClick",
+      "published_at": "2026-03-11T18:10:37.000Z"
+    },
+    {
+      "id": "hn:47339030",
+      "title": "xAI's Macrohard project stalls as Tesla ramps up a similar AI agent effort",
+      "why_it_matters": "xAI's Macrohard project stalls as Tesla ramps up a similar AI agent effort",
+      "source_url": "https://www.businessinsider.com/xai-macrohard-project-tesla-ai-agent-stalls-2026-3",
+      "published_at": "2026-03-11T18:06:14.000Z"
+    },
+    {
+      "id": "reddit:1rr197e",
+      "title": "llama.cpp on $500 MacBook Neo: Prompt: 7.8 t/s  / Generation: 3.9 t/s on Qwen3.5 9B Q3_K_M",
+      "why_it_matters": "Just compiled llama.cpp on MacBook Neo with 8 Gb RAM and 9b Qwen 3.5 and it works (slowly, but anyway) Config used: Build - llama.cpp version: 8294 (76ea1c1c4) Machine - Model: MacBook Neo (Mac17,5) - Chip: Apple A18 Pro - CPU: 6 cores (2 performance + 4 efficiency) - GPU: Apple…",
+      "source_url": "https://v.redd.it/5oakjs94hgog1",
+      "published_at": "2026-03-11T18:03:18.000Z"
+    },
+    {
+      "id": "hn:47338969",
+      "title": "Show HN: Slate – Open-source AI workspace with a built-in browser",
+      "why_it_matters": "Hi HN, I&#x27;ve been building Slate for the past few months and just open-sourced it. It&#x27;s a native macOS app that puts AI chat and web browsing in the same window. The idea came from how I actually use AI day to day. I&#x27;d ask Claude or GPT something, get a bunch of li…",
+      "source_url": "https://github.com/slate-ai/slate",
+      "published_at": "2026-03-11T18:02:07.000Z"
+    },
+    {
+      "id": "reddit:1rr0qqh",
+      "title": "Local way to run heavy OCR models?",
+      "why_it_matters": "Is there a reliable way to run large OCR/document-understanding models locally? I'm looking for something capable of handling complex PDFs/images (tables, structured documents, possibly handwriting). Preferably open-source and GPU-accelerated. Things I'm considering: PaddleOCR D…",
+      "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rr0qqh/local_way_to_run_heavy_ocr_models/",
+      "published_at": "2026-03-11T17:45:41.000Z"
+    },
+    {
+      "id": "reddit:1rr0pxn",
+      "title": "Public figures on AI, it’s a real mix",
+      "why_it_matters": "It’s curious to see some of the quite varied views on AI. The usual suspects you’d expect, but was quite surprised on the level of nuance in views between say Mamdani to say Newsom.",
+      "source_url": "https://xony.org/topics/artificial-intelligence/",
+      "published_at": "2026-03-11T17:44:58.000Z"
+    },
+    {
+      "id": "reddit:1rr0ltq",
+      "title": "Persona Kappa 20B: Post-trained by Level1Techs on gpt-oss with 9 personalities and QAT",
+      "why_it_matters": "https://forum.level1techs.com/t/persona-kappa-training-a-20b-llm-on-desktop-gpus/246817",
+      "source_url": "https://forum.level1techs.com/t/persona-kappa-training-a-20b-llm-on-desktop-gpus/246817",
+      "published_at": "2026-03-11T17:40:50.000Z"
     }
   ]
 }

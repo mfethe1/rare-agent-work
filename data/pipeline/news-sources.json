@@ -1,0 +1,13 @@
+{
+  "hn_queries": [
+    { "query": "agentic AI", "label": "agents" },
+    { "query": "ai infrastructure", "label": "infrastructure" },
+    { "query": "open source llm", "label": "open-source" }
+  ],
+  "reddit_streams": [
+    { "subreddit": "MachineLearning", "label": "research" },
+    { "subreddit": "LocalLLaMA", "label": "open-source" },
+    { "subreddit": "ArtificialInteligence", "label": "general" }
+  ],
+  "max_items": 40
+}

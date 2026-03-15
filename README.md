@@ -7,7 +7,8 @@ Production-focused Next.js app for AI news digest, model ranking intelligence, a
 - **News freshness enforcement (14 days hard filter)**
   - Source file: `data/news/news.json`
   - Runtime filter in `src/lib/content.ts` (`getFreshNews(14)`)
-  - Refresh/prune script: `npm run news:refresh` (`scripts/news-refresh.mjs`)
+  - Automated ingest script pulls Reddit (AI subs) + Hacker News stories and rewrites both the feed + free summary (`npm run news:refresh`)
+  - Verification script (`npm run news:verify`) fails the pipeline if the latest story is older than 6h or if the feed drops below 8 items
 - **Free condensed summary**
   - Route: `/free-summary`
   - Source: fresh news only, max 8 items.
@@ -34,9 +35,13 @@ Create `.env.local` with at minimum:
 ```env
 OWNER_EMAILS=michael.fethe@protelynx.ai
 ANTHROPIC_API_KEY=YOUR_KEY_HERE
+TVLY_API_KEY=YOUR_TAVILIY_KEY
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PRICE_ID=price_...
+STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
-> `x-user-email` must be populated by your auth layer/proxy for owner enforcement.
+> `x-user-email` must be populated by your auth layer/proxy for owner enforcement. See `docs/taviliy-agentic-framework.md` for the end-to-end checklist and pipeline steps.
 
 ## Commands
 
@@ -56,3 +61,10 @@ npm run build
 - `/reports/empirical-architecture` report page
 - `/admin/review` owner-only review queue
 - `/signup` user signup
+- `/agentic-framework` (new) — Taviliy-powered agentic kit + checkout CTA
+
+## New Taviliy Agentic Offering
+- Architecture + rollout checklist lives in `docs/taviliy-agentic-framework.md`.
+- `npm run taviliy:seed` (to be added) will fetch 10 benchmark searches and cache them.
+- `npm run taviliy:loop` will execute the autoresearch loop, log improvement metrics, and publish them to the new site section.
+- Stripe Checkout + subscription APIs will live under `/api/payments/*` with test keys until prod rotation is cleared (BACKLOG task AO-2026-03-10-04).

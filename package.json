@@ -7,13 +7,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "news:update": "node scripts/news-update.mjs",
+    "news:test": "node scripts/news-verify.mjs",
     "news:refresh": "node scripts/news-refresh.mjs",
     "report:pipeline": "node scripts/report-pipeline-stub.mjs"
   },
   "dependencies": {
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "stripe": "^20.4.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

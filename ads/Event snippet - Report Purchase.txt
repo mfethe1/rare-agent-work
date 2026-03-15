@@ -1,0 +1,10 @@
+<!-- Event snippet for Report Purchase conversion page -->
+<script>
+  gtag('event', 'conversion', {
+      'send_to': 'AW-17716841198/OvqyCLL_vYQcEO6VhoBC',
+      'value': 29.0,
+      'currency': 'USD',
+      'transaction_id': ''
+      // 'new_customer': true /* calculate dynamically, populate with true/false */,
+  });
+</script>

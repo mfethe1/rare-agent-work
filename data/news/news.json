@@ -1,25 +1,442 @@
 [
   {
-    "id": "news-2026-03-06-model-release",
-    "title": "New frontier model release improves coding evals",
-    "summary": "A major model provider released an update with stronger coding and tool-use performance.",
-    "source_url": "https://example.com/model-release",
-    "published_at": "2026-03-06T18:00:00Z",
+    "id": "reddit:1rr1h42",
+    "title": "Output format issues for Vicuna models",
+    "summary": "Hi! I was using the [huggingface\\_api](https://github.com/lm-sys/FastChat/blob/main/fastchat/serve/huggingface_api.py) for inference on `lmsys/vicuna-7b-v1.5` The **ASSISTANT's** output looks like (with the special characters \"▁\" and additional spaces): &gt;USER: Hello! Who are …",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rr1h42/output_format_issues_for_vicuna_models/",
+    "published_at": "2026-03-11T18:11:04.000Z",
     "tags": [
-      "models",
-      "coding",
-      "release"
+      "reddit",
+      "open-source"
     ]
   },
   {
-    "id": "news-2026-03-04-agent-benchmark",
-    "title": "Agent benchmark methodology update published",
-    "summary": "A new benchmark revision emphasizes retrieval quality and real-world task completion.",
-    "source_url": "https://example.com/agent-benchmark",
-    "published_at": "2026-03-04T15:00:00Z",
+    "id": "hn:47339093",
+    "title": "Show HN: AgentClick – Human-in-the-loop review UI for AI coding agents",
+    "summary": "Show HN: AgentClick – Human-in-the-loop review UI for AI coding agents",
+    "source_url": "https://github.com/agentlayer-io/AgentClick",
+    "published_at": "2026-03-11T18:10:37.000Z",
     "tags": [
-      "agents",
-      "benchmark"
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47339030",
+    "title": "xAI's Macrohard project stalls as Tesla ramps up a similar AI agent effort",
+    "summary": "xAI's Macrohard project stalls as Tesla ramps up a similar AI agent effort",
+    "source_url": "https://www.businessinsider.com/xai-macrohard-project-tesla-ai-agent-stalls-2026-3",
+    "published_at": "2026-03-11T18:06:14.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "reddit:1rr197e",
+    "title": "llama.cpp on $500 MacBook Neo: Prompt: 7.8 t/s  / Generation: 3.9 t/s on Qwen3.5 9B Q3_K_M",
+    "summary": "Just compiled llama.cpp on MacBook Neo with 8 Gb RAM and 9b Qwen 3.5 and it works (slowly, but anyway) Config used: Build - llama.cpp version: 8294 (76ea1c1c4) Machine - Model: MacBook Neo (Mac17,5) - Chip: Apple A18 Pro - CPU: 6 cores (2 performance + 4 efficiency) - GPU: Apple…",
+    "source_url": "https://v.redd.it/5oakjs94hgog1",
+    "published_at": "2026-03-11T18:03:18.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "hn:47338969",
+    "title": "Show HN: Slate – Open-source AI workspace with a built-in browser",
+    "summary": "Hi HN, I&#x27;ve been building Slate for the past few months and just open-sourced it. It&#x27;s a native macOS app that puts AI chat and web browsing in the same window. The idea came from how I actually use AI day to day. I&#x27;d ask Claude or GPT something, get a bunch of li…",
+    "source_url": "https://github.com/slate-ai/slate",
+    "published_at": "2026-03-11T18:02:07.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "reddit:1rr0qqh",
+    "title": "Local way to run heavy OCR models?",
+    "summary": "Is there a reliable way to run large OCR/document-understanding models locally? I'm looking for something capable of handling complex PDFs/images (tables, structured documents, possibly handwriting). Preferably open-source and GPU-accelerated. Things I'm considering: PaddleOCR D…",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rr0qqh/local_way_to_run_heavy_ocr_models/",
+    "published_at": "2026-03-11T17:45:41.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rr0pxn",
+    "title": "Public figures on AI, it’s a real mix",
+    "summary": "It’s curious to see some of the quite varied views on AI. The usual suspects you’d expect, but was quite surprised on the level of nuance in views between say Mamdani to say Newsom.",
+    "source_url": "https://xony.org/topics/artificial-intelligence/",
+    "published_at": "2026-03-11T17:44:58.000Z",
+    "tags": [
+      "reddit",
+      "general"
+    ]
+  },
+  {
+    "id": "reddit:1rr0ltq",
+    "title": "Persona Kappa 20B: Post-trained by Level1Techs on gpt-oss with 9 personalities and QAT",
+    "summary": "https://forum.level1techs.com/t/persona-kappa-training-a-20b-llm-on-desktop-gpus/246817",
+    "source_url": "https://forum.level1techs.com/t/persona-kappa-training-a-20b-llm-on-desktop-gpus/246817",
+    "published_at": "2026-03-11T17:40:50.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rr0ldg",
+    "title": "I fine-tuned Qwen3.5-2B for OCR",
+    "summary": "Hey everyone, I’ve been working on fine-tuning vision-language models for OCR tasks and wanted to share my latest release. It's a fine-tuned Qwen3.5-2B specifically optimized for English/LTR Document OCR. **Model link:** [loay/English-Document-OCR-Qwen3.5-2B](https://huggingface…",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rr0ldg/i_finetuned_qwen352b_for_ocr/",
+    "published_at": "2026-03-11T17:40:25.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rr0hag",
+    "title": "Are We Facing an AI Nightmare?",
+    "summary": "https://www.project-syndicate.org/commentary/ai-job-loss-scenarios-and-likely-public-responses-by-raghuram-g-rajan-2026-03",
+    "source_url": "https://www.project-syndicate.org/commentary/ai-job-loss-scenarios-and-likely-public-responses-by-raghuram-g-rajan-2026-03",
+    "published_at": "2026-03-11T17:36:30.000Z",
+    "tags": [
+      "reddit",
+      "general"
+    ]
+  },
+  {
+    "id": "reddit:1rr0evv",
+    "title": "Need help in fine-tuning of OCR model at production level",
+    "summary": "Hi Guys, I recently got a project for making a Document Analyzer for complex scanned documents. The documents contain mix of printed + handwritten English and Indic (Hindi, Telugu) scripts. Constant switching between English and Hindi, handwritten values filled into printed form…",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rr0evv/need_help_in_finetuning_of_ocr_model_at/",
+    "published_at": "2026-03-11T17:34:15.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "hn:47338388",
+    "title": "Show HN: Launching Our XR-Native Operating System",
+    "summary": "Hello HN, we are thrilled to announce that we are now launching the Beta Version of XenevaOS as a sandbox next month. For the first time, you’ll be able to experience our Free &amp; Open Source Operating System that has been written with a custom kernel from the ground up for XR…",
+    "source_url": "https://explore.getxeneva.com/",
+    "published_at": "2026-03-11T17:18:42.000Z",
+    "tags": [
+      "hacker-news",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rqzwk8",
+    "title": "Why does anyone think Qwen3.5-35B-A3B is good?",
+    "summary": "Its dumb as hell and Overthinks a lot. On a standard test I do right now: Setting up an automatic creation of Git Mirrors between Github and my local Forgejo instance I ask the model to code in that a pull mirror does not get a push mirror added to it (pull mirrors are read only…",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rqzwk8/why_does_anyone_think_qwen3535ba3b_is_good/",
+    "published_at": "2026-03-11T17:16:38.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rqzu3z",
+    "title": "Trouble with consistency in local models",
+    "summary": "I'm pretty new to LLM integration, does anyone have a setup for local models (max 40gb gpu) that is consistent and working? I have a project to extract details from messy unstructured documents in a closed environment so no web calls whatsoever. So far this has involved manual t…",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rqzu3z/trouble_with_consistency_in_local_models/",
+    "published_at": "2026-03-11T17:14:16.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rqzili",
+    "title": "Why Changing Our Methods of Information-Gathering Matters More Than You Think and Why My Brother and I are Doing Something About it.",
+    "summary": "As long as people get their information from feeds, we'll remain in a perpetual state of ignorance, fighting for things we have no conceptual framework for understanding. That's the crux of the issue. We were sold on convenience with the social media feeds. The illusion is bread…",
+    "source_url": "https://www.reddit.com/r/ArtificialInteligence/comments/1rqzili/why_changing_our_methods_of_informationgathering/",
+    "published_at": "2026-03-11T17:03:22.000Z",
+    "tags": [
+      "reddit",
+      "general"
+    ]
+  },
+  {
+    "id": "reddit:1rqzfxn",
+    "title": "Roko Mijic's claims from last year.",
+    "summary": "I appreciate that this is controversial. Roko Mijic has said that AI could reduce cognitive labour costs nine times over. Could AI accomplish this? An AI automated science project?",
+    "source_url": "https://x.com/RokoMijic/status/1925338342830313589",
+    "published_at": "2026-03-11T17:00:55.000Z",
+    "tags": [
+      "reddit",
+      "general"
+    ]
+  },
+  {
+    "id": "hn:47338137",
+    "title": "Show HN: AgentSign – Zero trust for AI agents (OWASP-aligned)",
+    "summary": "Show HN: AgentSign – Zero trust for AI agents (OWASP-aligned)",
+    "source_url": "https://agentsign.dev",
+    "published_at": "2026-03-11T16:59:22.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "reddit:1rqz9c2",
+    "title": "Suggestions for models that fit in ~60GB",
+    "summary": "Ive been cycling through many different options over the past couple years to run a local AI that can act as a second brain/personal assistant for me. So far during that time ive gone through a Mac M1 Ultra (128GB) back to a single 3090, and now ive decided that 64GB of DDR5 Ram…",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rqz9c2/suggestions_for_models_that_fit_in_60gb/",
+    "published_at": "2026-03-11T16:54:23.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rqz53r",
+    "title": "Voxtral WebGPU: Real-time speech transcription entirely in your browser with Transformers.js",
+    "summary": "Mistral recently released [Voxtral-Mini-4B-Realtime](https://huggingface.co/mistralai/Voxtral-Mini-4B-Realtime-2602), a multilingual, realtime speech-transcription model that supports 13 languages and is capable of &lt;500 ms latency. Today, we added support for it to Transforme…",
+    "source_url": "https://v.redd.it/afiwatxtufog1",
+    "published_at": "2026-03-11T16:50:11.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "hn:47337988",
+    "title": "The Controllability Trap: A Governance Framework for Military AI Agents",
+    "summary": "The Controllability Trap: A Governance Framework for Military AI Agents",
+    "source_url": "https://arxiv.org/abs/2603.03515",
+    "published_at": "2026-03-11T16:48:27.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47337977",
+    "title": "Agentica, a Wikipedia-like encyclopedia for AI agents",
+    "summary": "Agentica, a Wikipedia-like encyclopedia for AI agents",
+    "source_url": "https://agentica.wiki/",
+    "published_at": "2026-03-11T16:47:37.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47337920",
+    "title": "Show HN: Reviewd – A free, local alternative to Claude Code Review(no API costs)",
+    "summary": "Anthropic just launched their official Claude Code Review tool, pricing it at $15–$25 per PR. If your team is shipping 10+ PRs a day, that model scales terribly. Even before their launch, I was running a custom local Claude agent for my team to review PRs. The feedback was great…",
+    "source_url": "https://github.com/simion/reviewd",
+    "published_at": "2026-03-11T16:43:53.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47337914",
+    "title": "Show HN: Clawly – OpenClaw for Shopify Merchants",
+    "summary": "I’ve been experimenting with agent frameworks like OpenClaw recently and wondered how useful that model could be for ecommerce workflows. A lot of Shopify tasks are repetitive: generating product descriptions, monitoring inventory, sending reports, tagging products, etc. In theo…",
+    "source_url": "https://apps.shopify.com/clawly",
+    "published_at": "2026-03-11T16:43:26.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47337901",
+    "title": "Show HN:Nono-Cowork:Self-hosted AI agent with file sync to your local machine",
+    "summary": "Show HN:Nono-Cowork:Self-hosted AI agent with file sync to your local machine",
+    "source_url": "https://github.com/KilYep/Nono-Cowork",
+    "published_at": "2026-03-11T16:42:36.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "reddit:1rqyvrz",
+    "title": "AI Propaganda War",
+    "summary": "https://youtu.be/l3icKFrPsnw?si=U66zkhRW01c4hm8G This video speaks to the convenience and risks related to AI's influence on the information we receive on a daily basis.",
+    "source_url": "https://www.reddit.com/r/ArtificialInteligence/comments/1rqyvrz/ai_propaganda_war/",
+    "published_at": "2026-03-11T16:41:07.000Z",
+    "tags": [
+      "reddit",
+      "general"
+    ]
+  },
+  {
+    "id": "reddit:1rqyuor",
+    "title": "Experimenting with local models to automatically organize messy folders",
+    "summary": "I've been experimenting with local AI workflows recently and tried building a small prototype that organizes messy folders automatically. The idea was simple: scan a directory full of random files (downloads, PDFs, screenshots, etc.), analyze them locally, and propose a cleaner …",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rqyuor/experimenting_with_local_models_to_automatically/",
+    "published_at": "2026-03-11T16:40:02.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "hn:47337857",
+    "title": "Infrastructure orchestration is an agent skill",
+    "summary": "Infrastructure orchestration is an agent skill",
+    "source_url": "https://dstack.ai/blog/agentic-orchestration/",
+    "published_at": "2026-03-11T16:39:29.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47337849",
+    "title": "Nvidia Nemotron 3 Super Delivers 5x Higher Throughput",
+    "summary": "Nvidia Nemotron 3 Super Delivers 5x Higher Throughput",
+    "source_url": "https://blogs.nvidia.com/blog/nemotron-3-super-agentic-ai/",
+    "published_at": "2026-03-11T16:39:11.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47337785",
+    "title": "Show HN: Kronos – A calendar-style scheduler for AI Agents agent runs",
+    "summary": "I kept losing track of what my agents were doing. Most agent tooling is either fire-and-forget (kick off a run, hope it works) or full orchestration frameworks that assume you want a DAG. I wanted something in between: treat agent tasks like scheduled work, see where agent time …",
+    "source_url": "https://github.com/Reqeique/Kronos",
+    "published_at": "2026-03-11T16:33:54.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "reddit:1rqykbq",
+    "title": "I have built this mini demo-game with an MCP tool for godot i am developing, just one prompt and about 15 minutes of running.",
+    "summary": "i'm working (actually i have alredy implemented 35 tools) in this MCP server which allows to connects coding agents to godot, and enables the agent to do real things, it can, such as a human dev, run the game, test it, take screenshots, move the camera, interact with the ui, and…",
+    "source_url": "https://i.redd.it/1ds4oj6c0gog1.gif",
+    "published_at": "2026-03-11T16:29:45.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rqyf4w",
+    "title": "LocalLlama &gt; CC",
+    "summary": "https://i.redd.it/wb7svdpkzfog1.png",
+    "source_url": "https://i.redd.it/wb7svdpkzfog1.png",
+    "published_at": "2026-03-11T16:24:39.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "hn:47337659",
+    "title": "Launch HN: Sentrial (YC W26) – Catch AI Agent Failures Before Your Users Do",
+    "summary": "Hey HN! We&#x27;re Neel and Anay, and we’re building Sentrial ( https:&#x2F;&#x2F;sentrial.com ). It’s production monitoring for AI products. We automatically detect failure patterns: loops, hallucinations, tool misuse, and user frustrations the moment they happen. When issues s…",
+    "source_url": "https://www.sentrial.com/",
+    "published_at": "2026-03-11T16:24:17.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47337607",
+    "title": "Show HN: I built a tool that watches webpages and exposes changes as RSS",
+    "summary": "I built Site Spy after missing a visa appointment slot because a government page changed and I didn’t notice for two weeks. It watches webpages for changes and shows the result like a diff. The part I think HN might find interesting is that it can monitor a specific element on a…",
+    "source_url": "https://sitespy.app",
+    "published_at": "2026-03-11T16:21:06.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "hn:47337548",
+    "title": "Launch HN: Prism (YC X25) – Workspace and API to generate and edit videos",
+    "summary": "Hey HN — we’re Rajit, Land, and Alex. We’re building Prism ( https:&#x2F;&#x2F;www.prismvideos.com ), an AI video creation platform and API. Here’s a quick demo of how you can remix any video with Prism: https:&#x2F;&#x2F;youtu.be&#x2F;0eez_2DnayI Here’s a quick demo of how you …",
+    "source_url": "https://www.prismvideos.com",
+    "published_at": "2026-03-11T16:16:12.000Z",
+    "tags": [
+      "hacker-news",
+      "agents"
+    ]
+  },
+  {
+    "id": "reddit:1rqy3cx",
+    "title": "Nemotron 3 Super Released",
+    "summary": "https://developer.nvidia.com/blog/introducing-nemotron-3-super-an-open-hybrid-mamba-transformer-moe-for-agentic-reasoning/?nvid=nv-int-csfg-844859 120B MoE, 12B active.",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rqy3cx/nemotron_3_super_released/",
+    "published_at": "2026-03-11T16:12:40.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rqy2e1",
+    "title": "I built a tool to track training experiments!",
+    "summary": "**TL;DR:** I was too lazy to manually compile Excel files to compare LLM evaluations, and tools like MLFlow were too bulky. I built LightML: a zero-config, lightweight (4 dependencies) experiment tracker that works with just a few lines of code. [LightML](https://github.com/pier…",
+    "source_url": "https://www.reddit.com/r/ArtificialInteligence/comments/1rqy2e1/i_built_a_tool_to_track_training_experiments/",
+    "published_at": "2026-03-11T16:11:42.000Z",
+    "tags": [
+      "reddit",
+      "general"
+    ]
+  },
+  {
+    "id": "reddit:1rqxyc0",
+    "title": "M5 Max w/ 128 - Which models (big upgrade from my current machine)",
+    "summary": "I've been very limited by my current hardware M1 Pro w/ 32gb. I've found some good LLMs to use around 7b model for my current machine, but not that good. I still lean on chatgpt for code gen. My machine will not be here for a few days so I wanted to download the models ahead of …",
+    "source_url": "https://www.reddit.com/r/LocalLLaMA/comments/1rqxyc0/m5_max_w_128_which_models_big_upgrade_from_my/",
+    "published_at": "2026-03-11T16:07:40.000Z",
+    "tags": [
+      "reddit",
+      "open-source"
+    ]
+  },
+  {
+    "id": "reddit:1rqxtjb",
+    "title": "The Great Optical Pivot: How Co-Packaged Optics are Redefining Wafer Processing",
+    "summary": "As AI demand pushes data centers to their limits, the semiconductor industry is abandoning traditional pluggable modules for integrated Co-Packaged Optics, forcing a radical evolution in 300mm wafer manufacturing and supply chain collaboration.",
+    "source_url": "https://dailyamericandispatch.com/2026/03/10/the-great-optical-pivot-how-co-packaged-optics-are-redefining-wafer-processing/",
+    "published_at": "2026-03-11T16:03:00.000Z",
+    "tags": [
+      "reddit",
+      "general"
+    ]
+  },
+  {
+    "id": "reddit:1rqxr78",
+    "title": "[P] Structured Prompting for Extremely Low-Resource Languages: 80% → 5% Vocabulary Contamination, No Fine-Tuning",
+    "summary": "Most low-resource language research assumes you can fine-tune. But what happens when a language has \\~2M speakers, no official script standardization, near-zero web presence, and you're working with a frozen model? We ran into this with **Tulu**, a Dravidian language from coasta…",
+    "source_url": "https://www.reddit.com/r/MachineLearning/comments/1rqxr78/p_structured_prompting_for_extremely_lowresource/",
+    "published_at": "2026-03-11T16:00:49.000Z",
+    "tags": [
+      "reddit",
+      "research"
+    ]
+  },
+  {
+    "id": "reddit:1rqxot8",
+    "title": "Here’s the Memo Approving Gemini, ChatGPT, and Copilot for Use in the Senate",
+    "summary": "https://www.404media.co/heres-the-memo-approving-gemini-chatgpt-and-copilot-for-use-in-the-senate/",
+    "source_url": "https://www.404media.co/heres-the-memo-approving-gemini-chatgpt-and-copilot-for-use-in-the-senate/",
+    "published_at": "2026-03-11T15:58:30.000Z",
+    "tags": [
+      "reddit",
+      "general"
     ]
   }
 ]

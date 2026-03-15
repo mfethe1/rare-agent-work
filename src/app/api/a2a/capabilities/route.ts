@@ -129,6 +129,45 @@ export async function GET() {
       },
       upgrade_path: 'Agents start as "untrusted". Earn higher quotas by building reputation through quality task completion.',
     },
+    pipelines: {
+      description: 'Type-safe multi-agent data-flow composition. Define ordered capability chains where each stage\'s output feeds the next stage\'s input with schema-level compatibility checking.',
+      create_endpoint: '/api/a2a/pipelines',
+      list_endpoint: '/api/a2a/pipelines',
+      detail_endpoint: '/api/a2a/pipelines/{id}',
+      execute_endpoint: '/api/a2a/pipelines/{id}/execute',
+      status_endpoint: '/api/a2a/pipelines/{id}/executions/{execId}',
+      cancel_endpoint: '/api/a2a/pipelines/{id}/executions/{execId}/cancel',
+      plan_endpoint: '/api/a2a/pipelines/plan',
+      compatibility_endpoint: '/api/a2a/pipelines/check-compatibility',
+      features: {
+        auto_composition: 'POST /api/a2a/pipelines/plan — provide input/output schemas and the platform finds capability chains to bridge the gap.',
+        schema_compatibility: 'POST /api/a2a/pipelines/check-compatibility — verify two capabilities can be chained (output A → input B).',
+        field_mapping: 'Stages support field_map (dot-notation remapping) and static_inputs for data transformation between stages.',
+        error_isolation: 'Per-stage continue_on_failure and retry policies prevent single-stage failures from crashing the pipeline.',
+        async_execution: 'Execution is async — POST returns immediately with execution_id; poll status_endpoint for progress.',
+      },
+      stage_schema: {
+        type: 'object',
+        required: ['stage_id', 'capability_id'],
+        properties: {
+          stage_id: { type: 'string', description: 'Unique stage identifier (lowercase alphanumeric, hyphens, underscores).' },
+          capability_id: { type: 'string', description: 'The capability/intent to invoke at this stage.' },
+          version: { type: 'string', description: 'Pin to a specific capability version (semver).' },
+          agent_id: { type: 'string', format: 'uuid', description: 'Route to a specific agent. Omit for platform routing.' },
+          static_inputs: { type: 'object', description: 'Static fields merged into stage input.' },
+          field_map: { type: 'object', description: 'Map previous output fields to this stage\'s input (key=target, value=source dot-path).' },
+          timeout_seconds: { type: 'integer', minimum: 10, maximum: 3600, default: 300 },
+          continue_on_failure: { type: 'boolean', default: false },
+          retry: {
+            type: 'object',
+            properties: {
+              max_attempts: { type: 'integer', minimum: 1, maximum: 5 },
+              backoff_seconds: { type: 'number', minimum: 1, maximum: 300 },
+            },
+          },
+        },
+      },
+    },
     registered_agents: registeredAgents,
   }, {
     headers: {

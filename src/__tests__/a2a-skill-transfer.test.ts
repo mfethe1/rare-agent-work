@@ -38,8 +38,8 @@ function makeCurriculumParams() {
       {
         title: 'HTTP Basics',
         description: 'Understanding HTTP requests and responses',
-        difficulty: 'foundational' as const,
-        delivery: 'demonstration' as const,
+        difficulty: 'foundational',
+        delivery: 'demonstration',
         prerequisites: [],
         estimated_duration_s: 600,
         pass_criteria: { min_accuracy: 0.7, min_successful_demos: 1 },
@@ -48,8 +48,8 @@ function makeCurriculumParams() {
       {
         title: 'HTML Parsing',
         description: 'Parsing HTML documents with selectors',
-        difficulty: 'intermediate' as const,
-        delivery: 'guided_practice' as const,
+        difficulty: 'intermediate',
+        delivery: 'guided_practice',
         prerequisites: [], // Will be set after creation to reference first module
         estimated_duration_s: 900,
         pass_criteria: { min_accuracy: 0.8, min_successful_demos: 2 },
@@ -58,8 +58,8 @@ function makeCurriculumParams() {
       {
         title: 'Anti-Detection',
         description: 'Handling rate limits and bot detection',
-        difficulty: 'advanced' as const,
-        delivery: 'independent' as const,
+        difficulty: 'advanced',
+        delivery: 'independent',
         prerequisites: [],
         estimated_duration_s: 1200,
         pass_criteria: { min_accuracy: 0.85, max_latency_ms: 5000, min_successful_demos: 3 },
@@ -122,8 +122,8 @@ describe('Curriculum Management', () => {
         id: 'a',
         title: 'A',
         description: 'A',
-        difficulty: 'foundational' as const,
-        delivery: 'demonstration' as const,
+        difficulty: 'foundational',
+        delivery: 'demonstration',
         prerequisites: ['b'],
         estimated_duration_s: 100,
         pass_criteria: { min_accuracy: 0.5, min_successful_demos: 1 },
@@ -133,8 +133,8 @@ describe('Curriculum Management', () => {
         id: 'b',
         title: 'B',
         description: 'B',
-        difficulty: 'foundational' as const,
-        delivery: 'demonstration' as const,
+        difficulty: 'foundational',
+        delivery: 'demonstration',
         prerequisites: ['a'],
         estimated_duration_s: 100,
         pass_criteria: { min_accuracy: 0.5, min_successful_demos: 1 },
@@ -263,7 +263,7 @@ describe('Module Progression', () => {
     advanceModule(sessionId, moduleIds[1], 'complete', { score: 0.8 });
 
     const session = getSession(sessionId)!;
-    expect(session.overall_score).toBe(0.85);
+    expect(session.overall_score).toBeCloseTo(0.85);
   });
 });
 

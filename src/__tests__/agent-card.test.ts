@@ -17,7 +17,7 @@ describe('A2A agent card', () => {
   });
 
   it('advertises A2A task protocol capabilities', () => {
-    expect(agentCard.capabilities.streaming).toBe(false);
+    expect(agentCard.capabilities.streaming).toBe(true);
     expect(agentCard.capabilities.push_notifications).toBe(true);
     expect(agentCard.capabilities.extended_agent_card).toBe(true);
     expect(agentCard.capabilities.extensions[0]?.description).toContain('A2A task protocol');
@@ -28,8 +28,8 @@ describe('A2A agent card', () => {
       docs: 'https://rareagent.work/docs',
     });
     // Verify webhook extension is advertised
-    expect(agentCard.capabilities.extensions[1]?.description).toContain('webhook');
-    expect(agentCard.capabilities.extensions[1]?.params).toMatchObject({
+    expect(agentCard.capabilities.extensions[3]?.description).toContain('webhook');
+    expect(agentCard.capabilities.extensions[3]?.params).toMatchObject({
       subscriptions: 'https://rareagent.work/api/a2a/subscriptions',
       signature_algorithm: 'HMAC-SHA256',
     });

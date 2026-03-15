@@ -49,7 +49,7 @@ export {
   fetchRoutingCandidates,
   fetchRoutingCandidatesWithReputation,
 } from './router';
-export type { TrustBlender } from './router';
+export type { TrustBlender, VersionContext } from './router';
 export {
   submitTaskFeedback,
   getAgentReputation,
@@ -295,3 +295,43 @@ export type {
   CostEstimateInput,
   TransactionListInput,
 } from './billing';
+
+// ── Auctions (Task Marketplace & Bidding) ──
+export {
+  createAuction,
+  listAuctions,
+  getAuctionDetail,
+  placeBid,
+  awardAuction,
+  cancelAuction,
+  withdrawBid,
+  evaluateBids,
+  computeDutchPrice,
+  auctionCreateSchema,
+  auctionListSchema,
+  bidCreateSchema,
+  auctionAwardSchema,
+  DEFAULT_EVALUATION_WEIGHTS,
+} from './auctions';
+export type {
+  AuctionType,
+  AuctionStatus,
+  TaskAuction,
+  EvaluationWeights,
+  BidStatus,
+  AuctionBid,
+  BidScoreBreakdown,
+  AuctionCreateRequest,
+  AuctionCreateResponse,
+  AuctionListResponse,
+  AuctionDetailResponse,
+  BidCreateRequest,
+  BidCreateResponse,
+  AuctionAwardRequest,
+  AuctionAwardResponse,
+  AuctionCancelResponse,
+  AuctionCreateInput,
+  AuctionListInput,
+  BidCreateInput,
+  AuctionAwardInput,
+} from './auctions';

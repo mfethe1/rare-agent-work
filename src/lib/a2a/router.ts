@@ -21,6 +21,8 @@
 import type { RegisteredAgent, AgentCapability, AgentTrustLevel } from './types';
 import type { RoutingPolicy, AgentScore, RoutingResult, RoutingCandidate } from './types';
 import { createReputationBlender } from './reputation';
+import type { CapabilityVersion, MigrationPath } from './versioning/types';
+import { scoreVersionCompatibility } from './versioning/negotiation';
 
 // ──────────────────────────────────────────────
 // Scoring Weights
@@ -40,10 +42,28 @@ const STALE_WINDOW_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 /** Weight distribution for the final composite score. */
 const WEIGHTS = {
-  capability_match: 0.45,
-  trust: 0.30,
-  recency: 0.25,
+  capability_match: 0.40,
+  trust: 0.25,
+  recency: 0.20,
+  version: 0.15,
 };
+
+// ──────────────────────────────────────────────
+// Version-Aware Routing Context
+// ──────────────────────────────────────────────
+
+/**
+ * Optional version context for version-aware routing.
+ * When provided, the router factors version compatibility into scoring.
+ */
+export interface VersionContext {
+  /** Required capability version (semver string). */
+  required_version?: string;
+  /** Published versions indexed by agent ID. */
+  agent_versions: Map<string, CapabilityVersion[]>;
+  /** Available migration paths for the capability. */
+  migration_paths: MigrationPath[];
+}
 
 // ──────────────────────────────────────────────
 // Capability Matching
@@ -145,11 +165,15 @@ export type TrustBlender = (agentId: string, staticTrustScore: number) => number
  * When a trustBlender is provided (from the reputation system), the trust
  * component uses a blended score that factors in task completion history
  * and quality ratings. Without it, static trust labels are used.
+ *
+ * When a versionCtx is provided, version compatibility is factored into
+ * the composite score, enabling version-aware routing decisions.
  */
 export function scoreAgent(
   agent: RegisteredAgent,
   requiredCapability: string,
   trustBlender?: TrustBlender,
+  versionCtx?: VersionContext,
 ): AgentScore {
   const capMatch = scoreCapabilityMatch(requiredCapability, agent.capabilities);
   const staticTrust = TRUST_SCORES[agent.trust_level] ?? 0;
@@ -158,10 +182,24 @@ export function scoreAgent(
     : staticTrust;
   const recencyScore = scoreRecency(agent.last_seen_at);
 
+  // Version compatibility scoring
+  let versionScore = 0.7; // Neutral default when no version context
+  if (versionCtx) {
+    const agentVersions = versionCtx.agent_versions.get(agent.id) ?? [];
+    const versionResult = scoreVersionCompatibility(
+      versionCtx.required_version,
+      agentVersions,
+      versionCtx.migration_paths,
+      requiredCapability,
+    );
+    versionScore = versionResult.score;
+  }
+
   const composite =
     capMatch.score * WEIGHTS.capability_match +
     trustScore * WEIGHTS.trust +
-    recencyScore * WEIGHTS.recency;
+    recencyScore * WEIGHTS.recency +
+    versionScore * WEIGHTS.version;
 
   return {
     agent_id: agent.id,
@@ -190,6 +228,7 @@ const MIN_VIABLE_SCORE = 0.15;
  * @param maxTargets - Max agents to select (for broadcast/round-robin)
  * @param excludeAgentIds - Agent IDs to exclude (e.g., the sender)
  * @param trustBlender - Optional reputation-aware trust scorer
+ * @param versionCtx - Optional version context for version-aware routing
  */
 export function routeTask(
   candidates: RegisteredAgent[],
@@ -198,15 +237,16 @@ export function routeTask(
   maxTargets: number = 3,
   excludeAgentIds: string[] = [],
   trustBlender?: TrustBlender,
+  versionCtx?: VersionContext,
 ): RoutingResult {
   const excludeSet = new Set(excludeAgentIds);
 
-  // Score all candidates (with reputation-blended trust when available)
+  // Score all candidates (with reputation-blended trust and version compat when available)
   const scored: RoutingCandidate[] = candidates
     .filter((a) => a.is_active && !excludeSet.has(a.id))
     .map((agent) => ({
       agent,
-      score: scoreAgent(agent, requiredCapability, trustBlender),
+      score: scoreAgent(agent, requiredCapability, trustBlender, versionCtx),
     }))
     .filter((c) => c.score.capability_match > 0 && c.score.composite_score >= MIN_VIABLE_SCORE)
     .sort((a, b) => b.score.composite_score - a.score.composite_score);

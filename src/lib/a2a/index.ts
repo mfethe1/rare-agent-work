@@ -1342,3 +1342,67 @@ export type {
   RunAssessmentInput,
   RateSessionInput,
 } from './skill-transfer';
+
+// ── Evolution & Natural Selection ──
+export type {
+  Gene,
+  GeneType,
+  GeneValue,
+  GeneConstraints,
+  Genome,
+  FitnessScore,
+  FitnessDimension,
+  Population,
+  PopulationStatus,
+  SelectionStrategy,
+  CrossoverMethod,
+  MutationType,
+  Species,
+  LineageRecord as EvolutionLineageRecord,
+  MutationRecord,
+  GenealogyNode,
+  GenealogyTree,
+  SeedGenomeInput,
+  CreatePopulationRequest,
+  CreatePopulationResponse,
+  EvaluateFitnessRequest,
+  EvaluateFitnessResponse,
+  AdvanceGenerationResponse,
+  CrossoverRequest,
+  CrossoverResponse,
+  MutateRequest,
+  MutateResponse,
+  PopulationListResponse,
+  PopulationDetailResponse,
+  LineageResponse as EvolutionLineageResponse,
+  GenerationStats,
+} from './evolution';
+export {
+  createPopulation,
+  getPopulation as getEvolutionPopulation,
+  listPopulations,
+  evaluateFitness,
+  selectParent,
+  crossover,
+  mutate,
+  advanceGeneration,
+  getLineage as getEvolutionLineage,
+  getGenome,
+  listGenomesForPopulation,
+  resetEvolutionStores,
+} from './evolution';
+export type { CreatePopulationParams } from './evolution';
+export {
+  createPopulationSchema,
+  listPopulationsSchema,
+  evaluateFitnessSchema,
+  crossoverSchema,
+  mutateSchema,
+} from './evolution';
+export type {
+  CreatePopulationInput,
+  ListPopulationsInput,
+  EvaluateFitnessInput,
+  CrossoverInput,
+  MutateInput,
+} from './evolution';

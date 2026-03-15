@@ -242,3 +242,84 @@ export interface ContextQueryResponse {
   contexts: AgentContext[];
   count: number;
 }
+
+// ──────────────────────────────────────────────
+// Capability-Based Task Routing
+// ──────────────────────────────────────────────
+
+/**
+ * Routing policies for capability-based task assignment.
+ *
+ * - best-match:  Select the single highest-scoring agent (default).
+ * - round-robin: Distribute across qualified agents for load balancing.
+ * - broadcast:   Fan out to all qualified agents for consensus/redundancy.
+ */
+export type RoutingPolicy = 'best-match' | 'round-robin' | 'broadcast';
+
+/** Detailed scoring breakdown for a single agent candidate. */
+export interface AgentScore {
+  agent_id: string;
+  agent_name: string;
+  /** Final weighted score (0-1). */
+  composite_score: number;
+  /** How well the agent's capabilities match the requirement (0-1). */
+  capability_match: number;
+  /** Which capability ID matched, if any. */
+  matched_capability: string | null;
+  /** Trust-level score (partner=1.0, verified=0.7, untrusted=0.3). */
+  trust_score: number;
+  /** How recently the agent was active (0-1). */
+  recency_score: number;
+}
+
+/** Internal: agent + its score, used during routing. */
+export interface RoutingCandidate {
+  agent: RegisteredAgent;
+  score: AgentScore;
+}
+
+/** Result of a routing decision. */
+export interface RoutingResult {
+  /** Whether at least one viable agent was found. */
+  matched: boolean;
+  /** Policy that was applied. */
+  policy: RoutingPolicy;
+  /** The capability that was requested. */
+  required_capability: string;
+  /** How many agents were evaluated. */
+  candidates_evaluated: number;
+  /** Scores of the selected agent(s). */
+  selected: AgentScore[];
+  /** All evaluated agents with scores (for transparency). */
+  all_scores: AgentScore[];
+  /** Human-readable routing decision explanation. */
+  reason: string;
+}
+
+/** POST /api/a2a/tasks/route — submit a task for capability-based routing. */
+export interface TaskRouteRequest {
+  /** The capability or intent the task requires. */
+  required_capability: string;
+  /** Structured input payload for the task. */
+  input: Record<string, unknown>;
+  /** Routing policy (default: best-match). */
+  policy?: RoutingPolicy;
+  /** Max agents to target for broadcast/round-robin (default: 3). */
+  max_targets?: number;
+  /** Task priority. */
+  priority?: TaskPriority;
+  /** Correlation ID for multi-step workflows. */
+  correlation_id?: string;
+  /** TTL in seconds. */
+  ttl_seconds?: number;
+}
+
+/** Response from capability-based task routing. */
+export interface TaskRouteResponse {
+  /** Task IDs created (one per selected agent). */
+  task_ids: string[];
+  /** Routing decision details. */
+  routing: RoutingResult;
+  /** Status URL template (replace {id} with task_id). */
+  status_url_template: string;
+}

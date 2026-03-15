@@ -128,3 +128,26 @@ export const contextQuerySchema = z.object({
 });
 
 export type ContextQueryInput = z.infer<typeof contextQuerySchema>;
+
+// ──────────────────────────────────────────────
+// Task Routing — POST /api/a2a/tasks/route
+// ──────────────────────────────────────────────
+
+export const taskRouteSchema = z.object({
+  /** The capability or intent the task requires. */
+  required_capability: trimmed(128).min(1, 'Required capability is required'),
+  /** Structured input for the task. */
+  input: z.record(z.string(), z.unknown()).default({}),
+  /** Routing policy. */
+  policy: z.enum(['best-match', 'round-robin', 'broadcast']).default('best-match'),
+  /** Max agents to select (1-10). */
+  max_targets: z.number().int().min(1).max(10).default(3),
+  /** Task priority. */
+  priority: z.enum(['low', 'normal', 'high']).default('normal'),
+  /** Correlation ID for multi-step workflows. */
+  correlation_id: trimmed(256).optional(),
+  /** TTL in seconds (10s to 24h). */
+  ttl_seconds: z.number().int().min(10).max(86400).default(300),
+});
+
+export type TaskRouteInput = z.infer<typeof taskRouteSchema>;

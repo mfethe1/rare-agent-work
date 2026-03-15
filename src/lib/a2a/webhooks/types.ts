@@ -22,6 +22,7 @@ export type WebhookEventType =
   | 'task.completed'
   | 'task.failed'
   | 'task.assigned'      // A task was routed to this agent
+  | 'task.routed'        // A task was capability-routed to agent(s)
   // Agent network — emitted on agent registry changes
   | 'agent.registered'
   | 'agent.deactivated'
@@ -41,6 +42,7 @@ export const ALL_EVENT_TYPES: WebhookEventType[] = [
   'task.completed',
   'task.failed',
   'task.assigned',
+  'task.routed',
   'agent.registered',
   'agent.deactivated',
   'news.published',

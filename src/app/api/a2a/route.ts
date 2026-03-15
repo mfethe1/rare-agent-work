@@ -56,6 +56,15 @@ export async function GET() {
         transactions: { method: 'GET', path: '/api/a2a/billing/transactions', auth: 'Bearer <agent_api_key>', description: 'List ledger transactions with filtering' },
         spend: { method: 'GET', path: '/api/a2a/billing/spend', auth: 'Bearer <agent_api_key>', description: 'Get spending summary with governance limit status' },
       },
+      auctions: {
+        create: { method: 'POST', path: '/api/a2a/auctions', auth: 'Bearer <agent_api_key>', description: 'Create a task auction with escrow (open, sealed, reverse, or dutch)' },
+        list: { method: 'GET', path: '/api/a2a/auctions', auth: 'Bearer <agent_api_key>', description: 'List auctions with filtering by status, capability, type' },
+        detail: { method: 'GET', path: '/api/a2a/auctions/:id', auth: 'Bearer <agent_api_key>', description: 'Get auction detail with bids (sealed bids hidden until close)' },
+        bid: { method: 'POST', path: '/api/a2a/auctions/:id/bid', auth: 'Bearer <agent_api_key>', description: 'Place a bid on an auction (validates qualifications and capability match)' },
+        award: { method: 'POST', path: '/api/a2a/auctions/:id/award', auth: 'Bearer <agent_api_key>', description: 'Close bidding and select winner (auto-evaluate or manual pick)' },
+        cancel: { method: 'POST', path: '/api/a2a/auctions/:id/cancel', auth: 'Bearer <agent_api_key>', description: 'Cancel an open auction and refund escrow' },
+        withdraw: { method: 'POST', path: '/api/a2a/auctions/:id/withdraw', auth: 'Bearer <agent_api_key>', description: 'Withdraw your bid from an auction' },
+      },
     },
     supported_intents: intents.map((i) => ({
       intent: i.intent,

@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
-import { deleteWebhook, getWebhookById } from "@/lib/webhooks";
+import { acceptContract } from "@/lib/contracts";
 import { CORS_HEADERS } from "@/lib/api-headers";
 
 function errorResponse(error: string, code: string, status: number) {
   return NextResponse.json({ error, code, status }, { status, headers: CORS_HEADERS });
 }
 
-export async function DELETE(
+export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -23,23 +23,26 @@ export async function DELETE(
     return errorResponse("Invalid or expired API key", "INVALID_KEY", 401);
   }
 
-  const webhook = await getWebhookById(id);
-  if (!webhook) {
-    return errorResponse("Webhook not found", "NOT_FOUND", 404);
-  }
-  if (webhook.agent_id !== agent.agent_id) {
-    return errorResponse("Not authorized to delete this webhook", "FORBIDDEN", 403);
-  }
+  try {
+    const contract = await acceptContract(id, agent.agent_id);
 
-  const deleted = await deleteWebhook(id, agent.agent_id);
-  if (!deleted) {
-    return errorResponse("Webhook not found or already deleted", "NOT_FOUND", 404);
+    return NextResponse.json(
+      {
+        contract_id: contract.id,
+        status: contract.status,
+        accepted_at: contract.accepted_at,
+        message: "Contract accepted and is now active.",
+      },
+      { headers: CORS_HEADERS },
+    );
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Internal server error";
+    const isClientError =
+      msg.includes("not found") ||
+      msg.includes("Only the counterparty") ||
+      msg.includes("Cannot accept");
+    return errorResponse(msg, "ACCEPT_ERROR", isClientError ? 400 : 500);
   }
-
-  return NextResponse.json(
-    { deleted: true, id },
-    { headers: CORS_HEADERS },
-  );
 }
 
 export async function OPTIONS() {

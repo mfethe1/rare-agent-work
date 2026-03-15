@@ -1,8 +1,10 @@
-import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
+import { JsonFileStore } from "./data-store";
+import { eventBus, type EventType } from "./event-bus";
 
 const WEBHOOKS_FILE = path.join(process.cwd(), "data/webhooks/webhooks.json");
+const store = new JsonFileStore<WebhookRecord>(WEBHOOKS_FILE);
 
 export type WebhookEvent =
   | "news.published"
@@ -24,7 +26,7 @@ export interface WebhookRecord {
   agent_id: string;
   url: string;
   events: WebhookEvent[];
-  secret: string; // HMAC secret (stored hashed or as-is for delivery signing)
+  secret: string;
   active: boolean;
   created_at: string;
   updated_at: string;
@@ -32,24 +34,7 @@ export interface WebhookRecord {
   last_delivery?: string;
 }
 
-// ─── File helpers ──────────────────────────────────────────────────────────────
-
-function readWebhooks(): WebhookRecord[] {
-  try {
-    const raw = fs.readFileSync(WEBHOOKS_FILE, "utf-8");
-    return JSON.parse(raw) as WebhookRecord[];
-  } catch {
-    return [];
-  }
-}
-
-function writeWebhooks(webhooks: WebhookRecord[]): void {
-  const dir = path.dirname(WEBHOOKS_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  fs.writeFileSync(WEBHOOKS_FILE, JSON.stringify(webhooks, null, 2), "utf-8");
-}
+// ─── Helpers ───────────────────────────────────────────────────────────────────
 
 function isValidUrl(url: string): boolean {
   try {
@@ -60,12 +45,6 @@ function isValidUrl(url: string): boolean {
   }
 }
 
-// ─── HMAC signing ──────────────────────────────────────────────────────────────
-
-/**
- * Signs a webhook payload with HMAC-SHA256.
- * Returns a hex string signature.
- */
 export function signPayload(secret: string, payload: string): string {
   return crypto.createHmac("sha256", secret).update(payload).digest("hex");
 }
@@ -79,14 +58,12 @@ export interface RegisterWebhookInput {
   secret?: string;
 }
 
-export function registerWebhook(input: RegisterWebhookInput): WebhookRecord {
+export async function registerWebhook(input: RegisterWebhookInput): Promise<WebhookRecord> {
   if (!isValidUrl(input.url)) {
     throw new Error("Invalid webhook URL");
   }
 
-  const invalidEvents = input.events.filter(
-    (e) => !VALID_WEBHOOK_EVENTS.includes(e),
-  );
+  const invalidEvents = input.events.filter((e) => !VALID_WEBHOOK_EVENTS.includes(e));
   if (invalidEvents.length > 0) {
     throw new Error(`Invalid events: ${invalidEvents.join(", ")}`);
   }
@@ -94,63 +71,60 @@ export function registerWebhook(input: RegisterWebhookInput): WebhookRecord {
     throw new Error("At least one event must be specified");
   }
 
-  const webhooks = readWebhooks();
+  return store.transaction(async (webhooks) => {
+    const agentWebhooks = webhooks.filter((w) => w.agent_id === input.agent_id && w.active);
+    if (agentWebhooks.length >= 10) {
+      throw new Error("Maximum of 10 active webhooks per agent");
+    }
 
-  // Check max 10 webhooks per agent
-  const agentWebhooks = webhooks.filter((w) => w.agent_id === input.agent_id && w.active);
-  if (agentWebhooks.length >= 10) {
-    throw new Error("Maximum of 10 active webhooks per agent");
-  }
+    const now = new Date().toISOString();
+    const webhook: WebhookRecord = {
+      id: crypto.randomUUID(),
+      agent_id: input.agent_id,
+      url: input.url,
+      events: input.events,
+      secret: input.secret ?? crypto.randomBytes(32).toString("hex"),
+      active: true,
+      created_at: now,
+      updated_at: now,
+      delivery_count: 0,
+    };
 
-  const now = new Date().toISOString();
-  const webhook: WebhookRecord = {
-    id: crypto.randomUUID(),
-    agent_id: input.agent_id,
-    url: input.url,
-    events: input.events,
-    secret: input.secret ?? crypto.randomBytes(32).toString("hex"),
-    active: true,
-    created_at: now,
-    updated_at: now,
-    delivery_count: 0,
-  };
-
-  webhooks.push(webhook);
-  writeWebhooks(webhooks);
-  return webhook;
+    webhooks.push(webhook);
+    return { items: webhooks, result: webhook };
+  });
 }
 
-export function getAgentWebhooks(agentId: string): WebhookRecord[] {
-  const webhooks = readWebhooks();
-  return webhooks.filter((w) => w.agent_id === agentId && w.active);
+export async function getAgentWebhooks(agentId: string): Promise<WebhookRecord[]> {
+  return store.query((w) => w.agent_id === agentId && w.active);
 }
 
-export function deleteWebhook(id: string, agentId: string): boolean {
-  const webhooks = readWebhooks();
-  const idx = webhooks.findIndex((w) => w.id === id && w.agent_id === agentId);
-  if (idx === -1) return false;
+export async function deleteWebhook(id: string, agentId: string): Promise<boolean> {
+  return store.transaction(async (webhooks) => {
+    const idx = webhooks.findIndex((w) => w.id === id && w.agent_id === agentId);
+    if (idx === -1) return { items: webhooks, result: false };
 
-  webhooks[idx].active = false;
-  webhooks[idx].updated_at = new Date().toISOString();
-  writeWebhooks(webhooks);
-  return true;
+    webhooks[idx].active = false;
+    webhooks[idx].updated_at = new Date().toISOString();
+    return { items: webhooks, result: true };
+  });
 }
 
-export function getWebhookById(id: string): WebhookRecord | null {
-  const webhooks = readWebhooks();
-  return webhooks.find((w) => w.id === id) ?? null;
+export async function getWebhookById(id: string): Promise<WebhookRecord | null> {
+  return store.getById(id);
 }
 
-/**
- * Dispatch a webhook event to all registered subscribers.
- * This is a fire-and-forget async function suitable for background dispatch.
- */
 export async function dispatchWebhookEvent(
   event: WebhookEvent,
   payload: Record<string, unknown>,
 ): Promise<void> {
-  const webhooks = readWebhooks();
+  const webhooks = await store.getAll();
   const subscribers = webhooks.filter((w) => w.active && w.events.includes(event));
+
+  // Publish to in-memory event bus for SSE subscribers
+  eventBus.publish(event as EventType, payload);
+
+  if (subscribers.length === 0) return;
 
   const body = JSON.stringify({
     event,
@@ -172,13 +146,13 @@ export async function dispatchWebhookEvent(
         body,
         signal: AbortSignal.timeout(10000),
       });
-      webhook.delivery_count += 1;
-      webhook.last_delivery = new Date().toISOString();
+      // Update delivery count
+      await store.update(webhook.id, {
+        delivery_count: webhook.delivery_count + 1,
+        last_delivery: new Date().toISOString(),
+      });
     } catch {
       // Silently continue — in production we'd retry + track failures
     }
   }
-
-  // Update delivery counts
-  writeWebhooks(webhooks);
 }

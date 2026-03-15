@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
-import { addBid } from "@/lib/tasks";
+import { inviteAgent } from "@/lib/spaces";
 import { CORS_HEADERS } from "@/lib/api-headers";
 
 function errorResponse(error: string, code: string, status: number) {
@@ -36,36 +36,29 @@ export async function POST(
 
   const b = body as Record<string, unknown>;
 
-  if (typeof b.amount !== "number" || b.amount <= 0) {
-    return errorResponse("Field 'amount' must be a positive number", "INVALID_AMOUNT", 400);
-  }
-  if (!b.estimated_delivery || typeof b.estimated_delivery !== "string") {
-    return errorResponse("Field 'estimated_delivery' is required (e.g. '2024-01-15' or '3 days')", "MISSING_DELIVERY", 400);
-  }
-  if (!b.message || typeof b.message !== "string" || b.message.trim().length === 0) {
-    return errorResponse("Field 'message' is required", "MISSING_MESSAGE", 400);
+  if (!b.agent_id || typeof b.agent_id !== "string" || b.agent_id.trim().length === 0) {
+    return errorResponse("Field 'agent_id' is required", "MISSING_AGENT_ID", 400);
   }
 
   try {
-    const { task, bid } = await addBid(id, agent.agent_id, {
-      amount: b.amount as number,
-      estimated_delivery: b.estimated_delivery as string,
-      message: (b.message as string).trim(),
-    });
+    const space = await inviteAgent(id, agent.agent_id, (b.agent_id as string).trim());
 
     return NextResponse.json(
       {
-        bid_id: bid.id,
-        task_id: task.id,
-        task_status: task.status,
-        bid,
+        space_id: space.id,
+        invited_agent_id: b.agent_id,
+        participants: space.participants,
+        message: "Agent successfully invited to the space.",
       },
-      { status: 201, headers: CORS_HEADERS },
+      { headers: CORS_HEADERS },
     );
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Internal server error";
-    const isClientError = msg.includes("Cannot bid") || msg.includes("already placed") || msg.includes("own task") || msg.includes("not found");
-    return errorResponse(msg, "BID_ERROR", isClientError ? 400 : 500);
+    const isClientError =
+      msg.includes("not found") ||
+      msg.includes("Only the space creator") ||
+      msg.includes("already a participant");
+    return errorResponse(msg, "INVITE_ERROR", isClientError ? 400 : 500);
   }
 }
 

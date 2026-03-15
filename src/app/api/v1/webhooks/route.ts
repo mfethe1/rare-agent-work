@@ -18,9 +18,8 @@ export async function GET(req: NextRequest) {
     return errorResponse("Invalid or expired API key", "INVALID_KEY", 401);
   }
 
-  const webhooks = getAgentWebhooks(agent.agent_id);
+  const webhooks = await getAgentWebhooks(agent.agent_id);
 
-  // Don't expose secrets in list
   const safeWebhooks = webhooks.map((w) => ({
     id: w.id,
     url: w.url,
@@ -76,7 +75,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const webhook = registerWebhook({
+    const webhook = await registerWebhook({
       agent_id: agent.agent_id,
       url: b.url as string,
       events: b.events as WebhookEvent[],
@@ -88,7 +87,7 @@ export async function POST(req: NextRequest) {
         id: webhook.id,
         url: webhook.url,
         events: webhook.events,
-        secret: webhook.secret, // Return secret ONCE at creation
+        secret: webhook.secret,
         active: webhook.active,
         created_at: webhook.created_at,
         note: "Save the 'secret' — it will not be shown again. Use it to verify HMAC-SHA256 signatures on delivered events.",

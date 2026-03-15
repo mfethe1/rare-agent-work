@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
   const offsetRaw = parseInt(searchParams.get("offset") ?? "0", 10);
   const offset = Number.isFinite(offsetRaw) ? Math.max(0, offsetRaw) : 0;
 
-  const { transactions, total } = getTransactions(agent.agent_id, limit, offset);
+  const { transactions, total } = await getTransactions(agent.agent_id, limit, offset);
 
   return NextResponse.json(
     {

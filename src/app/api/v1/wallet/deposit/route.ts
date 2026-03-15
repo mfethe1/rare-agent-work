@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
-import { addCredits } from "@/lib/wallet";
+import { addCredits, getRecentDeposits } from "@/lib/wallet";
 import { CORS_HEADERS } from "@/lib/api-headers";
 
 function errorResponse(error: string, code: string, status: number) {
   return NextResponse.json({ error, code, status }, { status, headers: CORS_HEADERS });
 }
+
+const MAX_DEPOSIT_AMOUNT = 1000;
+const MAX_DEPOSITS_PER_HOUR = 5;
+const ONE_HOUR_MS = 60 * 60 * 1000;
 
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get("Authorization");
@@ -37,12 +41,39 @@ export async function POST(req: NextRequest) {
   if (amount <= 0 || !Number.isFinite(amount)) {
     return errorResponse("Amount must be a positive number", "INVALID_AMOUNT", 400);
   }
-  if (amount > 10000) {
-    return errorResponse("Maximum deposit amount is 10,000 credits per transaction", "AMOUNT_TOO_LARGE", 400);
+
+  // Fix 3: Max 1000 credits per deposit
+  if (amount > MAX_DEPOSIT_AMOUNT) {
+    return errorResponse(
+      `Maximum deposit amount is ${MAX_DEPOSIT_AMOUNT} credits per transaction`,
+      "AMOUNT_TOO_LARGE",
+      400,
+    );
+  }
+
+  // Fix 3: Max 5 deposits per hour per agent
+  const recentDeposits = await getRecentDeposits(agent.agent_id, ONE_HOUR_MS);
+  if (recentDeposits.length >= MAX_DEPOSITS_PER_HOUR) {
+    const oldest = recentDeposits.sort(
+      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+    )[0];
+    const resetAt = new Date(
+      new Date(oldest.created_at).getTime() + ONE_HOUR_MS,
+    ).toISOString();
+
+    return NextResponse.json(
+      {
+        error: `Rate limit exceeded. Maximum ${MAX_DEPOSITS_PER_HOUR} deposits per hour.`,
+        code: "RATE_LIMITED",
+        status: 429,
+        retry_after: resetAt,
+      },
+      { status: 429, headers: { ...CORS_HEADERS, "Retry-After": resetAt } },
+    );
   }
 
   try {
-    const tx = addCredits(agent.agent_id, amount, "manual_deposit");
+    const tx = await addCredits(agent.agent_id, amount, "manual_deposit");
 
     return NextResponse.json(
       {
@@ -51,6 +82,8 @@ export async function POST(req: NextRequest) {
         amount_deposited: amount,
         new_balance: tx.balance_after,
         currency: "credits",
+        deposits_this_hour: recentDeposits.length + 1,
+        deposits_remaining: MAX_DEPOSITS_PER_HOUR - recentDeposits.length - 1,
         note: "In production, this would integrate with Stripe for real payment processing.",
         created_at: tx.created_at,
       },

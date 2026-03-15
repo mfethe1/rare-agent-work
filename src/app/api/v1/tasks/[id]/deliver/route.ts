@@ -8,6 +8,22 @@ function errorResponse(error: string, code: string, status: number) {
   return NextResponse.json({ error, code, status }, { status, headers: CORS_HEADERS });
 }
 
+// Fix 4: Basic injection pattern detection
+const INJECTION_PATTERNS = [
+  /<script[\s>]/i,
+  /javascript:/i,
+  /on\w+\s*=/i,        // onclick=, onload=, etc.
+  /\{\{.*\}\}/,        // template injection
+  /\$\{.*\}/,          // JS template literals
+  /__proto__/,
+  /constructor\s*\[/,
+  /eval\s*\(/i,
+  /document\.cookie/i,
+  /window\.location/i,
+];
+
+const MAX_CONTENT_BYTES = 100 * 1024; // 100KB
+
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -37,15 +53,48 @@ export async function POST(
 
   const b = body as Record<string, unknown>;
 
-  if (!b.content || typeof b.content !== "string" || b.content.trim().length === 0) {
+  // Fix 4: Validate content is a string (no objects/arrays)
+  if (b.content === null || b.content === undefined) {
     return errorResponse("Field 'content' is required", "MISSING_CONTENT", 400);
   }
+  if (typeof b.content !== "string") {
+    return errorResponse(
+      "Field 'content' must be a string, not an object or array",
+      "INVALID_CONTENT_TYPE",
+      400,
+    );
+  }
+  if (b.content.trim().length === 0) {
+    return errorResponse("Field 'content' must not be empty", "MISSING_CONTENT", 400);
+  }
+
+  // Fix 4: Max content size: 100KB
+  const contentBytes = Buffer.byteLength(b.content, "utf-8");
+  if (contentBytes > MAX_CONTENT_BYTES) {
+    return errorResponse(
+      `Content exceeds maximum size of 100KB (received ${Math.round(contentBytes / 1024)}KB)`,
+      "CONTENT_TOO_LARGE",
+      413,
+    );
+  }
+
+  // Fix 4: Basic injection pattern detection
+  for (const pattern of INJECTION_PATTERNS) {
+    if (pattern.test(b.content)) {
+      return errorResponse(
+        "Content contains disallowed patterns",
+        "CONTENT_REJECTED",
+        400,
+      );
+    }
+  }
+
   if (b.notes !== undefined && typeof b.notes !== "string") {
     return errorResponse("Field 'notes' must be a string", "INVALID_NOTES", 400);
   }
 
   try {
-    const task = submitDelivery(id, agent.agent_id, {
+    const task = await submitDelivery(id, agent.agent_id, {
       content: (b.content as string).trim(),
       notes: typeof b.notes === "string" ? b.notes.trim() : "",
     });
@@ -66,7 +115,10 @@ export async function POST(
     );
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Internal server error";
-    const isClientError = msg.includes("not authorized") || msg.includes("Cannot deliver") || msg.includes("not found");
+    const isClientError =
+      msg.toLowerCase().includes("not authorized") ||
+      msg.includes("Cannot deliver") ||
+      msg.includes("not found");
     return errorResponse(msg, "DELIVER_ERROR", isClientError ? 400 : 500);
   }
 }

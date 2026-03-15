@@ -1,7 +1,8 @@
-import fs from "node:fs";
 import path from "node:path";
+import { JsonFileStore } from "./data-store";
 
 export interface AgentRecord {
+  id: string; // required by DataStore<T>
   agent_id: string;
   name: string;
   description: string;
@@ -13,42 +14,16 @@ export interface AgentRecord {
 }
 
 const AGENTS_FILE = path.join(process.cwd(), "data/agents/agents.json");
-
-// ─── File helpers ──────────────────────────────────────────────────────────────
-
-function readAgents(): AgentRecord[] {
-  try {
-    const raw = fs.readFileSync(AGENTS_FILE, "utf-8");
-    return JSON.parse(raw) as AgentRecord[];
-  } catch {
-    return [];
-  }
-}
-
-function writeAgents(agents: AgentRecord[]): void {
-  const dir = path.dirname(AGENTS_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  fs.writeFileSync(AGENTS_FILE, JSON.stringify(agents, null, 2), "utf-8");
-}
+const store = new JsonFileStore<AgentRecord>(AGENTS_FILE);
 
 // ─── Key generation ────────────────────────────────────────────────────────────
 
-/**
- * Generates a new `ra_` prefixed API key.
- * Format: ra_<random-uuid-without-hyphens><random-suffix>
- */
 export function generateApiKey(): string {
   const uuid = crypto.randomUUID().replace(/-/g, "");
-  // Add extra entropy via a second random segment
   const extra = crypto.randomUUID().replace(/-/g, "").slice(0, 8);
   return `ra_${uuid}${extra}`;
 }
 
-/**
- * SHA-256 hashes an API key for secure storage.
- */
 export async function hashApiKey(key: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(key);
@@ -57,15 +32,11 @@ export async function hashApiKey(key: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-/**
- * Verifies a raw API key against the stored hashed keys.
- * Returns the matching AgentRecord or null.
- */
 export async function verifyApiKey(key: string): Promise<AgentRecord | null> {
   if (!key || !key.startsWith("ra_")) return null;
 
   const hashed = await hashApiKey(key);
-  const agents = readAgents();
+  const agents = await store.getAll();
   return agents.find((a) => a.hashed_key === hashed) ?? null;
 }
 
@@ -78,18 +49,16 @@ export interface RegisterAgentInput {
   callback_url?: string;
 }
 
-/**
- * Registers a new agent. Returns the agent record + the raw API key.
- * The raw key is returned only once — it is NOT stored in plaintext.
- */
 export async function registerAgent(
   input: RegisterAgentInput,
 ): Promise<{ agent: AgentRecord; api_key: string }> {
   const rawKey = generateApiKey();
   const hashed = await hashApiKey(rawKey);
+  const agentId = crypto.randomUUID();
 
   const agent: AgentRecord = {
-    agent_id: crypto.randomUUID(),
+    id: agentId,
+    agent_id: agentId,
     name: input.name.trim(),
     description: input.description.trim(),
     capabilities: input.capabilities,
@@ -99,16 +68,19 @@ export async function registerAgent(
     scopes: deriveScopes(input.capabilities),
   };
 
-  const agents = readAgents();
-  agents.push(agent);
-  writeAgents(agents);
-
+  await store.create(agent);
   return { agent, api_key: rawKey };
 }
 
-/**
- * Derives OAuth-style scopes from declared capabilities.
- */
+export async function getAgentById(agentId: string): Promise<AgentRecord | null> {
+  const agents = await store.getAll();
+  return agents.find((a) => a.agent_id === agentId) ?? null;
+}
+
+export async function getAllAgents(): Promise<AgentRecord[]> {
+  return store.getAll();
+}
+
 function deriveScopes(capabilities: string[]): string[] {
   const base = ["read:news", "read:models", "read:reports"];
   const extras: string[] = [];

@@ -1,7 +1,8 @@
-import fs from "node:fs";
 import path from "node:path";
+import { JsonDictStore } from "./data-store";
 
 const WALLETS_FILE = path.join(process.cwd(), "data/agents/wallets.json");
+const store = new JsonDictStore<WalletRecord>(WALLETS_FILE);
 
 export interface Transaction {
   id: string;
@@ -23,186 +24,167 @@ export interface WalletRecord {
   updated_at: string;
 }
 
-// ─── File helpers ──────────────────────────────────────────────────────────────
+// ─── Helpers ───────────────────────────────────────────────────────────────────
 
-function readWallets(): Record<string, WalletRecord> {
-  try {
-    const raw = fs.readFileSync(WALLETS_FILE, "utf-8");
-    return JSON.parse(raw) as Record<string, WalletRecord>;
-  } catch {
-    return {};
-  }
-}
-
-function writeWallets(wallets: Record<string, WalletRecord>): void {
-  const dir = path.dirname(WALLETS_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  fs.writeFileSync(WALLETS_FILE, JSON.stringify(wallets, null, 2), "utf-8");
-}
-
-function ensureWallet(wallets: Record<string, WalletRecord>, agentId: string): WalletRecord {
-  if (!wallets[agentId]) {
-    wallets[agentId] = {
-      agent_id: agentId,
-      balance: 0,
-      escrowed: 0,
-      transactions: [],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-  }
-  return wallets[agentId];
+function makeWallet(agentId: string): WalletRecord {
+  return {
+    agent_id: agentId,
+    balance: 0,
+    escrowed: 0,
+    transactions: [],
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
 }
 
 // ─── Public API ────────────────────────────────────────────────────────────────
 
-export function getBalance(agentId: string): { balance: number; escrowed: number } {
-  const wallets = readWallets();
-  const wallet = wallets[agentId];
+export async function getBalance(agentId: string): Promise<{ balance: number; escrowed: number }> {
+  const wallet = await store.get(agentId);
   if (!wallet) return { balance: 0, escrowed: 0 };
   return { balance: wallet.balance, escrowed: wallet.escrowed };
 }
 
-export function addCredits(
+export async function addCredits(
   agentId: string,
   amount: number,
   reason: string,
   referenceId?: string,
-): Transaction {
+): Promise<Transaction> {
   if (amount <= 0) throw new Error("Amount must be positive");
 
-  const wallets = readWallets();
-  const wallet = ensureWallet(wallets, agentId);
+  return store.transaction(async (data) => {
+    if (!data[agentId]) data[agentId] = makeWallet(agentId);
+    const wallet = data[agentId];
 
-  wallet.balance += amount;
-  const tx: Transaction = {
-    id: crypto.randomUUID(),
-    agent_id: agentId,
-    type: "credit",
-    amount,
-    reason,
-    reference_id: referenceId,
-    balance_after: wallet.balance,
-    created_at: new Date().toISOString(),
-  };
-  wallet.transactions.push(tx);
-  wallet.updated_at = new Date().toISOString();
+    wallet.balance += amount;
+    const tx: Transaction = {
+      id: crypto.randomUUID(),
+      agent_id: agentId,
+      type: "credit",
+      amount,
+      reason,
+      reference_id: referenceId,
+      balance_after: wallet.balance,
+      created_at: new Date().toISOString(),
+    };
+    wallet.transactions.push(tx);
+    wallet.updated_at = new Date().toISOString();
 
-  writeWallets(wallets);
-  return tx;
+    return { data, result: tx };
+  });
 }
 
-export function deductCredits(
+export async function deductCredits(
   agentId: string,
   amount: number,
   reason: string,
   referenceId?: string,
-): Transaction {
+): Promise<Transaction> {
   if (amount <= 0) throw new Error("Amount must be positive");
 
-  const wallets = readWallets();
-  const wallet = ensureWallet(wallets, agentId);
+  return store.transaction(async (data) => {
+    if (!data[agentId]) data[agentId] = makeWallet(agentId);
+    const wallet = data[agentId];
 
-  if (wallet.balance < amount) {
-    throw new Error(`Insufficient credits. Balance: ${wallet.balance}, Required: ${amount}`);
-  }
+    if (wallet.balance < amount) {
+      throw new Error(`Insufficient credits. Balance: ${wallet.balance}, Required: ${amount}`);
+    }
 
-  wallet.balance -= amount;
-  const tx: Transaction = {
-    id: crypto.randomUUID(),
-    agent_id: agentId,
-    type: "debit",
-    amount,
-    reason,
-    reference_id: referenceId,
-    balance_after: wallet.balance,
-    created_at: new Date().toISOString(),
-  };
-  wallet.transactions.push(tx);
-  wallet.updated_at = new Date().toISOString();
+    wallet.balance -= amount;
+    const tx: Transaction = {
+      id: crypto.randomUUID(),
+      agent_id: agentId,
+      type: "debit",
+      amount,
+      reason,
+      reference_id: referenceId,
+      balance_after: wallet.balance,
+      created_at: new Date().toISOString(),
+    };
+    wallet.transactions.push(tx);
+    wallet.updated_at = new Date().toISOString();
 
-  writeWallets(wallets);
-  return tx;
+    return { data, result: tx };
+  });
 }
 
-export function holdEscrow(
+export async function holdEscrow(
   agentId: string,
   amount: number,
   referenceId: string,
-): Transaction {
+): Promise<Transaction> {
   if (amount <= 0) throw new Error("Amount must be positive");
 
-  const wallets = readWallets();
-  const wallet = ensureWallet(wallets, agentId);
+  return store.transaction(async (data) => {
+    if (!data[agentId]) data[agentId] = makeWallet(agentId);
+    const wallet = data[agentId];
 
-  if (wallet.balance < amount) {
-    throw new Error(`Insufficient credits for escrow. Balance: ${wallet.balance}, Required: ${amount}`);
-  }
+    if (wallet.balance < amount) {
+      throw new Error(`Insufficient credits for escrow. Balance: ${wallet.balance}, Required: ${amount}`);
+    }
 
-  wallet.balance -= amount;
-  wallet.escrowed += amount;
-  const tx: Transaction = {
-    id: crypto.randomUUID(),
-    agent_id: agentId,
-    type: "escrow_hold",
-    amount,
-    reason: "task_escrow",
-    reference_id: referenceId,
-    balance_after: wallet.balance,
-    created_at: new Date().toISOString(),
-  };
-  wallet.transactions.push(tx);
-  wallet.updated_at = new Date().toISOString();
+    wallet.balance -= amount;
+    wallet.escrowed += amount;
+    const tx: Transaction = {
+      id: crypto.randomUUID(),
+      agent_id: agentId,
+      type: "escrow_hold",
+      amount,
+      reason: "task_escrow",
+      reference_id: referenceId,
+      balance_after: wallet.balance,
+      created_at: new Date().toISOString(),
+    };
+    wallet.transactions.push(tx);
+    wallet.updated_at = new Date().toISOString();
 
-  writeWallets(wallets);
-  return tx;
+    return { data, result: tx };
+  });
 }
 
-export function releaseEscrow(
+export async function releaseEscrow(
   recipientAgentId: string,
   ownerAgentId: string,
   amount: number,
   referenceId: string,
-): Transaction {
-  const wallets = readWallets();
+): Promise<Transaction> {
+  return store.transaction(async (data) => {
+    if (!data[ownerAgentId]) data[ownerAgentId] = makeWallet(ownerAgentId);
+    if (!data[recipientAgentId]) data[recipientAgentId] = makeWallet(recipientAgentId);
 
-  // Deduct from owner's escrow
-  const ownerWallet = ensureWallet(wallets, ownerAgentId);
-  if (ownerWallet.escrowed < amount) {
-    throw new Error("Escrow amount mismatch");
-  }
-  ownerWallet.escrowed -= amount;
-  ownerWallet.updated_at = new Date().toISOString();
+    const ownerWallet = data[ownerAgentId];
+    if (ownerWallet.escrowed < amount) {
+      throw new Error("Escrow amount mismatch");
+    }
+    ownerWallet.escrowed -= amount;
+    ownerWallet.updated_at = new Date().toISOString();
 
-  // Credit recipient
-  const recipientWallet = ensureWallet(wallets, recipientAgentId);
-  recipientWallet.balance += amount;
-  const tx: Transaction = {
-    id: crypto.randomUUID(),
-    agent_id: recipientAgentId,
-    type: "escrow_release",
-    amount,
-    reason: "task_completion_payment",
-    reference_id: referenceId,
-    balance_after: recipientWallet.balance,
-    created_at: new Date().toISOString(),
-  };
-  recipientWallet.transactions.push(tx);
-  recipientWallet.updated_at = new Date().toISOString();
+    const recipientWallet = data[recipientAgentId];
+    recipientWallet.balance += amount;
+    const tx: Transaction = {
+      id: crypto.randomUUID(),
+      agent_id: recipientAgentId,
+      type: "escrow_release",
+      amount,
+      reason: "task_completion_payment",
+      reference_id: referenceId,
+      balance_after: recipientWallet.balance,
+      created_at: new Date().toISOString(),
+    };
+    recipientWallet.transactions.push(tx);
+    recipientWallet.updated_at = new Date().toISOString();
 
-  writeWallets(wallets);
-  return tx;
+    return { data, result: tx };
+  });
 }
 
-export function getTransactions(
+export async function getTransactions(
   agentId: string,
   limit = 20,
   offset = 0,
-): { transactions: Transaction[]; total: number } {
-  const wallets = readWallets();
-  const wallet = wallets[agentId];
+): Promise<{ transactions: Transaction[]; total: number }> {
+  const wallet = await store.get(agentId);
   if (!wallet) return { transactions: [], total: 0 };
 
   const sorted = [...wallet.transactions].sort(
@@ -212,4 +194,23 @@ export function getTransactions(
     transactions: sorted.slice(offset, offset + limit),
     total: sorted.length,
   };
+}
+
+/**
+ * Get recent deposits for rate limiting checks.
+ */
+export async function getRecentDeposits(
+  agentId: string,
+  windowMs: number,
+): Promise<Transaction[]> {
+  const wallet = await store.get(agentId);
+  if (!wallet) return [];
+
+  const cutoff = Date.now() - windowMs;
+  return wallet.transactions.filter(
+    (tx) =>
+      tx.type === "credit" &&
+      tx.reason === "manual_deposit" &&
+      new Date(tx.created_at).getTime() > cutoff,
+  );
 }

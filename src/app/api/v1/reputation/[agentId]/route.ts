@@ -16,7 +16,7 @@ export async function GET(
     return errorResponse("Agent ID is required", "MISSING_AGENT_ID", 400);
   }
 
-  const reputation = getReputation(agentId);
+  const reputation = await getReputation(agentId);
 
   return NextResponse.json(
     {
@@ -24,7 +24,7 @@ export async function GET(
       overall_score: reputation.overall_score,
       trust_tier: reputation.trust_tier,
       signals: reputation.signals,
-      history: reputation.history.slice(-20), // Last 20 events
+      history: reputation.history.slice(-20),
       last_calculated: reputation.last_calculated,
       member_since: reputation.created_at,
     },

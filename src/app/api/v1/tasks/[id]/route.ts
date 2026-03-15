@@ -12,13 +12,12 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const task = getTaskById(id);
+  const task = await getTaskById(id);
 
   if (!task) {
     return errorResponse("Task not found", "NOT_FOUND", 404);
   }
 
-  // Check if requester is the owner — if so, include bids
   const authHeader = req.headers.get("Authorization");
   let isOwner = false;
 
@@ -39,7 +38,6 @@ export async function GET(
           estimated_delivery: b.estimated_delivery,
           created_at: b.created_at,
           status: b.status,
-          // Don't expose bidder agent id publicly
         })),
       };
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
-import { reviewDelivery } from "@/lib/tasks";
+import { reviewDelivery, getTaskById } from "@/lib/tasks";
 import { releaseEscrow } from "@/lib/wallet";
 import { recordTaskCompleted, recordTaskFailed } from "@/lib/reputation";
 import { dispatchWebhookEvent } from "@/lib/webhooks";
@@ -24,6 +24,21 @@ export async function POST(
   const agent = await verifyApiKey(authHeader.slice(7));
   if (!agent) {
     return errorResponse("Invalid or expired API key", "INVALID_KEY", 401);
+  }
+
+  // Fix 2: Only the task POSTER (creator) can review a delivery
+  const task = await getTaskById(id);
+  if (!task) {
+    return errorResponse("Task not found", "NOT_FOUND", 404);
+  }
+
+  const posterId = task.posted_by ?? task.owner_agent_id;
+  if (agent.agent_id !== posterId) {
+    return errorResponse(
+      "Only the task creator can review a delivery",
+      "FORBIDDEN",
+      403,
+    );
   }
 
   let body: unknown;
@@ -50,43 +65,39 @@ export async function POST(
   }
 
   try {
-    const task = reviewDelivery(id, agent.agent_id, {
+    const updatedTask = await reviewDelivery(id, agent.agent_id, {
       rating: b.rating as number,
       feedback: (b.feedback as string).trim(),
       accept: b.accept as boolean,
     });
 
-    // If accepted: release escrowed credits to the specialist
-    if (b.accept && task.assigned_agent_id) {
+    if (b.accept && updatedTask.assigned_agent_id) {
       try {
-        releaseEscrow(
-          task.assigned_agent_id,
+        await releaseEscrow(
+          updatedTask.assigned_agent_id,
           agent.agent_id,
-          task.budget.credits,
-          task.id,
+          updatedTask.budget.credits,
+          updatedTask.id,
         );
       } catch (escrowErr) {
         console.error("[review] Escrow release failed:", escrowErr);
-        // Non-fatal — task is still marked complete
       }
 
-      // Update reputation for specialist
-      recordTaskCompleted(task.assigned_agent_id, task.id, b.rating as number);
-    } else if (!b.accept && task.assigned_agent_id) {
-      // Mark as failed if explicitly rejected after review
-      recordTaskFailed(task.assigned_agent_id, task.id);
+      await recordTaskCompleted(updatedTask.assigned_agent_id, updatedTask.id, b.rating as number);
+    } else if (!b.accept && updatedTask.assigned_agent_id) {
+      await recordTaskFailed(updatedTask.assigned_agent_id, updatedTask.id);
     }
 
     dispatchWebhookEvent("task.status_changed", {
-      task_id: task.id,
-      status: task.status,
+      task_id: updatedTask.id,
+      status: updatedTask.status,
     }).catch(() => {});
 
     return NextResponse.json(
       {
-        task_id: task.id,
-        status: task.status,
-        review: task.review,
+        task_id: updatedTask.id,
+        status: updatedTask.status,
+        review: updatedTask.review,
         escrow_released: b.accept === true,
         message: b.accept
           ? "Delivery accepted. Credits released to specialist."
@@ -96,7 +107,10 @@ export async function POST(
     );
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Internal server error";
-    const isClientError = msg.includes("Not authorized") || msg.includes("Cannot review") || msg.includes("not found");
+    const isClientError =
+      msg.includes("Not authorized") ||
+      msg.includes("Cannot review") ||
+      msg.includes("not found");
     return errorResponse(msg, "REVIEW_ERROR", isClientError ? 400 : 500);
   }
 }

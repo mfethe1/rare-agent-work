@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
-import { addBid } from "@/lib/tasks";
+import { reportBreach } from "@/lib/contracts";
 import { CORS_HEADERS } from "@/lib/api-headers";
 
 function errorResponse(error: string, code: string, status: number) {
@@ -36,36 +36,35 @@ export async function POST(
 
   const b = body as Record<string, unknown>;
 
-  if (typeof b.amount !== "number" || b.amount <= 0) {
-    return errorResponse("Field 'amount' must be a positive number", "INVALID_AMOUNT", 400);
+  if (!b.reason || typeof b.reason !== "string" || b.reason.trim().length === 0) {
+    return errorResponse("Field 'reason' is required", "MISSING_REASON", 400);
   }
-  if (!b.estimated_delivery || typeof b.estimated_delivery !== "string") {
-    return errorResponse("Field 'estimated_delivery' is required (e.g. '2024-01-15' or '3 days')", "MISSING_DELIVERY", 400);
-  }
-  if (!b.message || typeof b.message !== "string" || b.message.trim().length === 0) {
-    return errorResponse("Field 'message' is required", "MISSING_MESSAGE", 400);
+  if (!b.evidence || typeof b.evidence !== "string" || b.evidence.trim().length === 0) {
+    return errorResponse("Field 'evidence' is required", "MISSING_EVIDENCE", 400);
   }
 
   try {
-    const { task, bid } = await addBid(id, agent.agent_id, {
-      amount: b.amount as number,
-      estimated_delivery: b.estimated_delivery as string,
-      message: (b.message as string).trim(),
+    const contract = await reportBreach(id, agent.agent_id, {
+      reason: (b.reason as string).trim(),
+      evidence: (b.evidence as string).trim(),
     });
 
     return NextResponse.json(
       {
-        bid_id: bid.id,
-        task_id: task.id,
-        task_status: task.status,
-        bid,
+        contract_id: contract.id,
+        status: contract.status,
+        breach_report: contract.breach_report,
+        message: "Breach reported. Contract marked as breached.",
       },
-      { status: 201, headers: CORS_HEADERS },
+      { headers: CORS_HEADERS },
     );
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Internal server error";
-    const isClientError = msg.includes("Cannot bid") || msg.includes("already placed") || msg.includes("own task") || msg.includes("not found");
-    return errorResponse(msg, "BID_ERROR", isClientError ? 400 : 500);
+    const isClientError =
+      msg.includes("not found") ||
+      msg.includes("Only contract parties") ||
+      msg.includes("Cannot report breach");
+    return errorResponse(msg, "BREACH_ERROR", isClientError ? 400 : 500);
   }
 }
 

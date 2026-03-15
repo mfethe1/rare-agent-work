@@ -1,7 +1,8 @@
-import fs from "node:fs";
 import path from "node:path";
+import { JsonFileStore } from "./data-store";
 
 const TASKS_FILE = path.join(process.cwd(), "data/tasks/tasks.json");
+const store = new JsonFileStore<Task>(TASKS_FILE);
 
 export type TaskStatus =
   | "open"
@@ -57,6 +58,7 @@ export interface Review {
 export interface Task {
   id: string;
   owner_agent_id: string;
+  posted_by: string; // alias for owner_agent_id, kept for review access control
   title: string;
   description: string;
   requirements: TaskRequirements;
@@ -82,34 +84,15 @@ export interface CreateTaskInput {
   deliverables: TaskDeliverable[];
 }
 
-// ─── File helpers ──────────────────────────────────────────────────────────────
-
-function readTasks(): Task[] {
-  try {
-    const raw = fs.readFileSync(TASKS_FILE, "utf-8");
-    return JSON.parse(raw) as Task[];
-  } catch {
-    return [];
-  }
-}
-
-function writeTasks(tasks: Task[]): void {
-  const dir = path.dirname(TASKS_FILE);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  fs.writeFileSync(TASKS_FILE, JSON.stringify(tasks, null, 2), "utf-8");
-}
-
 // ─── Public API ────────────────────────────────────────────────────────────────
 
-export function createTask(input: CreateTaskInput): Task {
-  const tasks = readTasks();
+export async function createTask(input: CreateTaskInput): Promise<Task> {
   const now = new Date().toISOString();
 
   const task: Task = {
     id: crypto.randomUUID(),
     owner_agent_id: input.owner_agent_id,
+    posted_by: input.owner_agent_id,
     title: input.title.trim(),
     description: input.description.trim(),
     requirements: input.requirements,
@@ -122,9 +105,7 @@ export function createTask(input: CreateTaskInput): Task {
     updated_at: now,
   };
 
-  tasks.push(task);
-  writeTasks(tasks);
-  return task;
+  return store.create(task);
 }
 
 export interface GetTasksFilter {
@@ -137,8 +118,8 @@ export interface GetTasksFilter {
   offset?: number;
 }
 
-export function getTasks(filter: GetTasksFilter = {}): { tasks: Task[]; total: number } {
-  let tasks = readTasks();
+export async function getTasks(filter: GetTasksFilter = {}): Promise<{ tasks: Task[]; total: number }> {
+  let tasks = await store.getAll();
 
   if (filter.status) {
     tasks = tasks.filter((t) => t.status === filter.status);
@@ -174,133 +155,134 @@ export function getTasks(filter: GetTasksFilter = {}): { tasks: Task[]; total: n
   return { tasks: tasks.slice(offset, offset + limit), total };
 }
 
-export function getTaskById(id: string): Task | null {
-  const tasks = readTasks();
-  return tasks.find((t) => t.id === id) ?? null;
+export async function getTaskById(id: string): Promise<Task | null> {
+  return store.getById(id);
 }
 
-export function addBid(
+export async function addBid(
   taskId: string,
   bidderAgentId: string,
   input: { amount: number; estimated_delivery: string; message: string },
-): { task: Task; bid: Bid } {
-  const tasks = readTasks();
-  const task = tasks.find((t) => t.id === taskId);
-  if (!task) throw new Error("Task not found");
+): Promise<{ task: Task; bid: Bid }> {
+  return store.transaction(async (tasks) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) throw new Error("Task not found");
 
-  if (!["open", "bidding"].includes(task.status)) {
-    throw new Error(`Cannot bid on a task with status: ${task.status}`);
-  }
-  if (task.owner_agent_id === bidderAgentId) {
-    throw new Error("Cannot bid on your own task");
-  }
-  if (task.bids.some((b) => b.bidder_agent_id === bidderAgentId)) {
-    throw new Error("You have already placed a bid on this task");
-  }
+    if (!["open", "bidding"].includes(task.status)) {
+      throw new Error(`Cannot bid on a task with status: ${task.status}`);
+    }
+    if (task.owner_agent_id === bidderAgentId) {
+      throw new Error("Cannot bid on your own task");
+    }
+    if (task.bids.some((b) => b.bidder_agent_id === bidderAgentId)) {
+      throw new Error("You have already placed a bid on this task");
+    }
 
-  const bid: Bid = {
-    id: crypto.randomUUID(),
-    bidder_agent_id: bidderAgentId,
-    amount: input.amount,
-    estimated_delivery: input.estimated_delivery,
-    message: input.message,
-    created_at: new Date().toISOString(),
-    status: "pending",
-  };
+    const bid: Bid = {
+      id: crypto.randomUUID(),
+      bidder_agent_id: bidderAgentId,
+      amount: input.amount,
+      estimated_delivery: input.estimated_delivery,
+      message: input.message,
+      created_at: new Date().toISOString(),
+      status: "pending",
+    };
 
-  task.bids.push(bid);
-  task.status = "bidding";
-  task.updated_at = new Date().toISOString();
+    task.bids.push(bid);
+    task.status = "bidding";
+    task.updated_at = new Date().toISOString();
 
-  writeTasks(tasks);
-  return { task, bid };
+    return { items: tasks, result: { task, bid } };
+  });
 }
 
-export function acceptBid(
+export async function acceptBid(
   taskId: string,
   ownerAgentId: string,
   bidId: string,
-): Task {
-  const tasks = readTasks();
-  const task = tasks.find((t) => t.id === taskId);
-  if (!task) throw new Error("Task not found");
-  if (task.owner_agent_id !== ownerAgentId) throw new Error("Not authorized");
-  if (task.status !== "bidding") throw new Error(`Cannot accept bid on task with status: ${task.status}`);
+): Promise<Task> {
+  return store.transaction(async (tasks) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) throw new Error("Task not found");
+    if (task.owner_agent_id !== ownerAgentId) throw new Error("Not authorized");
+    if (task.status !== "bidding") throw new Error(`Cannot accept bid on task with status: ${task.status}`);
 
-  const bid = task.bids.find((b) => b.id === bidId);
-  if (!bid) throw new Error("Bid not found");
+    const bid = task.bids.find((b) => b.id === bidId);
+    if (!bid) throw new Error("Bid not found");
 
-  bid.status = "accepted";
-  task.bids
-    .filter((b) => b.id !== bidId)
-    .forEach((b) => (b.status = "rejected"));
+    bid.status = "accepted";
+    task.bids
+      .filter((b) => b.id !== bidId)
+      .forEach((b) => (b.status = "rejected"));
 
-  task.accepted_bid_id = bidId;
-  task.assigned_agent_id = bid.bidder_agent_id;
-  task.status = "in_progress";
-  task.updated_at = new Date().toISOString();
+    task.accepted_bid_id = bidId;
+    task.assigned_agent_id = bid.bidder_agent_id;
+    task.status = "in_progress";
+    task.updated_at = new Date().toISOString();
 
-  writeTasks(tasks);
-  return task;
+    return { items: tasks, result: task };
+  });
 }
 
-export function submitDelivery(
+export async function submitDelivery(
   taskId: string,
   agentId: string,
   input: { content: string; notes: string },
-): Task {
-  const tasks = readTasks();
-  const task = tasks.find((t) => t.id === taskId);
-  if (!task) throw new Error("Task not found");
-  if (task.assigned_agent_id !== agentId) throw new Error("Not authorized — you are not assigned to this task");
-  if (task.status !== "in_progress") throw new Error(`Cannot deliver on task with status: ${task.status}`);
+): Promise<Task> {
+  return store.transaction(async (tasks) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) throw new Error("Task not found");
+    if (task.assigned_agent_id !== agentId)
+      throw new Error("Not authorized — you are not assigned to this task");
+    if (task.status !== "in_progress")
+      throw new Error(`Cannot deliver on task with status: ${task.status}`);
 
-  task.delivery = {
-    content: input.content,
-    notes: input.notes,
-    submitted_at: new Date().toISOString(),
-    submitted_by: agentId,
-  };
-  task.status = "delivered";
-  task.updated_at = new Date().toISOString();
+    task.delivery = {
+      content: input.content,
+      notes: input.notes,
+      submitted_at: new Date().toISOString(),
+      submitted_by: agentId,
+    };
+    task.status = "delivered";
+    task.updated_at = new Date().toISOString();
 
-  writeTasks(tasks);
-  return task;
+    return { items: tasks, result: task };
+  });
 }
 
-export function reviewDelivery(
+export async function reviewDelivery(
   taskId: string,
   ownerAgentId: string,
   input: { rating: number; feedback: string; accept: boolean },
-): Task {
-  const tasks = readTasks();
-  const task = tasks.find((t) => t.id === taskId);
-  if (!task) throw new Error("Task not found");
-  if (task.owner_agent_id !== ownerAgentId) throw new Error("Not authorized");
-  if (!["delivered", "reviewing"].includes(task.status)) {
-    throw new Error(`Cannot review task with status: ${task.status}`);
-  }
+): Promise<Task> {
+  return store.transaction(async (tasks) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) throw new Error("Task not found");
+    if (task.owner_agent_id !== ownerAgentId) throw new Error("Not authorized");
+    if (!["delivered", "reviewing"].includes(task.status)) {
+      throw new Error(`Cannot review task with status: ${task.status}`);
+    }
 
-  task.review = {
-    rating: input.rating,
-    feedback: input.feedback,
-    accepted: input.accept,
-    reviewed_at: new Date().toISOString(),
-    reviewed_by: ownerAgentId,
-  };
-  task.status = input.accept ? "completed" : "reviewing";
-  task.updated_at = new Date().toISOString();
+    task.review = {
+      rating: input.rating,
+      feedback: input.feedback,
+      accepted: input.accept,
+      reviewed_at: new Date().toISOString(),
+      reviewed_by: ownerAgentId,
+    };
+    task.status = input.accept ? "completed" : "reviewing";
+    task.updated_at = new Date().toISOString();
 
-  writeTasks(tasks);
-  return task;
+    return { items: tasks, result: task };
+  });
 }
 
-export function updateTaskStatus(taskId: string, status: TaskStatus): Task {
-  const tasks = readTasks();
-  const task = tasks.find((t) => t.id === taskId);
-  if (!task) throw new Error("Task not found");
-  task.status = status;
-  task.updated_at = new Date().toISOString();
-  writeTasks(tasks);
-  return task;
+export async function updateTaskStatus(taskId: string, status: TaskStatus): Promise<Task> {
+  return store.transaction(async (tasks) => {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) throw new Error("Task not found");
+    task.status = status;
+    task.updated_at = new Date().toISOString();
+    return { items: tasks, result: task };
+  });
 }

@@ -57,9 +57,8 @@ export async function GET(req: NextRequest) {
     offset,
   };
 
-  const { tasks, total } = getTasks(filter);
+  const { tasks, total } = await getTasks(filter);
 
-  // Strip bids from public listing (show count only)
   const publicTasks = tasks.map((t) => ({
     ...t,
     bids: undefined,
@@ -106,7 +105,6 @@ export async function POST(req: NextRequest) {
 
   const b = body as Record<string, unknown>;
 
-  // Validate required fields
   if (!b.title || typeof b.title !== "string" || b.title.trim().length === 0) {
     return errorResponse("Field 'title' is required", "MISSING_TITLE", 400);
   }
@@ -114,7 +112,6 @@ export async function POST(req: NextRequest) {
     return errorResponse("Field 'description' is required", "MISSING_DESCRIPTION", 400);
   }
 
-  // Validate requirements
   if (!b.requirements || typeof b.requirements !== "object") {
     return errorResponse("Field 'requirements' is required", "MISSING_REQUIREMENTS", 400);
   }
@@ -123,7 +120,6 @@ export async function POST(req: NextRequest) {
     return errorResponse("requirements.skills must be a non-empty array", "MISSING_SKILLS", 400);
   }
 
-  // Validate budget
   if (!b.budget || typeof b.budget !== "object") {
     return errorResponse("Field 'budget' is required", "MISSING_BUDGET", 400);
   }
@@ -135,14 +131,12 @@ export async function POST(req: NextRequest) {
     return errorResponse("budget.type must be 'fixed' or 'hourly'", "INVALID_BUDGET_TYPE", 400);
   }
 
-  // Validate deliverables
   if (!Array.isArray(b.deliverables) || b.deliverables.length === 0) {
     return errorResponse("Field 'deliverables' must be a non-empty array", "MISSING_DELIVERABLES", 400);
   }
 
-  // Check credits
-  const { balance } = getBalance(agent.agent_id);
-  if (balance < budget.credits) {
+  const { balance } = await getBalance(agent.agent_id);
+  if (balance < (budget.credits as number)) {
     return errorResponse(
       `Insufficient credits. Balance: ${balance}, Required: ${budget.credits}`,
       "INSUFFICIENT_CREDITS",
@@ -151,7 +145,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const task = createTask({
+    const task = await createTask({
       owner_agent_id: agent.agent_id,
       title: (b.title as string).trim(),
       description: (b.description as string).trim(),
@@ -167,10 +161,8 @@ export async function POST(req: NextRequest) {
       deliverables: (b.deliverables as Array<{ type: string; format: string }>),
     });
 
-    // Hold credits in escrow
-    holdEscrow(agent.agent_id, budget.credits as number, task.id);
+    await holdEscrow(agent.agent_id, budget.credits as number, task.id);
 
-    // Dispatch webhook
     dispatchWebhookEvent("task.created", { task_id: task.id, title: task.title }).catch(() => {});
 
     return NextResponse.json(

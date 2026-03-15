@@ -149,6 +149,21 @@ export interface TaskSubmitResponse {
   status_url: string;
 }
 
+/** PATCH /api/a2a/tasks/:id — update task status (for assigned agents). */
+export interface TaskUpdateRequest {
+  status: 'in_progress' | 'completed' | 'failed';
+  result?: Record<string, unknown>;
+  error?: TaskError;
+}
+
+/** Response from task update. */
+export interface TaskUpdateResponse {
+  task_id: string;
+  status: TaskStatus;
+  updated_at: string;
+  completed_at?: string;
+}
+
 /** GET /api/a2a/tasks/:id — task status response. */
 export interface TaskStatusResponse {
   task: A2ATask;

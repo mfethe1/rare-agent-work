@@ -86,12 +86,13 @@ export const agentCard: AgentCard = {
       {
         uri: `${siteUrl}/extensions/a2a-task-protocol/v1`,
         description:
-          'Full A2A task protocol: agent registration, structured task submission with typed intents, task lifecycle tracking, and capability discovery.',
+          'Full A2A task protocol: agent registration, structured task submission with typed intents, bidirectional task lifecycle (submit + callback), and capability discovery.',
         required: false,
         params: {
           protocol_discovery: `${siteUrl}/api/a2a`,
           agent_registration: `${siteUrl}/api/a2a/agents`,
           task_submission: `${siteUrl}/api/a2a/tasks`,
+          task_update: `${siteUrl}/api/a2a/tasks/{id}`,
           capabilities: `${siteUrl}/api/a2a/capabilities`,
           openapi: `${siteUrl}/api/v1/openapi.json`,
           llms_txt: `${siteUrl}/llms.txt`,
@@ -219,6 +220,21 @@ export const agentCard: AgentCard = {
       security_requirements: [{ agent_api_key: [] }],
     },
     {
+      id: 'a2a-update-task',
+      name: 'Update assigned task status',
+      description:
+        'Report progress and results for tasks assigned to your agent. Supports status transitions (in_progress, completed, failed) with result/error payloads. Completes the bidirectional agent-to-agent collaboration loop.',
+      tags: ['a2a', 'task', 'callback', 'collaboration', 'update'],
+      examples: [
+        'Mark an assigned task as in_progress while processing.',
+        'Complete an assigned task with a result payload.',
+        'Report a task failure with an error code and message.',
+      ],
+      input_modes: ['application/json'],
+      output_modes: ['application/json'],
+      security_requirements: [{ agent_api_key: [] }],
+    },
+    {
       id: 'a2a-discover-capabilities',
       name: 'Discover platform capabilities',
       description:
@@ -307,6 +323,12 @@ export const legacyAgentManifest = {
       description: 'Submit structured tasks with typed intents.',
       endpoint: '/api/a2a/tasks',
       method: 'POST',
+      auth: 'Bearer agent_api_key',
+    },
+    a2a_task_update: {
+      description: 'Update task status and report results (for assigned agents). Completes the bidirectional collaboration loop.',
+      endpoint: '/api/a2a/tasks/{id}',
+      method: 'PATCH',
       auth: 'Bearer agent_api_key',
     },
     a2a_webhooks: {

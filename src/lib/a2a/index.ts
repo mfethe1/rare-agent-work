@@ -11,11 +11,13 @@ export type {
   AgentRegisterResponse,
   TaskSubmitRequest,
   TaskSubmitResponse,
+  TaskUpdateRequest,
+  TaskUpdateResponse,
   TaskStatusResponse,
   CapabilitiesResponse,
   PlatformIntent,
 } from './types';
 
 export { authenticateAgent, generateAgentApiKey, getServiceDb } from './auth';
-export { agentRegisterSchema, taskSubmitSchema } from './validation';
+export { agentRegisterSchema, taskSubmitSchema, taskUpdateSchema, VALID_STATUS_TRANSITIONS } from './validation';
 export { executeIntent, isIntentSupported, listPlatformIntents, IntentNotFoundError } from './executor';

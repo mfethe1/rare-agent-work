@@ -40,3 +40,44 @@ export const taskSubmitSchema = z.object({
 });
 
 export type TaskSubmitInput = z.infer<typeof taskSubmitSchema>;
+
+// ──────────────────────────────────────────────
+// Task Update — PATCH /api/a2a/tasks/:id
+// ──────────────────────────────────────────────
+
+/**
+ * Valid status transitions an assigned agent can make.
+ * Only forward transitions are allowed:
+ *   accepted → in_progress
+ *   accepted | in_progress → completed | failed
+ */
+const AGENT_SETTABLE_STATUSES = ['in_progress', 'completed', 'failed'] as const;
+
+export const taskUpdateSchema = z.object({
+  /** New status for the task. Only forward transitions allowed. */
+  status: z.enum(AGENT_SETTABLE_STATUSES),
+  /** Result payload — required when status is 'completed'. */
+  result: z.record(z.string(), z.unknown()).optional(),
+  /** Error details — required when status is 'failed'. */
+  error: z.object({
+    code: trimmed(128).min(1, 'Error code is required'),
+    message: trimmed(2000).min(1, 'Error message is required'),
+  }).optional(),
+}).refine(
+  (data) => {
+    if (data.status === 'completed' && !data.result) return false;
+    if (data.status === 'failed' && !data.error) return false;
+    return true;
+  },
+  {
+    message: 'Status "completed" requires a result object; status "failed" requires an error object.',
+  },
+);
+
+export type TaskUpdateInput = z.infer<typeof taskUpdateSchema>;
+
+/** Map of valid status transitions for task updates. */
+export const VALID_STATUS_TRANSITIONS: Record<string, string[]> = {
+  accepted: ['in_progress', 'completed', 'failed'],
+  in_progress: ['completed', 'failed'],
+};

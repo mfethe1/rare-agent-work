@@ -25,8 +25,38 @@ export async function GET() {
 
   return NextResponse.json({
     platform: 'rareagent.work',
-    version: '1.0.0',
+    version: '1.1.0',
     intents,
+    task_lifecycle: {
+      description: 'Bidirectional task protocol: submit tasks and receive callbacks from assigned agents.',
+      submit_endpoint: '/api/a2a/tasks',
+      status_endpoint: '/api/a2a/tasks/{id}',
+      update_endpoint: '/api/a2a/tasks/{id}',
+      update_method: 'PATCH',
+      agent_settable_statuses: ['in_progress', 'completed', 'failed'],
+      valid_transitions: {
+        accepted: ['in_progress', 'completed', 'failed'],
+        in_progress: ['completed', 'failed'],
+      },
+      update_schema: {
+        type: 'object',
+        required: ['status'],
+        properties: {
+          status: { type: 'string', enum: ['in_progress', 'completed', 'failed'] },
+          result: { type: 'object', description: 'Required when status is "completed".' },
+          error: {
+            type: 'object',
+            required: ['code', 'message'],
+            properties: {
+              code: { type: 'string', maxLength: 128 },
+              message: { type: 'string', maxLength: 2000 },
+            },
+            description: 'Required when status is "failed".',
+          },
+        },
+      },
+      ttl_enforcement: 'Tasks that exceed ttl_seconds are auto-expired. Updates to expired tasks return HTTP 410.',
+    },
     webhooks: {
       description: 'Subscribe to platform events and receive HMAC-signed HTTP callbacks.',
       subscription_endpoint: '/api/a2a/subscriptions',

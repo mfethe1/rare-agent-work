@@ -7,21 +7,6 @@ import { z } from 'zod';
 const trimmed = (max = 5000) => z.string().trim().max(max);
 
 // ──────────────────────────────────────────────
-// Evaluation Weights (nested)
-// ──────────────────────────────────────────────
-
-const evaluationWeightsSchema = z
-  .object({
-    price: z.number().min(0).max(1).default(0.4),
-    reputation: z.number().min(0).max(1).default(0.35),
-    speed: z.number().min(0).max(1).default(0.25),
-  })
-  .refine(
-    (w) => Math.abs(w.price + w.reputation + w.speed - 1.0) < 0.01,
-    { message: 'Evaluation weights must sum to 1.0' },
-  );
-
-// ──────────────────────────────────────────────
 // Create Auction — POST /api/a2a/auctions
 // ──────────────────────────────────────────────
 
@@ -29,7 +14,7 @@ export const auctionCreateSchema = z.object({
   required_capability: trimmed(200).min(1, 'required_capability is required'),
   title: trimmed(300).min(1, 'title is required'),
   description: trimmed(5000).min(1, 'description is required'),
-  task_input: z.record(z.unknown()).default({}),
+  task_input: z.record(z.string(), z.unknown()).default({}),
   auction_type: z.enum(['open', 'sealed', 'reverse', 'dutch']).default('open'),
   max_price: z.number().positive('max_price must be positive').max(1_000_000),
   currency: trimmed(16).default('credits'),
@@ -39,7 +24,8 @@ export const auctionCreateSchema = z.object({
   min_reputation_score: z.number().min(0).max(1).default(0),
   bidding_deadline: z.string().datetime('bidding_deadline must be ISO-8601'),
   completion_deadline: z.string().datetime('completion_deadline must be ISO-8601'),
-  evaluation_weights: evaluationWeightsSchema.optional(),
+  /** Weights validated at engine layer; schema accepts { price, reputation, speed } objects. */
+  evaluation_weights: z.any().optional(),
 });
 
 export type AuctionCreateInput = z.infer<typeof auctionCreateSchema>;

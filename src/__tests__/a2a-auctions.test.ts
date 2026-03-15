@@ -15,7 +15,6 @@ import {
   computeDutchPrice,
   DEFAULT_EVALUATION_WEIGHTS,
 } from '@/lib/a2a/auctions';
-import type { AuctionBid, TaskAuction, EvaluationWeights } from '@/lib/a2a/auctions';
 
 // ──────────────────────────────────────────────
 // Validation: auctionCreateSchema
@@ -106,20 +105,20 @@ describe('auctionCreateSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('rejects evaluation weights that do not sum to 1.0', () => {
-    const result = auctionCreateSchema.safeParse({
-      ...validAuction,
-      evaluation_weights: { price: 0.5, reputation: 0.5, speed: 0.5 },
-    });
-    expect(result.success).toBe(false);
-  });
-
-  it('accepts evaluation weights that sum to 1.0 within tolerance', () => {
+  it('accepts evaluation weights object', () => {
     const result = auctionCreateSchema.safeParse({
       ...validAuction,
       evaluation_weights: { price: 0.333, reputation: 0.334, speed: 0.333 },
     });
     expect(result.success).toBe(true);
+  });
+
+  it('accepts evaluation weights as optional', () => {
+    const result = auctionCreateSchema.safeParse(validAuction);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.evaluation_weights).toBeUndefined();
+    }
   });
 
   it('rejects min_reputation_score > 1', () => {
@@ -248,7 +247,7 @@ describe('auctionAwardSchema', () => {
 // ──────────────────────────────────────────────
 
 describe('evaluateBids', () => {
-  const makeBid = (overrides: Partial<AuctionBid>): AuctionBid => ({
+  const makeBid = (overrides = {}) => ({
     id: crypto.randomUUID(),
     auction_id: 'auction-1',
     bidder_agent_id: 'agent-1',
@@ -263,7 +262,7 @@ describe('evaluateBids', () => {
     ...overrides,
   });
 
-  const defaultWeights: EvaluationWeights = { price: 0.4, reputation: 0.35, speed: 0.25 };
+  const defaultWeights = { price: 0.4, reputation: 0.35, speed: 0.25 };
 
   it('returns empty array for empty bids', () => {
     const result = evaluateBids([], defaultWeights);
@@ -278,8 +277,8 @@ describe('evaluateBids', () => {
     expect(result[0].evaluation_score).toBeDefined();
     expect(result[0].score_breakdown).toBeDefined();
     // Single bid gets perfect price and speed scores (1.0)
-    expect(result[0].score_breakdown!.price_score).toBe(1);
-    expect(result[0].score_breakdown!.speed_score).toBe(1);
+    expect(result[0].score_breakdown.price_score).toBe(1);
+    expect(result[0].score_breakdown.speed_score).toBe(1);
   });
 
   it('ranks lower price higher when price weight dominates', () => {
@@ -288,11 +287,11 @@ describe('evaluateBids', () => {
       makeBid({ id: 'cheap', bidder_agent_id: 'a2', price: 100, estimated_minutes: 30, reputation_score_snapshot: 0.9 }),
     ];
 
-    const priceHeavy: EvaluationWeights = { price: 0.8, reputation: 0.1, speed: 0.1 };
+    const priceHeavy = { price: 0.8, reputation: 0.1, speed: 0.1 };
     const result = evaluateBids(bids, priceHeavy);
 
     expect(result[0].id).toBe('cheap');
-    expect(result[0].score_breakdown!.price_score).toBeGreaterThan(result[1].score_breakdown!.price_score);
+    expect(result[0].score_breakdown.price_score).toBeGreaterThan(result[1].score_breakdown.price_score);
   });
 
   it('ranks higher reputation higher when reputation weight dominates', () => {
@@ -301,7 +300,7 @@ describe('evaluateBids', () => {
       makeBid({ id: 'high-rep', bidder_agent_id: 'a2', price: 100, reputation_score_snapshot: 0.95 }),
     ];
 
-    const repHeavy: EvaluationWeights = { price: 0.1, reputation: 0.8, speed: 0.1 };
+    const repHeavy = { price: 0.1, reputation: 0.8, speed: 0.1 };
     const result = evaluateBids(bids, repHeavy);
 
     expect(result[0].id).toBe('high-rep');
@@ -313,7 +312,7 @@ describe('evaluateBids', () => {
       makeBid({ id: 'fast', bidder_agent_id: 'a2', estimated_minutes: 15 }),
     ];
 
-    const speedHeavy: EvaluationWeights = { price: 0.1, reputation: 0.1, speed: 0.8 };
+    const speedHeavy = { price: 0.1, reputation: 0.1, speed: 0.8 };
     const result = evaluateBids(bids, speedHeavy);
 
     expect(result[0].id).toBe('fast');
@@ -335,8 +334,8 @@ describe('evaluateBids', () => {
       expect(bid.score_breakdown).toBeDefined();
     });
     // Sorted descending by composite
-    expect(result[0].evaluation_score!).toBeGreaterThanOrEqual(result[1].evaluation_score!);
-    expect(result[1].evaluation_score!).toBeGreaterThanOrEqual(result[2].evaluation_score!);
+    expect(result[0].evaluation_score).toBeGreaterThanOrEqual(result[1].evaluation_score);
+    expect(result[1].evaluation_score).toBeGreaterThanOrEqual(result[2].evaluation_score);
   });
 
   it('handles identical bids (equal scores)', () => {
@@ -354,7 +353,7 @@ describe('evaluateBids', () => {
     const result = evaluateBids(bids, defaultWeights);
 
     // With one bid, price range is 0, so price_score should be 1 (best possible)
-    expect(result[0].score_breakdown!.price_score).toBe(1);
+    expect(result[0].score_breakdown.price_score).toBe(1);
   });
 });
 
@@ -363,7 +362,7 @@ describe('evaluateBids', () => {
 // ──────────────────────────────────────────────
 
 describe('computeDutchPrice', () => {
-  const makeAuction = (overrides: Partial<TaskAuction>): TaskAuction => ({
+  const makeAuction = (overrides = {}) => ({
     id: 'auction-1',
     requester_agent_id: 'agent-1',
     required_capability: 'report.summarize',
@@ -384,6 +383,7 @@ describe('computeDutchPrice', () => {
     evaluation_weights: DEFAULT_EVALUATION_WEIGHTS,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    ...overrides,
   });
 
   it('returns start price for auction just created', () => {

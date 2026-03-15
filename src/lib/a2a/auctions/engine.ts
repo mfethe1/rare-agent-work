@@ -678,7 +678,7 @@ export function evaluateBids(
  * Price starts at dutch_start_price and decreases by dutch_decrement_per_minute
  * for each minute since auction creation, floored at 0.
  */
-export function computeDutchPrice(auction: TaskAuction): number {
+export function computeDutchPrice(auction: Pick<TaskAuction, 'auction_type' | 'max_price' | 'dutch_start_price' | 'dutch_decrement_per_minute' | 'created_at'>): number {
   if (auction.auction_type !== 'dutch') return auction.max_price;
   if (!auction.dutch_start_price || !auction.dutch_decrement_per_minute) return auction.max_price;
 

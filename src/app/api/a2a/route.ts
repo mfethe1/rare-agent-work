@@ -72,6 +72,15 @@ export async function GET() {
         check: { method: 'POST', path: '/api/a2a/delegations/check', auth: 'Bearer <agent_api_key>', description: 'Check if a delegated action is authorized' },
         audit: { method: 'GET', path: '/api/a2a/delegations/audit', auth: 'Bearer <agent_api_key>', description: 'Query delegation authorization audit log' },
       },
+      mesh: {
+        route: { method: 'POST', path: '/api/a2a/mesh', auth: 'Bearer <agent_api_key>', description: 'Route a task through the service mesh with circuit breakers, health-aware load balancing, and resilience metadata' },
+        health: { method: 'GET', path: '/api/a2a/mesh', auth: 'Bearer <agent_api_key>', description: 'Mesh-wide health dashboard: agent health snapshots, circuit breaker states, active policies' },
+        policies: { method: 'POST', path: '/api/a2a/mesh/policies', auth: 'Bearer <agent_api_key>', description: 'Create mesh policy (partner-only): load balancing, circuit breaker, retry, and hedging config per capability domain' },
+        list_policies: { method: 'GET', path: '/api/a2a/mesh/policies', auth: 'Bearer <agent_api_key>', description: 'List all mesh policies' },
+        circuit: { method: 'POST', path: '/api/a2a/mesh/circuit', auth: 'Bearer <agent_api_key>', description: 'Record success/failure events against an agent\'s circuit breaker' },
+        circuit_status: { method: 'GET', path: '/api/a2a/mesh/circuit?agent_id=<uuid>', auth: 'Bearer <agent_api_key>', description: 'Get circuit breaker state for an agent' },
+        bulkheads: { method: 'POST', path: '/api/a2a/mesh/bulkheads', auth: 'Bearer <agent_api_key>', description: 'Create bulkhead partition to limit per-consumer capacity on a provider' },
+      },
     },
     supported_intents: intents.map((i) => ({
       intent: i.intent,

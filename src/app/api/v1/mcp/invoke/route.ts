@@ -5,7 +5,38 @@ import { getTasks } from "@/lib/tasks";
 import { getAllAgents } from "@/lib/agent-auth";
 import { getReputation } from "@/lib/reputation";
 import fs from "node:fs";
+import fsAsync from "node:fs/promises";
 import path from "node:path";
+import { existsSync, mkdirSync } from "node:fs";
+
+// ─── MCP Audit Log ─────────────────────────────────────────────────────────────
+
+const MCP_AUDIT_FILE = path.join(process.cwd(), "data/audit/mcp-invocations.json");
+
+interface McpAuditEntry {
+  timestamp: string;
+  agent_id: string;
+  tool: string;
+  arguments: Record<string, unknown>;
+  result_status: "success" | "error";
+  duration_ms: number;
+}
+
+async function logMcpInvocation(entry: McpAuditEntry): Promise<void> {
+  try {
+    const dir = path.dirname(MCP_AUDIT_FILE);
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+
+    let log: McpAuditEntry[] = [];
+    try {
+      const raw = await fsAsync.readFile(MCP_AUDIT_FILE, "utf-8");
+      log = JSON.parse(raw) as McpAuditEntry[];
+    } catch { /* file may not exist */ }
+
+    log.push(entry);
+    await fsAsync.writeFile(MCP_AUDIT_FILE, JSON.stringify(log, null, 2), "utf-8");
+  } catch { /* audit must never break the main flow */ }
+}
 
 // ─── Internal handler implementations ─────────────────────────────────────────
 
@@ -182,18 +213,48 @@ export async function POST(req: NextRequest) {
 
   const args = (b.arguments && typeof b.arguments === "object" ? b.arguments : {}) as Record<string, unknown>;
 
+  // Extract agent_id from auth header if present
+  const authHeader = req.headers.get("Authorization");
+  const agentId = authHeader?.startsWith("Bearer ") ? authHeader.slice(7, 20) + "..." : "anonymous";
+
+  const startTime = Date.now();
+
   try {
     const result = await handler(args);
+    const duration_ms = Date.now() - startTime;
+
+    // Log invocation (fire-and-forget)
+    logMcpInvocation({
+      timestamp: new Date().toISOString(),
+      agent_id: agentId,
+      tool: b.tool as string,
+      arguments: args,
+      result_status: "success",
+      duration_ms,
+    }).catch(() => {});
+
     return NextResponse.json(
       {
         tool: b.tool,
         result,
-        meta: { executed_at: new Date().toISOString() },
+        meta: { executed_at: new Date().toISOString(), duration_ms },
       },
       { headers: getCorsHeaders() },
     );
   } catch (err) {
+    const duration_ms = Date.now() - startTime;
     const msg = err instanceof Error ? err.message : "Tool execution failed";
+
+    // Log failed invocation
+    logMcpInvocation({
+      timestamp: new Date().toISOString(),
+      agent_id: agentId,
+      tool: b.tool as string,
+      arguments: args,
+      result_status: "error",
+      duration_ms,
+    }).catch(() => {});
+
     return errorResponse(msg, "TOOL_ERROR", 400);
   }
 }

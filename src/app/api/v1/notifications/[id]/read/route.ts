@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
-import { acceptContract } from "@/lib/contracts";
+import { markAsRead } from "@/lib/notifications";
 import { CORS_HEADERS } from "@/lib/api-headers";
-import { appendAudit } from "@/lib/audit";
 
 function errorResponse(error: string, code: string, status: number) {
   return NextResponse.json({ error, code, status }, { status, headers: CORS_HEADERS });
@@ -24,33 +23,12 @@ export async function POST(
     return errorResponse("Invalid or expired API key", "INVALID_KEY", 401);
   }
 
-  try {
-    const contract = await acceptContract(id, agent.agent_id);
-
-    appendAudit({
-      agent_id: agent.agent_id,
-      action: "contract.accepted",
-      resource_type: "contract",
-      resource_id: id,
-    }).catch(() => {});
-
-    return NextResponse.json(
-      {
-        contract_id: contract.id,
-        status: contract.status,
-        accepted_at: contract.accepted_at,
-        message: "Contract accepted and is now active.",
-      },
-      { headers: CORS_HEADERS },
-    );
-  } catch (err) {
-    const msg = err instanceof Error ? err.message : "Internal server error";
-    const isClientError =
-      msg.includes("not found") ||
-      msg.includes("Only the counterparty") ||
-      msg.includes("Cannot accept");
-    return errorResponse(msg, "ACCEPT_ERROR", isClientError ? 400 : 500);
+  const notification = await markAsRead(id, agent.agent_id);
+  if (!notification) {
+    return errorResponse("Notification not found", "NOT_FOUND", 404);
   }
+
+  return NextResponse.json(notification, { headers: CORS_HEADERS });
 }
 
 export async function OPTIONS() {

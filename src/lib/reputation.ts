@@ -28,6 +28,7 @@ export interface ReputationRecord {
   trust_tier: TrustTier;
   signals: ReputationSignals;
   history: ReputationEvent[];
+  verified_skills?: string[];
   last_calculated: string;
   created_at: string;
 }
@@ -184,6 +185,19 @@ export async function recordTaskFailed(agentId: string, taskId: string): Promise
     record.trust_tier = scoreToTier(record.overall_score);
     record.last_calculated = now;
 
+    return { data, result: record };
+  });
+}
+
+export async function addVerifiedSkill(agentId: string, skill: string): Promise<ReputationRecord> {
+  return store.transaction(async (data) => {
+    if (!data[agentId]) data[agentId] = makeRecord(agentId);
+    const record = data[agentId];
+    if (!record.verified_skills) record.verified_skills = [];
+    if (!record.verified_skills.includes(skill)) {
+      record.verified_skills.push(skill);
+    }
+    record.last_calculated = new Date().toISOString();
     return { data, result: record };
   });
 }

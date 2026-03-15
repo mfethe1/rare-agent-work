@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
 import { proposeContract, getAgentContracts } from "@/lib/contracts";
 import { CORS_HEADERS } from "@/lib/api-headers";
+import { appendAudit } from "@/lib/audit";
 
 function errorResponse(error: string, code: string, status: number) {
   return NextResponse.json({ error, code, status }, { status, headers: CORS_HEADERS });
@@ -82,7 +83,7 @@ export async function POST(req: NextRequest) {
     return errorResponse("terms.sla.max_response_time_hours must be a positive number", "INVALID_SLA", 400);
   }
 
-  const contract = await proposeContract({
+  const rawContract = await proposeContract({
     proposer_id: agent.agent_id,
     counterparty_id: b.counterparty_id as string,
     task_id: typeof b.task_id === "string" ? b.task_id : undefined,
@@ -98,6 +99,16 @@ export async function POST(req: NextRequest) {
       },
     },
   });
+
+  const contract = rawContract;
+
+  appendAudit({
+    agent_id: agent.agent_id,
+    action: "contract.proposed",
+    resource_type: "contract",
+    resource_id: contract.id,
+    details: { counterparty_id: b.counterparty_id as string },
+  }).catch(() => {});
 
   return NextResponse.json(contract, { status: 201, headers: CORS_HEADERS });
 }

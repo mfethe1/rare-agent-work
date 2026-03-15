@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
 import { reportBreach } from "@/lib/contracts";
 import { getCorsHeaders, CORS_HEADERS } from "@/lib/api-headers";
+import { appendAudit } from "@/lib/audit";
 
 function errorResponse(error: string, code: string, status: number) {
   return NextResponse.json({ error, code, status }, { status, headers: getCorsHeaders() });
@@ -55,6 +56,14 @@ export async function POST(
       reason: (b.reason as string).trim(),
       evidence: (b.evidence as string).trim(),
     });
+
+    appendAudit({
+      agent_id: agent.agent_id,
+      action: "contract.breached",
+      resource_type: "contract",
+      resource_id: id,
+      details: { reason: (b.reason as string).trim() },
+    }).catch(() => {});
 
     return NextResponse.json(
       {

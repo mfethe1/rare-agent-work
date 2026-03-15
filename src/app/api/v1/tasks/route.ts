@@ -4,6 +4,8 @@ import { createTask, getTasks, type TaskStatus, type GetTasksFilter } from "@/li
 import { getBalance, holdEscrow } from "@/lib/wallet";
 import { dispatchWebhookEvent } from "@/lib/webhooks";
 import { CORS_HEADERS } from "@/lib/api-headers";
+import { appendAudit } from "@/lib/audit";
+import { triggerMatchingForTask } from "@/lib/matching";
 
 function errorResponse(error: string, code: string, status: number) {
   return NextResponse.json({ error, code, status }, { status, headers: CORS_HEADERS });
@@ -164,6 +166,18 @@ export async function POST(req: NextRequest) {
     await holdEscrow(agent.agent_id, budget.credits as number, task.id);
 
     dispatchWebhookEvent("task.created", { task_id: task.id, title: task.title }).catch(() => {});
+
+    // Audit log (non-blocking)
+    appendAudit({
+      agent_id: agent.agent_id,
+      action: "task.created",
+      resource_type: "task",
+      resource_id: task.id,
+      details: { title: task.title, budget: task.budget },
+    }).catch(() => {});
+
+    // Trigger auto-matching (fire-and-forget)
+    triggerMatchingForTask(task);
 
     return NextResponse.json(
       { ...task, escrow_held: true },

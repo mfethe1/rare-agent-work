@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCorsHeaders, CORS_HEADERS } from "@/lib/api-headers";
+import { verifyApiKey, type AgentRecord } from "@/lib/agent-auth";
 
 interface BatchOperation {
   id: string;
@@ -15,6 +16,33 @@ interface BatchResult {
   error?: string;
 }
 
+// Free-tier GET-able paths (no auth required)
+const FREE_TIER_GET_PATHS = [
+  "/api/v1/news",
+  "/api/v1/models",
+  "/api/v1/reports",
+  "/api/v1/health",
+  "/api/v1/discover",
+  "/api/v1/challenges",
+  "/api/v1/analytics/outcomes",
+];
+
+function checkOpAuth(op: BatchOperation, agent: AgentRecord | null): string | null {
+  if (op.method === "GET") {
+    // Allow GET on free-tier paths without auth
+    if (FREE_TIER_GET_PATHS.some((p) => op.path.startsWith(p))) {
+      return null; // OK
+    }
+    // Other GETs require auth
+    if (!agent) return "Authentication required for this endpoint";
+    return null;
+  }
+
+  // POST always requires auth
+  if (!agent) return "Authentication required for POST operations";
+  return null;
+}
+
 function errorResponse(error: string, code: string, status: number) {
   return NextResponse.json({ error, code, status }, { status, headers: getCorsHeaders() });
 }
@@ -23,13 +51,16 @@ function errorResponse(error: string, code: string, status: number) {
  * Execute a single operation against the internal Next.js route handlers.
  * We construct a Request object and use fetch to hit the same origin.
  */
-async function executeOperation(op: BatchOperation, baseUrl: string): Promise<BatchResult> {
+async function executeOperation(op: BatchOperation, baseUrl: string, authHeader?: string): Promise<BatchResult> {
   const url = `${baseUrl}${op.path}`;
 
   try {
+    const headers: Record<string, string> = { "Content-Type": "application/json" };
+    if (authHeader) headers["Authorization"] = authHeader;
+
     const options: RequestInit = {
       method: op.method,
-      headers: { "Content-Type": "application/json" },
+      headers,
     };
 
     if (op.method === "POST" && op.body !== undefined) {
@@ -77,8 +108,8 @@ export async function POST(req: NextRequest) {
     return errorResponse("operations array must not be empty", "EMPTY_OPERATIONS", 400);
   }
 
-  if (operations.length > 10) {
-    return errorResponse("Maximum 10 operations per batch", "TOO_MANY_OPERATIONS", 400);
+  if (operations.length > 50) {
+    return errorResponse("Maximum 50 operations per batch", "TOO_MANY_OPERATIONS", 400);
   }
 
   // Validate operations
@@ -102,14 +133,31 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Optionally authenticate caller (for auth scoping per operation)
+  const authHeader = req.headers.get("Authorization") ?? undefined;
+  let agent: AgentRecord | null = null;
+  if (authHeader?.startsWith("Bearer ")) {
+    agent = await verifyApiKey(authHeader.slice(7));
+  }
+
   // Determine base URL
   const host = req.headers.get("host") ?? "localhost:3000";
   const protocol = host.includes("localhost") ? "http" : "https";
   const baseUrl = `${protocol}://${host}`;
 
-  // Execute operations in parallel
+  // Execute operations with per-op auth scoping
   const results = await Promise.all(
-    operations.map((op) => executeOperation(op, baseUrl)),
+    operations.map((op) => {
+      const authErr = checkOpAuth(op, agent);
+      if (authErr) {
+        return Promise.resolve<BatchResult>({
+          id: op.id,
+          status: 401,
+          error: authErr,
+        });
+      }
+      return executeOperation(op, baseUrl, authHeader);
+    }),
   );
 
   const successCount = results.filter((r) => r.status >= 200 && r.status < 300).length;

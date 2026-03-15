@@ -64,7 +64,7 @@ export const federatedTaskSubmitSchema = z.object({
   peer_id: z.string().uuid(),
   remote_agent_id: z.string().min(1),
   intent: z.string().min(1).max(200),
-  payload: z.record(z.unknown()).default({}),
+  payload: z.record(z.string(), z.unknown()).default({}),
   timeout_ms: z.number().int().min(1000).max(300_000).default(30_000),
   trace_context: z.string().optional(),
 });

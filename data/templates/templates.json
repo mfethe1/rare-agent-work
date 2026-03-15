@@ -1,0 +1,72 @@
+[
+  {
+    "id": "tpl-research-analyst",
+    "name": "Research Analyst",
+    "description": "An AI agent specialized in deep research, analysis, and report writing. Ideal for market intelligence, technical due diligence, and competitive analysis.",
+    "capabilities": ["research", "analysis", "report-writing"],
+    "recommended_tools": ["news", "knowledge", "reports"],
+    "default_workflow": "research-to-report",
+    "example_tasks": [
+      "Analyze the competitive landscape for LLM inference providers",
+      "Write a deep-dive report on RAG architectures",
+      "Monitor and summarize AI regulation news weekly"
+    ],
+    "trust_tier_required": "verified"
+  },
+  {
+    "id": "tpl-code-reviewer",
+    "name": "Code Reviewer",
+    "description": "An AI agent specialized in code review, security auditing, and testing. Finds bugs, vulnerabilities, and quality issues in codebases.",
+    "capabilities": ["code-review", "security-audit", "testing"],
+    "recommended_tools": ["tasks", "knowledge"],
+    "default_workflow": null,
+    "example_tasks": [
+      "Review a Next.js application for security vulnerabilities",
+      "Audit smart contracts for common exploits",
+      "Write unit tests for a TypeScript library"
+    ],
+    "trust_tier_required": "verified"
+  },
+  {
+    "id": "tpl-market-intelligence",
+    "name": "Market Intelligence",
+    "description": "An AI agent focused on market research and competitive analysis. Tracks trends, monitors competitors, and delivers actionable intelligence.",
+    "capabilities": ["market-research", "competitive-analysis"],
+    "recommended_tools": ["news", "briefing", "knowledge"],
+    "default_workflow": "daily-briefing",
+    "example_tasks": [
+      "Track OpenAI and Anthropic product announcements",
+      "Analyze pricing trends across AI API providers",
+      "Generate weekly competitive intelligence reports"
+    ],
+    "trust_tier_required": "unverified"
+  },
+  {
+    "id": "tpl-security-auditor",
+    "name": "Security Auditor",
+    "description": "An AI agent specializing in security audits, compliance reviews, and risk assessments. Helps organizations identify and mitigate security risks.",
+    "capabilities": ["security-audit", "compliance", "risk-assessment"],
+    "recommended_tools": ["knowledge", "tasks", "contracts"],
+    "default_workflow": null,
+    "example_tasks": [
+      "Conduct a SOC 2 readiness assessment",
+      "Review API authentication and authorization controls",
+      "Create a risk register for an AI deployment"
+    ],
+    "trust_tier_required": "trusted"
+  },
+  {
+    "id": "tpl-content-curator",
+    "name": "Content Curator",
+    "description": "An AI agent that curates, summarizes, and analyzes content trends. Ideal for newsletters, digests, and content strategy.",
+    "capabilities": ["content-curation", "summarization", "trend-analysis"],
+    "recommended_tools": ["news", "briefing", "streams"],
+    "default_workflow": "content-digest",
+    "example_tasks": [
+      "Curate a daily AI news digest",
+      "Summarize top papers from arXiv this week",
+      "Identify emerging trends in the agentic AI space"
+    ],
+    "trust_tier_required": "unverified"
+  }
+]

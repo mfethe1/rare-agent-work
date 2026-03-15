@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyApiKey } from "@/lib/agent-auth";
 import { reportBreach } from "@/lib/contracts";
-import { CORS_HEADERS } from "@/lib/api-headers";
+import { getCorsHeaders, CORS_HEADERS } from "@/lib/api-headers";
 
 function errorResponse(error: string, code: string, status: number) {
-  return NextResponse.json({ error, code, status }, { status, headers: CORS_HEADERS });
+  return NextResponse.json({ error, code, status }, { status, headers: getCorsHeaders() });
 }
 
 export async function POST(
@@ -39,8 +39,15 @@ export async function POST(
   if (!b.reason || typeof b.reason !== "string" || b.reason.trim().length === 0) {
     return errorResponse("Field 'reason' is required", "MISSING_REASON", 400);
   }
+  if (b.reason.trim().length < 20) {
+    return errorResponse("Field 'reason' must be at least 20 characters", "REASON_TOO_SHORT", 400);
+  }
+
   if (!b.evidence || typeof b.evidence !== "string" || b.evidence.trim().length === 0) {
     return errorResponse("Field 'evidence' is required", "MISSING_EVIDENCE", 400);
+  }
+  if (b.evidence.trim().length < 50) {
+    return errorResponse("Field 'evidence' must be at least 50 characters", "EVIDENCE_TOO_SHORT", 400);
   }
 
   try {
@@ -56,7 +63,7 @@ export async function POST(
         breach_report: contract.breach_report,
         message: "Breach reported. Contract marked as breached.",
       },
-      { headers: CORS_HEADERS },
+      { headers: getCorsHeaders() },
     );
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Internal server error";

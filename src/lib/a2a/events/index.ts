@@ -99,3 +99,33 @@ export {
 } from './validation';
 
 export type { ValidationResult } from './validation';
+
+// Correlation & Causal Tracing
+export {
+  createCorrelationContext,
+  completeCorrelationContext,
+  failCorrelationContext,
+  cancelCorrelationContext,
+  getCorrelationContext,
+  listCorrelationContexts,
+  linkEvents,
+  linkEventsBatch,
+  getCausalGraph,
+  getCorrelationTimeline,
+  getCorrelatedEvents,
+  getEventCauses,
+  getEventEffects,
+  searchCorrelations,
+} from './correlation';
+
+export type {
+  CorrelationStatus,
+  CausalRelationship,
+  CorrelationContext,
+  CausalLink,
+  CausalGraphNode,
+  CausalGraph,
+  TimelineEntry,
+  CreateContextParams,
+  LinkEventsParams,
+} from './correlation';

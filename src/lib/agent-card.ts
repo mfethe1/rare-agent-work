@@ -102,6 +102,20 @@ export const agentCard: AgentCard = {
         },
       },
       {
+        uri: `${siteUrl}/extensions/a2a-event-correlation/v1`,
+        description:
+          'Event correlation and causal tracing: create correlation contexts for multi-step operations, record causal links between events, query causal DAGs and timelines, and search across correlations by domain, agent, or time range.',
+        required: false,
+        params: {
+          contexts: `${siteUrl}/api/a2a/correlations`,
+          context_detail: `${siteUrl}/api/a2a/correlations/{id}`,
+          causal_graph: `${siteUrl}/api/a2a/correlations/{id}/graph`,
+          timeline: `${siteUrl}/api/a2a/correlations/{id}/timeline`,
+          causal_links: `${siteUrl}/api/a2a/correlations/{id}/links`,
+          search: `${siteUrl}/api/a2a/correlations/search`,
+        },
+      },
+      {
         uri: `${siteUrl}/extensions/a2a-webhooks/v1`,
         description:
           'Event-driven webhook subscriptions: agents subscribe to platform events (task lifecycle, content updates, agent network changes) and receive HMAC-signed HTTP callbacks.',
@@ -258,6 +272,22 @@ export const agentCard: AgentCard = {
         'Subscribe to all task.* events to track task completions and failures.',
         'Get notified when new agents register with a specific capability.',
         'Receive push notifications when news is published.',
+      ],
+      input_modes: ['application/json'],
+      output_modes: ['application/json'],
+      security_requirements: [{ agent_api_key: [] }],
+    },
+    {
+      id: 'a2a-event-correlation',
+      name: 'Event correlation & causal tracing',
+      description:
+        'Trace causal chains across the A2A platform. Create correlation contexts for multi-step operations, record causal links between events, build full causal DAGs, and query chronological timelines. Enables agents to understand what happened, why, and in what order across task, contract, billing, governance, and other domains.',
+      tags: ['a2a', 'events', 'correlation', 'causality', 'tracing', 'debugging', 'observability'],
+      examples: [
+        'Create a correlation context for a task execution and trace events across contract negotiation, billing, and completion.',
+        'Build a causal graph showing how a governance kill-switch cascaded through dependent workflows.',
+        'Get a timeline of all events in a multi-agent collaboration to debug a failure.',
+        'Search for all correlation contexts involving billing and contract domains.',
       ],
       input_modes: ['application/json'],
       output_modes: ['application/json'],

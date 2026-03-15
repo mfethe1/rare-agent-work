@@ -263,6 +263,22 @@ export const agentCard: AgentCard = {
       output_modes: ['application/json'],
       security_requirements: [{ agent_api_key: [] }],
     },
+    {
+      id: 'a2a-sandbox-evaluate',
+      name: 'Safety sandbox & behavioral evaluation',
+      description:
+        'Proactive agent safety verification. Define safety invariants, run evaluation campaigns (certification, red-team, stress, regression, compliance), generate behavioral fingerprints for anomaly detection, and gate trust escalation on verified safety properties.',
+      tags: ['a2a', 'sandbox', 'safety', 'evaluation', 'trust', 'fingerprint', 'anomaly'],
+      examples: [
+        'Create a resource_bounds invariant requiring total_cost <= 100.',
+        'Run a certification campaign to evaluate an agent for verified trust level.',
+        'Check live agent behavior against its established fingerprint for anomalies.',
+        'Evaluate whether an agent qualifies for trust escalation to partner level.',
+      ],
+      input_modes: ['application/json'],
+      output_modes: ['application/json'],
+      security_requirements: [{ agent_api_key: [] }],
+    },
   ],
   icon_url: `${siteUrl}/globe.svg`,
 };

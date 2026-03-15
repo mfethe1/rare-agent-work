@@ -639,6 +639,51 @@ export type {
   PeerSuspendInput,
 } from './federation';
 
+// ── Intelligence (Adaptive Strategy Engine) ──
+export {
+  registerStrategy,
+  getStrategy,
+  listStrategies,
+  retireStrategy,
+  promoteStrategy,
+  recordOutcome,
+  getOutcomes,
+  evaluatePerformance,
+  recommendStrategies,
+  createExperiment,
+  getExperiment,
+  listExperiments,
+  selectStrategyForExperiment,
+  evaluateExperiment,
+  extractInsights,
+  getInsight,
+  listInsights,
+  shareInsight,
+  proposeEvolution,
+  acceptEvolution,
+  listProposals,
+  getStrategyLineage,
+  RegisterStrategySchema,
+  RecordOutcomeSchema,
+  CreateExperimentSchema,
+  ProposeEvolutionSchema,
+  RecommendSchema,
+  ExtractInsightsSchema,
+  ShareInsightSchema,
+} from './intelligence';
+export type {
+  Strategy,
+  StrategyId,
+  StrategyOutcome,
+  StrategyPerformance,
+  Experiment,
+  ExperimentId,
+  Insight,
+  InsightId,
+  StrategyRecommendation,
+  EvolutionProposal,
+} from './intelligence';
+
 // ── Cache (Task Result Deduplication) ──
 export {
   computeCacheKey,

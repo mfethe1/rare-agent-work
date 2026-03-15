@@ -24,7 +24,6 @@ import {
   ROLE_RANK,
   DEFAULT_ORG_SETTINGS,
 } from '@/lib/a2a/organizations/types';
-import type { OrgMember, OrgRole, OrgPermission } from '@/lib/a2a/organizations/types';
 
 import { hasPermission, getEffectivePermissions } from '@/lib/a2a/organizations/engine';
 
@@ -32,7 +31,7 @@ import { hasPermission, getEffectivePermissions } from '@/lib/a2a/organizations/
 // Helpers
 // ──────────────────────────────────────────────
 
-function makeMember(overrides: Partial<OrgMember> = {}): OrgMember {
+function makeMember(overrides = {}) {
   return {
     id: 'mem-1',
     org_id: 'org-1',
@@ -96,7 +95,7 @@ describe('hasPermission', () => {
 
   it('owner has all permissions', () => {
     const owner = makeMember({ role: 'owner' });
-    const allPerms: OrgPermission[] = [
+    const allPerms = [
       'org.manage', 'org.dissolve',
       'members.invite', 'members.remove', 'members.role_assign',
       'billing.spend', 'billing.manage',
@@ -383,7 +382,7 @@ describe('orgAuditSchema', () => {
 
 describe('ROLE_PERMISSIONS', () => {
   it('each higher role has a superset of lower role permissions', () => {
-    const roles: OrgRole[] = ['viewer', 'member', 'operator', 'admin', 'owner'];
+    const roles = ['viewer', 'member', 'operator', 'admin', 'owner'];
     for (let i = 1; i < roles.length; i++) {
       const lowerPerms = new Set(ROLE_PERMISSIONS[roles[i - 1]]);
       const higherPerms = new Set(ROLE_PERMISSIONS[roles[i]]);

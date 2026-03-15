@@ -100,3 +100,35 @@ export type {
   TriggerWorkflowResponse,
   WorkflowExecutionResponse,
 } from './workflow-types';
+
+// ── Channels (Agent-to-Agent Messaging) ──
+export {
+  channelCreateSchema,
+  channelListSchema,
+  channelAddMemberSchema,
+  messageSendSchema,
+  messageListSchema,
+} from './channels';
+export type {
+  ChannelType,
+  A2AChannel,
+  MemberRole,
+  ChannelMember,
+  MessageType,
+  VoteValue,
+  ChannelMessage,
+  ProposalTally,
+  ChannelCreateRequest,
+  ChannelCreateResponse,
+  ChannelListResponse,
+  ChannelAddMemberRequest,
+  ChannelAddMemberResponse,
+  MessageSendRequest,
+  MessageSendResponse,
+  MessageListResponse,
+  ChannelCreateInput,
+  ChannelListInput,
+  ChannelAddMemberInput,
+  MessageSendInput,
+  MessageListInput,
+} from './channels';

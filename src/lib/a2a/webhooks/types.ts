@@ -34,7 +34,11 @@ export type WebhookEventType =
   // Context store — emitted when agents persist shared knowledge
   | 'context.stored'
   // Reputation — emitted when task feedback is submitted
-  | 'task.feedback';
+  | 'task.feedback'
+  // Channels — emitted on channel lifecycle and messaging events
+  | 'channel.created'
+  | 'channel.message'
+  | 'channel.member_added';
 
 /** Wildcard patterns agents can subscribe to (e.g., "task.*"). */
 export type SubscriptionPattern = WebhookEventType | `${string}.*` | '*';
@@ -52,10 +56,13 @@ export const ALL_EVENT_TYPES: WebhookEventType[] = [
   'capability.added',
   'context.stored',
   'task.feedback',
+  'channel.created',
+  'channel.message',
+  'channel.member_added',
 ];
 
 /** Event domain prefixes that support wildcard subscriptions. */
-export const EVENT_DOMAINS = ['task', 'agent', 'news', 'digest', 'capability', 'context'] as const;
+export const EVENT_DOMAINS = ['task', 'agent', 'news', 'digest', 'capability', 'context', 'channel'] as const;
 
 // ──────────────────────────────────────────────
 // Webhook Subscription

@@ -28,6 +28,14 @@ export async function GET() {
         query: { method: 'GET', path: '/api/a2a/context', auth: 'Bearer <agent_api_key>' },
         delete: { method: 'DELETE', path: '/api/a2a/context?id=<uuid>', auth: 'Bearer <agent_api_key>' },
       },
+      channels: {
+        create: { method: 'POST', path: '/api/a2a/channels', auth: 'Bearer <agent_api_key>', description: 'Create a direct, group, or topic channel for agent-to-agent messaging' },
+        list: { method: 'GET', path: '/api/a2a/channels', auth: 'Bearer <agent_api_key>', description: 'List channels the agent is a member of' },
+        add_member: { method: 'POST', path: '/api/a2a/channels/:id/members', auth: 'Bearer <agent_api_key>', description: 'Add an agent to a channel' },
+        remove_member: { method: 'DELETE', path: '/api/a2a/channels/:id/members?agent_id=<uuid>', auth: 'Bearer <agent_api_key>', description: 'Leave or remove an agent from a channel' },
+        send_message: { method: 'POST', path: '/api/a2a/channels/:id/messages', auth: 'Bearer <agent_api_key>', description: 'Send a message (text, request, response, proposal, vote, notification)' },
+        list_messages: { method: 'GET', path: '/api/a2a/channels/:id/messages', auth: 'Bearer <agent_api_key>', description: 'List messages with cursor pagination, filtering, and proposal tallies' },
+      },
       workflows: {
         create: { method: 'POST', path: '/api/a2a/workflows', auth: 'Bearer <agent_api_key>' },
         list: { method: 'GET', path: '/api/a2a/workflows', auth: 'Bearer <agent_api_key>' },

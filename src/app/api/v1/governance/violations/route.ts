@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CORS_HEADERS_GET, CORS_HEADERS } from "@/lib/api-headers";
+import { CORS_HEADERS_GET, CORS_HEADERS, getCorsHeaders } from "@/lib/api-headers";
 import { verifyApiKey } from "@/lib/agent-auth";
 import fs from "node:fs";
 import path from "node:path";
 import { ownerEmails } from "@/lib/auth";
+import { enforceViolation } from "@/lib/enforcement";
 
 const VIOLATIONS_FILE = path.join(process.cwd(), "data/governance/violations/violations.json");
+
+type ViolationStatus = "open" | "under_review" | "resolved" | "dismissed" | "reviewing" | "confirmed";
 
 interface Violation {
   id: string;
@@ -14,8 +17,12 @@ interface Violation {
   violator_agent_id: string;
   description: string;
   evidence?: string;
-  status: "open" | "under_review" | "resolved" | "dismissed";
+  category?: string;
+  evidence_strength?: "weak" | "moderate" | "strong";
+  status: ViolationStatus;
   created_at: string;
+  updated_at?: string;
+  enforcement_id?: string;
 }
 
 function loadViolations(): Violation[] {
@@ -79,6 +86,74 @@ export async function GET(req: NextRequest) {
 
   const violations = loadViolations();
   return NextResponse.json({ violations, total: violations.length }, { headers: CORS_HEADERS_GET });
+}
+
+export async function PUT(req: NextRequest) {
+  // Admin only
+  const userEmail = req.headers.get("x-user-email")?.trim().toLowerCase();
+  const admins = ownerEmails();
+  if (!userEmail || !admins.includes(userEmail)) {
+    return NextResponse.json({ error: "Forbidden: admin only" }, { status: 403, headers: CORS_HEADERS });
+  }
+
+  const body = await req.json().catch(() => null);
+  if (!body?.id || !body?.status) {
+    return NextResponse.json(
+      { error: "Missing required fields: id, status" },
+      { status: 400, headers: CORS_HEADERS },
+    );
+  }
+
+  const allowed = ["reviewing", "confirmed", "dismissed"];
+  if (!allowed.includes(body.status)) {
+    return NextResponse.json(
+      { error: `Status must be one of: ${allowed.join(", ")}` },
+      { status: 400, headers: CORS_HEADERS },
+    );
+  }
+
+  const violations = loadViolations();
+  const idx = violations.findIndex((v) => v.id === body.id);
+  if (idx < 0) {
+    return NextResponse.json({ error: "Violation not found" }, { status: 404, headers: CORS_HEADERS });
+  }
+
+  violations[idx] = {
+    ...violations[idx],
+    status: body.status as ViolationStatus,
+    updated_at: new Date().toISOString(),
+  };
+
+  let enforcement = null;
+
+  // When confirmed, trigger automated enforcement
+  if (body.status === "confirmed") {
+    try {
+      enforcement = await enforceViolation({
+        id: violations[idx].id,
+        violator_agent_id: violations[idx].violator_agent_id,
+        policy_id: violations[idx].policy_id,
+        description: violations[idx].description,
+        evidence: violations[idx].evidence,
+        category: violations[idx].category,
+        evidence_strength: violations[idx].evidence_strength,
+      });
+      violations[idx].enforcement_id = enforcement.id;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Enforcement failed";
+      return NextResponse.json(
+        { error: `Status updated but enforcement failed: ${msg}` },
+        { status: 500, headers: CORS_HEADERS },
+      );
+    }
+  }
+
+  saveViolations(violations);
+
+  return NextResponse.json(
+    { violation: violations[idx], enforcement },
+    { headers: getCorsHeaders() },
+  );
 }
 
 export async function OPTIONS() {

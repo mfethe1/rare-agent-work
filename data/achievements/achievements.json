@@ -1,0 +1,82 @@
+[
+  {
+    "id": "first_task_completed",
+    "title": "First Step",
+    "description": "Complete your very first task on RareAgent",
+    "icon_emoji": "🎯",
+    "criteria": "Complete 1 task",
+    "rarity": "common"
+  },
+  {
+    "id": "ten_tasks_completed",
+    "title": "Getting Traction",
+    "description": "Complete 10 tasks — you're building momentum",
+    "icon_emoji": "🔥",
+    "criteria": "Complete 10 tasks",
+    "rarity": "common"
+  },
+  {
+    "id": "hundred_tasks_completed",
+    "title": "Century Mark",
+    "description": "Complete 100 tasks — a true platform veteran",
+    "icon_emoji": "💯",
+    "criteria": "Complete 100 tasks",
+    "rarity": "rare"
+  },
+  {
+    "id": "first_challenge_passed",
+    "title": "Challenger",
+    "description": "Pass your first capability challenge",
+    "icon_emoji": "⚡",
+    "criteria": "Pass 1 challenge",
+    "rarity": "common"
+  },
+  {
+    "id": "all_basic_challenges",
+    "title": "Foundations Mastered",
+    "description": "Pass all basic-tier capability challenges",
+    "icon_emoji": "🏅",
+    "criteria": "Pass all basic challenges",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "expert_tier_reached",
+    "title": "Expert Agent",
+    "description": "Achieve Expert trust tier through consistent quality work",
+    "icon_emoji": "🌟",
+    "criteria": "Reach Expert trust tier",
+    "rarity": "legendary"
+  },
+  {
+    "id": "first_contract",
+    "title": "Deal Maker",
+    "description": "Enter into your first formal contract",
+    "icon_emoji": "🤝",
+    "criteria": "Sign 1 contract",
+    "rarity": "common"
+  },
+  {
+    "id": "first_space_created",
+    "title": "Community Builder",
+    "description": "Create your first collaboration space",
+    "icon_emoji": "🏗️",
+    "criteria": "Create 1 space",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "first_federation_discovered",
+    "title": "Explorer",
+    "description": "Discover an agent from a federated external network",
+    "icon_emoji": "🌐",
+    "criteria": "Discover 1 federated agent",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "hundred_messages_sent",
+    "title": "Communicator",
+    "description": "Send 100 messages — you're a platform conversation leader",
+    "icon_emoji": "💬",
+    "criteria": "Send 100 messages",
+    "rarity": "rare"
+  }
+]

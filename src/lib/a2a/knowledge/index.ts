@@ -69,3 +69,51 @@ export type {
   MergeResponse,
   DecayResponse,
 } from './types';
+
+// ── Collaborative Consensus Layer ──
+
+export {
+  endorseEntry,
+  revokeEndorsement,
+  listEndorsements,
+  raiseConflict,
+  voteOnConflict,
+  getConflict,
+  listConflicts,
+  expireStaleConflicts,
+} from './consensus-engine';
+
+export {
+  endorseSchema,
+  raiseConflictSchema,
+  voteConflictSchema,
+  listConflictsSchema,
+} from './consensus-validation';
+
+export type {
+  EndorseInput,
+  RaiseConflictInput,
+  VoteConflictInput,
+  ListConflictsInput,
+} from './consensus-validation';
+
+export type {
+  KnowledgeEndorsement,
+  CommunityConfidence,
+  ConsensusLevel,
+  KnowledgeConflict,
+  ConflictVote,
+  ConflictTally,
+  ConflictResolution,
+  ConflictStatus,
+  EndorseRequest,
+  EndorseResponse,
+  RevokeEndorsementResponse,
+  ListEndorsementsResponse,
+  RaiseConflictRequest,
+  RaiseConflictResponse,
+  VoteConflictRequest,
+  VoteConflictResponse,
+  GetConflictResponse,
+  ListConflictsResponse,
+} from './consensus-types';

@@ -741,6 +741,72 @@ export type {
   ListEnsemblesInput,
 } from './ensemble/validation';
 
+// ── Swarm Intelligence (Decentralized Emergent Coordination) ──
+export {
+  createSwarm,
+  joinSwarm,
+  depositPheromone,
+  sensePheromones,
+  reportSolution,
+  evaporate,
+  getSwarmStatus,
+  listSwarms,
+  dissolveSwarm,
+  leaveSwarm,
+  euclideanDistance,
+  computeStrongestDirection,
+  applyEvaporation,
+  computeConcentrationIndex,
+  adaptParameters,
+  DEFAULT_SWARM_CONFIG,
+} from './swarm/engine';
+export type {
+  Swarm,
+  SwarmStatus,
+  SwarmConfig,
+  SwarmObjective,
+  SwarmSolution,
+  SwarmAgent,
+  SwarmAgentStatus,
+  Pheromone,
+  PheromoneType,
+  BehaviorRule,
+  BehaviorType,
+  EvaporationStrategy,
+  ConvergenceCriteria,
+  SwarmMetrics,
+  CreateSwarmRequest,
+  CreateSwarmResponse,
+  JoinSwarmRequest,
+  JoinSwarmResponse,
+  DepositPheromoneRequest,
+  DepositPheromoneResponse,
+  SensePheromoneRequest,
+  SensePheromoneResponse,
+  ReportSolutionRequest,
+  ReportSolutionResponse,
+  EvaporateResponse,
+  SwarmStatusResponse,
+  ListSwarmsResponse,
+  DissolveSwarmResponse,
+} from './swarm/types';
+export {
+  createSwarmSchema,
+  joinSwarmSchema,
+  depositPheromoneSchema,
+  sensePheromoneSchema,
+  reportSolutionSchema,
+  listSwarmsSchema,
+} from './swarm/validation';
+export type {
+  CreateSwarmInput,
+  JoinSwarmInput,
+  DepositPheromoneInput,
+  SensePheromoneInput,
+  ReportSolutionInput,
+  ListSwarmsInput,
+} from './swarm/validation';
+
 // ── Cache (Task Result Deduplication) ──
 export {
   computeCacheKey,

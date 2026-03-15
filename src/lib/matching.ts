@@ -8,9 +8,10 @@ import { getAllAgents, type AgentRecord } from "./agent-auth";
 import { getReputation, type TrustTier } from "./reputation";
 import { getTasks, type Task } from "./tasks";
 import { notifyAgent } from "./notifications";
+import { semanticSkillMatch } from "./semantic-match";
 
 export interface MatchFactors {
-  skill_match: number;    // 0-1 Jaccard similarity
+  skill_match: number;    // 0-1 semantic similarity (synonym-aware)
   reputation: number;     // 0-1 normalized score
   availability: number;   // 0-1 (1 = fully available)
   price_fit: number;      // 0-1 (how well their typical bids fit the budget)
@@ -101,8 +102,8 @@ export async function findMatchingAgents(task: Task): Promise<AgentMatch[]> {
       const inProgressCount = await getInProgressCount(agent.agent_id);
       const avgBid = await getAverageBidAmount(agent.agent_id);
 
-      // Factor 1: Skill overlap
-      const skill_match = jaccardSimilarity(
+      // Factor 1: Semantic skill overlap (synonym-aware, replaces Jaccard)
+      const skill_match = semanticSkillMatch(
         task.requirements.skills,
         agent.capabilities,
       );

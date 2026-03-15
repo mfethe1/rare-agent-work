@@ -1,3 +1,4 @@
+import type { NextRequest } from "next/server";
 import path from "node:path";
 import { JsonFileStore } from "./data-store";
 
@@ -79,6 +80,34 @@ export async function getAgentById(agentId: string): Promise<AgentRecord | null>
 
 export async function getAllAgents(): Promise<AgentRecord[]> {
   return store.getAll();
+}
+
+// ─── Request-level auth helper ────────────────────────────────────────────────
+
+export interface AgentAuthResult {
+  valid: boolean;
+  agent_id?: string;
+  agent?: AgentRecord;
+  error?: string;
+}
+
+/**
+ * Verifies Bearer token from an incoming NextRequest.
+ * Returns { valid: true, agent_id, agent } on success.
+ */
+export async function verifyAgentAuth(req: NextRequest): Promise<AgentAuthResult> {
+  const authHeader = req.headers.get("Authorization") ?? req.headers.get("authorization");
+  if (!authHeader) return { valid: false, error: "Missing Authorization header" };
+
+  const parts = authHeader.split(" ");
+  if (parts.length !== 2 || parts[0].toLowerCase() !== "bearer") {
+    return { valid: false, error: "Authorization header must be: Bearer <api_key>" };
+  }
+
+  const agent = await verifyApiKey(parts[1]);
+  if (!agent) return { valid: false, error: "Invalid API key" };
+
+  return { valid: true, agent_id: agent.agent_id, agent };
 }
 
 function deriveScopes(capabilities: string[]): string[] {

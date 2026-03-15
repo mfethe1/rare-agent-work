@@ -65,7 +65,7 @@ export type InviteMemberInput = z.infer<typeof inviteMemberSchema>;
 
 export const proposeOutputSchema = z.object({
   external_task_id: trimmed(100).min(1),
-  proposed_output: z.record(z.unknown()),
+  proposed_output: z.record(z.string(), z.unknown()),
   max_rounds: z.number().int().min(1).max(10).default(3),
 });
 
@@ -76,7 +76,7 @@ export type ProposeOutputInput = z.infer<typeof proposeOutputSchema>;
 export const voteSchema = z.object({
   decision: voteDecisionSchema,
   rationale: trimmed(2000).min(1),
-  suggested_changes: z.record(z.unknown()).optional(),
+  suggested_changes: z.record(z.string(), z.unknown()).optional(),
   confidence: z.number().min(0).max(1).default(0.8),
 });
 

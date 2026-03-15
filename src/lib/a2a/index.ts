@@ -684,6 +684,63 @@ export type {
   EvolutionProposal,
 } from './intelligence';
 
+// ── Ensemble (Dynamic Agent Team Composition) ──
+export {
+  createEnsemble,
+  inviteMember,
+  acceptInvite,
+  removeMember,
+  proposeOutput,
+  voteOnRound,
+  getEnsemble,
+  listEnsembles as listEnsemblesQuery,
+  dissolveEnsemble,
+  computeRequiredVotes,
+} from './ensemble/engine';
+export type {
+  AgentEnsemble,
+  EnsembleMember,
+  EnsembleInternalTask,
+  ConsensusRound,
+  ConsensusVote,
+  ConsensusTally,
+  EnsembleDissolution,
+  EnsembleStatus,
+  MemberRole as EnsembleMemberRole,
+  MemberStatus as EnsembleMemberStatus,
+  FormationStrategy,
+  ConsensusPolicy,
+  CreateEnsembleRequest,
+  CreateEnsembleResponse,
+  InviteMemberRequest,
+  InviteMemberResponse,
+  AcceptInviteResponse,
+  ProposeOutputRequest,
+  ProposeOutputResponse,
+  VoteRequest as EnsembleVoteRequest,
+  VoteResponse as EnsembleVoteResponse,
+  DissolveRequest,
+  DissolveResponse,
+  ListEnsemblesResponse,
+  GetEnsembleResponse,
+} from './ensemble/types';
+export {
+  createEnsembleSchema,
+  inviteMemberSchema,
+  proposeOutputSchema,
+  voteSchema as ensembleVoteSchema,
+  dissolveSchema,
+  listEnsemblesSchema,
+} from './ensemble/validation';
+export type {
+  CreateEnsembleInput,
+  InviteMemberInput,
+  ProposeOutputInput,
+  VoteInput as EnsembleVoteInput,
+  DissolveInput,
+  ListEnsemblesInput,
+} from './ensemble/validation';
+
 // ── Cache (Task Result Deduplication) ──
 export {
   computeCacheKey,

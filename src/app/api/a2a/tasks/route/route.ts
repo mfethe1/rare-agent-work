@@ -6,7 +6,7 @@ import {
   taskRouteSchema,
   getServiceDb,
 } from '@/lib/a2a';
-import { routeTask, fetchRoutingCandidates } from '@/lib/a2a/router';
+import { routeTask, fetchRoutingCandidatesWithReputation } from '@/lib/a2a/router';
 import type { TaskRouteResponse } from '@/lib/a2a';
 import { emitEvent } from '@/lib/a2a/webhooks';
 
@@ -53,16 +53,17 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Fetch candidate agents with capabilities in the same domain
-    const candidates = await fetchRoutingCandidates(required_capability);
+    // Fetch candidate agents with reputation data pre-loaded
+    const { candidates, trustBlender } = await fetchRoutingCandidatesWithReputation(required_capability);
 
-    // Run the routing algorithm
+    // Run the routing algorithm with reputation-aware scoring
     const routing = routeTask(
       candidates,
       required_capability,
       policy,
       max_targets,
       [agent.id], // Exclude the sender from routing
+      trustBlender,
     );
 
     if (!routing.matched || routing.selected.length === 0) {

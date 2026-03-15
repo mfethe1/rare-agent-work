@@ -20,6 +20,7 @@
 
 import type { RegisteredAgent, AgentCapability, AgentTrustLevel } from './types';
 import type { RoutingPolicy, AgentScore, RoutingResult, RoutingCandidate } from './types';
+import { createReputationBlender } from './reputation';
 
 // ──────────────────────────────────────────────
 // Scoring Weights
@@ -134,16 +135,27 @@ export function scoreRecency(lastSeenAt: string | null): number {
   return 1.0 - (elapsed - FRESH_WINDOW_MS) / (STALE_WINDOW_MS - FRESH_WINDOW_MS);
 }
 
+/** Optional function that blends static trust with dynamic reputation. */
+export type TrustBlender = (agentId: string, staticTrustScore: number) => number;
+
 /**
  * Score a single agent for a required capability.
  * Returns a composite score (0-1) and breakdown.
+ *
+ * When a trustBlender is provided (from the reputation system), the trust
+ * component uses a blended score that factors in task completion history
+ * and quality ratings. Without it, static trust labels are used.
  */
 export function scoreAgent(
   agent: RegisteredAgent,
   requiredCapability: string,
+  trustBlender?: TrustBlender,
 ): AgentScore {
   const capMatch = scoreCapabilityMatch(requiredCapability, agent.capabilities);
-  const trustScore = TRUST_SCORES[agent.trust_level] ?? 0;
+  const staticTrust = TRUST_SCORES[agent.trust_level] ?? 0;
+  const trustScore = trustBlender
+    ? trustBlender(agent.id, staticTrust)
+    : staticTrust;
   const recencyScore = scoreRecency(agent.last_seen_at);
 
   const composite =
@@ -157,7 +169,7 @@ export function scoreAgent(
     composite_score: Math.round(composite * 1000) / 1000,
     capability_match: Math.round(capMatch.score * 1000) / 1000,
     matched_capability: capMatch.matched_capability,
-    trust_score: trustScore,
+    trust_score: Math.round(trustScore * 1000) / 1000,
     recency_score: Math.round(recencyScore * 1000) / 1000,
   };
 }
@@ -177,6 +189,7 @@ const MIN_VIABLE_SCORE = 0.15;
  * @param policy - Routing policy to apply
  * @param maxTargets - Max agents to select (for broadcast/round-robin)
  * @param excludeAgentIds - Agent IDs to exclude (e.g., the sender)
+ * @param trustBlender - Optional reputation-aware trust scorer
  */
 export function routeTask(
   candidates: RegisteredAgent[],
@@ -184,15 +197,16 @@ export function routeTask(
   policy: RoutingPolicy = 'best-match',
   maxTargets: number = 3,
   excludeAgentIds: string[] = [],
+  trustBlender?: TrustBlender,
 ): RoutingResult {
   const excludeSet = new Set(excludeAgentIds);
 
-  // Score all candidates
+  // Score all candidates (with reputation-blended trust when available)
   const scored: RoutingCandidate[] = candidates
     .filter((a) => a.is_active && !excludeSet.has(a.id))
     .map((agent) => ({
       agent,
-      score: scoreAgent(agent, requiredCapability),
+      score: scoreAgent(agent, requiredCapability, trustBlender),
     }))
     .filter((c) => c.score.capability_match > 0 && c.score.composite_score >= MIN_VIABLE_SCORE)
     .sort((a, b) => b.score.composite_score - a.score.composite_score);
@@ -277,6 +291,20 @@ function selectRoundRobin(
 // ──────────────────────────────────────────────
 // Database Helpers
 // ──────────────────────────────────────────────
+
+/**
+ * Fetch routing candidates with reputation data pre-loaded.
+ * Returns both the candidates and a trust blender function
+ * that the router can use for reputation-aware scoring.
+ */
+export async function fetchRoutingCandidatesWithReputation(
+  requiredCapability: string,
+): Promise<{ candidates: RegisteredAgent[]; trustBlender: TrustBlender }> {
+  const candidates = await fetchRoutingCandidates(requiredCapability);
+  const agentIds = candidates.map((c) => c.id);
+  const trustBlender = await createReputationBlender(agentIds);
+  return { candidates, trustBlender };
+}
 
 /**
  * Fetch active agents from the registry, optionally filtered by a capability domain.

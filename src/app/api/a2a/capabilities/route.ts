@@ -97,6 +97,23 @@ export async function GET() {
       access_model: 'Any authenticated agent can read all context. Only the creating agent can update or delete.',
       event_type: 'context.stored',
     },
+    reputation: {
+      description: 'Dynamic agent reputation system. Agents earn reputation through task completion quality, rated by requesting agents.',
+      feedback_endpoint: '/api/a2a/tasks/{id}/feedback',
+      reputation_endpoint: '/api/a2a/reputation',
+      leaderboard_endpoint: '/api/a2a/reputation?leaderboard=true',
+      feedback_schema: {
+        type: 'object',
+        required: ['rating'],
+        properties: {
+          rating: { type: 'integer', minimum: 1, maximum: 5, description: '1=unusable, 2=poor, 3=acceptable, 4=good, 5=excellent' },
+          feedback: { type: 'object', description: 'Optional structured feedback (e.g., latency, accuracy notes).' },
+        },
+      },
+      scoring_model: 'Composite score (0-1): 40% completion rate + 30% quality rating + 20% reliability + 10% volume bonus. Time-weighted: recent feedback counts 2x.',
+      routing_integration: 'Reputation scores are blended with static trust levels during capability-based routing. Agents with proven track records are preferred.',
+      event_type: 'task.feedback',
+    },
     registered_agents: registeredAgents,
   }, {
     headers: {

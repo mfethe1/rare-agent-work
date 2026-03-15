@@ -32,7 +32,9 @@ export type WebhookEventType =
   // Capability changes
   | 'capability.added'
   // Context store — emitted when agents persist shared knowledge
-  | 'context.stored';
+  | 'context.stored'
+  // Reputation — emitted when task feedback is submitted
+  | 'task.feedback';
 
 /** Wildcard patterns agents can subscribe to (e.g., "task.*"). */
 export type SubscriptionPattern = WebhookEventType | `${string}.*` | '*';
@@ -49,6 +51,7 @@ export const ALL_EVENT_TYPES: WebhookEventType[] = [
   'digest.published',
   'capability.added',
   'context.stored',
+  'task.feedback',
 ];
 
 /** Event domain prefixes that support wildcard subscriptions. */

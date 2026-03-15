@@ -151,3 +151,16 @@ export const taskRouteSchema = z.object({
 });
 
 export type TaskRouteInput = z.infer<typeof taskRouteSchema>;
+
+// ──────────────────────────────────────────────
+// Task Feedback — POST /api/a2a/tasks/:id/feedback
+// ──────────────────────────────────────────────
+
+export const taskFeedbackSchema = z.object({
+  /** Quality rating: 1=unusable, 2=poor, 3=acceptable, 4=good, 5=excellent. */
+  rating: z.number().int().min(1).max(5),
+  /** Optional structured feedback (e.g., latency, accuracy, format quality). */
+  feedback: z.record(z.string(), z.unknown()).optional(),
+});
+
+export type TaskFeedbackInput = z.infer<typeof taskFeedbackSchema>;

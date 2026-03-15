@@ -2407,7 +2407,7 @@ export {
   preFlightVerify,
   instantiateGenome,
   deprecateGenome,
-  getLineage,
+  getLineage as getAgentGenomeLineage,
   getRegistryStats as getGenomeRegistryStats,
   GenomeError,
 } from './agent-genome';
@@ -2433,7 +2433,7 @@ export type {
   ValidationEvidence,
   ConstitutionalDna,
   ConstitutionalPrinciple,
-  ConstitutionalConstraint,
+  ConstitutionalConstraint as AgentGenomeConstitutionalConstraint,
   ConstitutionalException,
   ConstraintEnforcement,
   ResourceRequirements,
@@ -2474,7 +2474,7 @@ export type {
   VerifySignatureRequest,
   VerifySignatureResponse,
   GetLineageRequest,
-  GetLineageResponse,
+  GetLineageResponse as AgentGenomeGetLineageResponse,
 } from './agent-genome/types';
 
 // ── Formal Verification (Pre-Deployment Safety Proofs) ──

@@ -1406,3 +1406,62 @@ export type {
   CrossoverInput,
   MutateInput,
 } from './evolution';
+
+// ── Trust: Progressive Trust & Dynamic Autonomy Protocol ──
+export type {
+  TrustDomain,
+  DomainTrust,
+  AgentTrustProfile,
+  TrustEvent,
+  TrustEventType,
+  TrustSignal,
+  TrustEvaluationResult,
+  TrustScoreWeights,
+  TrustThresholds,
+  TrustTrigger,
+} from './trust';
+export {
+  TRUST_DOMAINS,
+  DEFAULT_THRESHOLDS as TRUST_DEFAULT_THRESHOLDS,
+  HIGH_STAKES_THRESHOLDS as TRUST_HIGH_STAKES_THRESHOLDS,
+  HIGH_STAKES_DOMAINS as TRUST_HIGH_STAKES_DOMAINS,
+  DEFAULT_SCORE_WEIGHTS as TRUST_SCORE_WEIGHTS,
+  AUTONOMY_ORDER,
+  scoreToAutonomyLevel,
+  compareAutonomy,
+  getOrCreateProfile as getOrCreateTrustProfile,
+  getProfile as getTrustProfile,
+  listProfiles as listTrustProfiles,
+  evaluateSignal as evaluateTrustSignal,
+  evaluateBatch as evaluateTrustBatch,
+  setManualOverride as setTrustOverride,
+  liftManualOverride as liftTrustOverride,
+  adjustThresholds as adjustTrustThresholds,
+  getEventHistory as getTrustEventHistory,
+  getDomainAutonomy,
+  hasAutonomy,
+  resolveExpiredProbations,
+  registerCustomDomain as registerTrustDomain,
+  listCustomDomains as listTrustDomains,
+  resetTrustState,
+} from './trust';
+export {
+  trustSignalSchema,
+  manualOverrideSchema as trustOverrideSchema,
+  liftOverrideSchema as trustLiftOverrideSchema,
+  thresholdAdjustmentSchema as trustThresholdSchema,
+  trustProfileQuerySchema,
+  trustHistoryQuerySchema,
+  batchTrustSignalSchema,
+  customDomainSchema as trustCustomDomainSchema,
+} from './trust';
+export type {
+  TrustSignalInput,
+  ManualOverrideInput as TrustOverrideInput,
+  LiftOverrideInput as TrustLiftOverrideInput,
+  ThresholdAdjustmentInput as TrustThresholdInput,
+  TrustProfileQuery,
+  TrustHistoryQuery,
+  BatchTrustSignalInput,
+  CustomDomainInput as TrustCustomDomainInput,
+} from './trust';

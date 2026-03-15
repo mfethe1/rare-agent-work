@@ -7,8 +7,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authenticateAgent } from '@/lib/a2a/auth';
 import {
   createVectorClock,
-  mergeVectorClocks,
-  compareVectorClocks,
+  merge as mergeVectorClocks,
+  compare as compareVectorClocks,
   createTemporalCoordinate,
 } from '@/lib/a2a/temporal';
 import { safeErrorBody } from '@/lib/api-errors';

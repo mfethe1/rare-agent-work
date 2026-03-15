@@ -48,6 +48,14 @@ export async function GET() {
         execution_status: { method: 'GET', path: '/api/a2a/workflows/:id/executions/:execId', auth: 'Bearer <agent_api_key>' },
         list_executions: { method: 'GET', path: '/api/a2a/workflows/:id/executions', auth: 'Bearer <agent_api_key>' },
       },
+      billing: {
+        wallet: { method: 'GET', path: '/api/a2a/billing/wallet', auth: 'Bearer <agent_api_key>', description: 'Get or create the agent\'s credit wallet' },
+        deposit: { method: 'POST', path: '/api/a2a/billing/deposit', auth: 'Bearer <agent_api_key>', description: 'Deposit credits into the agent\'s wallet' },
+        settle: { method: 'POST', path: '/api/a2a/billing/settle', auth: 'Bearer <agent_api_key>', description: 'Settle a completed task (debit consumer, credit provider)' },
+        estimate: { method: 'POST', path: '/api/a2a/billing/estimate', auth: 'Bearer <agent_api_key>', description: 'Estimate cost of next task under a contract' },
+        transactions: { method: 'GET', path: '/api/a2a/billing/transactions', auth: 'Bearer <agent_api_key>', description: 'List ledger transactions with filtering' },
+        spend: { method: 'GET', path: '/api/a2a/billing/spend', auth: 'Bearer <agent_api_key>', description: 'Get spending summary with governance limit status' },
+      },
     },
     supported_intents: intents.map((i) => ({
       intent: i.intent,

@@ -256,3 +256,42 @@ export type {
   KillSwitchInput,
   KillSwitchLiftInput,
 } from './governance';
+
+// ── Billing (Token Economy & Ledger) ──
+export {
+  getOrCreateWallet,
+  getWallet,
+  setWalletStatus,
+  deposit,
+  computeCost,
+  settleTask,
+  listTransactions,
+  getSpendSummary,
+  depositSchema,
+  settleTaskSchema,
+  costEstimateSchema,
+  transactionListSchema,
+} from './billing';
+export type {
+  AgentWallet,
+  WalletStatus,
+  LedgerTransaction,
+  TransactionType,
+  TransactionStatus,
+  SettlementResult,
+  CostEstimate,
+  SpendSummary,
+  WalletResponse,
+  DepositRequest,
+  DepositResponse,
+  SettleTaskRequest,
+  SettleTaskResponse,
+  TransactionListResponse,
+  SpendSummaryResponse,
+  CostEstimateRequest,
+  CostEstimateResponse,
+  DepositInput,
+  SettleTaskInput,
+  CostEstimateInput,
+  TransactionListInput,
+} from './billing';

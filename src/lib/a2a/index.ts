@@ -72,3 +72,31 @@ export type {
   RateLimitResult,
   AgentUsageSummary,
 } from './rate-limiter';
+export {
+  createWorkflowDefinition,
+  triggerWorkflow,
+  advanceWorkflow,
+  getWorkflowExecution,
+  handleStepTaskCompletion,
+  validateDAG,
+  evaluateCondition,
+  interpolateTemplate,
+  computeProgress,
+  getStepCategories,
+  getWorkflowDefinition,
+} from './workflow-engine';
+export type {
+  WorkflowDefinition,
+  WorkflowExecution,
+  WorkflowStatus,
+  StepExecution,
+  StepStatus,
+  WorkflowStepDefinition,
+  StepCondition,
+  StepRetryPolicy,
+  StepAgentTarget,
+  CreateWorkflowRequest,
+  TriggerWorkflowRequest,
+  TriggerWorkflowResponse,
+  WorkflowExecutionResponse,
+} from './workflow-types';

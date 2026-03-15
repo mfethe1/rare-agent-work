@@ -28,6 +28,13 @@ export async function GET() {
         query: { method: 'GET', path: '/api/a2a/context', auth: 'Bearer <agent_api_key>' },
         delete: { method: 'DELETE', path: '/api/a2a/context?id=<uuid>', auth: 'Bearer <agent_api_key>' },
       },
+      workflows: {
+        create: { method: 'POST', path: '/api/a2a/workflows', auth: 'Bearer <agent_api_key>' },
+        list: { method: 'GET', path: '/api/a2a/workflows', auth: 'Bearer <agent_api_key>' },
+        trigger: { method: 'POST', path: '/api/a2a/workflows/:id/trigger', auth: 'Bearer <agent_api_key>' },
+        execution_status: { method: 'GET', path: '/api/a2a/workflows/:id/executions/:execId', auth: 'Bearer <agent_api_key>' },
+        list_executions: { method: 'GET', path: '/api/a2a/workflows/:id/executions', auth: 'Bearer <agent_api_key>' },
+      },
     },
     supported_intents: intents.map((i) => ({
       intent: i.intent,

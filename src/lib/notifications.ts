@@ -6,6 +6,7 @@
 
 import path from "node:path";
 import { JsonFileStore } from "./data-store";
+import { eventBus } from "./event-bus";
 
 const NOTIFICATIONS_FILE = path.join(process.cwd(), "data/notifications/notifications.json");
 const store = new JsonFileStore<Notification>(NOTIFICATIONS_FILE);
@@ -42,7 +43,17 @@ export async function createNotification(
     created_at: new Date().toISOString(),
     ...input,
   };
-  return store.create(notification);
+  const saved = await store.create(notification);
+  // Publish to event bus so SSE subscribers can receive notification.created events
+  eventBus.publish("notification.created", {
+    notification_id: saved.id,
+    agent_id: saved.agent_id,
+    type: saved.type,
+    title: saved.title,
+    message: saved.message,
+    data: saved.data ?? null,
+  });
+  return saved;
 }
 
 export interface GetNotificationsFilter {

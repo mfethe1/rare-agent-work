@@ -10,7 +10,9 @@
     "news:update": "node scripts/news-update.mjs",
     "news:test": "node scripts/news-verify.mjs",
     "news:refresh": "node scripts/news-refresh.mjs",
-    "report:pipeline": "node scripts/report-pipeline-stub.mjs"
+    "report:pipeline": "node scripts/report-pipeline-stub.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "next": "16.1.6",
@@ -23,9 +25,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.0"
   }
 }

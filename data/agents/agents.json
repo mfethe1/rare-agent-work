@@ -1,1 +1,198 @@
-[]
+[
+  {
+    "id": "3646d9e7-8d92-4ac5-bc25-fb1d3741dd93",
+    "agent_id": "3646d9e7-8d92-4ac5-bc25-fb1d3741dd93",
+    "name": "AuthTest-1773541555891",
+    "description": "Auth test agent",
+    "capabilities": [
+      "research"
+    ],
+    "hashed_key": "d81c2dbe48133ea6183a00c8ded4a6c33433b63ba6f8ecef7267e418fe967f7b",
+    "created_at": "2026-03-15T02:25:55.898Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports"
+    ]
+  },
+  {
+    "id": "1f85145d-cf3a-48dd-b2cb-d4341c69333e",
+    "agent_id": "1f85145d-cf3a-48dd-b2cb-d4341c69333e",
+    "name": "",
+    "description": "test",
+    "capabilities": [],
+    "hashed_key": "62af171eca10526c23e9175b4ef60af2e7c581353e241a63d3280ada518a45ed",
+    "created_at": "2026-03-15T02:25:55.906Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports"
+    ]
+  },
+  {
+    "id": "2064a47f-2e2c-4dbe-abb4-28474b170ca7",
+    "agent_id": "2064a47f-2e2c-4dbe-abb4-28474b170ca7",
+    "name": "VerifyTest-1773541555908",
+    "description": "Verify test",
+    "capabilities": [
+      "research"
+    ],
+    "hashed_key": "81cda2bf80bedf6ebd7b6f03e79f5c3b0e0734e9b6240a9b6409a4b6468cb60a",
+    "created_at": "2026-03-15T02:25:55.908Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports"
+    ]
+  },
+  {
+    "id": "f686887a-8bea-4b03-adc3-d4fc0518f8ee",
+    "agent_id": "f686887a-8bea-4b03-adc3-d4fc0518f8ee",
+    "name": "ScopeTest-1773541555919",
+    "description": "Scope test",
+    "capabilities": [
+      "task"
+    ],
+    "hashed_key": "e08db908456cc04d6c0a37fc4a3b4465337fe2e76b32a45d43a56bd02fa681bc",
+    "created_at": "2026-03-15T02:25:55.919Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports",
+      "write:tasks"
+    ]
+  },
+  {
+    "id": "e53b987b-69bf-4359-bc45-a1a1cd36604e",
+    "agent_id": "e53b987b-69bf-4359-bc45-a1a1cd36604e",
+    "name": "TestAgent-1773541555955",
+    "description": "Integration test agent",
+    "capabilities": [
+      "research",
+      "coding"
+    ],
+    "hashed_key": "ffbe04b163fea0c19c4d3d0a363f1c1bf9c2ea614149448739cf86bf88416beb",
+    "created_at": "2026-03-15T02:25:55.960Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports"
+    ]
+  },
+  {
+    "id": "bc234169-a860-433e-906c-768e6f7d5dee",
+    "agent_id": "bc234169-a860-433e-906c-768e6f7d5dee",
+    "name": "TestAgent2-1773541555962",
+    "description": "Second integration test agent",
+    "capabilities": [
+      "research",
+      "task"
+    ],
+    "hashed_key": "54b36dc7f4a2cbf390ecfaab257a752b72c942dbcbf97a3843967183a064ab4b",
+    "created_at": "2026-03-15T02:25:55.963Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports",
+      "write:tasks"
+    ]
+  },
+  {
+    "id": "ecb8c2c7-4f57-4053-9b82-c6e512a8b703",
+    "agent_id": "ecb8c2c7-4f57-4053-9b82-c6e512a8b703",
+    "name": "AuthTest-1773541603060",
+    "description": "Auth test agent",
+    "capabilities": [
+      "research"
+    ],
+    "hashed_key": "b3f0dd0a94cbe7baf8f29da8235abeaa430d03f2afc5c7c3b5323c3ca648e470",
+    "created_at": "2026-03-15T02:26:43.070Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports"
+    ]
+  },
+  {
+    "id": "2dcc72ba-c908-46d7-8e6f-19b1e1cdcf96",
+    "agent_id": "2dcc72ba-c908-46d7-8e6f-19b1e1cdcf96",
+    "name": "",
+    "description": "test",
+    "capabilities": [],
+    "hashed_key": "3f4f05f4f4d4a59a4ad591271b8c42ced0284d11e8a8aa30037240170484bdbf",
+    "created_at": "2026-03-15T02:26:43.078Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports"
+    ]
+  },
+  {
+    "id": "04eb0580-5c08-4237-9edf-94db8e0ec5c6",
+    "agent_id": "04eb0580-5c08-4237-9edf-94db8e0ec5c6",
+    "name": "VerifyTest-1773541603088",
+    "description": "Verify test",
+    "capabilities": [
+      "research"
+    ],
+    "hashed_key": "67e9c9a43e69dd33b8d7855696565bf827dc6ff34f8ad6a9d93dbf2d6fb30329",
+    "created_at": "2026-03-15T02:26:43.088Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports"
+    ]
+  },
+  {
+    "id": "b39f3af7-a272-46b9-9fd7-6eb0ce2ca66c",
+    "agent_id": "b39f3af7-a272-46b9-9fd7-6eb0ce2ca66c",
+    "name": "ScopeTest-1773541603099",
+    "description": "Scope test",
+    "capabilities": [
+      "task"
+    ],
+    "hashed_key": "99235cb53af5f4222dddd681268ca75a9562bdab6a7e1df5963e3e7cefdcd25f",
+    "created_at": "2026-03-15T02:26:43.099Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports",
+      "write:tasks"
+    ]
+  },
+  {
+    "id": "441bdec0-b22a-4fb2-b544-ca148e5ecf81",
+    "agent_id": "441bdec0-b22a-4fb2-b544-ca148e5ecf81",
+    "name": "TestAgent-1773541603136",
+    "description": "Integration test agent",
+    "capabilities": [
+      "research",
+      "coding"
+    ],
+    "hashed_key": "f5ad081ccfbc02c3b3291214a8f2e938c12641f8667afc55df102ac85c829b97",
+    "created_at": "2026-03-15T02:26:43.141Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports"
+    ]
+  },
+  {
+    "id": "a6138722-b0a8-49d6-8bc6-6317d84c647b",
+    "agent_id": "a6138722-b0a8-49d6-8bc6-6317d84c647b",
+    "name": "TestAgent2-1773541603144",
+    "description": "Second integration test agent",
+    "capabilities": [
+      "research",
+      "task"
+    ],
+    "hashed_key": "cbdd88aed86069fdbaf1e303fff1e83a96e84cd63122d02f0b97da0a8b52cf3a",
+    "created_at": "2026-03-15T02:26:43.144Z",
+    "scopes": [
+      "read:news",
+      "read:models",
+      "read:reports",
+      "write:tasks"
+    ]
+  }
+]

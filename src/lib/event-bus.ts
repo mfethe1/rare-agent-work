@@ -9,7 +9,8 @@ export type EventType =
   | "model.updated"
   | "task.created"
   | "task.status_changed"
-  | "space.entry_added";
+  | "space.entry_added"
+  | "notification.created";
 
 export interface BusEvent {
   id: string;
@@ -68,3 +69,4 @@ export const VALID_EVENT_TYPES: EventType[] = [
   "task.status_changed",
   "space.entry_added",
 ];
+

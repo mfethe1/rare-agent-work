@@ -24,16 +24,60 @@ function countAgents(): number {
   }
 }
 
+interface FileCheck {
+  file: string;
+  exists: boolean;
+  valid_json: boolean;
+  record_count: number;
+}
+
+function checkDataFile(relPath: string): FileCheck {
+  const absPath = path.join(process.cwd(), relPath);
+  const exists = fs.existsSync(absPath);
+  if (!exists) return { file: relPath, exists: false, valid_json: false, record_count: 0 };
+  try {
+    const raw = fs.readFileSync(absPath, "utf-8");
+    const parsed = JSON.parse(raw) as unknown;
+    const count = Array.isArray(parsed) ? parsed.length : typeof parsed === "object" && parsed !== null ? Object.keys(parsed).length : 0;
+    return { file: relPath, exists: true, valid_json: true, record_count: count };
+  } catch {
+    return { file: relPath, exists: true, valid_json: false, record_count: 0 };
+  }
+}
+
+const DATA_FILES = [
+  "data/agents/agents.json",
+  "data/agents/reputation.json",
+  "data/news/news.json",
+  "data/models/models.json",
+  "data/reports/reports.json",
+  "data/tasks/tasks.json",
+  "data/wallet/wallets.json",
+  "data/contracts/contracts.json",
+  "data/knowledge/entities.json",
+  "data/knowledge/edges.json",
+  "data/notifications/notifications.json",
+  "data/spaces/spaces.json",
+  "data/webhooks/webhooks.json",
+  "data/workflows/workflows.json",
+  "data/challenges/challenges.json",
+  "data/templates/templates.json",
+  "data/analytics/events.json",
+];
+
 export async function GET() {
   const newsFile = path.join(process.cwd(), "data/news/news.json");
   const modelsFile = path.join(process.cwd(), "data/models/models.json");
   const reportsFile = path.join(process.cwd(), "data/reports/reports.json");
 
   const uptime_seconds = Math.floor((Date.now() - START_TIME) / 1000);
+  const checks: FileCheck[] = DATA_FILES.map(checkDataFile);
+
+  const all_healthy = checks.every((c) => !c.exists || c.valid_json);
 
   return NextResponse.json(
     {
-      status: "ok",
+      status: all_healthy ? "ok" : "degraded",
       version: "1.0.0",
       uptime_seconds,
       data_freshness: {
@@ -41,8 +85,9 @@ export async function GET() {
         models: getFileLastModified(modelsFile),
         reports: getFileLastModified(reportsFile),
       },
-      endpoints_available: 20,
+      endpoints_available: 30,
       agents_registered: countAgents(),
+      checks,
     },
     { headers: CORS_HEADERS_GET },
   );

@@ -1,1 +1,38 @@
-{}
+{
+  "e53b987b-69bf-4359-bc45-a1a1cd36604e": {
+    "agent_id": "e53b987b-69bf-4359-bc45-a1a1cd36604e",
+    "balance": 500,
+    "escrowed": 0,
+    "transactions": [
+      {
+        "id": "44c052a2-afdb-474c-89b6-36e0343405a7",
+        "agent_id": "e53b987b-69bf-4359-bc45-a1a1cd36604e",
+        "type": "credit",
+        "amount": 500,
+        "reason": "test deposit",
+        "balance_after": 500,
+        "created_at": "2026-03-15T02:25:55.970Z"
+      }
+    ],
+    "created_at": "2026-03-15T02:25:55.970Z",
+    "updated_at": "2026-03-15T02:25:55.970Z"
+  },
+  "441bdec0-b22a-4fb2-b544-ca148e5ecf81": {
+    "agent_id": "441bdec0-b22a-4fb2-b544-ca148e5ecf81",
+    "balance": 500,
+    "escrowed": 0,
+    "transactions": [
+      {
+        "id": "2292d0ae-e6c1-4e96-8298-8eb1bf231471",
+        "agent_id": "441bdec0-b22a-4fb2-b544-ca148e5ecf81",
+        "type": "credit",
+        "amount": 500,
+        "reason": "test deposit",
+        "balance_after": 500,
+        "created_at": "2026-03-15T02:26:43.153Z"
+      }
+    ],
+    "created_at": "2026-03-15T02:26:43.153Z",
+    "updated_at": "2026-03-15T02:26:43.153Z"
+  }
+}

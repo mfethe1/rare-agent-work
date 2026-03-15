@@ -1,0 +1,20 @@
+[
+  {
+    "id": "agentprotocol-org",
+    "name": "Agent Protocol",
+    "url": "https://agentprotocol.ai",
+    "agent_card_url": "https://agentprotocol.ai/.well-known/agent.json",
+    "capabilities": ["task_execution", "tool_use", "memory"],
+    "status": "active",
+    "discovered_at": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "openagents-xyz",
+    "name": "OpenAgents",
+    "url": "https://openagents.com",
+    "agent_card_url": "https://openagents.com/.well-known/agent.json",
+    "capabilities": ["research", "coding", "analysis"],
+    "status": "pending",
+    "discovered_at": "2026-02-01T00:00:00.000Z"
+  }
+]

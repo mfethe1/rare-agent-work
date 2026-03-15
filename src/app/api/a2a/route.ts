@@ -81,6 +81,13 @@ export async function GET() {
         circuit_status: { method: 'GET', path: '/api/a2a/mesh/circuit?agent_id=<uuid>', auth: 'Bearer <agent_api_key>', description: 'Get circuit breaker state for an agent' },
         bulkheads: { method: 'POST', path: '/api/a2a/mesh/bulkheads', auth: 'Bearer <agent_api_key>', description: 'Create bulkhead partition to limit per-consumer capacity on a provider' },
       },
+      cache: {
+        stats: { method: 'GET', path: '/api/a2a/cache', auth: 'Bearer <agent_api_key>', description: 'Cache statistics dashboard: hit/miss rates, per-intent breakdown, active policies, cost savings estimate' },
+        lookup: { method: 'POST', path: '/api/a2a/cache', auth: 'Bearer <agent_api_key>', description: 'Explicit cache lookup — check if a result is cached for an intent+input (action: "lookup")' },
+        invalidate: { method: 'POST', path: '/api/a2a/cache', auth: 'Bearer <agent_api_key>', description: 'Invalidate cache entries by key, intent pattern, or producer agent (action: "invalidate")' },
+        policy: { method: 'POST', path: '/api/a2a/cache', auth: 'Bearer <agent_api_key>', description: 'Create/update per-intent cache policy: TTL, max size, stale-while-revalidate, ignored fields (action: "policy")' },
+        warm: { method: 'POST', path: '/api/a2a/cache', auth: 'Bearer <agent_api_key>', description: 'Pre-populate cache by executing an intent proactively (action: "warm")' },
+      },
     },
     supported_intents: intents.map((i) => ({
       intent: i.intent,

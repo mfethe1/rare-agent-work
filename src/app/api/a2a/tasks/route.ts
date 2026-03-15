@@ -12,6 +12,7 @@ import {
 import type { TaskSubmitResponse } from '@/lib/a2a';
 import { emitEvent } from '@/lib/a2a/webhooks';
 import { checkRateLimit, rateLimitHeaders, rateLimitBody } from '@/lib/a2a/rate-limiter';
+import { lookupCache, storeInCache, computeCacheKey, getEffectiveCacheParams } from '@/lib/a2a/cache';
 
 /**
  * POST /api/a2a/tasks — Submit a task to the platform.
@@ -91,11 +92,58 @@ export async function POST(request: Request) {
     const baseUrl = new URL(request.url).origin;
     const statusUrl = `${baseUrl}/api/a2a/tasks/${task.id}`;
 
-    // For platform intents, execute synchronously
+    // For platform intents, check cache first, then execute
     if (!target_agent_id && isIntentSupported(intent)) {
+      // ── Cache Layer: check for a cached result before executing ──
       try {
-        // Mark in_progress
-        await db.from('a2a_tasks').update({ status: 'in_progress' }).eq('id', task.id);
+        const cached = await lookupCache(intent, input);
+        if (cached.hit && cached.entry) {
+          // Serve from cache — mark task completed immediately
+          await db
+            .from('a2a_tasks')
+            .update({
+              status: 'completed',
+              result: cached.entry.result,
+              cache_key: cached.cache_key,
+            })
+            .eq('id', task.id);
+
+          emitEvent('task.completed', {
+            task_id: task.id,
+            intent,
+            sender_agent_id: agent.id,
+            priority,
+            correlation_id: correlation_id ?? null,
+            cache_hit: true,
+            cache_status: cached.status,
+          });
+
+          const response: TaskSubmitResponse & { cache: { hit: true; status: string; source_task_id: string } } = {
+            task_id: task.id,
+            status: 'completed',
+            created_at: task.created_at,
+            status_url: statusUrl,
+            cache: {
+              hit: true,
+              status: cached.status,
+              source_task_id: cached.entry.source_task_id,
+            },
+          };
+
+          return NextResponse.json(response, { status: 201 });
+        }
+      } catch {
+        // Cache lookup failure is non-fatal — fall through to execution
+      }
+
+      // ── Execution: no cache hit, execute the intent ──
+      try {
+        // Store cache_key on the task for in-flight dedup tracking
+        const cacheParams = await getEffectiveCacheParams(intent);
+        const cacheKey = await computeCacheKey(intent, input, cacheParams.ignored_input_fields);
+
+        // Mark in_progress with cache_key
+        await db.from('a2a_tasks').update({ status: 'in_progress', cache_key: cacheKey.hash }).eq('id', task.id);
 
         const result = await executeIntent(intent, input);
 
@@ -105,6 +153,15 @@ export async function POST(request: Request) {
           .update({ status: 'completed', result })
           .eq('id', task.id);
 
+        // Store result in cache (fire-and-forget, non-fatal)
+        storeInCache({
+          intent,
+          input,
+          result,
+          source_task_id: task.id,
+          producer_agent_id: agent.id,
+        }).catch(() => {});
+
         // Emit task.completed event (fire-and-forget)
         emitEvent('task.completed', {
           task_id: task.id,
@@ -112,6 +169,7 @@ export async function POST(request: Request) {
           sender_agent_id: agent.id,
           priority,
           correlation_id: correlation_id ?? null,
+          cache_hit: false,
         });
 
         const response: TaskSubmitResponse = {

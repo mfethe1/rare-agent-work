@@ -389,3 +389,106 @@ export function createBillingNamespace(req: Requester, _agentId: string): Billin
     estimate: (intent, input) => req('POST', '/billing/estimate', { intent, input }),
   };
 }
+
+// ──────────────────────────────────────────────
+// Gateway (Batch, Streaming, Introspection)
+// ──────────────────────────────────────────────
+
+export interface GatewayBatchStep {
+  id: string;
+  method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+  path: string;
+  body?: Record<string, unknown>;
+  params?: Record<string, string>;
+  depends_on?: string[];
+  optional?: boolean;
+  timeout_ms?: number;
+}
+
+export interface GatewayBatchResult {
+  id: string;
+  status: number;
+  data: unknown;
+  duration_ms: number;
+  error?: string;
+}
+
+export interface GatewayBatchResponse {
+  status: 'completed' | 'partial' | 'failed';
+  correlation_id: string;
+  results: GatewayBatchResult[];
+  total_duration_ms: number;
+  succeeded: number;
+  failed: number;
+}
+
+export interface GatewayIntrospection {
+  protocol: string;
+  version: string;
+  total_endpoints: number;
+  domains: Array<{ id: string; description: string; endpoint_count: number; endpoints: string[] }>;
+  endpoints: Array<{ id: string; description: string; method: string; path: string; domain: string; requires_auth: boolean; tags: string[] }>;
+  gateway: {
+    batch: { max_steps: number; max_timeout_ms: number; strategies: string[] };
+    streaming: { event_types: string[]; max_connections_per_agent: number };
+    introspection: { filterable_by: string[] };
+  };
+  generated_at: string;
+}
+
+export interface GatewayNamespace {
+  /** Execute multiple API calls in a single request with dependency resolution. */
+  batch(
+    steps: GatewayBatchStep[],
+    options?: { strategy?: 'sequential' | 'parallel'; timeout_ms?: number; correlation_id?: string },
+  ): Promise<A2AResponse<GatewayBatchResponse>>;
+
+  /** Get the machine-readable API catalog. */
+  introspect(params?: {
+    domain?: string;
+    tag?: string;
+    method?: string;
+    search?: string;
+    requires_auth?: boolean;
+    include_schemas?: boolean;
+  }): Promise<A2AResponse<GatewayIntrospection>>;
+
+  /**
+   * Open an SSE stream. Returns the raw Response for the caller to consume.
+   * Use EventSource or manual ReadableStream parsing on the client side.
+   */
+  streamUrl(params?: {
+    events?: string[];
+    task_id?: string;
+    workflow_id?: string;
+    agent_id?: string;
+    since?: string;
+  }): string;
+}
+
+export function createGatewayNamespace(req: Requester, _agentId: string, baseUrl: string): GatewayNamespace {
+  return {
+    batch: (steps, options) =>
+      req('POST', '/gateway/batch', {
+        steps,
+        strategy: options?.strategy,
+        timeout_ms: options?.timeout_ms,
+        correlation_id: options?.correlation_id,
+      }),
+
+    introspect: (params) =>
+      req('GET', '/gateway/introspect', undefined, {
+        params: params as Record<string, string | number | boolean>,
+      }),
+
+    streamUrl: (params) => {
+      const url = new URL(`${baseUrl}/api/a2a/gateway/stream`);
+      if (params?.events) url.searchParams.set('events', params.events.join(','));
+      if (params?.task_id) url.searchParams.set('task_id', params.task_id);
+      if (params?.workflow_id) url.searchParams.set('workflow_id', params.workflow_id);
+      if (params?.agent_id) url.searchParams.set('agent_id', params.agent_id);
+      if (params?.since) url.searchParams.set('since', params.since);
+      return url.toString();
+    },
+  };
+}

@@ -81,6 +81,11 @@ export async function GET() {
         circuit_status: { method: 'GET', path: '/api/a2a/mesh/circuit?agent_id=<uuid>', auth: 'Bearer <agent_api_key>', description: 'Get circuit breaker state for an agent' },
         bulkheads: { method: 'POST', path: '/api/a2a/mesh/bulkheads', auth: 'Bearer <agent_api_key>', description: 'Create bulkhead partition to limit per-consumer capacity on a provider' },
       },
+      gateway: {
+        batch: { method: 'POST', path: '/api/a2a/gateway/batch', auth: 'Bearer <agent_api_key>', description: 'Execute multiple API calls in a single request with dependency resolution and template interpolation between steps' },
+        stream: { method: 'GET', path: '/api/a2a/gateway/stream', auth: 'Bearer <agent_api_key>', description: 'SSE stream for real-time task progress, agent heartbeats, workflow events, and platform notifications' },
+        introspect: { method: 'GET', path: '/api/a2a/gateway/introspect', auth: 'none', description: 'Machine-readable API catalog with all domains, endpoints, schemas, and gateway capabilities' },
+      },
       cache: {
         stats: { method: 'GET', path: '/api/a2a/cache', auth: 'Bearer <agent_api_key>', description: 'Cache statistics dashboard: hit/miss rates, per-intent breakdown, active policies, cost savings estimate' },
         lookup: { method: 'POST', path: '/api/a2a/cache', auth: 'Bearer <agent_api_key>', description: 'Explicit cache lookup — check if a result is cached for an intent+input (action: "lookup")' },

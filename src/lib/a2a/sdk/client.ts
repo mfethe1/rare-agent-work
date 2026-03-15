@@ -13,6 +13,7 @@ import {
   createKnowledgeNamespace,
   createContextNamespace,
   createBillingNamespace,
+  createGatewayNamespace,
   type AgentsNamespace,
   type TasksNamespace,
   type ContractsNamespace,
@@ -20,6 +21,7 @@ import {
   type KnowledgeNamespace,
   type ContextNamespace,
   type BillingNamespace,
+  type GatewayNamespace,
 } from './namespaces';
 
 // ──────────────────────────────────────────────
@@ -129,6 +131,8 @@ export class A2AClient {
   public readonly context: ContextNamespace;
   /** Billing: wallet, deposits, spend tracking. */
   public readonly billing: BillingNamespace;
+  /** Gateway: batch operations, SSE streaming, protocol introspection. */
+  public readonly gateway: GatewayNamespace;
 
   constructor(config: A2AClientConfig) {
     this.config = {
@@ -147,6 +151,7 @@ export class A2AClient {
     this.knowledge = createKnowledgeNamespace(requester, this.config.agentId);
     this.context = createContextNamespace(requester, this.config.agentId);
     this.billing = createBillingNamespace(requester, this.config.agentId);
+    this.gateway = createGatewayNamespace(requester, this.config.agentId, this.config.baseUrl);
   }
 
   /**

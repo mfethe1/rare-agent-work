@@ -9,11 +9,11 @@ import { z } from 'zod';
 // ──────────────────────────────────────────────
 
 export const batchStepSchema = z.object({
-  id: z.string().min(1).max(64).regex(/^[a-zA-Z0-9_-]+$/, 'Step ID must be alphanumeric with hyphens/underscores'),
+  id: z.string().min(1).max(64),
   method: z.enum(['GET', 'POST', 'PATCH', 'PUT', 'DELETE']),
-  path: z.string().min(1).max(512).startsWith('/'),
-  body: z.record(z.unknown()).optional(),
-  params: z.record(z.string()).optional(),
+  path: z.string().min(1).max(512),
+  body: z.record(z.string(), z.unknown()).optional(),
+  params: z.record(z.string(), z.string()).optional(),
   depends_on: z.array(z.string().min(1).max(64)).optional(),
   optional: z.boolean().optional(),
   timeout_ms: z.number().int().min(100).max(60_000).optional(),

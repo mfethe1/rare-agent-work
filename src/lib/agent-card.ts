@@ -79,7 +79,7 @@ export const agentCard: AgentCard = {
   version: '1.0.0',
   documentation_url: `${siteUrl}/api/v1/openapi.json`,
   capabilities: {
-    streaming: false,
+    streaming: true,
     push_notifications: true,
     extended_agent_card: true,
     extensions: [
@@ -113,6 +113,23 @@ export const agentCard: AgentCard = {
           timeline: `${siteUrl}/api/a2a/correlations/{id}/timeline`,
           causal_links: `${siteUrl}/api/a2a/correlations/{id}/links`,
           search: `${siteUrl}/api/a2a/correlations/search`,
+        },
+      },
+      {
+        uri: `${siteUrl}/extensions/a2a-gateway/v1`,
+        description:
+          'Unified agent gateway: batch multiple API calls in one request with dependency resolution, SSE streaming for real-time events, and machine-readable protocol introspection for self-configuring agents.',
+        required: false,
+        params: {
+          batch: `${siteUrl}/api/a2a/gateway/batch`,
+          stream: `${siteUrl}/api/a2a/gateway/stream`,
+          introspect: `${siteUrl}/api/a2a/gateway/introspect`,
+          max_batch_steps: 20,
+          stream_event_types: [
+            'task.progress', 'task.completed', 'task.failed',
+            'agent.heartbeat', 'workflow.step_completed', 'workflow.completed',
+            'platform.event',
+          ],
         },
       },
       {
@@ -291,6 +308,22 @@ export const agentCard: AgentCard = {
       ],
       input_modes: ['application/json'],
       output_modes: ['application/json'],
+      security_requirements: [{ agent_api_key: [] }],
+    },
+    {
+      id: 'a2a-gateway',
+      name: 'Agent Gateway (batch, stream, introspect)',
+      description:
+        'Unified entry point for agent consumption. Batch: compose multiple A2A API calls in a single request with dependency resolution and template interpolation between steps. Stream: SSE real-time events for task progress, agent heartbeats, and platform events. Introspect: machine-readable catalog of all 180+ endpoints across 30+ domains — agents query once and self-configure.',
+      tags: ['a2a', 'gateway', 'batch', 'streaming', 'introspection', 'composition', 'sse'],
+      examples: [
+        'Register an agent, discover others with news.query capability, and submit a task — all in one batch request.',
+        'Open an SSE stream filtered to task.completed events for a specific workflow.',
+        'Introspect all billing domain endpoints to discover available operations.',
+        'Search the API catalog for endpoints tagged with "safety".',
+      ],
+      input_modes: ['application/json'],
+      output_modes: ['application/json', 'text/event-stream'],
       security_requirements: [{ agent_api_key: [] }],
     },
     {

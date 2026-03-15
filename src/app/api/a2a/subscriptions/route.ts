@@ -9,6 +9,7 @@ import {
   EVENT_DOMAINS,
 } from '@/lib/a2a/webhooks';
 import type { SubscriptionCreateResponse, SubscriptionListResponse } from '@/lib/a2a/webhooks';
+import { checkRateLimit, rateLimitHeaders, rateLimitBody } from '@/lib/a2a/rate-limiter';
 
 /**
  * POST /api/a2a/subscriptions — Create a webhook subscription.
@@ -16,6 +17,8 @@ import type { SubscriptionCreateResponse, SubscriptionListResponse } from '@/lib
  * Agents subscribe to event patterns and provide a target URL + HMAC secret.
  * When matching events fire, the platform delivers HMAC-signed payloads
  * to the target URL.
+ *
+ * Rate-limited per agent based on trust level.
  */
 export async function POST(request: Request) {
   const agent = await authenticateAgent(request);
@@ -23,6 +26,15 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: 'Invalid or missing agent API key.' },
       { status: 401 },
+    );
+  }
+
+  // Rate limit check
+  const rl = await checkRateLimit(agent.id, agent.trust_level, 'subscription.create');
+  if (!rl.allowed) {
+    return NextResponse.json(
+      rateLimitBody('subscription.create', rl),
+      { status: 429, headers: rateLimitHeaders(rl) },
     );
   }
 

@@ -59,3 +59,16 @@ export {
   createReputationBlender,
 } from './reputation';
 export type { TaskFeedback, AgentReputation, SubmitFeedbackParams } from './reputation';
+export {
+  checkRateLimit,
+  getAgentUsage,
+  rateLimitHeaders,
+  rateLimitBody,
+  QUOTA_TIERS,
+} from './rate-limiter';
+export type {
+  RateLimitAction,
+  QuotaTier,
+  RateLimitResult,
+  AgentUsageSummary,
+} from './rate-limiter';

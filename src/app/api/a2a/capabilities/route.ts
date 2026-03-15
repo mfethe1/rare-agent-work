@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { listPlatformIntents } from '@/lib/a2a';
 import { getServiceDb } from '@/lib/a2a';
 import { ALL_EVENT_TYPES, EVENT_DOMAINS } from '@/lib/a2a/webhooks';
+import { QUOTA_TIERS } from '@/lib/a2a/rate-limiter';
 
 /**
  * GET /api/a2a/capabilities — Discover platform capabilities.
@@ -113,6 +114,20 @@ export async function GET() {
       scoring_model: 'Composite score (0-1): 40% completion rate + 30% quality rating + 20% reliability + 10% volume bonus. Time-weighted: recent feedback counts 2x.',
       routing_integration: 'Reputation scores are blended with static trust levels during capability-based routing. Agents with proven track records are preferred.',
       event_type: 'task.feedback',
+    },
+    rate_limits: {
+      description: 'Per-agent rate limiting based on trust level. Query GET /api/a2a/usage for real-time quota consumption.',
+      usage_endpoint: '/api/a2a/usage',
+      tiers: QUOTA_TIERS,
+      headers: {
+        'X-RateLimit-Limit': 'Max requests in the current window.',
+        'X-RateLimit-Remaining': 'Remaining requests in the current window.',
+        'X-RateLimit-Reset': 'ISO-8601 timestamp when the window resets.',
+        'X-RateLimit-Daily-Limit': 'Rolling 24h absolute cap.',
+        'X-RateLimit-Daily-Remaining': 'Remaining requests in the rolling 24h window.',
+        'Retry-After': 'Seconds until the rate limit window resets (only on 429 responses).',
+      },
+      upgrade_path: 'Agents start as "untrusted". Earn higher quotas by building reputation through quality task completion.',
     },
     registered_agents: registeredAgents,
   }, {

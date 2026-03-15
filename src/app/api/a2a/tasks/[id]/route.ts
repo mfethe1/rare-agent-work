@@ -5,6 +5,7 @@ import { authenticateAgent, getServiceDb } from '@/lib/a2a';
 import { taskUpdateSchema, VALID_STATUS_TRANSITIONS } from '@/lib/a2a/validation';
 import type { TaskStatusResponse, TaskUpdateResponse } from '@/lib/a2a';
 import { emitEvent } from '@/lib/a2a/webhooks';
+import { checkRateLimit, rateLimitHeaders, rateLimitBody } from '@/lib/a2a/rate-limiter';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -124,6 +125,15 @@ export async function PATCH(
   const resolved = await resolveRequest(request, params);
   if ('error' in resolved) return resolved.error;
   const { agent, id, db } = resolved;
+
+  // Rate limit check
+  const rl = await checkRateLimit(agent.id, agent.trust_level, 'task.update');
+  if (!rl.allowed) {
+    return NextResponse.json(
+      rateLimitBody('task.update', rl),
+      { status: 429, headers: rateLimitHeaders(rl) },
+    );
+  }
 
   // Validate the request body
   const parsed = await validateRequest(request, taskUpdateSchema);

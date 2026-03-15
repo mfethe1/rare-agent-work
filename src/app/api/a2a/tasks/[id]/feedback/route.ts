@@ -4,6 +4,7 @@ import { safeErrorBody } from '@/lib/api-errors';
 import { authenticateAgent, taskFeedbackSchema } from '@/lib/a2a';
 import { submitTaskFeedback } from '@/lib/a2a/reputation';
 import { emitEvent } from '@/lib/a2a/webhooks';
+import { checkRateLimit, rateLimitHeaders, rateLimitBody } from '@/lib/a2a/rate-limiter';
 
 /**
  * POST /api/a2a/tasks/:id/feedback — Rate a completed task.
@@ -24,6 +25,15 @@ export async function POST(
     return NextResponse.json(
       { error: 'Invalid or missing agent API key.' },
       { status: 401 },
+    );
+  }
+
+  // Rate limit check
+  const rl = await checkRateLimit(agent.id, agent.trust_level, 'feedback.submit');
+  if (!rl.allowed) {
+    return NextResponse.json(
+      rateLimitBody('feedback.submit', rl),
+      { status: 429, headers: rateLimitHeaders(rl) },
     );
   }
 

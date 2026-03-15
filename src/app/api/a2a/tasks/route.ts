@@ -11,11 +11,13 @@ import {
 } from '@/lib/a2a';
 import type { TaskSubmitResponse } from '@/lib/a2a';
 import { emitEvent } from '@/lib/a2a/webhooks';
+import { checkRateLimit, rateLimitHeaders, rateLimitBody } from '@/lib/a2a/rate-limiter';
 
 /**
  * POST /api/a2a/tasks — Submit a task to the platform.
  *
  * Requires agent authentication via Bearer token.
+ * Rate-limited per agent based on trust level.
  * For built-in intents, the task is executed synchronously and
  * the result is available immediately via the status endpoint.
  */
@@ -26,6 +28,15 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: 'Invalid or missing agent API key.' },
       { status: 401 },
+    );
+  }
+
+  // Rate limit check
+  const rl = await checkRateLimit(agent.id, agent.trust_level, 'task.submit');
+  if (!rl.allowed) {
+    return NextResponse.json(
+      rateLimitBody('task.submit', rl),
+      { status: 429, headers: rateLimitHeaders(rl) },
     );
   }
 

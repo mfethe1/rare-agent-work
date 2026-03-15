@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { authenticateAgent, getServiceDb, contextStoreSchema, contextQuerySchema } from '@/lib/a2a';
 import { emitEvent } from '@/lib/a2a/webhooks';
+import { checkRateLimit, rateLimitHeaders, rateLimitBody } from '@/lib/a2a/rate-limiter';
 
 /**
  * POST /api/a2a/context — Store or update a shared context entry.
@@ -10,6 +11,7 @@ import { emitEvent } from '@/lib/a2a/webhooks';
  * Upserts on (agent_id, namespace, key) — storing the same key twice updates it.
  *
  * Auth: Bearer token (agent API key) required.
+ * Rate-limited per agent based on trust level.
  */
 export async function POST(request: Request) {
   const agent = await authenticateAgent(request);
@@ -17,6 +19,15 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: 'Authentication required. Provide a valid agent API key.' },
       { status: 401 },
+    );
+  }
+
+  // Rate limit check
+  const rl = await checkRateLimit(agent.id, agent.trust_level, 'context.write');
+  if (!rl.allowed) {
+    return NextResponse.json(
+      rateLimitBody('context.write', rl),
+      { status: 429, headers: rateLimitHeaders(rl) },
     );
   }
 
@@ -110,6 +121,7 @@ export async function POST(request: Request) {
  * Returns only non-expired entries. Any authenticated agent can read any context.
  *
  * Auth: Bearer token (agent API key) required.
+ * Rate-limited per agent based on trust level.
  */
 export async function GET(request: Request) {
   const agent = await authenticateAgent(request);
@@ -117,6 +129,15 @@ export async function GET(request: Request) {
     return NextResponse.json(
       { error: 'Authentication required. Provide a valid agent API key.' },
       { status: 401 },
+    );
+  }
+
+  // Rate limit check
+  const rlRead = await checkRateLimit(agent.id, agent.trust_level, 'context.read');
+  if (!rlRead.allowed) {
+    return NextResponse.json(
+      rateLimitBody('context.read', rlRead),
+      { status: 429, headers: rateLimitHeaders(rlRead) },
     );
   }
 

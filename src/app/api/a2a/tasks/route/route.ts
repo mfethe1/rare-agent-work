@@ -9,6 +9,7 @@ import {
 import { routeTask, fetchRoutingCandidatesWithReputation } from '@/lib/a2a/router';
 import type { TaskRouteResponse } from '@/lib/a2a';
 import { emitEvent } from '@/lib/a2a/webhooks';
+import { checkRateLimit, rateLimitHeaders, rateLimitBody } from '@/lib/a2a/rate-limiter';
 
 /**
  * POST /api/a2a/tasks/route — Capability-based task routing.
@@ -18,9 +19,7 @@ import { emitEvent } from '@/lib/a2a/webhooks';
  * selects the best match(es) based on the routing policy, and creates
  * task(s) assigned to the selected agent(s).
  *
- * This is the key enabler for multi-agent collaboration at scale:
- * agents don't need to know each other — they declare capabilities,
- * and the platform handles matchmaking.
+ * Rate-limited per agent based on trust level.
  */
 export async function POST(request: Request) {
   const agent = await authenticateAgent(request);
@@ -28,6 +27,15 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: 'Invalid or missing agent API key.' },
       { status: 401 },
+    );
+  }
+
+  // Rate limit check
+  const rl = await checkRateLimit(agent.id, agent.trust_level, 'task.route');
+  if (!rl.allowed) {
+    return NextResponse.json(
+      rateLimitBody('task.route', rl),
+      { status: 429, headers: rateLimitHeaders(rl) },
     );
   }
 
